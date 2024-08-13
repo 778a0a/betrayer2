@@ -1,0 +1,13 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Title/UI/Windows/WindowStyle.uss?fileID=7433441132597879392&amp;guid=80d59a0d12b88b64fb3406bae5117ab3&amp;type=3#WindowStyle" />
+    <ui:VisualElement style="flex-grow: 1; align-items: center; justify-content: center; bottom: 0;">
+        <ui:VisualElement name="Border" style="flex-grow: 0; background-color: rgb(0, 9, 25); padding-top: 3px; padding-right: 3px; padding-bottom: 3px; padding-left: 3px;">
+            <ui:Label text="システム設定" name="labelSaveDataListWindowTitle" style="color: rgb(255, 255, 255);" />
+            <ui:Button text="×" name="CloseButton" style="position: absolute; align-items: stretch; align-self: auto; right: 2px; width: 50px; height: 50px;" />
+            <ui:VisualElement style="flex-grow: 1; background-color: rgb(204, 204, 204); width: 500px;">
+                <ui:DropdownField label="画面回転" choices="自動,通常,反転" index="0" name="comboOrientation" />
+                <ui:DropdownField label="言語" choices="自動,日本語,English" index="0" name="comboLayout" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

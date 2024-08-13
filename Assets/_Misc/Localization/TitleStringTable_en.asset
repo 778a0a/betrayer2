@@ -1,0 +1,204 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: TitleStringTable_en
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: en
+  m_SharedData: {fileID: 11400000, guid: c388fa1381ccb0a488571acd4fd5d128, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 881210145366016
+    m_Localized: License Information
+    m_Metadata:
+      m_Items: []
+  - m_Id: 883878184083456
+    m_Localized: Close Application
+    m_Metadata:
+      m_Items: []
+  - m_Id: 883878184083457
+    m_Localized: Start New Game
+    m_Metadata:
+      m_Items: []
+  - m_Id: 883878184083458
+    m_Localized: Load Text Data
+    m_Metadata:
+      m_Items: []
+  - m_Id: 883878188277760
+    m_Localized: Copy From Slot 1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 883878188277761
+    m_Localized: Copy From Slot 2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 883878188277762
+    m_Localized: Copy From Slot 3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 883878188277763
+    m_Localized: Copy From Auto Save Slot
+    m_Metadata:
+      m_Items: []
+  - m_Id: 883878188277764
+    m_Localized: Text Data
+    m_Metadata:
+      m_Items: []
+  - m_Id: 883878188277765
+    m_Localized: Paste save data here.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 883878188277766
+    m_Localized: Clear Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 883878188277767
+    m_Localized: Paste Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 883878188277768
+    m_Localized: Copy to Clipboard
+    m_Metadata:
+      m_Items: []
+  - m_Id: 883878188277769
+    m_Localized: Submit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1257102239588352
+    m_Localized: Loading...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1257102281531392
+    m_Localized: Lisence Information
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1257102281531393
+    m_Localized: 'Sols:'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1257102281531394
+    m_Localized: 'Gold:'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1257102281531395
+    m_Localized: 'Saved at:'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1257102281531396
+    m_Localized: 'Turn:'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1257102281531397
+    m_Localized: Download
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1257102281531398
+    m_Localized: Delete
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1257102281531399
+    m_Localized: NO DATA
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1257102281531400
+    m_Localized: Save Data List
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1257102281531401
+    m_Localized: Auto Saved Data
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1276020299653120
+    m_Localized: Failed to load save data.\n({0})
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1276020303847424
+    m_Localized: Failed to paste from clipboard.\n({0})
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1276020303847425
+    m_Localized: Failed to copy to clipboard.\n({0})
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1276020303847426
+    m_Localized: Close
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1276020303847427
+    m_Localized: Submit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1276020303847428
+    m_Localized: Please copy and save the following text.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1276020303847429
+    m_Localized: Please paste a save data text below.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1276020303847430
+    m_Localized: The following is a list of third-party components and their licenses
+      included in this software.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1276020303847431
+    m_Localized: Failed to load save data.\n{0}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1276020303847432
+    m_Localized: Failed to download save data.\n({0})
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1276020303847433
+    m_Localized: Do you want to delete the save data?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1276020303847434
+    m_Localized: Failed to delete save data.\n{0}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1276020303847435
+    m_Localized: ' (Slot {0})'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1276020303847436
+    m_Localized: NEW GAME
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1276020303847437
+    m_Localized: NO DATA
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1509840726777856
+    m_Localized: OK
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1509843813785600
+    m_Localized: Yes
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1509845919326208
+    m_Localized: No
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1509848343633920
+    m_Localized: Cancel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1510195883663360
+    m_Localized: System Message
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []

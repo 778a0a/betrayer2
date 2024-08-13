@@ -1,0 +1,29 @@
+.title--menu-button {
+    font-size: 40px;
+    width: 600px;
+    margin-top: 5px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    margin-left: 5px;
+}
+
+.window {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    justify-content: center;
+}
+
+.window-modal {
+}
+
+
+.unity-progress-bar__progress {
+    background-color: #0ff;
+}
+
+.unity-progress-bar__background {
+	background-color: #fff;
+}

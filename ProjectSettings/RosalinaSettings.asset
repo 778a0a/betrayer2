@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &1
+MonoBehaviour:
+  m_ObjectHideFlags: 53
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af51af3e19e32d348888d403e641a9a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _isEnabled: 0
+  _files:
+  - _type: 0
+    _path: Assets/Main/UI/MainUI.uxml
+  - _type: 1
+    _path: Assets/Main/UI/MainUIFrame.uxml
+  - _type: 0
+    _path: Assets/Title/UI/TitleSceneUI.uxml
+  - _type: 1
+    _path: Assets/Title/UI/Windows/SaveDataListWindow.uxml
+  - _type: 1
+    _path: Assets/Title/UI/Windows/SaveDataListWindowListItem.uxml
+  - _type: 1
+    _path: Assets/Title/UI/Windows/SystemSettingsWindow.uxml

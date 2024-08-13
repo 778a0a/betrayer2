@@ -1,0 +1,992 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: MainStringTable_en
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: en
+  m_SharedData: {fileID: 11400000, guid: 02ebde7d9091c864192f80b54e1ac99d, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 62716944310272
+    m_Localized: '{0} won the decisive battle.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62716990447616
+    m_Localized: '(No description: {0})'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62716990447617
+    m_Localized: Proceed to the next phase.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62716990447618
+    m_Localized: Click on the map to display country information.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62716998836224
+    m_Localized: Display the system menu.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62716998836225
+    m_Localized: Invade the neighboring country.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62716998836226
+    m_Localized: The sortie order has been issued.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62716998836227
+    m_Localized: The defense order has been issued.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62716998836228
+    m_Localized: Decisive battle with the neighboring country.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62716998836229
+    m_Localized: '{0} challenged {1} to a decisive battle.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62716998836230
+    m_Localized: Challenge your colleague to a fight.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62716998836231
+    m_Localized: '{0} left the country.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62716998836232
+    m_Localized: Provoke the general of another country.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62716998836233
+    m_Localized: Provocation was successful.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62716998836234
+    m_Localized: Provocation failed.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62716998836235
+    m_Localized: You were provoked by {0}.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62716998836236
+    m_Localized: Subdue the vassal.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62716998836237
+    m_Localized: Subjugation successful!\n{0} has been expelled.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62716998836238
+    m_Localized: Subjugation failed! {0} seems to hate you.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62716998836239
+    m_Localized: Independence from your own country.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62716998836240
+    m_Localized: Do you really want to be independent?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62716998836241
+    m_Localized: You are independent.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62716998836242
+    m_Localized: '{0} has become independent from {1}.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62716998836243
+    m_Localized: Join an existing country.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62716998836244
+    m_Localized: You were rejected.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62716998836245
+    m_Localized: You joined {0}'s country.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717003030528
+    m_Localized: Hire soldiers.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717003030529
+    m_Localized: Rebel against the country.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717003030530
+    m_Localized: Do you really want to rebel?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717003030531
+    m_Localized: '{0} rebelled against {1}!'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717003030532
+    m_Localized: Rebellion successful!\nYou are the new ruler.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717003030533
+    m_Localized: The rebellion failed and you were expelled from the country.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717003030534
+    m_Localized: Abandon the country and be free.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717003030535
+    m_Localized: Do you want to abandon the country and be free?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717003030536
+    m_Localized: Attack and capture the area.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717003030537
+    m_Localized: Select the area to capture.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717003030538
+    m_Localized: Train soldiers.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717003030539
+    m_Localized: Form an alliance with another country.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717003030540
+    m_Localized: You formed an alliance with {0}.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717003030541
+    m_Localized: Update the alliance continuation policy.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717003030542
+    m_Localized: Fire the vassal.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717003030543
+    m_Localized: You expelled {0}.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717003030544
+    m_Localized: You have been expelled from the country.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717003030545
+    m_Localized: Hire a vassal.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717003030546
+    m_Localized: You hired {0} as a vassal.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717003030547
+    m_Localized: Adjust the ranking and salary of the vassals.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717003030548
+    m_Localized: Abandon the country and be free.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717003030549
+    m_Localized: Do you want to abandon the country and be free?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717003030550
+    m_Localized: '{0} abandoned the country and {1} became the new ruler.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717003030551
+    m_Localized: Emperor
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717003030552
+    m_Localized: King
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717003030553
+    m_Localized: Duke
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717003030554
+    m_Localized: Chief
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717003030555
+    m_Localized: Viceroy
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717003030556
+    m_Localized: Governor
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717003030557
+    m_Localized: Minister
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717003030558
+    m_Localized: Marshal
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717003030559
+    m_Localized: General
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717003030560
+    m_Localized: Sergeant
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717003030561
+    m_Localized: Squire
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717003030562
+    m_Localized: Wanderer
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717003030563
+    m_Localized: Game over!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717003030564
+    m_Localized: 'Final turn: {0}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717003030565
+    m_Localized: 'Winner: {0}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717003030566
+    m_Localized: Your country has achieved unification!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717003030567
+    m_Localized: You failed to achieve unification...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717003030568
+    m_Localized: 'You: {0}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717003030569
+    m_Localized: 'Final soldier count: {0} ({1})'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717003030570
+    m_Localized: 'Final prestige: {0} ({1})'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717003030571
+    m_Localized: 'Final contribution: {0} ({1})'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717003030572
+    m_Localized: Return to the title screen.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717003030573
+    m_Localized: The alliance was dissolved because the remaining number of countries
+      became two.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717003030574
+    m_Localized: The alliance between {0} and {1} has been dissolved.\n(Dissolved
+      by agreement)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717003030575
+    m_Localized: The alliance between {0} and {1} has been dissolved.\n(Discarded
+      by {0})
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717003030576
+    m_Localized: Select a character to play.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717003030577
+    m_Localized: Click on the person to hire.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717003030578
+    m_Localized: Do not hire
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717003030579
+    m_Localized: Click on the person to expel.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717003030580
+    m_Localized: Click on the person in charge of the invasion.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717003030581
+    m_Localized: Cancel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717003030582
+    m_Localized: Click on the person to subdue.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717003030583
+    m_Localized: Click on the person to attack.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717003030584
+    m_Localized: Click on the person in charge of defense.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717003030585
+    m_Localized: Abandon
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717003030586
+    m_Localized: Select the country to provoke.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717003030587
+    m_Localized: Select the person to provoke.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717003030588
+    m_Localized: You cannot provoke this country.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717003030589
+    m_Localized: Select the country to form an alliance with.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717003030590
+    m_Localized: Your own country.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717007224832
+    m_Localized: The country is already allied with another country.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717007224833
+    m_Localized: Do you want to form an alliance with this country?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717007224834
+    m_Localized: Select the country to fight a decisive battle with.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717007224835
+    m_Localized: The country is too weak.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717007224836
+    m_Localized: You cannot fight a decisive battle with this country.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717007224837
+    m_Localized: Do you want to fight a decisive battle with this country?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717007224838
+    m_Localized: Select the country to join.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717007224839
+    m_Localized: This country cannot hire any more vassals.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717007224840
+    m_Localized: Do you want to join this country?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717007224841
+    m_Localized: Select the area to invade.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717007224842
+    m_Localized: Do you want to invade this area?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717007224843
+    m_Localized: You cannot invade this area.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717007224844
+    m_Localized: The following country have applied for an alliance.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717007224845
+    m_Localized: Accept
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717007224846
+    m_Localized: Reject
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717007224847
+    m_Localized: The following country has invited you to join.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717007224848
+    m_Localized: None
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717007224849
+    m_Localized: Great river
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717007224850
+    m_Localized: River
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717007224851
+    m_Localized: Plain
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717007224852
+    m_Localized: Hill
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717007224853
+    m_Localized: Forest
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717007224854
+    m_Localized: Mountain
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717007224855
+    m_Localized: Fortress
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717007224856
+    m_Localized: Decisive battles prohibited ({0} turns left)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717007224857
+    m_Localized: Only the first country in the phase can act this.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62717007224858
+    m_Localized: No country can be challenged to a decisive battle.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 64204634578944
+    m_Localized: Start the game with '{0}'.\nAre you sure?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 64204634578945
+    m_Localized: Start the game in spectator mode.\nAre you sure?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 64204634578946
+    m_Localized: Spectator
+    m_Metadata:
+      m_Items: []
+  - m_Id: 64204634578947
+    m_Localized: 'Spectator
+
+      (unlocked after clearing)'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 64204634578948
+    m_Localized: 'Change character
+
+      (unlocked after clearing)'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 64204634578949
+    m_Localized: Click on a cell on the map.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 64204634578950
+    m_Localized: Click on the character to play from the list.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 64204634578951
+    m_Localized: Continue
+    m_Metadata:
+      m_Items: []
+  - m_Id: 64204634578952
+    m_Localized: Dissolve
+    m_Metadata:
+      m_Items: []
+  - m_Id: 64204634578953
+    m_Localized: Attackers won
+    m_Metadata:
+      m_Items: []
+  - m_Id: 64204634578954
+    m_Localized: Defenders won
+    m_Metadata:
+      m_Items: []
+  - m_Id: 64204634578955
+    m_Localized: Saved.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 64204634578956
+    m_Localized: Failed to save.\n({0})
+    m_Metadata:
+      m_Items: []
+  - m_Id: 64204634578957
+    m_Localized: Change the character you control.\nAre you sure?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 64204634578958
+    m_Localized: Return to the title screen.\nAre you sure?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 64204634578959
+    m_Localized: Please wait until the end of the turn...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 64204634578960
+    m_Localized: Change character
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153327108096
+    m_Localized: 25@@Attack
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153343885312
+    m_Localized: 25@@Defense
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153343885313
+    m_Localized: 21@@Intelligence
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153343885314
+    m_Localized: 25@@Loyalty
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153343885315
+    m_Localized: 25@@Prestige
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153343885316
+    m_Localized: 19@@Contribution
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153343885317
+    m_Localized: 25@@Sal%
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153343885318
+    m_Localized: Sols
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153343885319
+    m_Localized: Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153343885320
+    m_Localized: Atk
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153343885321
+    m_Localized: Def
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153343885322
+    m_Localized: Intl
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153343885323
+    m_Localized: Status
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153343885324
+    m_Localized: 20@@Loyalty
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153343885325
+    m_Localized: 18@@Prestige
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153343885326
+    m_Localized: 25@@Ctrb
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153343885327
+    m_Localized: 25@@Sal%
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153343885328
+    m_Localized: Hyperion
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153343885329
+    m_Localized: (E)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153343885330
+    m_Localized: Lord
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153343885331
+    m_Localized: '20@@Total
+
+      Areas'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153343885332
+    m_Localized: '20@@Total
+
+      Income'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153343885333
+    m_Localized: '20@@Total
+
+      Gold'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153343885334
+    m_Localized: '18@@Total
+
+      Members'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153343885335
+    m_Localized: '20@@Total
+
+      Soldiers'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153343885336
+    m_Localized: '20@@Total
+
+      Power'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153343885337
+    m_Localized: 22@@Alliance
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153343885338
+    m_Localized: Terrain
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153343885339
+    m_Localized: Close
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153343885340
+    m_Localized: ' Turn'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153343885341
+    m_Localized: ' Phase'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153343885342
+    m_Localized: Cost
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153343885343
+    m_Localized: Gold
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153343885344
+    m_Localized: 25@@Salary%
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153343885345
+    m_Localized: ' Phase'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153348079616
+    m_Localized: Loyalty
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153348079617
+    m_Localized: ' Phase'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153348079618
+    m_Localized: '20@@Alliance
+
+      Stance'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153348079619
+    m_Localized: 30@@Attacker
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153348079620
+    m_Localized: 30@@Defender
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153348079621
+    m_Localized: 25@@Attack
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153348079622
+    m_Localized: 25@@Intellig.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153348079623
+    m_Localized: 25@@Terrain
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153348079624
+    m_Localized: 25@@Defense
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153348079625
+    m_Localized: 25@@Intellig.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153348079626
+    m_Localized: 25@@Terrain
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153348079627
+    m_Localized: 25@@Personal
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153348079628
+    m_Localized: Info
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153348079629
+    m_Localized: Hire
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153348079630
+    m_Localized: Train
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153348079631
+    m_Localized: Get Job
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153348079632
+    m_Localized: Resign
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153348079633
+    m_Localized: Rebel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153348079634
+    m_Localized: '20@@Become
+
+      Independent'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153348079635
+    m_Localized: Seize
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153348079636
+    m_Localized: System
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153348079637
+    m_Localized: End Turn
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153348079638
+    m_Localized: 25@@Military
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153348079639
+    m_Localized: Attack
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153348079640
+    m_Localized: 30@@Decisive Battle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153348079641
+    m_Localized: Provoke
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153348079642
+    m_Localized: Subdue
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153348079643
+    m_Localized: 28@@Private Fight
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153348079644
+    m_Localized: 25@@Strategy
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153348079645
+    m_Localized: Organize
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153348079646
+    m_Localized: Explore
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153348079647
+    m_Localized: Fire Vassal
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153348079648
+    m_Localized: Ally
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153348079649
+    m_Localized: '20@@Change
+
+      Alliance Stance'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153348079650
+    m_Localized: 30@@Change salaries and promote or demote your vassals.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153348079651
+    m_Localized: Up
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153348079652
+    m_Localized: Down
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153348079653
+    m_Localized: Decrease
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153348079654
+    m_Localized: Increase
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153348079655
+    m_Localized: Finish
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153348079656
+    m_Localized: Select
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153348079657
+    m_Localized: Cancel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153348079658
+    m_Localized: Wanderers
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153348079659
+    m_Localized: Random
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153348079660
+    m_Localized: Prev
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153348079661
+    m_Localized: Next
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153348079662
+    m_Localized: Attack
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153348079663
+    m_Localized: Retreat
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153348079664
+    m_Localized: System Message
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153348079665
+    m_Localized: System Menu
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153348079666
+    m_Localized: Save
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153348079667
+    m_Localized: Change character
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153348079668
+    m_Localized: Go to Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2180415367405568
+    m_Localized: Atk
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2180415409348608
+    m_Localized: Def
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2180415409348609
+    m_Localized: Intl
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2180415409348610
+    m_Localized: 20@@Loyalty
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2180415409348611
+    m_Localized: 18@@Prestige
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2180415409348612
+    m_Localized: Ctrb
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2180415409348613
+    m_Localized: 25@@Sal%
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2180415409348614
+    m_Localized: Sols
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1918153343885346
+    m_Localized: Salary%
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2227604496048128
+    m_Localized: Position
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2227701569019904
+    m_Localized: Country
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2232026890493952
+    m_Localized: OK
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2232052991647744
+    m_Localized: Yes
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2232077536714752
+    m_Localized: No
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2232094586560512
+    m_Localized: Cancel
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []
