@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 /// <summary>
@@ -17,7 +18,10 @@ public class Country
     /// <summary>
     /// 拠点
     /// </summary>
-    public List<Fort> Forts { get; set; }
+    public List<Castle> Catsles { get; set; }
+
+    public IEnumerable<Character> Members => Catsles.SelectMany(c => c.Member);
+    public IEnumerable<Character> Vassals => Members.Where(c => c != Ruler);
 
     /// <summary>
     /// マップの国の色のインデックス
@@ -28,7 +32,7 @@ public class Country
 /// <summary>
 /// 拠点
 /// </summary>
-public class Fort
+public class Castle
 {
     /// <summary>
     /// 所有国

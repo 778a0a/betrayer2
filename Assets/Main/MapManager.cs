@@ -7,16 +7,18 @@ using UnityEngine.Tilemaps;
 
 public class MapManager : MonoBehaviour
 {
-    [SerializeField] private Grid grid;
-    [SerializeField] private Tilemap uiTilemap;
-    [SerializeField] private Tilemap terrainTilemap;
-    [SerializeField] private Tilemap fortTilemap;
+    [SerializeField] public Grid grid;
+    [SerializeField] public Tilemap uiTilemap;
+    [SerializeField] public Tilemap terrainTilemap;
+    [SerializeField] public Tilemap castleTilemap;
+    [SerializeField] public Tile[] terrainTiles;
+    [SerializeField] public Tile[] countryTiles;
 
-    public TilemapHelper Helper { get; set; }
+    public GameMap Map { get; set; }
 
     private void Awake()
     {
-        Helper = new TilemapHelper(uiTilemap, terrainTilemap, fortTilemap);
+        Map = new GameMap(this);
     }
 
     private MapPosition currentMousePosition = MapPosition.Of(0, 0);
@@ -30,9 +32,9 @@ public class MapManager : MonoBehaviour
         if (hit.collider == null)
         {
             // 必要ならハイライトを消す。
-            if (Helper.IsValid(currentMousePosition))
+            if (Map.IsValid(currentMousePosition))
             {
-                Helper.GetUITile(currentMousePosition)?.SetCellBorder(false);
+                Map.GetTile(currentMousePosition)?.UI.SetCellBorder(false);
                 currentMousePosition = MapPosition.Invalid;
             }
             return;
@@ -56,17 +58,17 @@ public class MapManager : MonoBehaviour
         // セルの位置を取得する。
         var posGrid = grid.WorldToCell(hit.point);
         var pos = MapPosition.FromGrid(posGrid);
-        var isValidPos = Helper.IsValid(pos);
+        var isValidPos = Map.IsValid(pos);
         if (currentMousePosition != pos)
         {
             // ハイライトを更新する。
             var prevPos = currentMousePosition;
-            if (Helper.IsValid(prevPos)) Helper.GetUITile(prevPos).SetCellBorder(false);
+            Map.GetTile(prevPos)?.UI.SetCellBorder(false);
 
             if (isValidPos)
             {
                 currentMousePosition = pos;
-                Helper.GetUITile(pos).SetCellBorder(true);
+                Map.GetTile(pos).UI.SetCellBorder(true);
             }
             else
             {
@@ -110,32 +112,5 @@ public class MapManager : MonoBehaviour
             cellClickHandler = null;
         });
     }
-
-    public class TilemapHelper
-    {
-        private readonly Tilemap uiTilemap;
-        private readonly Tilemap terrainTilemap;
-        private readonly Tilemap fortTilemap;
-
-        private readonly Dictionary<MapPosition, HexTile> uiTiles;
-
-        public TilemapHelper(Tilemap uiTilemap, Tilemap terrainTilemap, Tilemap fortTilemap)
-        {
-            this.uiTilemap = uiTilemap;
-            this.terrainTilemap = terrainTilemap;
-            this.fortTilemap = fortTilemap;
-
-            uiTiles = uiTilemap.GetComponentsInChildren<HexTile>()
-                .ToDictionary(h => MapPosition.FromGrid(uiTilemap.WorldToCell(h.transform.position)));
-        }
-
-        public bool IsValid(MapPosition pos) => uiTiles.ContainsKey(pos);
-
-        public HexTile GetUITile(MapPosition pos)
-        {
-            if (!IsValid(pos)) return null;
-
-            return uiTiles[pos];
-        }
-    }
 }
+

@@ -61,7 +61,6 @@ public enum Terrain
     Hill,
     Forest,
     Mountain,
-    Fort,
 }
 
 public enum Direction
