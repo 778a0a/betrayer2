@@ -4,7 +4,56 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
-using Random = UnityEngine.Random;
+using UnityEngine.Tilemaps;
+
+public class GameMap
+{
+    private readonly Dictionary<MapPosition, GameMapTile> tiles = new();
+
+    public GameMap(MapManager m)
+    {
+        var uiTiles = m.uiTilemap.GetComponentsInChildren<HexTile>()
+            .ToDictionary(h => MapPosition.FromGrid(m.uiTilemap.WorldToCell(h.transform.position)));
+
+        var terrains = Util.EnumArray<Terrain>();
+        foreach (var pos in uiTiles.Keys)
+        {
+            var gridPos = pos.Vector3Int;
+
+            var uiTile = uiTiles[pos];
+            var countryTile = m.castleTilemap.GetTile<Tile>(gridPos);
+            var countryIndex = Array.IndexOf(m.countryTiles, countryTile);
+
+            var terrainTile = m.terrainTilemap.GetTile<Tile>(gridPos);
+            var terrainIndex = Array.IndexOf(m.terrainTiles, terrainTile);
+            var terrain = terrains[terrainIndex];
+
+            var tile = new GameMapTile
+            {
+                Position = pos,
+                UI = uiTile,
+                Terrain = terrain,
+                CountryIndex = countryIndex,
+            };
+            tiles.Add(pos, tile);
+        }
+    }
+
+    public bool IsValid(MapPosition pos) => tiles.ContainsKey(pos);
+    public GameMapTile GetTile(MapPosition pos)
+    {
+        tiles.TryGetValue(pos, out var tile);
+        return tile;
+    }
+}
+
+public class GameMapTile
+{
+    public MapPosition Position { get; set; }
+    public HexTile UI { get; set; }
+    public Terrain Terrain { get; set; }
+    public int CountryIndex { get; set; }
+}
 
 public struct MapPosition : IEquatable<MapPosition>
 {
