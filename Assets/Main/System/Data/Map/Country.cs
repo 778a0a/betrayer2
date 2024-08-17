@@ -17,9 +17,9 @@ public class Country
     /// <summary>
     /// 拠点
     /// </summary>
-    public List<Castle> Catsles { get; set; }
+    public List<Castle> Catsles { get; set; } = new();
 
-    public IEnumerable<Character> Members => Catsles.SelectMany(c => c.Member);
+    public IEnumerable<Character> Members => Catsles.SelectMany(c => c.Members);
     public IEnumerable<Character> Vassals => Members.Where(c => c != Ruler);
 
     /// <summary>

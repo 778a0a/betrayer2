@@ -11,9 +11,9 @@ public struct GameDate
     public const int DaysPerYear = DaysPerMonth * MonthsPerYear;
 
     private readonly int ticks;
-    public readonly int Year => ticks / DaysPerYear;
-    public readonly int Month => (ticks % DaysPerYear) / DaysPerMonth;
-    public readonly int Day => ticks % DaysPerMonth;
+    public readonly int Year => ticks / DaysPerYear + 1;
+    public readonly int Month => (ticks % DaysPerYear) / DaysPerMonth + 1;
+    public readonly int Day => ticks % DaysPerMonth + 1;
     public readonly int Ticks => ticks;
 
     public GameDate(int ticks)
@@ -29,6 +29,6 @@ public struct GameDate
 
     public override readonly string ToString()
     {
-        return $"{Year + 1:000}/{Month + 1:00}/{Day + 1:00}";
+        return $"{Year:000}/{Month:00}/{Day:00}";
     }
 }

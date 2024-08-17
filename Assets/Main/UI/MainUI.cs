@@ -4,6 +4,8 @@ public partial class MainUI : MonoBehaviour
 {
     public static MainUI Instance { get; private set; }
 
+    [field: SerializeField] public LocalizationManager L { get; private set; }
+
     private void Awake()
     {
         Instance = this;

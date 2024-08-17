@@ -11,8 +11,9 @@ public class Testing : MonoBehaviour
 
     void Start()
     {
-        core = new GameCore();
-        core.test = this;
+        var world = DefaultData.Create();
+        world.Map = MapManager.Instance.Map;
+        core = new GameCore(world, MapManager.Instance, MainUI.Instance, this);
         core.DoMainLoop().Foreget();
     }
 

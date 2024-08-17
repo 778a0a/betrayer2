@@ -37,6 +37,11 @@ public class GameMap
             };
             tiles.Add(pos, tile);
         }
+
+        foreach (var tile in tiles.Values)
+        {
+            Debug.Log($"pos: {tile.Position} country: {tile.CountryIndex}");
+        }
     }
 
     public bool IsValid(MapPosition pos) => tiles.ContainsKey(pos);

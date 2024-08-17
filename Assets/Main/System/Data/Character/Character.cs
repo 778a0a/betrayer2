@@ -106,6 +106,31 @@ public class Character
         Urami = Mathf.Clamp(Urami + value, 0, 100);
     }
 
+    /// <summary>
+    /// 給料
+    /// </summary>
+    public int Salary
+    {
+        get
+        {
+            //return 5 + (int)Math.Floor((-1 + Math.Sqrt(1 + 0.8 * Contribution)) / 2);
+            //return 5 + (int)Math.Floor(Math.Sqrt(Contribution / 5));
+            var sum = 0;
+            var max = 100;
+            for (int i = 0; i < max; i++)
+            {
+                sum += i * 10;
+                if (sum > Contribution) return i + 4;
+            }
+            return max + 4;
+        }
+    }
+
+    /// <summary>
+    /// 行動力
+    /// </summary>
+    public int ActionPoint { get; set; }
+
     ///// <summary>
     ///// 地位
     ///// </summary>

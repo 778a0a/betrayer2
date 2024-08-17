@@ -7,6 +7,7 @@ using UnityEngine.Tilemaps;
 
 public class MapManager : MonoBehaviour
 {
+    public static MapManager Instance { get; private set; }
     [SerializeField] public Grid grid;
     [SerializeField] public Tilemap uiTilemap;
     [SerializeField] public Tilemap terrainTilemap;
@@ -18,6 +19,7 @@ public class MapManager : MonoBehaviour
 
     private void Awake()
     {
+        Instance = this;
         Map = new GameMap(this);
     }
 

@@ -41188,7 +41188,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66ee9de0b3915924885869fece2a1362, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tickWait: 0.3
+  tickWait: 0.01
   hold: 0
 --- !u!4 &1334731770 stripped
 Transform:
@@ -55271,6 +55271,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d4298ec0816ae342bee8010001f32f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <L>k__BackingField: {fileID: 0}
   _document: {fileID: 1877343549}
 --- !u!114 &1877343549
 MonoBehaviour:

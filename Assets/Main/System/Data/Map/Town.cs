@@ -12,10 +12,10 @@ public class Town
     /// <summary>
     /// 商業
     /// </summary>
-    public float Commerce { get; set; }
+    public float GoldIncome { get; set; }
 
     /// <summary>
     /// 食料生産
     /// </summary>
-    public float Food { get; set; }
+    public float FoodIncome { get; set; }
 }
