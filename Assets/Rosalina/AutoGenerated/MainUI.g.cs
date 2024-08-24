@@ -17,9 +17,12 @@ public partial class MainUI
     private UIDocument _document;
     public MainUIFrame Frame { get; private set; }
 
+    public TileInfoOverlay TileInfo { get; private set; }
+
     public VisualElement Root => _document?.rootVisualElement;
     public void InitializeDocument()
     {
         Frame = new MainUIFrame(Root?.Q<VisualElement>("Frame"));
+        TileInfo = new TileInfoOverlay(Root?.Q<VisualElement>("TileInfo"));
     }
 }

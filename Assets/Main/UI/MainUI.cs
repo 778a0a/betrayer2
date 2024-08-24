@@ -14,6 +14,6 @@ public partial class MainUI : MonoBehaviour
     private void OnEnable()
     {
         InitializeDocument();
-        //Frame.Initialize();
+        Frame.Initialize();
     }
 }
