@@ -50,7 +50,7 @@ public class GameCore
                     Debug.Log("収支計算");
                     // 7月になったら収穫を行う。
                     var needHarvest = GameDate.Month == 6;
-                    foreach (var castle in World.Countries.SelectMany(c => c.Catsles))
+                    foreach (var castle in World.Countries.SelectMany(c => c.Castles))
                     {
                         // 町の収入
                         foreach (var town in castle.Towns)

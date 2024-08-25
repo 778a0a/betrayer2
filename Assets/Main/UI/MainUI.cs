@@ -15,5 +15,6 @@ public partial class MainUI : MonoBehaviour
     {
         InitializeDocument();
         Frame.Initialize();
+        TileInfo.Initialize();
     }
 }

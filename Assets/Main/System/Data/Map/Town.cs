@@ -10,6 +10,16 @@ public class Town
     public MapPosition Position { get; set; }
 
     /// <summary>
+    /// 町が所属する城
+    /// </summary>
+    public Castle Castle { get; set; }
+
+    /// <summary>
+    /// 町が存在するならtrue
+    /// </summary>
+    public bool Exists { get; set; }
+
+    /// <summary>
     /// 商業
     /// </summary>
     public float GoldIncome { get; set; }

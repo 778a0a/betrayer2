@@ -15,6 +15,11 @@ public class MapManager : MonoBehaviour
     [SerializeField] public Tile[] terrainTiles;
     [SerializeField] public Tile[] countryTiles;
 
+    public Sprite GetCountrySprite(int countryIndex)
+    {
+        return countryTiles[countryIndex].sprite;
+    }
+
     public GameMap Map { get; set; }
 
     private void Awake()
@@ -70,11 +75,14 @@ public class MapManager : MonoBehaviour
             if (isValidPos)
             {
                 currentMousePosition = pos;
-                Map.GetTile(pos).UI.SetCellBorder(true);
+                var tile = Map.GetTile(pos);
+                tile.UI.SetCellBorder(true);
+                MainUI.Instance.TileInfo.SetData(tile);
             }
             else
             {
                 currentMousePosition = MapPosition.Invalid;
+                MainUI.Instance.TileInfo.SetData(null);
             }
         }
         // 必要ならクリックイベントを起こす。

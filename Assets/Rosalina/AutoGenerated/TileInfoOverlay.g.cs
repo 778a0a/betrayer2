@@ -14,31 +14,40 @@ using UnityEngine.UIElements;
 
 public partial class TileInfoOverlay
 {
-    public VisualElement imageHexForceCharaImage { get; private set; }
+    public VisualElement imageTileForceCharaImage { get; private set; }
 
-    public Label labelHexForceChara { get; private set; }
+    public Label labelTileForce { get; private set; }
 
-    public VisualElement imageHexCountryColor { get; private set; }
+    public VisualElement imageTileCountryColor { get; private set; }
 
-    public Label labelHexOwner { get; private set; }
+    public Label labelTileOwner { get; private set; }
 
-    public Label labelHexTerrain { get; private set; }
+    public Label labelTileTerrain { get; private set; }
 
-    public Label labelHexSettlement { get; private set; }
+    public Label labelTileHasCastle { get; private set; }
 
-    public VisualElement labelHexTerrainParent { get; private set; }
+    public Label labelTileHasTown { get; private set; }
+
+    public VisualElement labelTileTerrainParent { get; private set; }
+
+    public VisualElement labelTileForceParent { get; private set; }
+
+    public VisualElement labelTileOwnerParent { get; private set; }
 
     public VisualElement Root { get; }
 
     public TileInfoOverlay(VisualElement root)
     {
         Root = root;
-        imageHexForceCharaImage = Root?.Q<VisualElement>("imageHexForceCharaImage");
-        labelHexForceChara = Root?.Q<Label>("labelHexForceChara");
-        imageHexCountryColor = Root?.Q<VisualElement>("imageHexCountryColor");
-        labelHexOwner = Root?.Q<Label>("labelHexOwner");
-        labelHexTerrain = Root?.Q<Label>("labelHexTerrain");
-        labelHexSettlement = Root?.Q<Label>("labelHexSettlement");
-        labelHexTerrainParent = Root?.Q<VisualElement>("labelHexTerrainParent");
+        imageTileForceCharaImage = Root?.Q<VisualElement>("imageTileForceCharaImage");
+        labelTileForce = Root?.Q<Label>("labelTileForce");
+        imageTileCountryColor = Root?.Q<VisualElement>("imageTileCountryColor");
+        labelTileOwner = Root?.Q<Label>("labelTileOwner");
+        labelTileTerrain = Root?.Q<Label>("labelTileTerrain");
+        labelTileHasCastle = Root?.Q<Label>("labelTileHasCastle");
+        labelTileHasTown = Root?.Q<Label>("labelTileHasTown");
+        labelTileTerrainParent = Root?.Q<VisualElement>("labelTileTerrainParent");
+        labelTileForceParent = Root?.Q<VisualElement>("labelTileForceParent");
+        labelTileOwnerParent = Root?.Q<VisualElement>("labelTileOwnerParent");
     }
 }

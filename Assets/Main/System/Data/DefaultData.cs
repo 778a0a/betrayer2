@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -12,7 +13,7 @@ using Random = UnityEngine.Random;
 public class DefaultData
 {
 
-    public static WorldData Create()
+    public static WorldData Create(GameMap map)
     {
         Random.InitState(42);
 
@@ -77,25 +78,20 @@ public class DefaultData
             { new() { x = 2, y = -11 }, 19 },
             { new() { x = 11, y = -11 }, 3 },
         };
-        foreach (var castle in castleTiles)
+
+        foreach (var castleData in castleTiles)
         {
-            var country = countries.Find(c => c.ColorIndex == castle.Value)
-                ?? throw new Exception($"Country not found for {castle}");
-            country.Catsles.Add(new Castle()
-            {
-                Position = castle.Key,
-                Owner = country,
-                Strength = Random.Range(0, 100),
-                Towns = new()
-                {
-                    new()
-                    {
-                        Position = castle.Key,
-                        GoldIncome = Random.Range(0, 100),
-                        FoodIncome = Random.Range(0, 100),
-                    },
-                },
-            });
+            var countryIndex = castleData.Value;
+            var pos = castleData.Key;
+            var tile = map.GetTile(pos);
+
+            tile.Castle.Exists = true;
+            tile.Castle.SetCountry(countries.Find(c => c.ColorIndex == countryIndex));
+            tile.Castle.Strength = Random.Range(0, 100);
+            tile.Castle.AddTown(tile.Town);
+            tile.Town.Exists = true;
+            tile.Town.GoldIncome = Random.Range(0, 100);
+            tile.Town.FoodIncome = Random.Range(0, 100);
         }
 
         var oldcsv = Resources.Load<TextAsset>("Scenarios/01/character_data").text;
@@ -111,12 +107,12 @@ public class DefaultData
             {
                 country.Ruler = chara.Character;
             }
-            country.Catsles.RandomPick().Members.Add(chara.Character);
+            country.Castles.RandomPick().Members.Add(chara.Character);
         }
 
         var world = new WorldData
         {
-            Castles = countries.SelectMany(c => c.Catsles).ToArray(),
+            Castles = countries.SelectMany(c => c.Castles).ToArray(),
             Countries = countries.ToArray(),
             Characters = characters.ToArray(),
         };

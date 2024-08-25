@@ -19,7 +19,7 @@ public class WorldData
     public bool IsRulerOrVassal(Character chara) => IsRuler(chara) || IsVassal(chara);
 
     public Country CountryOf(Character chara) => Countries.FirstOrDefault(c => c.Ruler == chara || c.Vassals.Contains(chara));
-    public Country CountryOf(Castle castle) => Countries.FirstOrDefault(c => c.Catsles.Contains(castle));
+    public Country CountryOf(Castle castle) => Countries.FirstOrDefault(c => c.Castles.Contains(castle));
     public Castle CastleOf(Character chara) => Castles.FirstOrDefault(c => c.Members.Contains(chara));
 
     public override string ToString() => $"WorldData {Characters.Length} characters, {Countries.Count} countries";
