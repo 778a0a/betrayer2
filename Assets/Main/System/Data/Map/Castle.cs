@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 /// <summary>
@@ -41,10 +42,14 @@ public class Castle
     /// 金
     /// </summary>
     public float Gold { get; set; }
+    public float GoldIncome => Towns.Sum(t => t.GoldIncome);
+    public float GoldIncomeMax => Towns.Sum(t => t.GoldIncomeMax);
     /// <summary>
     /// 食料
     /// </summary>
     public float Food { get; set; }
+    public float FoodIncome => Towns.Sum(t => t.FoodIncome);
+    public float FoodIncomeMax => Towns.Sum(t => t.FoodIncomeMax);
 
     public void SetCountry(Country country)
     {

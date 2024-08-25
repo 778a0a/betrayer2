@@ -15,6 +15,8 @@ public class MapManager : MonoBehaviour
     [SerializeField] public Tile[] terrainTiles;
     [SerializeField] public Tile[] countryTiles;
 
+    private MainUI MainUI => MainUI.Instance;
+
     public Sprite GetCountrySprite(int countryIndex)
     {
         return countryTiles[countryIndex].sprite;
@@ -47,20 +49,21 @@ public class MapManager : MonoBehaviour
             return;
         }
 
-        //var uiScale = MainUI.Root.panel.scaledPixelsPerPoint;
-        //var uiPoint = new Vector2(mousePoint.x, Screen.height - mousePoint.y) / uiScale;
-        //var element = MainUI.Root.panel.Pick(uiPoint);
-        //// マウスカーソル上にUI要素（メッセージウィンドウなど）がある場合は何もしない。
-        //if (element != null)
-        //{
-        //    // 必要ならハイライトを消す。
-        //    if (currentMousePosition.IsValid)
-        //    {
-        //        Helper.GetUITile(currentMousePosition).SetCellBorder(false);
-        //        currentMousePosition = MapPosition.Invalid;
-        //    }
-        //    return;
-        //}
+        var uiScale = MainUI.Root.panel.scaledPixelsPerPoint;
+        var uiPoint = new Vector2(mousePoint.x, Screen.height - mousePoint.y) / uiScale;
+        var element = MainUI.Root.panel.Pick(uiPoint);
+        // マウスカーソル上にUI要素（メッセージウィンドウなど）がある場合は何もしない。
+        if (element != null)
+        {
+            Debug.Log($"Click UI Element: {element}");
+            // 必要ならハイライトを消す。
+            if (currentMousePosition.IsValid)
+            {
+                Map.GetTile(currentMousePosition)?.UI.SetCellBorder(false);
+                currentMousePosition = MapPosition.Invalid;
+            }
+            return;
+        }
 
         // セルの位置を取得する。
         var posGrid = grid.WorldToCell(hit.point);
@@ -77,12 +80,12 @@ public class MapManager : MonoBehaviour
                 currentMousePosition = pos;
                 var tile = Map.GetTile(pos);
                 tile.UI.SetCellBorder(true);
-                MainUI.Instance.TileInfo.SetData(tile);
+                MainUI.TileInfo.SetData(tile);
             }
             else
             {
                 currentMousePosition = MapPosition.Invalid;
-                MainUI.Instance.TileInfo.SetData(null);
+                MainUI.TileInfo.SetData(null);
             }
         }
         // 必要ならクリックイベントを起こす。
@@ -98,8 +101,7 @@ public class MapManager : MonoBehaviour
     private void DefaultCellClickHandler(object sender, MapPosition pos)
     {
         Debug.Log($"Clicked {pos}");
-        //MainUI.CountryInfo.ShowCellInformation(World, pos);
-        //MainUI.ShowCountryInfoScreen();
+        MainUI.TileDetail.SetData(Map.GetTile(pos));
     }
 
     private void InvokeCellClickHandler(MapPosition pos)

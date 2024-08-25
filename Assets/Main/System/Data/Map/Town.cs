@@ -20,12 +20,14 @@ public class Town
     public bool Exists { get; set; }
 
     /// <summary>
-    /// 商業
-    /// </summary>
-    public float GoldIncome { get; set; }
-
-    /// <summary>
     /// 食料生産
     /// </summary>
     public float FoodIncome { get; set; }
+    public float FoodIncomeMax { get; set; }
+
+    /// <summary>
+    /// 商業
+    /// </summary>
+    public float GoldIncome { get; set; }
+    public float GoldIncomeMax { get; set; }
 }

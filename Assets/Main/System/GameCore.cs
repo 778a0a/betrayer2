@@ -123,6 +123,6 @@ public class GameCore
     public void TogglePlay()
     {
         test.hold = !test.hold;
-        //UI.Frame.SetData(this);
+        MainUI.Frame.SetData(this);
     }
 }

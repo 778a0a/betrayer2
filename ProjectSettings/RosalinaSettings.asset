@@ -28,3 +28,5 @@ MonoBehaviour:
     _path: Assets/Title/UI/Windows/SystemSettingsWindow.uxml
   - _type: 1
     _path: Assets/Main/UI/Parts/TileInfoOverlay.uxml
+  - _type: 1
+    _path: Assets/Main/UI/Parts/TileDetailPanel.uxml
