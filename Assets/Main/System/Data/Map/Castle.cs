@@ -37,6 +37,7 @@ public class Castle
     /// 砦強度
     /// </summary>
     public float Strength { get; set; }
+    public float StrengthMax { get; set; }
 
     /// <summary>
     /// 金

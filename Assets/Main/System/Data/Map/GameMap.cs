@@ -26,12 +26,13 @@ public class GameMap
             var terrainIndex = Array.IndexOf(m.terrainTiles, terrainTile);
             var terrain = terrains[terrainIndex];
 
-            var tile = new GameMapTile(pos, uiTile, terrain);
+            var tile = new GameMapTile(this, pos, uiTile, terrain);
             tiles.Add(pos, tile);
         }
     }
 
     public bool IsValid(MapPosition pos) => tiles.ContainsKey(pos);
+    public IEnumerable<GameMapTile> Tiles => tiles.Values;
     public GameMapTile GetTile(MapPosition pos)
     {
         tiles.TryGetValue(pos, out var tile);
@@ -46,15 +47,19 @@ public struct MapPosition : IEquatable<MapPosition>
 
     public static MapPosition FromGrid(Vector3Int grid) => new() { x = grid.x, y = -grid.y };
     public static MapPosition Of(int x, int y) => new() { x = x, y = y };
-    public readonly MapPosition Up => Of(x, y - 1);
-    public readonly MapPosition Down => Of(x, y + 1);
+    public readonly MapPosition UpLeft =>    y % 2 == 0 ? Of(x - 1, y - 1) : Of(x    , y - 1);
+    public readonly MapPosition UpRight =>   y % 2 == 0 ? Of(x    , y - 1) : Of(x + 1, y - 1);
+    public readonly MapPosition DownLeft =>  y % 2 == 0 ? Of(x - 1, y + 1) : Of(x    , y + 1);
+    public readonly MapPosition DownRight => y % 2 == 0 ? Of(x    , y + 1) : Of(x + 1, y + 1);
     public readonly MapPosition Left => Of(x - 1, y);
     public readonly MapPosition Right => Of(x + 1, y);
 
     public readonly MapPosition To(Direction direction) => direction switch
     {
-        Direction.Up => Up,
-        Direction.Down => Down,
+        Direction.UpLeft => UpLeft,
+        Direction.UpRight => UpRight,
+        Direction.DownLeft => DownLeft,
+        Direction.DownRight => DownRight,
         Direction.Left => Left,
         Direction.Right => Right,
         _ => throw new ArgumentOutOfRangeException(nameof(direction)),
@@ -62,10 +67,21 @@ public struct MapPosition : IEquatable<MapPosition>
 
     public readonly Direction GetDirectionTo(MapPosition pos)
     {
-        if (pos.x < x) return Direction.Left;
-        if (pos.x > x) return Direction.Right;
-        if (pos.y < y) return Direction.Up;
-        if (pos.y > y) return Direction.Down;
+        if (pos.y == y)
+        {
+            if (pos.x < x) return Direction.Left;
+            else return Direction.Right;
+        }
+        if (pos.y < y)
+        {
+            if (pos.x < x) return Direction.UpLeft;
+            else return Direction.UpRight;
+        }
+        if (pos.y > y)
+        {
+            if (pos.x < x) return Direction.DownLeft;
+            else return Direction.DownRight;
+        }
         throw new InvalidOperationException();
     }
 
@@ -98,8 +114,10 @@ public enum Terrain
 
 public enum Direction
 {
-    Up,
-    Down,
+    UpLeft,
+    UpRight,
+    DownLeft,
+    DownRight,
     Left,
     Right,
 }

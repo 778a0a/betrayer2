@@ -79,6 +79,27 @@ public class DefaultData
             { new() { x = 11, y = -11 }, 3 },
         };
 
+        // 各タイルのパラメーター上限値を設定する。
+        foreach (var tile in map.Tiles)
+        {
+            if (tile.Castle != null)
+            {
+                tile.Castle.StrengthMax = 999;
+            }
+            var neighbors = tile.Neighbors;
+            if (tile.Town != null)
+            {
+                var terrain = tile.Terrain;
+                tile.Town.FoodIncomeMax += GameMapTile.BaseFoodAdjustment(terrain);
+                tile.Town.GoldIncomeMax += GameMapTile.BaseGoldAdjustment(terrain);
+                foreach (var neighbor in neighbors)
+                {
+                    tile.Town.FoodIncomeMax += GameMapTile.NeighborFoodAdjustment(neighbor.Terrain);
+                    tile.Town.GoldIncomeMax += GameMapTile.NeighborGoldAdjustment(neighbor.Terrain);
+                }
+            }
+        }
+
         foreach (var castleData in castleTiles)
         {
             var countryIndex = castleData.Value;
@@ -87,11 +108,11 @@ public class DefaultData
 
             tile.Castle.Exists = true;
             tile.Castle.SetCountry(countries.Find(c => c.ColorIndex == countryIndex));
-            tile.Castle.Strength = Random.Range(0, 100);
+            tile.Castle.Strength = Random.Range(0, tile.Castle.StrengthMax * 0.8f);
             tile.Castle.AddTown(tile.Town);
             tile.Town.Exists = true;
-            tile.Town.GoldIncome = Random.Range(0, 100);
-            tile.Town.FoodIncome = Random.Range(0, 100);
+            tile.Town.FoodIncome = Random.Range(0, tile.Town.FoodIncomeMax * 0.8f);
+            tile.Town.GoldIncome = Random.Range(0, tile.Town.GoldIncomeMax * 0.8f);
         }
 
         var oldcsv = Resources.Load<TextAsset>("Scenarios/01/character_data").text;

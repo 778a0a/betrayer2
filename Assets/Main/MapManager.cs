@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -55,7 +56,7 @@ public class MapManager : MonoBehaviour
         // マウスカーソル上にUI要素（メッセージウィンドウなど）がある場合は何もしない。
         if (element != null)
         {
-            Debug.Log($"Click UI Element: {element}");
+            Debug.Log($"UI Element: {element}");
             // 必要ならハイライトを消す。
             if (currentMousePosition.IsValid)
             {
@@ -81,6 +82,11 @@ public class MapManager : MonoBehaviour
                 var tile = Map.GetTile(pos);
                 tile.UI.SetCellBorder(true);
                 MainUI.TileInfo.SetData(tile);
+
+                var fmax = GameMapTile.BaseFoodAdjustment(tile.Terrain) + tile.Neighbors.Sum(t => GameMapTile.NeighborFoodAdjustment(t.Terrain));
+                var gmax = GameMapTile.BaseGoldAdjustment(tile.Terrain) + tile.Neighbors.Sum(t => GameMapTile.NeighborGoldAdjustment(t.Terrain));
+                var nbs = tile.NeighborArray;
+                Debug.Log($"foodmax:{fmax:0000} goldmax:{gmax:0000}");
             }
             else
             {
@@ -92,6 +98,16 @@ public class MapManager : MonoBehaviour
         if (Mouse.current.leftButton.wasPressedThisFrame && isValidPos)
         {
             InvokeCellClickHandler(pos);
+            foreach (var item in Map.GetTile(pos).NeighborArray)
+            {
+                item.UI.SetCellBorder(true);
+                StartCoroutine(aaa());
+                IEnumerator aaa()
+                {
+                    yield return new WaitForSeconds(0.300f);
+                    item.UI.SetCellBorder(false);
+                }
+            }
         }
     }
 
