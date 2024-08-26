@@ -5,13 +5,17 @@ using UnityEngine.UIElements;
 
 public partial class TileDetailPanel
 {
+    public bool IsVisible => Root.style.display == DisplayStyle.Flex;
+
     public void Initialize()
     {
         Root.style.display = DisplayStyle.None;
     }
 
+    public GameMapTile CurrentData { get; private set; }
     public void SetData(GameMapTile tile)
     {
+        CurrentData = tile;
         if (tile == null)
         {
             Root.style.display = DisplayStyle.None;
@@ -35,10 +39,12 @@ public partial class TileDetailPanel
         {
             labelGovernor.text = castle.Members.FirstOrDefault()?.Name;
             labelCastleStrength.text = castle.Strength.ToString("0");
-            labelCastleFood.text = castle.Food.ToString("0");
-            labelCastleGold.text = castle.Gold.ToString("0");
-            labelCastleFoodIncome.text = $"{castle.FoodIncome:0} / {castle.FoodIncomeMax:0}";
-            labelCastleGoldIncome.text = $"{castle.GoldIncome:0} / {castle.GoldIncomeMax:0}";
+            var foodRemainingMonths = castle.FoodRemainingMonths(GameCore.Instance.GameDate);
+            var foodRemainingMonthsText = foodRemainingMonths >= 30 ?
+                "" :
+                $"(残り{foodRemainingMonths}ヶ月)";
+            labelCastleFood.text = $"{castle.Food:0} {foodRemainingMonthsText}";
+            labelCastleGold.text = $"{castle.Gold:0} ({castle.GoldBalance:+0;-0})";
         }
 
         var town = tile.Town;

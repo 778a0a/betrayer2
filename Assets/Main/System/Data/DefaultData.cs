@@ -86,17 +86,10 @@ public class DefaultData
             {
                 tile.Castle.StrengthMax = 999;
             }
-            var neighbors = tile.Neighbors;
             if (tile.Town != null)
             {
-                var terrain = tile.Terrain;
-                tile.Town.FoodIncomeMax += GameMapTile.BaseFoodAdjustment(terrain);
-                tile.Town.GoldIncomeMax += GameMapTile.BaseGoldAdjustment(terrain);
-                foreach (var neighbor in neighbors)
-                {
-                    tile.Town.FoodIncomeMax += GameMapTile.NeighborFoodAdjustment(neighbor.Terrain);
-                    tile.Town.GoldIncomeMax += GameMapTile.NeighborGoldAdjustment(neighbor.Terrain);
-                }
+                tile.Town.FoodIncomeMax = GameMapTile.TileFoodMax(tile);
+                tile.Town.GoldIncomeMax += GameMapTile.TileGoldMax(tile);
             }
         }
 
@@ -109,6 +102,8 @@ public class DefaultData
             tile.Castle.Exists = true;
             tile.Castle.SetCountry(countries.Find(c => c.ColorIndex == countryIndex));
             tile.Castle.Strength = Random.Range(0, tile.Castle.StrengthMax * 0.8f);
+            tile.Castle.Food = 500; // tile.Castle.FoodIncomeMax;
+            tile.Castle.Gold = 30;
             tile.Castle.AddTown(tile.Town);
             tile.Town.Exists = true;
             tile.Town.FoodIncome = Random.Range(0, tile.Town.FoodIncomeMax * 0.8f);

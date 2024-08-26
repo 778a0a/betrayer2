@@ -49,7 +49,6 @@ public class GameCore
                 {
                     Debug.Log("収支計算");
                     // 7月になったら収穫を行う。
-                    var needHarvest = GameDate.Month == 6;
                     foreach (var castle in World.Countries.SelectMany(c => c.Castles))
                     {
                         // 町の収入
@@ -58,7 +57,7 @@ public class GameCore
                             // ゴールド収入
                             castle.Gold += town.GoldIncome;
                             // 食料収入
-                            if (needHarvest) castle.Food += town.FoodIncome;
+                            if (GameDate.IsFoodIncomeMonth) castle.Food += town.FoodIncome;
                         }
                         // キャラ・軍隊への支払い
                         foreach (var chara in castle.Members)
@@ -67,7 +66,7 @@ public class GameCore
                             castle.Gold -= chara.Salary;
                             chara.Gold += chara.Salary;
                             // 食料消費
-                            castle.Food -= chara.Force.Soldiers.Sum(s => s.MaxHp);
+                            castle.Food -= chara.FoodConsumption;
                             // TODO ゴールド・食料が足りない場合
                         }
                     }
@@ -81,6 +80,12 @@ public class GameCore
                     foreach (var chara in World.Characters)
                     {
                         chara.ActionPoint = Mathf.Min(255, chara.ActionPoint + chara.Intelligence / 10);
+                    }
+
+                    // UIを更新する。
+                    if (MainUI.TileDetail.IsVisible)
+                    {
+                        MainUI.TileDetail.SetData(MainUI.TileDetail.CurrentData);
                     }
                 }
 

@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 public class GameMapTile
 {
@@ -38,14 +40,20 @@ public class GameMapTile
         }
     }
 
+
+    public static float TileFoodMax(GameMapTile tile) => Mathf.Max(0,
+        BaseFoodAdjustment(tile.Terrain) + tile.Neighbors.Sum(t => NeighborFoodAdjustment(t.Terrain)));
+    public static float TileGoldMax(GameMapTile tile) => Mathf.Max(0,
+        BaseGoldAdjustment(tile.Terrain) + tile.Neighbors.Sum(t => NeighborGoldAdjustment(t.Terrain)));
+
     public static float BaseFoodAdjustment(Terrain terrain) => devAdjustments[terrain].BaseFood;
     public static float NeighborFoodAdjustment(Terrain terrain) => devAdjustments[terrain].NeighborFood;
     public static float BaseGoldAdjustment(Terrain terrain) => devAdjustments[terrain].BaseGold;
     public static float NeighborGoldAdjustment(Terrain terrain) => devAdjustments[terrain].NeighborGold;
     private static readonly Dictionary<Terrain, TerrainDevAdjustmentData> devAdjustments = new()
     {
-        { Terrain.LargeRiver, new(0050, 050, 005, 030) },
-        { Terrain.River,      new(0100, 050, 005, 020) },
+        { Terrain.LargeRiver, new(-300, 050, -30, 030) },
+        { Terrain.River,      new(-300, 050, -30, 020) },
         { Terrain.Plain,      new(1000, 150, 030, 000) },
         { Terrain.Hill,       new(0700, 000, 050, 010) },
         { Terrain.Forest,     new(0500, 000, 080, 020) },

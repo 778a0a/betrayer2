@@ -45,12 +45,35 @@ public class Castle
     public float Gold { get; set; }
     public float GoldIncome => Towns.Sum(t => t.GoldIncome);
     public float GoldIncomeMax => Towns.Sum(t => t.GoldIncomeMax);
+    public float GoldBalance => GoldIncome - Members.Sum(m => m.Salary);
     /// <summary>
     /// 食料
     /// </summary>
     public float Food { get; set; }
     public float FoodIncome => Towns.Sum(t => t.FoodIncome);
     public float FoodIncomeMax => Towns.Sum(t => t.FoodIncomeMax);
+    /// <summary>
+    /// 食料残り月数
+    /// </summary>
+    public float FoodRemainingMonths(GameDate current)
+    {
+        var remaining = Food;
+        var incomePerYear = FoodIncome;
+        var comsumptionPerMonth = Members.Sum(m => m.FoodConsumption);
+        var months = 0;
+        var date = current;
+        while (true)
+        {
+            date = date.NextMonth();
+            remaining -= comsumptionPerMonth;
+            if (date.IsFoodIncomeMonth) remaining += incomePerYear;
+            if (remaining <= 0) break;
+            // 無限ループにならないように適当に打ち切る。
+            if (months > 30) return months;
+            months++;
+        }
+        return months;
+    }
 
     public void SetCountry(Country country)
     {

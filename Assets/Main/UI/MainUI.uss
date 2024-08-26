@@ -9,7 +9,7 @@ Button
 }
 
 .TileDetailPanelRoot .InfoCaption {
-    width: 110px;
+    width: 95px;
 }
 
 .TileDetailPanelRoot .InfoCaption,
@@ -17,4 +17,9 @@ Button
 {
     font-size: 16px;
     padding: 2px 0px 2px 0px;
+}
+
+.TileDetailPanelRoot .InfoValue
+{
+    width: 120px;
 }

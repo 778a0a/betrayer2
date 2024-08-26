@@ -58,10 +58,6 @@ public partial class TileDetailPanel
 
     public Label labelCastleGold { get; private set; }
 
-    public Label labelCastleFoodIncome { get; private set; }
-
-    public Label labelCastleGoldIncome { get; private set; }
-
     public Label labelTownFoodIncome { get; private set; }
 
     public Label labelTownGoldIncome { get; private set; }
@@ -97,8 +93,6 @@ public partial class TileDetailPanel
         labelCastleStrength = Root?.Q<Label>("labelCastleStrength");
         labelCastleFood = Root?.Q<Label>("labelCastleFood");
         labelCastleGold = Root?.Q<Label>("labelCastleGold");
-        labelCastleFoodIncome = Root?.Q<Label>("labelCastleFoodIncome");
-        labelCastleGoldIncome = Root?.Q<Label>("labelCastleGoldIncome");
         labelTownFoodIncome = Root?.Q<Label>("labelTownFoodIncome");
         labelTownGoldIncome = Root?.Q<Label>("labelTownGoldIncome");
         CastleInfo = Root?.Q<Foldout>("CastleInfo");

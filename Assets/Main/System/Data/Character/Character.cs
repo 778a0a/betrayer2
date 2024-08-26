@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -125,6 +126,10 @@ public class Character
             return max + 4;
         }
     }
+    /// <summary>
+    /// 食料消費
+    /// </summary>
+    public int FoodConsumption => Force.Soldiers.Sum(s => s.MaxHp) / 12;
 
     /// <summary>
     /// 行動力

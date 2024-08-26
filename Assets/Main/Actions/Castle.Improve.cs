@@ -25,8 +25,9 @@ partial class CastleActions
 
             var catsle = World.CastleOf(chara);
             var town = catsle.Towns.RandomPick();
-            town.GoldIncome += chara.Governing / 100f;
+            town.GoldIncome += 0.1f * chara.Governing / 100f;
 
+            chara.Contribution += 1;
             PayCost(chara);
 
             return default;
@@ -49,8 +50,9 @@ partial class CastleActions
 
             var catsle = World.CastleOf(chara);
             var town = catsle.Towns.RandomPick();
-            town.FoodIncome += chara.Governing / 100f;
+            town.FoodIncome += 10 * chara.Governing / 100f;
 
+            chara.Contribution += 1;
             PayCost(chara);
 
             return default;
@@ -72,8 +74,9 @@ partial class CastleActions
             Assert.IsTrue(CanDo(chara));
 
             var castle = World.CastleOf(chara);
-            castle.Strength += chara.Governing / 100f;
+            castle.Strength += 0.5f * chara.Governing / 100f;
 
+            chara.Contribution += 1;
             PayCost(chara);
 
             return default;

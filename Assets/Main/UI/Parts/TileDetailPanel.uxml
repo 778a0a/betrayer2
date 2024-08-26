@@ -61,14 +61,6 @@
                         <engine:Label text="ゴールド" class="InfoCaption" />
                         <engine:Label text="99999" name="labelCastleGold" class="InfoValue" />
                     </engine:VisualElement>
-                    <engine:VisualElement style="flex-direction: row;">
-                        <engine:Label text="総食料収入" class="InfoCaption" />
-                        <engine:Label text="9999 / 9999" name="labelCastleFoodIncome" class="InfoValue" />
-                    </engine:VisualElement>
-                    <engine:VisualElement style="flex-direction: row;">
-                        <engine:Label text="総ゴールド収入" class="InfoCaption" />
-                        <engine:Label text="9999 / 9999" name="labelCastleGoldIncome" class="InfoValue" />
-                    </engine:VisualElement>
                 </engine:VisualElement>
             </engine:Foldout>
             <engine:Foldout text="町情報" name="TownInfo">

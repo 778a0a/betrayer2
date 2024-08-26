@@ -83,9 +83,8 @@ public class MapManager : MonoBehaviour
                 tile.UI.SetCellBorder(true);
                 MainUI.TileInfo.SetData(tile);
 
-                var fmax = GameMapTile.BaseFoodAdjustment(tile.Terrain) + tile.Neighbors.Sum(t => GameMapTile.NeighborFoodAdjustment(t.Terrain));
-                var gmax = GameMapTile.BaseGoldAdjustment(tile.Terrain) + tile.Neighbors.Sum(t => GameMapTile.NeighborGoldAdjustment(t.Terrain));
-                var nbs = tile.NeighborArray;
+                var fmax = GameMapTile.TileFoodMax(tile);
+                var gmax = GameMapTile.TileGoldMax(tile);
                 Debug.Log($"foodmax:{fmax:0000} goldmax:{gmax:0000}");
             }
             else
