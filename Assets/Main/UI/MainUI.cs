@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public partial class MainUI : MonoBehaviour
@@ -17,5 +18,12 @@ public partial class MainUI : MonoBehaviour
         Frame.Initialize();
         TileInfo.Initialize();
         TileDetail.Initialize();
+        TileDetail.L = L;
+
+    }
+
+    public void OnGameCoreAttached()
+    {
+        TileDetail.OnGameCoreAttached();
     }
 }

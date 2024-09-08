@@ -12,6 +12,7 @@ public class WorldData
     public IList<Country> Countries { get; set; }
     public Castle[] Castles { get; set; }
     public GameMap Map { get; set; }
+    public Character Player => Characters.FirstOrDefault(c => c.IsPlayer);
 
     public bool IsRuler(Character chara) => Countries.Any(c => c.Ruler == chara);
     public bool IsVassal(Character chara) => Countries.Any(c => c.Vassals.Contains(chara));

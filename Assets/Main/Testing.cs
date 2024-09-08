@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using UnityEngine;
@@ -12,6 +13,8 @@ public class Testing : MonoBehaviour
     void Start()
     {
         var world = DefaultData.Create(MapManager.Instance.Map);
+        world.Characters.FirstOrDefault(c => c.Name == "フレデリック").IsPlayer = true;
+
         core = new GameCore(world, MapManager.Instance, MainUI.Instance, this);
         core.DoMainLoop().Foreget();
     }

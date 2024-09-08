@@ -8,7 +8,7 @@ using UnityEngine.Assertions;
 
 partial class TownActions
 {
-    public TownActionBase[] Governing => new TownActionBase[]
+    public TownActionBase[] Governings => new TownActionBase[]
     {
         ImproveGoldIncome,
         ImproveFoodIncome,

@@ -65,6 +65,8 @@ public class ActionBase
 public class ActionArgs
 {
     public Character Character { get; set; }
+    public Castle Castle { get; set; }
+    public Town Town { get; set; }
 }
 
 

@@ -1,24 +1,10 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/Main/UI/MainUI.uss?fileID=7433441132597879392&amp;guid=f7db891e68d3680418eab2db0e537323&amp;type=3#MainUI" />
     <engine:VisualElement picking-mode="Ignore" class="TileDetailPanelRoot" style="flex-grow: 1; position: absolute; right: 0; top: 0;">
-        <engine:VisualElement style="position: absolute; left: 0;">
-            <engine:VisualElement style="flex-grow: 1; right: 2px; position: absolute; background-color: rgb(146, 146, 146); border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0);">
-                <engine:Label text="アクション" />
-                <engine:Button name="buttonShowCharacterList" text="人物一覧" />
-                <engine:Foldout text="内政" value="false">
-                    <engine:VisualElement style="flex-grow: 1; margin-left: -30px;">
-                        <engine:Button name="buttonImproveFoodIncome" text="開墾" />
-                        <engine:Button name="buttonImproveGoldIncome" text="商業" />
-                    </engine:VisualElement>
-                </engine:Foldout>
-                <engine:Foldout text="戦略" value="false">
-                    <engine:VisualElement style="flex-grow: 1; margin-left: -30px;">
-                        <engine:Button name="buttonRecruit" text="人材募集" />
-                        <engine:Button name="buttonAlly" text="同盟" />
-                        <engine:Button name="buttonFireVassal" text="追放" />
-                        <engine:Button name="buttonResign" text="放浪" />
-                    </engine:VisualElement>
-                </engine:Foldout>
+        <engine:VisualElement name="ActionMenu" style="position: absolute; left: 0;">
+            <engine:VisualElement style="flex-grow: 1; right: 2px; position: absolute; background-color: rgb(146, 146, 146); border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); width: 150px;">
+                <engine:Label text="アクション" name="labelActionMenuTitle" style="-unity-text-align: upper-center;" />
+                <engine:VisualElement name="ActionButtonContainer" style="flex-grow: 1;" />
             </engine:VisualElement>
         </engine:VisualElement>
         <engine:VisualElement style="background-color: rgb(136, 136, 136); border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); padding-top: 2px; padding-right: 2px; padding-bottom: 2px; padding-left: 2px;">

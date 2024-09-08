@@ -8,19 +8,14 @@ using UnityEngine.Assertions;
 
 partial class CastleActions
 {
-    public CastleActionBase[] Diplomacies => new CastleActionBase[]
-    {
-        Ally,
-    };
-
     /// <summary>
-    /// 他勢力と同盟します。
+    /// 人物一覧を表示します。
     /// </summary>
-    public AllyAction Ally { get; } = new();
-    public class AllyAction : CastleActionBase
+    public ShowMembersAction ShowMembers { get; } = new();
+    public class ShowMembersAction : CastleActionBase
     {
-        public override string Label => L["人材募集"];
-        public override string Description => L["他勢力と同盟します。"];
+        public override string Label => L["人物一覧"];
+        public override string Description => L["人物一覧を表示します。"];
 
         public override int Cost(ActionArgs args) => 5;
 

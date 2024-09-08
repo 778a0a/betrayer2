@@ -15,7 +15,8 @@ public class GameCore
     public MainUI MainUI { get; }
     public Testing test { get; }
 
-    private CastleActions CastleActions { get; }
+    public CastleActions CastleActions { get; }
+    public TownActions TownActions { get; }
 
     public GameDate GameDate { get; set; }
 
@@ -29,6 +30,9 @@ public class GameCore
         GameDate = new GameDate(0);
 
         CastleActions = new CastleActions(this);
+        TownActions = new TownActions(this);
+
+        MainUI.OnGameCoreAttached();
     }
 
     public async ValueTask DoMainLoop()
@@ -94,23 +98,36 @@ public class GameCore
                 {
                     Debug.Log("行動");
                     // 収入の1/3分、農業・商業・築城・訓練をランダムに行う。
+                    var args = new ActionArgs();
                     foreach (var chara in World.Characters)
                     {
-                        var action = World.IsFree(chara) ?
-                            CastleActions.TrainSoldiers :
-                            new ActionBase[]
+                        args.Character = chara;
+                        
+                        var action = default(ActionBase);
+                        if (World.IsFree(chara))
+                        {
+                            args.Castle = null;
+                            args.Town = null;
+                            action = CastleActions.TrainSoldiers;
+                        }
+                        else
+                        {
+                            args.Castle = World.CastleOf(chara);
+                            args.Town = args.Castle?.Towns.RandomPick();
+                            action = new ActionBase[]
                             {
-                                CastleActions.ImproveGoldIncome,
-                                CastleActions.ImproveFoodIncome,
+                                TownActions.ImproveGoldIncome,
+                                TownActions.ImproveFoodIncome,
                                 CastleActions.ImproveCastleStrength,
                                 CastleActions.TrainSoldiers,
                             }.RandomPickDefault();
+                        }
                         var budget = Math.Min(chara.Gold, chara.Salary / 3);
                         while (budget > 0)
                         {
-                            if (!action.CanDo(chara)) break;
-                            await action.Do(chara);
-                            budget -= action.Cost(chara);
+                            if (!action.CanDo(args)) break;
+                            budget -= action.Cost(args);
+                            await action.Do(args);
                         }
                     }
                 }

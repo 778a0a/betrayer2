@@ -14,33 +14,9 @@ using UnityEngine.UIElements;
 
 public partial class TileDetailPanel
 {
-    public Button buttonImproveCastleStrength { get; private set; }
+    public Label labelActionMenuTitle { get; private set; }
 
-    public Button buttonImproveFoodIncome { get; private set; }
-
-    public Button buttonImproveGoldIncome { get; private set; }
-
-    public Button buttonBuildNewTown { get; private set; }
-
-    public Button buttonAttack { get; private set; }
-
-    public Button buttonRebel { get; private set; }
-
-    public Button buttonBecomeIndependent { get; private set; }
-
-    public Button buttonHireSoldier { get; private set; }
-
-    public Button buttonTrainSoldier { get; private set; }
-
-    public Button buttonRecruit { get; private set; }
-
-    public Button buttonAlly { get; private set; }
-
-    public Button buttonFireVassal { get; private set; }
-
-    public Button buttonResign { get; private set; }
-
-    public Button buttonShowCharacterList { get; private set; }
+    public VisualElement ActionButtonContainer { get; private set; }
 
     public VisualElement imageTileCountryColor { get; private set; }
 
@@ -50,6 +26,14 @@ public partial class TileDetailPanel
 
     public VisualElement labelTileTerrainParent { get; private set; }
 
+    public Button buttonCastleMembers { get; private set; }
+
+    public Button buttonCastleGoverning { get; private set; }
+
+    public Button buttonCastleMartial { get; private set; }
+
+    public Button buttonCastleStrategy { get; private set; }
+
     public Label labelGovernor { get; private set; }
 
     public Label labelCastleStrength { get; private set; }
@@ -57,6 +41,8 @@ public partial class TileDetailPanel
     public Label labelCastleFood { get; private set; }
 
     public Label labelCastleGold { get; private set; }
+
+    public Button buttonTownGoverning { get; private set; }
 
     public Label labelTownFoodIncome { get; private set; }
 
@@ -66,36 +52,32 @@ public partial class TileDetailPanel
 
     public Foldout TownInfo { get; private set; }
 
+    public VisualElement ActionMenu { get; private set; }
+
     public VisualElement Root { get; }
 
     public TileDetailPanel(VisualElement root)
     {
         Root = root;
-        buttonImproveCastleStrength = Root?.Q<Button>("buttonImproveCastleStrength");
-        buttonImproveFoodIncome = Root?.Q<Button>("buttonImproveFoodIncome");
-        buttonImproveGoldIncome = Root?.Q<Button>("buttonImproveGoldIncome");
-        buttonBuildNewTown = Root?.Q<Button>("buttonBuildNewTown");
-        buttonAttack = Root?.Q<Button>("buttonAttack");
-        buttonRebel = Root?.Q<Button>("buttonRebel");
-        buttonBecomeIndependent = Root?.Q<Button>("buttonBecomeIndependent");
-        buttonHireSoldier = Root?.Q<Button>("buttonHireSoldier");
-        buttonTrainSoldier = Root?.Q<Button>("buttonTrainSoldier");
-        buttonRecruit = Root?.Q<Button>("buttonRecruit");
-        buttonAlly = Root?.Q<Button>("buttonAlly");
-        buttonFireVassal = Root?.Q<Button>("buttonFireVassal");
-        buttonResign = Root?.Q<Button>("buttonResign");
-        buttonShowCharacterList = Root?.Q<Button>("buttonShowCharacterList");
+        labelActionMenuTitle = Root?.Q<Label>("labelActionMenuTitle");
+        ActionButtonContainer = Root?.Q<VisualElement>("ActionButtonContainer");
         imageTileCountryColor = Root?.Q<VisualElement>("imageTileCountryColor");
         labelTileOwner = Root?.Q<Label>("labelTileOwner");
         labelTileTerrain = Root?.Q<Label>("labelTileTerrain");
         labelTileTerrainParent = Root?.Q<VisualElement>("labelTileTerrainParent");
+        buttonCastleMembers = Root?.Q<Button>("buttonCastleMembers");
+        buttonCastleGoverning = Root?.Q<Button>("buttonCastleGoverning");
+        buttonCastleMartial = Root?.Q<Button>("buttonCastleMartial");
+        buttonCastleStrategy = Root?.Q<Button>("buttonCastleStrategy");
         labelGovernor = Root?.Q<Label>("labelGovernor");
         labelCastleStrength = Root?.Q<Label>("labelCastleStrength");
         labelCastleFood = Root?.Q<Label>("labelCastleFood");
         labelCastleGold = Root?.Q<Label>("labelCastleGold");
+        buttonTownGoverning = Root?.Q<Button>("buttonTownGoverning");
         labelTownFoodIncome = Root?.Q<Label>("labelTownFoodIncome");
         labelTownGoldIncome = Root?.Q<Label>("labelTownGoldIncome");
         CastleInfo = Root?.Q<Foldout>("CastleInfo");
         TownInfo = Root?.Q<Foldout>("TownInfo");
+        ActionMenu = Root?.Q<VisualElement>("ActionMenu");
     }
 }

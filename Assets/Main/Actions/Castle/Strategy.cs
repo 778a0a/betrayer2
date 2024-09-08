@@ -8,7 +8,7 @@ using UnityEngine.Assertions;
 
 partial class CastleActions
 {
-    public CastleActionBase[] Strategy => new CastleActionBase[]
+    public CastleActionBase[] Strategies => new CastleActionBase[]
     {
         HireVassal,
         FireVassal,
