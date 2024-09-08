@@ -7,19 +7,8 @@
                 <engine:Button name="buttonShowCharacterList" text="人物一覧" />
                 <engine:Foldout text="内政" value="false">
                     <engine:VisualElement style="flex-grow: 1; margin-left: -30px;">
-                        <engine:Button name="buttonImproveCastleStrength" text="築城" />
                         <engine:Button name="buttonImproveFoodIncome" text="開墾" />
                         <engine:Button name="buttonImproveGoldIncome" text="商業" />
-                        <engine:Button name="buttonBuildNewTown" text="町建設" />
-                    </engine:VisualElement>
-                </engine:Foldout>
-                <engine:Foldout text="軍事" value="false">
-                    <engine:VisualElement style="flex-grow: 1; margin-left: -30px;">
-                        <engine:Button name="buttonAttack" text="出撃" />
-                        <engine:Button name="buttonRebel" text="反乱" />
-                        <engine:Button name="buttonBecomeIndependent" text="独立" />
-                        <engine:Button name="buttonHireSoldier" text="雇兵" />
-                        <engine:Button name="buttonTrainSoldier" text="訓練" />
                     </engine:VisualElement>
                 </engine:Foldout>
                 <engine:Foldout text="戦略" value="false">
@@ -43,8 +32,14 @@
                     <engine:Label text="丘陵" name="labelTileTerrain" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; font-size: 15px;" />
                 </engine:VisualElement>
             </engine:VisualElement>
-            <engine:Foldout text="城情報" name="CastleInfo">
+            <engine:Foldout text="城" name="CastleInfo">
                 <engine:VisualElement style="flex-grow: 1; margin-left: -30px;">
+                    <engine:VisualElement style="flex-grow: 1; flex-direction: row;">
+                        <engine:Button text="人物一覧" name="buttonCastleMembers" />
+                        <engine:Button text="内政" name="buttonCastleGoverning" />
+                        <engine:Button text="軍事" name="buttonCastleMartial" />
+                        <engine:Button text="戦略" name="buttonCastleStrategy" />
+                    </engine:VisualElement>
                     <engine:VisualElement style="flex-direction: row;">
                         <engine:Label text="城主" />
                         <engine:Label text="ハイペリオン" name="labelGovernor" />
@@ -63,8 +58,11 @@
                     </engine:VisualElement>
                 </engine:VisualElement>
             </engine:Foldout>
-            <engine:Foldout text="町情報" name="TownInfo">
+            <engine:Foldout text="町" name="TownInfo">
                 <engine:VisualElement style="flex-grow: 1; margin-left: -30px;">
+                    <engine:VisualElement style="flex-grow: 1; flex-direction: row;">
+                        <engine:Button text="内政" name="buttonTownGoverning" />
+                    </engine:VisualElement>
                     <engine:VisualElement style="flex-direction: row;">
                         <engine:Label text="食料収入" class="InfoCaption" />
                         <engine:Label text="999 / 999" name="labelTownFoodIncome" class="InfoValue" />

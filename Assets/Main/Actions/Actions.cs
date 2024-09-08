@@ -29,36 +29,42 @@ public class ActionBase
     protected GameMap Map => Core.Map.Map;
     protected LocalizationManager L => Core.MainUI.L;
 
+    public virtual string Label => GetType().Name;
     public virtual string Description => L["(説明文なし: {0})", GetType().Name];
     /// <summary>
     /// 選択肢として表示可能ならtrue
     /// </summary>
-    public virtual bool CanSelect(Character chara) => true;
+    public virtual bool CanSelect(ActionArgs args) => true;
     /// <summary>
     /// アクションの実行に必要なGold
     /// </summary>
-    public virtual int Cost(Character chara) => 0;
+    public virtual int Cost(ActionArgs args) => 0;
     /// <summary>
     /// アクションを実行可能ならtrue
     /// </summary>
-    public bool CanDo(Character chara) =>
-        CanSelect(chara) &&
-        chara.Gold >= Cost(chara) &&
-        CanDoCore(chara);
+    public bool CanDo(ActionArgs args) =>
+        CanSelect(args) &&
+        args.Character.Gold >= Cost(args) &&
+        CanDoCore(args);
     /// <summary>
     /// アクションを実行可能ならtrue（子クラスでのオーバーライド用）
     /// </summary>
     /// <returns></returns>
-    protected virtual bool CanDoCore(Character chara) => true;
+    protected virtual bool CanDoCore(ActionArgs args) => true;
     /// <summary>
     /// アクションを実行します。
     /// </summary>
-    public virtual ValueTask Do(Character chara) => new();
+    public virtual ValueTask Do(ActionArgs args) => new();
 
-    protected void PayCost(Character chara)
+    protected void PayCost(ActionArgs args)
     {
-        chara.Gold -= Cost(chara);
+        args.Character.Gold -= Cost(args);
     }
+}
+
+public class ActionArgs
+{
+    public Character Character { get; set; }
 }
 
 
@@ -69,5 +75,15 @@ public partial class CastleActions : ActionsBase<CastleActionBase>
     }
 }
 public class CastleActionBase : ActionBase
+{
+}
+
+public partial class TownActions : ActionsBase<TownActionBase>
+{
+    public TownActions(GameCore core) : base(core)
+    {
+    }
+}
+public class TownActionBase : ActionBase
 {
 }
