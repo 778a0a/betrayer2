@@ -134,7 +134,7 @@ public class Character
     /// <summary>
     /// 行動力
     /// </summary>
-    public int ActionPoint { get; set; }
+    public int ActionPoints { get; set; }
 
     ///// <summary>
     ///// 地位

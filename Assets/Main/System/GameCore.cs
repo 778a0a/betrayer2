@@ -41,12 +41,13 @@ public class GameCore
         {
             while (true)
             {
-                //UI.Frame.SetData(this);
-                await Awaitable.WaitForSecondsAsync(test.tickWait);
+                await Awaitable.WaitForSecondsAsync(test.TickWait);
 
                 await test.HoldIfNeeded();
-                MainUI.Frame.SetData(this);
-                Debug.Log(GameDate);
+                var player = World.Player;
+
+                MainUI.Frame.SetDatePanelData(this);
+                MainUI.Frame.SetPlayerPanelData(player);
 
                 // 月初になったら収支計算を行う。
                 if (GameDate.Day == 1)
@@ -83,7 +84,7 @@ public class GameCore
                     // 行動ポイントを補充する。
                     foreach (var chara in World.Characters)
                     {
-                        chara.ActionPoint = Mathf.Min(255, chara.ActionPoint + chara.Intelligence / 10);
+                        chara.ActionPoints = Mathf.Min(255, chara.ActionPoints + chara.Intelligence / 10);
                     }
 
                     // UIを更新する。
@@ -101,6 +102,8 @@ public class GameCore
                     var args = new ActionArgs();
                     foreach (var chara in World.Characters)
                     {
+                        if (chara == player) continue;
+
                         args.Character = chara;
                         
                         var action = default(ActionBase);
@@ -145,6 +148,6 @@ public class GameCore
     public void TogglePlay()
     {
         test.hold = !test.hold;
-        MainUI.Frame.SetData(this);
+        MainUI.Frame.SetDatePanelData(this);
     }
 }

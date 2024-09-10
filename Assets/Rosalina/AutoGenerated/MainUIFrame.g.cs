@@ -14,16 +14,76 @@ using UnityEngine.UIElements;
 
 public partial class MainUIFrame
 {
+    public Label labelPlayerGold { get; private set; }
+
+    public Label labelPlayerPrestige { get; private set; }
+
+    public Label labelPlayerContribution { get; private set; }
+
+    public Label labelPlayerSoldierCount { get; private set; }
+
+    public Label labelPlayerActionPoints { get; private set; }
+
+    public Button buttonShowPlayer { get; private set; }
+
+    public Button buttonMoveToCurrentLocation { get; private set; }
+
+    public Button buttonShowCastles { get; private set; }
+
+    public Button buttonShowForces { get; private set; }
+
+    public Foldout foldPlayerMenu { get; private set; }
+
+    public Button buttonPlaySpeedPlus { get; private set; }
+
+    public Button buttonPlaySpeedMinus { get; private set; }
+
+    public Button buttonPlaySpeed0 { get; private set; }
+
+    public Button buttonPlaySpeed1 { get; private set; }
+
+    public Button buttonPlaySpeed2 { get; private set; }
+
+    public Button buttonPlaySpeed3 { get; private set; }
+
+    public Button buttonPlaySpeed4 { get; private set; }
+
+    public Button buttonShowSystemMenu { get; private set; }
+
     public Label labelCurrentDate { get; private set; }
 
     public Button buttonPlay { get; private set; }
+
+    public VisualElement PlayerPanel { get; private set; }
+
+    public VisualElement DatePanel { get; private set; }
 
     public VisualElement Root { get; }
 
     public MainUIFrame(VisualElement root)
     {
         Root = root;
+        labelPlayerGold = Root?.Q<Label>("labelPlayerGold");
+        labelPlayerPrestige = Root?.Q<Label>("labelPlayerPrestige");
+        labelPlayerContribution = Root?.Q<Label>("labelPlayerContribution");
+        labelPlayerSoldierCount = Root?.Q<Label>("labelPlayerSoldierCount");
+        labelPlayerActionPoints = Root?.Q<Label>("labelPlayerActionPoints");
+        buttonShowPlayer = Root?.Q<Button>("buttonShowPlayer");
+        buttonMoveToCurrentLocation = Root?.Q<Button>("buttonMoveToCurrentLocation");
+        buttonShowCastles = Root?.Q<Button>("buttonShowCastles");
+        buttonShowForces = Root?.Q<Button>("buttonShowForces");
+        foldPlayerMenu = Root?.Q<Foldout>("foldPlayerMenu");
+        buttonPlaySpeedPlus = Root?.Q<Button>("buttonPlaySpeedPlus");
+        buttonPlaySpeedMinus = Root?.Q<Button>("buttonPlaySpeedMinus");
+        buttonPlaySpeed0 = Root?.Q<Button>("buttonPlaySpeed0");
+        buttonPlaySpeed1 = Root?.Q<Button>("buttonPlaySpeed1");
+        buttonPlaySpeed2 = Root?.Q<Button>("buttonPlaySpeed2");
+        buttonPlaySpeed3 = Root?.Q<Button>("buttonPlaySpeed3");
+        buttonPlaySpeed4 = Root?.Q<Button>("buttonPlaySpeed4");
+        buttonShowSystemMenu = Root?.Q<Button>("buttonShowSystemMenu");
         labelCurrentDate = Root?.Q<Label>("labelCurrentDate");
         buttonPlay = Root?.Q<Button>("buttonPlay");
+        PlayerPanel = Root?.Q<VisualElement>("PlayerPanel");
+        DatePanel = Root?.Q<VisualElement>("DatePanel");
     }
 }
