@@ -21,11 +21,14 @@ public partial class MainUI
 
     public TileDetailPanel TileDetail { get; private set; }
 
+    public CharacterInfoPanel CharacterInfo { get; private set; }
+
     public VisualElement Root => _document?.rootVisualElement;
     public void InitializeDocument()
     {
         Frame = new MainUIFrame(Root?.Q<VisualElement>("Frame"));
         TileInfo = new TileInfoOverlay(Root?.Q<VisualElement>("TileInfo"));
         TileDetail = new TileDetailPanel(Root?.Q<VisualElement>("TileDetail"));
+        CharacterInfo = new CharacterInfoPanel(Root?.Q<VisualElement>("CharacterInfo"));
     }
 }

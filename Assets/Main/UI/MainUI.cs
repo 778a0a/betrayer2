@@ -19,7 +19,7 @@ public partial class MainUI : MonoBehaviour
         TileInfo.Initialize();
         TileDetail.Initialize();
         TileDetail.L = L;
-
+        CharacterInfo.Initialize();
     }
 
     public void OnGameCoreAttached()

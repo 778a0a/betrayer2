@@ -27,3 +27,17 @@ Button
 #foldPlayerMenu Toggle Label {
     font-size: 17px;
 }
+
+
+.CharacterPanel-StatCell-Caption,
+.CharacterPanel-StatCell-Value
+{
+    margin: 0;
+    font-size: 14px;
+}
+
+.CharacterPanel-StatCell-Caption,
+.CharacterPanel-StatCell-Value
+{
+    font-size: 14px;
+}

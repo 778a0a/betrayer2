@@ -23,6 +23,10 @@ public class Castle
     /// </summary>
     public Country Country { get; private set; }
 
+    public Character Boss => Members
+        .OrderByDescending(m => m == Country.Ruler ? int.MaxValue : m.Contribution)
+        .First();
+
     /// <summary>
     /// 所属メンバー
     /// </summary>

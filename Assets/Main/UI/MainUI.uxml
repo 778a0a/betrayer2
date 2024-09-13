@@ -2,9 +2,11 @@
     <engine:Template name="MainUIFrame" src="project://database/Assets/Main/UI/MainUIFrame.uxml?fileID=9197481963319205126&amp;guid=e95a0a77fa6d5dd469188bc0efcacedb&amp;type=3#MainUIFrame" />
     <engine:Template name="TileInfoOverlay" src="project://database/Assets/Main/UI/Parts/TileInfoOverlay.uxml?fileID=9197481963319205126&amp;guid=2b37f7adc97016d47b8da379dfe22abb&amp;type=3#TileInfoOverlay" />
     <engine:Template name="TileDetailPanel" src="project://database/Assets/Main/UI/Parts/TileDetailPanel.uxml?fileID=9197481963319205126&amp;guid=6721c8d9e4b30cd40a3a9f0b6dae0b3d&amp;type=3#TileDetailPanel" />
+    <engine:Template name="CharacterInfoPanel" src="project://database/Assets/Main/UI/Parts/CharacterInfoPanel.uxml?fileID=9197481963319205126&amp;guid=b7ea96c71d2b83a4f89965ba35577404&amp;type=3#CharacterPanel" />
     <Style src="project://database/Assets/Main/UI/MainUI.uss?fileID=7433441132597879392&amp;guid=f7db891e68d3680418eab2db0e537323&amp;type=3#MainUI" />
     <engine:VisualElement picking-mode="Ignore" style="flex-grow: 1;" />
     <engine:Instance template="MainUIFrame" name="Frame" picking-mode="Ignore" style="position: absolute; top: 0; left: 0; bottom: 0; right: 0;" />
     <engine:Instance template="TileInfoOverlay" name="TileInfo" picking-mode="Ignore" style="position: absolute; top: 0; left: 0; bottom: 0; right: 0;" />
     <engine:Instance template="TileDetailPanel" name="TileDetail" picking-mode="Ignore" style="position: absolute; top: 0; left: 0; bottom: 0; right: 0;" />
+    <engine:Instance template="CharacterInfoPanel" name="CharacterInfo" picking-mode="Ignore" style="position: absolute; top: 0; left: 0; bottom: 0; right: 0;" />
 </engine:UXML>

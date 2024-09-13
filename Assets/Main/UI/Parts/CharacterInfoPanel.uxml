@@ -1,0 +1,98 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Main/UI/MainUI.uss?fileID=7433441132597879392&amp;guid=f7db891e68d3680418eab2db0e537323&amp;type=3#MainUI" />
+    <engine:VisualElement picking-mode="Ignore" class="TileDetailPanelRoot" style="flex-grow: 1; position: absolute;">
+        <engine:VisualElement name="ActionMenu" style="position: absolute; left: 0;">
+            <engine:VisualElement style="flex-grow: 1; right: 2px; position: absolute; background-color: rgb(146, 146, 146); border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); width: 150px;">
+                <engine:Label text="アクション" name="labelActionMenuTitle" style="-unity-text-align: upper-center;" />
+                <engine:VisualElement name="ActionButtonContainer" style="flex-grow: 1;" />
+            </engine:VisualElement>
+        </engine:VisualElement>
+        <engine:VisualElement style="background-color: rgb(136, 136, 136); border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px; width: 280px; top: 0; bottom: 0;">
+            <engine:VisualElement name="ControlBox" style="flex-grow: 1; flex-direction: row; justify-content: flex-end;">
+                <engine:Button text="◀" name="buttonPrev" style="font-size: 12px; padding-top: 3px; padding-right: 3px; padding-bottom: 3px; padding-left: 3px; margin-top: 0;" />
+                <engine:Button text="▶" name="buttonNext" style="font-size: 12px; padding-top: 3px; padding-right: 3px; padding-bottom: 3px; padding-left: 3px; margin-top: 0;" />
+                <engine:Button text="☓" name="buttonClose" style="font-size: 12px; padding-top: 3px; padding-right: 3px; padding-bottom: 3px; padding-left: 3px; margin-top: 0; margin-right: 0;" />
+            </engine:VisualElement>
+            <engine:VisualElement style="flex-grow: 1; flex-direction: row; margin-top: 3px;">
+                <engine:VisualElement name="imageChara" style="width: 120px; height: 120px; background-color: rgb(219, 219, 219); margin-top: -25px;" />
+                <engine:VisualElement style="flex-grow: 1; align-items: flex-end; position: absolute; right: 0;">
+                    <engine:VisualElement name="RulerImageContainer" style="flex-grow: 1; flex-direction: row;">
+                        <engine:Label text="主君" style="font-size: 14px;" />
+                        <engine:VisualElement name="imageRuler" style="width: 45px; height: 45px; background-color: rgb(219, 219, 219);" />
+                    </engine:VisualElement>
+                    <engine:VisualElement name="BossImageContainer" style="flex-grow: 1; flex-direction: row; margin-top: 4px;">
+                        <engine:Label text="上官" style="font-size: 14px;" />
+                        <engine:VisualElement name="imageBoss" style="width: 45px; height: 45px; background-color: rgb(219, 219, 219);" />
+                    </engine:VisualElement>
+                </engine:VisualElement>
+            </engine:VisualElement>
+            <engine:Label text="大公 フレデリック" name="labelName" />
+            <engine:Label text="城に駐留中" name="labelStatus" style="font-size: 14px;" />
+            <engine:VisualElement style="flex-grow: 1; flex-direction: row; padding-left: 2px;">
+                <engine:VisualElement name="Stats" style="flex-direction: row;">
+                    <engine:VisualElement style="flex-grow: 0; flex-shrink: 0;">
+                        <engine:Label text="攻撃" class="CharacterPanel-StatCell-Caption" />
+                        <engine:Label name="labelAttack" text="100" class="CharacterPanel-StatCell-Value" />
+                    </engine:VisualElement>
+                    <engine:VisualElement style="flex-grow: 0; flex-shrink: 0;">
+                        <engine:Label text="防衛" class="CharacterPanel-StatCell-Caption" />
+                        <engine:Label name="labelDefense" text="100" class="CharacterPanel-StatCell-Value" />
+                    </engine:VisualElement>
+                    <engine:VisualElement style="flex-grow: 0; flex-shrink: 0;">
+                        <engine:Label text="智謀" class="CharacterPanel-StatCell-Caption" />
+                        <engine:Label name="labelIntelligence" text="100" class="CharacterPanel-StatCell-Value" />
+                    </engine:VisualElement>
+                    <engine:VisualElement style="flex-grow: 0; flex-shrink: 0;">
+                        <engine:Label text="統治" class="CharacterPanel-StatCell-Caption" />
+                        <engine:Label name="labelGoverning" text="100" class="CharacterPanel-StatCell-Value" />
+                    </engine:VisualElement>
+                </engine:VisualElement>
+                <engine:VisualElement name="Stats2" style="flex-grow: 1; flex-direction: row; justify-content: flex-end;">
+                    <engine:VisualElement style="flex-grow: 0; flex-shrink: 0;">
+                        <engine:Label text="資金" class="CharacterPanel-StatCell-Caption" />
+                        <engine:Label name="labelGold" text="100" class="CharacterPanel-StatCell-Value" />
+                    </engine:VisualElement>
+                    <engine:VisualElement style="flex-grow: 0; flex-shrink: 0;">
+                        <engine:Label text="名声" class="CharacterPanel-StatCell-Caption" />
+                        <engine:Label name="labelPrestige" text="100" class="CharacterPanel-StatCell-Value" />
+                    </engine:VisualElement>
+                    <engine:VisualElement style="flex-grow: 0; flex-shrink: 0;">
+                        <engine:Label text="功績" class="CharacterPanel-StatCell-Caption" />
+                        <engine:Label name="labelContribution" text="100" class="CharacterPanel-StatCell-Value" />
+                    </engine:VisualElement>
+                    <engine:VisualElement style="flex-grow: 0; flex-shrink: 0;">
+                        <engine:Label text="忠誠" class="CharacterPanel-StatCell-Caption" />
+                        <engine:Label name="labelLoyalty" text="100" class="CharacterPanel-StatCell-Value" />
+                    </engine:VisualElement>
+                </engine:VisualElement>
+            </engine:VisualElement>
+            <engine:VisualElement name="Soldiers" style="flex-grow: 1;">
+                <engine:VisualElement style="flex-grow: 1; flex-direction: row;">
+                    <engine:Label text="兵士" style="font-size: 15px;" />
+                    <engine:Label  name="labelSoldierCount" text="1888" style="font-size: 15px;" />
+                </engine:VisualElement>
+                <engine:VisualElement style="flex-direction: row;">
+                    <engine:VisualElement style="width: 45px; height: 30px; background-color: rgb(178, 104, 104); margin-top: 3px; margin-right: 3px; margin-bottom: 3px; margin-left: 3px; flex-shrink: 0;" />
+                    <engine:VisualElement style="width: 45px; height: 30px; background-color: rgb(178, 104, 104); margin-top: 3px; margin-right: 3px; margin-bottom: 3px; margin-left: 3px; flex-shrink: 0;" />
+                    <engine:VisualElement style="width: 45px; height: 30px; background-color: rgb(178, 104, 104); margin-top: 3px; margin-right: 3px; margin-bottom: 3px; margin-left: 3px; flex-shrink: 0;" />
+                    <engine:VisualElement style="width: 45px; height: 30px; background-color: rgb(178, 104, 104); margin-top: 3px; margin-right: 3px; margin-bottom: 3px; margin-left: 3px; flex-shrink: 0;" />
+                    <engine:VisualElement style="width: 45px; height: 30px; background-color: rgb(178, 104, 104); margin-top: 3px; margin-right: 3px; margin-bottom: 3px; margin-left: 3px; flex-shrink: 0;" />
+                </engine:VisualElement>
+                <engine:VisualElement style="flex-direction: row;">
+                    <engine:VisualElement style="width: 45px; height: 30px; background-color: rgb(178, 104, 104); margin-top: 3px; margin-right: 3px; margin-bottom: 3px; margin-left: 3px; flex-shrink: 0;" />
+                    <engine:VisualElement style="width: 45px; height: 30px; background-color: rgb(178, 104, 104); margin-top: 3px; margin-right: 3px; margin-bottom: 3px; margin-left: 3px; flex-shrink: 0;" />
+                    <engine:VisualElement style="width: 45px; height: 30px; background-color: rgb(178, 104, 104); margin-top: 3px; margin-right: 3px; margin-bottom: 3px; margin-left: 3px; flex-shrink: 0;" />
+                    <engine:VisualElement style="width: 45px; height: 30px; background-color: rgb(178, 104, 104); margin-top: 3px; margin-right: 3px; margin-bottom: 3px; margin-left: 3px; flex-shrink: 0;" />
+                    <engine:VisualElement style="width: 45px; height: 30px; background-color: rgb(178, 104, 104); margin-top: 3px; margin-right: 3px; margin-bottom: 3px; margin-left: 3px; flex-shrink: 0;" />
+                </engine:VisualElement>
+                <engine:VisualElement style="flex-direction: row;">
+                    <engine:VisualElement style="width: 45px; height: 30px; background-color: rgb(178, 104, 104); margin-top: 3px; margin-right: 3px; margin-bottom: 3px; margin-left: 3px; flex-shrink: 0;" />
+                    <engine:VisualElement style="width: 45px; height: 30px; background-color: rgb(178, 104, 104); margin-top: 3px; margin-right: 3px; margin-bottom: 3px; margin-left: 3px; flex-shrink: 0;" />
+                    <engine:VisualElement style="width: 45px; height: 30px; background-color: rgb(178, 104, 104); margin-top: 3px; margin-right: 3px; margin-bottom: 3px; margin-left: 3px; flex-shrink: 0;" />
+                    <engine:VisualElement style="width: 45px; height: 30px; background-color: rgb(178, 104, 104); margin-top: 3px; margin-right: 3px; margin-bottom: 3px; margin-left: 3px; flex-shrink: 0;" />
+                    <engine:VisualElement style="width: 45px; height: 30px; background-color: rgb(178, 104, 104); margin-top: 3px; margin-right: 3px; margin-bottom: 3px; margin-left: 3px; flex-shrink: 0;" />
+                </engine:VisualElement>
+            </engine:VisualElement>
+        </engine:VisualElement>
+    </engine:VisualElement>
+</engine:UXML>

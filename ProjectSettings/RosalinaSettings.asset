@@ -30,3 +30,5 @@ MonoBehaviour:
     _path: Assets/Main/UI/Parts/TileInfoOverlay.uxml
   - _type: 1
     _path: Assets/Main/UI/Parts/TileDetailPanel.uxml
+  - _type: 1
+    _path: Assets/Main/UI/Parts/CharacterInfoPanel.uxml
