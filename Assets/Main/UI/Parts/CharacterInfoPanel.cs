@@ -29,19 +29,19 @@ public partial class CharacterInfoPanel
         imageChara.style.backgroundImage = FaceImageManager.Instance.GetImage(chara);
 
         var isVasal = world.IsVassal(chara);
+        var ruler = world.CountryOf(chara).Ruler;
         RulerImageContainer.style.display = Util.Display(isVasal);
         if (isVasal)
         {
-            var ruler = world.CountryOf(chara).Ruler;
             imageRuler.style.backgroundImage = FaceImageManager.Instance.GetImage(ruler);
 
-            var boss = world.CastleOf(chara).Boss;
-            var isBoss = chara == boss;
-            BossImageContainer.style.display = Util.Display(!isBoss);
-            if (!isBoss)
-            {
-                imageBoss.style.backgroundImage = FaceImageManager.Instance.GetImage(boss);
-            }
+        }
+        var boss = world.CastleOf(chara).Boss;
+        var isBoss = chara == boss;
+        BossImageContainer.style.display = Util.Display(!isBoss && ruler != boss);
+        if (!isBoss)
+        {
+            imageBoss.style.backgroundImage = FaceImageManager.Instance.GetImage(boss);
         }
 
 

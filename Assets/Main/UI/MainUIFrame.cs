@@ -8,6 +8,11 @@ public partial class MainUIFrame
 
     public void Initialize()
     {
+        buttonShowPlayer.clicked += () =>
+        {
+            MainUI.Instance.CharacterInfo.SetData(GameCore.Instance.World.Player, GameCore.Instance.World);
+        };
+
         buttonPlay.clicked += () =>
         {
             GameCore.Instance.TogglePlay();
