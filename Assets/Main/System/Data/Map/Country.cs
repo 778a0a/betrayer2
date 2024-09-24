@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -39,6 +40,12 @@ public class Country
             _ => "領",
         });
     }
+
+    public bool Has(GameMapTile tile)
+    {
+        return Castles.Any(c => c.Position == tile.Position || c.Towns.Any(t => t.Position == tile.Position));
+    }
+
     public CountryRank CountryRank => Castles.Count switch
     {
         >= 20 => CountryRank.Empire,

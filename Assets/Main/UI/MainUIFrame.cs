@@ -88,7 +88,7 @@ public partial class MainUIFrame
         labelPlayerGold.text = $"{player.Gold} ({player.Salary:+#;-#;0})";
         labelPlayerPrestige.text = player.Prestige.ToString();
         labelPlayerContribution.text = player.Contribution.ToString();
-        labelPlayerSoldierCount.text = player.Force.SoldierCount.ToString();
+        labelPlayerSoldierCount.text = player.Soldiers.SoldierCount.ToString();
         labelPlayerActionPoints.text = player.ActionPoints.ToString();
     }
 }

@@ -57,6 +57,6 @@ public partial class CharacterInfoPanel
         labelContribution.text = $"{chara.Contribution}";
         labelLoyalty.text = $"{chara.Loyalty}";
 
-        labelSoldierCount.text = $"{chara.Force.SoldierCount}";
+        labelSoldierCount.text = $"{chara.Soldiers.SoldierCount}";
     }
 }

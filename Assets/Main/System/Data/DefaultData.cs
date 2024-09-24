@@ -225,10 +225,10 @@ public class OldSavedCharacter
             {
                 if (!IsTargetProperty(prop)) continue;
 
-                if (prop.Name.Equals(nameof(global::Character.Force)))
+                if (prop.Name.Equals(nameof(global::Character.Soldiers)))
                 {
                     var sbsub = new StringBuilder();
-                    foreach (var s in chara.Force.Soldiers)
+                    foreach (var s in chara.Soldiers)
                     {
                         if (s.IsEmptySlot)
                         {
@@ -273,35 +273,28 @@ public class OldSavedCharacter
                 continue;
             }
 
-            if (propName.Equals(nameof(global::Character.Force)))
+            if (propName.Equals(nameof(global::Character.Soldiers)))
             {
                 var field = values[j];
                 // 新しい形式の場合
                 if (!field.StartsWith("{"))
                 {
-                    var soldiers = field.Split('|', StringSplitOptions.RemoveEmptyEntries);
-                    var force = new Force
+                    var soldiersRaw = field.Split('|', StringSplitOptions.RemoveEmptyEntries);
+                    var soldiers = new Soldiers(soldiersRaw.Length);
+                    for (int k = 0; k < soldiersRaw.Length; k++)
                     {
-                        Soldiers = new Soldier[soldiers.Length],
-                    };
-                    for (int k = 0; k < soldiers.Length; k++)
-                    {
-                        var soldier = soldiers[k];
-                        if (soldier == EmptySlotMark)
-                        {
-                            force.Soldiers[k] = new Soldier { IsEmptySlot = true };
-                        }
-                        else
+                        var soldier = soldiersRaw[k];
+                        if (soldier != EmptySlotMark)
                         {
                             var values2 = soldier.Split(',');
-                            var s = new Soldier();
+                            var s = soldiers[k];
+                            s.IsEmptySlot = false;
                             s.Level = int.Parse(values2[0]);
                             s.Experience = values2[1] != "" ? int.Parse(values2[1]) : 0;
                             s.HpFloat = values2[2] != "" ? float.Parse(values2[2]) : s.MaxHp;
-                            force.Soldiers[k] = s;
                         }
                     }
-                    character.Force = force;
+                    character.Soldiers = soldiers;
                     continue;
                 }
             }

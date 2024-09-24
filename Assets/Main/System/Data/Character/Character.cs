@@ -70,7 +70,7 @@ public class Character
     /// <summary>
     /// 軍勢
     /// </summary>
-    public Force Force { get; set; }
+    public Soldiers Soldiers { get; set; }
 
     /// <summary>
     /// プレーヤーならtrue
@@ -91,7 +91,7 @@ public class Character
     /// （内部データ）強さ
     /// </summary>
     [JsonIgnore]
-    public int Power => (Attack + Defense + Intelligence) / 3 * Force.Power;
+    public int Power => (Attack + Defense + Intelligence) / 3 * Soldiers.Power;
 
     //public string GetLoyaltyText(WorldData world) => world.IsRuler(this) ? "--" : Loyalty.ToString();
 
@@ -129,7 +129,7 @@ public class Character
     /// <summary>
     /// 食料消費
     /// </summary>
-    public int FoodConsumption => Force.Soldiers.Sum(s => s.MaxHp) / 12;
+    public int FoodConsumption => Soldiers.Sum(s => s.MaxHp) / 12;
 
     /// <summary>
     /// 行動力

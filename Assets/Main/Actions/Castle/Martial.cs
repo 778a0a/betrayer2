@@ -48,14 +48,14 @@ partial class CastleActions
         public override string Description => L["兵士を雇います。"];
 
         public override int Cost(ActionArgs args) => 2;
-        protected override bool CanDoCore(ActionArgs args) => args.Character.Force.HasEmptySlot;
+        protected override bool CanDoCore(ActionArgs args) => args.Character.Soldiers.HasEmptySlot;
 
         public override ValueTask Do(ActionArgs args)
         {
             Assert.IsTrue(CanDo(args));
             var chara = args.Character;
 
-            var targetSlot = chara.Force.Soldiers.First(s => s.IsEmptySlot);
+            var targetSlot = chara.Soldiers.First(s => s.IsEmptySlot);
             targetSlot.IsEmptySlot = false;
             targetSlot.Level = 1;
             targetSlot.Experience = 0;
@@ -81,7 +81,7 @@ partial class CastleActions
         {
             var chara = args.Character;
 
-            var averageLevel = chara.Force.Soldiers.Average(s => s.Level);
+            var averageLevel = chara.Soldiers.Average(s => s.Level);
             return Mathf.Max(1, (int)averageLevel);
         }
 
@@ -90,7 +90,7 @@ partial class CastleActions
             Assert.IsTrue(CanDo(args));
             var chara = args.Character;
 
-            foreach (var soldier in chara.Force.Soldiers)
+            foreach (var soldier in chara.Soldiers)
             {
                 if (soldier.IsEmptySlot) continue;
                 soldier.AddExperience(chara);
