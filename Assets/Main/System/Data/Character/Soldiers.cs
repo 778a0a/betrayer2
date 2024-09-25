@@ -29,6 +29,11 @@ public class Soldiers : IEnumerable<Soldier>
         }
     }
 
+    public Soldiers(IEnumerable<Soldier> soldiers)
+    {
+        SoldierArray = soldiers.ToArray();
+    }
+
 
     public IEnumerator<Soldier> GetEnumerator() => ((IEnumerable<Soldier>)SoldierArray).GetEnumerator();
     System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => SoldierArray.GetEnumerator();

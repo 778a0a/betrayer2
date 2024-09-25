@@ -297,6 +297,13 @@ public class OldSavedCharacter
                     character.Soldiers = soldiers;
                     continue;
                 }
+                else
+                {
+                    var obj = JsonConvert.DeserializeObject(field) as JToken;
+                    var sols = obj["Soldiers"] as JArray;
+                    character.Soldiers = new Soldiers(sols.Select(s => s.ToObject<Soldier>()));
+                    continue;
+                }
             }
 
             // has setter
