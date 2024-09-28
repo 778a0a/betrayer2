@@ -26,14 +26,35 @@ partial class CastleActions
         public override string Label => L["進軍"];
         public override string Description => L["進軍します。"];
 
+        protected override bool CanDoCore(ActionArgs args)
+        {
+            var chara = args.Character;
+            // すでに軍勢を率いている場合は不可。
+            if (World.Forces.Any(f => f.Character == chara))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         public override int Cost(ActionArgs args) => 5;
 
         public override ValueTask Do(ActionArgs args)
         {
             Assert.IsTrue(CanDo(args));
 
-            PayCost(args);
+            var force = new Force
+            {
+                Character = args.Character,
+                Position = args.Castle.Position,
+                Destination = World.Castles.RandomPick().Position
+            };
+            force.Direction = force.Position.GetDirectionTo(force.Destination);
+            World.Forces.Add(force);
 
+
+            PayCost(args);
             return default;
         }
     }

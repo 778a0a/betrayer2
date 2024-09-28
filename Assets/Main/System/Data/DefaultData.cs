@@ -131,6 +131,7 @@ public class DefaultData
             Castles = countries.SelectMany(c => c.Castles).ToArray(),
             Countries = countries.ToArray(),
             Characters = characters.ToArray(),
+            Forces = new(),
         };
         return world;
     }
