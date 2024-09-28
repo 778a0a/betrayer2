@@ -56,7 +56,7 @@ public class MapManager : MonoBehaviour
         // マウスカーソル上にUI要素（メッセージウィンドウなど）がある場合は何もしない。
         if (element != null)
         {
-            Debug.Log($"UI Element: {element}");
+            //Debug.Log($"UI Element: {element}");
             // 必要ならハイライトを消す。
             if (currentMousePosition.IsValid)
             {
@@ -83,9 +83,9 @@ public class MapManager : MonoBehaviour
                 tile.UI.SetCellBorder(true);
                 MainUI.TileInfo.SetData(tile);
 
-                var fmax = GameMapTile.TileFoodMax(tile);
-                var gmax = GameMapTile.TileGoldMax(tile);
-                Debug.Log($"foodmax:{fmax:0000} goldmax:{gmax:0000}");
+                //var fmax = GameMapTile.TileFoodMax(tile);
+                //var gmax = GameMapTile.TileGoldMax(tile);
+                //Debug.Log($"foodmax:{fmax:0000} goldmax:{gmax:0000}");
             }
             else
             {
