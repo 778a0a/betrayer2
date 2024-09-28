@@ -1,7 +1,7 @@
 @import url("unity-theme://default");
 
 * {
-  -unity-font-definition: url("project://database/Assets/NotoSansJP-Regular SDF.asset");
+  -unity-font-definition: url("project://database/Assets/NotoSansJP-Regular SDF-dev.asset");
 }
 
 Label
