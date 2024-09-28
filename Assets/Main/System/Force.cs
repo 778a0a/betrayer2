@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class Force2
+public class Force
 {
     /// <summary>
     /// 軍勢の統率者
