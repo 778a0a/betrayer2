@@ -2,7 +2,7 @@
 /// <summary>
 /// 町
 /// </summary>
-public class Town : ICountryEntity
+public class Town : ICountryEntity, IMapEntity
 {
     /// <summary>
     /// 位置

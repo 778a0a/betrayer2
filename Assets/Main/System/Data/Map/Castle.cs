@@ -6,7 +6,7 @@ using UnityEngine;
 /// <summary>
 /// 拠点
 /// </summary>
-public class Castle : ICountryEntity
+public class Castle : ICountryEntity, IMapEntity
 {
     /// <summary>
     /// 位置

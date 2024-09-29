@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class Force : ICountryEntity
+public class Force : ICountryEntity, IMapEntity
 {
     /// <summary>
     /// 軍勢の所属国
