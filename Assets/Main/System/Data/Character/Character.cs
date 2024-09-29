@@ -14,6 +14,10 @@ public class Character
     public static int SalaryRatioMin = 0;
     public static int SalaryRatioMax = 100;
 
+    [JsonIgnore]
+    private WorldData world;
+    public void AttachWorld(WorldData world) => this.world = world;
+
     /// <summary>
     /// ID
     /// </summary>
@@ -140,10 +144,8 @@ public class Character
     /// 行動不能回復までの残り日数
     /// </summary>
     public int IncapacitatedDaysRemaining { get; set; }
+    [JsonIgnore]
     public bool IsIncapacitated => IncapacitatedDaysRemaining > 0;
-
-    public bool IsMoving(WorldData world) => world.Forces.Any(f => f.Character == this);
-    public bool CanDefend(WorldData world) => !IsMoving(world) && !IsIncapacitated;
 
     /// <summary>
     /// 行動不能状態にします。
@@ -162,43 +164,57 @@ public class Character
         }
     }
 
-    ///// <summary>
-    ///// 地位
-    ///// </summary>
-    //public string GetTitle(WorldData world, LocalizationManager L)
-    //{
-    //    if (world.IsRuler(this))
-    //    {
-    //        var country = world.CountryOf(this);
-    //        return L[country.CountryRank switch
-    //        {
-    //            CountryRank.Empire => "皇帝",
-    //            CountryRank.Kingdom => "王",
-    //            CountryRank.Duchy => "大公",
-    //            _ => "君主",
-    //        }];
-    //    }
-    //    else if (world.IsVassal(this))
-    //    {
-    //        var country = world.CountryOf(this);
-    //        var order = Mathf.Max(country.Vassals.Count, country.VassalCountMax) - country.Vassals.IndexOf(this) - 1;
-    //        return L[new[]
-    //        {
-    //            "従士",
-    //            "従士",
-    //            "士長",
-    //            "将軍",
-    //            "元帥",
-    //            "宰相",
-    //            "総督",
-    //            "副王",
-    //        }[order]];
-    //    }
-    //    else
-    //    {
-    //        return L["浪士"];
-    //    }
-    //}
+    [JsonIgnore]
+    public bool IsMoving => world.Forces.Any(f => f.Character == this);
+    [JsonIgnore]
+    public bool CanDefend => !IsMoving && !IsIncapacitated;
+    [JsonIgnore]
+    public Country Country => world.Countries.FirstOrDefault(c => c.Ruler == this || c.Vassals.Contains(this));
+    [JsonIgnore]
+    public bool IsRuler => Country?.Ruler == this;
+    [JsonIgnore]
+    public bool IsVassal => Country?.Vassals.Contains(this) ?? false;
+    [JsonIgnore]
+    public bool IsFree => Country == null;
+    [JsonIgnore]
+    public bool IsRulerOrVassal => !IsFree;
+
+    /// <summary>
+    /// 地位
+    /// </summary>
+    public string GetTitle(LocalizationManager L)
+    {
+        if (IsRuler)
+        {
+            return L[Country.CountryRank switch
+            {
+                CountryRank.Empire => "皇帝",
+                CountryRank.Kingdom => "王",
+                CountryRank.Duchy => "大公",
+                _ => "君主",
+            }];
+        }
+        else if (IsVassal)
+        {
+            var country = Country;
+            var order = country.Vassals.OrderBy(c => c.Contribution).ToList().IndexOf(this);
+            return L[new[]
+            {
+                "従士",
+                "従士",
+                "士長",
+                "将軍",
+                "元帥",
+                "宰相",
+                "総督",
+                "副王",
+            }[order]];
+        }
+        else
+        {
+            return L["浪士"];
+        }
+    }
 
     public override string ToString() => $"{Name} G:{Gold} P:{Power} (A:{Attack} D:{Defense} I:{Intelligence})";
 }

@@ -28,8 +28,8 @@ public partial class CharacterInfoPanel
 
         imageChara.style.backgroundImage = FaceImageManager.Instance.GetImage(chara);
 
-        var isVasal = world.IsVassal(chara);
-        var ruler = world.CountryOf(chara).Ruler;
+        var isVasal = chara.IsVassal;
+        var ruler = chara.Country.Ruler;
         RulerImageContainer.style.display = Util.Display(isVasal);
         if (isVasal)
         {

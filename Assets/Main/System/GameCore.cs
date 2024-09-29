@@ -112,7 +112,7 @@ public class GameCore
             }
         }
         // 未所属のキャラはランダムに収入を得る。
-        foreach (var chara in World.Characters.Where(World.IsFree))
+        foreach (var chara in World.Characters.Where(c => c.IsFree))
         {
             chara.Gold += UnityEngine.Random.Range(1, 10);
         }
@@ -160,7 +160,7 @@ public class GameCore
             else if (nextTile.Castle != null && force.IsEnemy(nextTile))
             {
                 var castle = nextTile.Castle;
-                var enemy = castle.Members.Where(e => e.CanDefend(World)).RandomPick();
+                var enemy = castle.Members.Where(e => e.CanDefend).RandomPick();
                 var win = enemy == null || 0.5.Chance(); // TODO Battle
                 // 勝った場合
                 if (win)
@@ -168,7 +168,7 @@ public class GameCore
                     // 負けた敵は行動不能状態にする。
                     enemy?.SetIncapacitated();
                     // 防衛可能な敵が残っている場合は、移動進捗を半分リセットする。
-                    if (castle.Members.Any(e => e.CanDefend(World)))
+                    if (castle.Members.Any(e => e.CanDefend))
                     {
                         force.ResetTileMoveProgress(World);
                         force.TileMoveRemainingDays /= 2;
@@ -177,7 +177,7 @@ public class GameCore
                     else
                     {
                         // 駐在キャラの行動不能日数を再セットする。
-                        foreach (var e in castle.Members.Where(e => !e.IsMoving(World)))
+                        foreach (var e in castle.Members.Where(e => !e.IsMoving))
                         {
                             e.SetIncapacitated();
                         }
@@ -246,7 +246,7 @@ public class GameCore
                 args.Character = chara;
 
                 var action = default(ActionBase);
-                if (World.IsFree(chara))
+                if (chara.IsFree)
                 {
                     args.Castle = null;
                     args.Town = null;

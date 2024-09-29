@@ -137,6 +137,10 @@ public class DefaultData
         {
             tile.AttachWorld(world);
         }
+        foreach (var chara in world.Characters)
+        {
+            chara.AttachWorld(world);
+        }
         return world;
     }
 }
