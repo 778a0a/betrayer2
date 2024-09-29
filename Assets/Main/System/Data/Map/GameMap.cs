@@ -85,6 +85,20 @@ public struct MapPosition : IEquatable<MapPosition>
         throw new InvalidOperationException();
     }
 
+    public readonly float DistanceTo(MapPosition pos)
+    {
+        var dx = pos.x - x;
+        var dy = pos.y - y;
+        if (dy % 2 == 0)
+        {
+            return Mathf.Abs(dx) + Mathf.Abs(dy) / 2;
+        }
+        else
+        {
+            return Mathf.Abs(dx) + (Mathf.Abs(dy) - 1) / 2;
+        }
+    }
+
     public readonly Vector3Int Vector3Int => new(x, -y, 0);
 
     public override readonly string ToString() => $"({x}, {y})";

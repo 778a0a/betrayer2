@@ -133,6 +133,10 @@ public class DefaultData
             Characters = characters.ToArray(),
             Forces = new(),
         };
+        foreach (var tile in map.Tiles)
+        {
+            tile.AttachWorld(world);
+        }
         return world;
     }
 }

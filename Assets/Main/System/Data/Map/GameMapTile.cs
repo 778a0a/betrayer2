@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class GameMapTile
+public class GameMapTile : ICountryEntity
 {
-    private GameMap map;
+    private readonly GameMap map;
+    private WorldData world;
+
     public MapPosition Position { get; }
     public HexTile UI { get; }
     public Terrain Terrain { get; }
@@ -24,6 +26,13 @@ public class GameMapTile
         Castle = new Castle() { Position = pos };
         Town = new Town() { Position = pos };
     }
+
+    public void AttachWorld(WorldData world)
+    {
+        this.world = world;
+    }
+
+    public IEnumerable<Force> Forces => world.Forces.Where(f => f.Position == Position);
 
     public GameMapTile[] NeighborArray => Neighbors.ToArray();
     public IEnumerable<GameMapTile> Neighbors

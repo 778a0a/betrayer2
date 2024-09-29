@@ -6,7 +6,7 @@ using UnityEngine;
 /// <summary>
 /// 国
 /// </summary>
-public class Country
+public class Country : ICountryEntity
 {
     /// <summary>
     /// ID
@@ -53,6 +53,8 @@ public class Country
         >= 5 => CountryRank.Duchy,
         _ => CountryRank.Chiefdom,
     };
+
+    Country ICountryEntity.Country => this;
 }
 
 public enum CountryRank

@@ -2,7 +2,7 @@
 /// <summary>
 /// 町
 /// </summary>
-public class Town
+public class Town : ICountryEntity
 {
     /// <summary>
     /// 位置
@@ -13,6 +13,8 @@ public class Town
     /// 町が所属する城
     /// </summary>
     public Castle Castle { get; set; }
+
+    public Country Country => Castle.Country;
 
     /// <summary>
     /// 町が存在するならtrue

@@ -136,6 +136,32 @@ public class Character
     /// </summary>
     public int ActionPoints { get; set; }
 
+    /// <summary>
+    /// 行動不能回復までの残り日数
+    /// </summary>
+    public int IncapacitatedDaysRemaining { get; set; }
+    public bool IsIncapacitated => IncapacitatedDaysRemaining > 0;
+
+    public bool IsMoving(WorldData world) => world.Forces.Any(f => f.Character == this);
+    public bool CanDefend(WorldData world) => !IsMoving(world) && !IsIncapacitated;
+
+    /// <summary>
+    /// 行動不能状態にします。
+    /// </summary>
+    public void SetIncapacitated()
+    {
+        var old = IncapacitatedDaysRemaining;
+        IncapacitatedDaysRemaining = 90;
+        if (old == 0)
+        {
+            Debug.Log($"{Name}は行動不能になりました。");
+        }
+        else
+        {
+            Debug.Log($"{Name}は行動不能状態が延長されました。(prev: {old})");
+        }
+    }
+
     ///// <summary>
     ///// 地位
     ///// </summary>

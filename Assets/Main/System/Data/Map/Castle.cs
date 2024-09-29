@@ -6,7 +6,7 @@ using UnityEngine;
 /// <summary>
 /// 拠点
 /// </summary>
-public class Castle
+public class Castle : ICountryEntity
 {
     /// <summary>
     /// 位置
@@ -21,7 +21,7 @@ public class Castle
     /// <summary>
     /// 所有国
     /// </summary>
-    public Country Country { get; private set; }
+    public Country Country { get; set; }
 
     public Character Boss => Members
         .OrderByDescending(m => m == Country.Ruler ? int.MaxValue : m.Contribution)

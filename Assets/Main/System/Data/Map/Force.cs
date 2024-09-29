@@ -6,8 +6,12 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class Force
+public class Force : ICountryEntity
 {
+    /// <summary>
+    /// 軍勢の所属国
+    /// </summary>
+    public Country Country { get; set; }
     /// <summary>
     /// 軍勢の統率者
     /// </summary>
@@ -29,17 +33,23 @@ public class Force
     public Direction Direction { get; set; }
 
     /// <summary>
-    /// 隣のタイルに移動するのにかかる時間
+    /// 隣のタイルに移動するのにかかる残り日数
     /// </summary>
-    public float TileMoveProgress { get; set; } // 向き毎に持つ方がいいかもしれない。
-
-    public float CalculateMoveCost(WorldData world, GameMapTile current, GameMapTile next)
+    public float TileMoveRemainingDays { get; set; } // 向き毎に持つ方がいいかもしれない。
+    
+    public void ResetTileMoveProgress(WorldData world)
     {
-        var country = world.CountryOf(Character);
+        var tile = world.Map.GetTile(Position);
+        var nextTile = world.Map.GetTile(Destination);
+        TileMoveRemainingDays = CalculateMoveCost(tile, nextTile);
+    }
+
+    public float CalculateMoveCost(GameMapTile current, GameMapTile next)
+    {
         // キャラの攻撃能力に応じて移動コストを補正する。
         var martialAdj = Character.Attack;
         // 自国領の場合は防衛能力との高い方を採用する。
-        if (country.Has(current) || country.Has(next))
+        if (Country.Has(current) || Country.Has(next))
         {
             martialAdj = Mathf.Max(martialAdj, Character.Defense);
         }
