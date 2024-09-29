@@ -76,7 +76,7 @@ public class GameCore
             OnIncome();
         }
 
-        OnForceMove();
+        World.Forces.OnForceMove(this);
 
         await OnCharacterMove(player);
 
@@ -127,102 +127,6 @@ public class GameCore
         if (MainUI.TileDetail.IsVisible)
         {
             MainUI.TileDetail.SetData(MainUI.TileDetail.CurrentData);
-        }
-    }
-
-    /// <summary>
-    /// 軍勢の移動処理を行う。
-    /// </summary>
-    private void OnForceMove()
-    {
-        foreach (var force in World.Forces)
-        {
-            // 移動の必要がないなら何もしない。
-            if (force.Destination == force.Position) continue;
-
-            // タイル移動進捗を進める。
-            force.TileMoveRemainingDays--;
-            // 移動進捗が残っている場合は何もしない。
-            if (force.TileMoveRemainingDays > 0) continue;
-            
-            // 移動値が溜まったら隣のタイルに移動する。
-            var nextPos = force.Position.To(force.Direction);
-            var nextTile = World.Map.GetTile(nextPos);
-
-            // 移動先に自国以外の軍勢がいる場合は戦闘を行う。
-            var nextEnemies = nextTile.Forces.Where(f => f.IsEnemy(force)).ToArray();
-            if (nextEnemies.Length > 0)
-            {
-                var enemy = nextEnemies.RandomPick();
-                var win = 0.5.Chance(); // TODO Battle
-            }
-            // 移動先が自国以外の城の場合は駐在中のキャラと戦闘を行う。
-            else if (nextTile.Castle != null && force.IsEnemy(nextTile))
-            {
-                var castle = nextTile.Castle;
-                var enemy = castle.Members.Where(e => e.CanDefend).RandomPick();
-                var win = enemy == null || 0.5.Chance(); // TODO Battle
-                // 勝った場合
-                if (win)
-                {
-                    // 負けた敵は行動不能状態にする。
-                    enemy?.SetIncapacitated();
-                    // 防衛可能な敵が残っている場合は、移動進捗を半分リセットする。
-                    if (castle.Members.Any(e => e.CanDefend))
-                    {
-                        force.ResetTileMoveProgress(World);
-                        force.TileMoveRemainingDays /= 2;
-                    }
-                    // 全滅した場合は城を占領する。
-                    else
-                    {
-                        // 駐在キャラの行動不能日数を再セットする。
-                        foreach (var e in castle.Members.Where(e => !e.IsMoving))
-                        {
-                            e.SetIncapacitated();
-                        }
-
-                        // 城の所有国を変更する。
-                        var oldCountry = castle.Country;
-                        oldCountry.Castles.Remove(castle);
-                        // 全ての城を失った場合は国を消滅させる。
-                        if (oldCountry.Castles.Count == 0)
-                        {
-                            World.Countries.Remove(oldCountry);
-                            World.Forces.RemoveAll(f => f.Country == oldCountry);
-                            castle.Members.Clear();
-                            // TODO 他に必要な処理が色々ありそう。
-                        }
-                        // まだ他の城がある場合は、一番近くの城に所属を移動する。
-                        else
-                        {
-                            var nearEnemyCastle = oldCountry.Castles
-                                .OrderBy(c => c.Position.GetDirectionTo(force.Position))
-                                .FirstOrDefault();
-                            foreach (var e in castle.Members)
-                            {
-                                nearEnemyCastle.Members.Add(e);
-                            }
-                            castle.Members.Clear();
-                        }
-
-                        castle.Country = force.Country;
-                        force.Country.Castles.Add(castle);
-
-                        // 城の隣接タイルにいて、城が目的地で、進捗が半分以上のキャラは城に入る。
-                        // TODO
-                    }
-                }
-                // 負けた場合は本拠地へ撤退を始める。
-                else
-                {
-                    var home = World.CastleOf(force.Character);
-                    force.Destination = home.Position;
-                    force.Direction = force.Position.GetDirectionTo(home.Position);
-                    force.ResetTileMoveProgress(World);
-                }
-
-            }
         }
     }
 

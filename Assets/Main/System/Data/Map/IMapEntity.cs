@@ -12,7 +12,7 @@ public interface IMapEntity
 
 public static class MapEntityExtensions
 {
-    public static Direction GetDirectionTo(this IMapEntity self, IMapEntity target)
+    public static Direction DirectionTo(this IMapEntity self, IMapEntity target)
     {
         var x = self.Position.x;
         var y = self.Position.y;

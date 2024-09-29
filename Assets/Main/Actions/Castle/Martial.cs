@@ -30,7 +30,7 @@ partial class CastleActions
         {
             var chara = args.Character;
             // すでに軍勢を率いている場合は不可。
-            if (World.Forces.Any(f => f.Character == chara))
+            if (chara.IsMoving)
             {
                 return false;
             }
@@ -44,15 +44,15 @@ partial class CastleActions
         {
             Assert.IsTrue(CanDo(args));
 
-            var force = new Force
-            {
-                Character = args.Character,
-                Position = args.Castle.Position,
-                Destination = World.Castles.RandomPick().Position
-            };
-            force.Direction = force.Position.GetDirectionTo(force.Destination);
-            World.Forces.Add(force);
+            var force = new Force(World, args.Character, args.Castle.Position);
 
+            var nears = World.Castles
+                .OrderBy(c => c.DistanceTo(args.Castle))
+                .Take(3)
+                .ToArray();
+
+            force.SetDestination(nears.RandomPick());
+            World.Forces.Register(force);
 
             PayCost(args);
             return default;

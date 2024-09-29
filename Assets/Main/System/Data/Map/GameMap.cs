@@ -33,9 +33,9 @@ public class GameMap
 
     public bool IsValid(MapPosition pos) => tiles.ContainsKey(pos);
     public IEnumerable<GameMapTile> Tiles => tiles.Values;
-    public GameMapTile GetTile(MapPosition pos)
+    public GameMapTile GetTile(IMapEntity entity)
     {
-        tiles.TryGetValue(pos, out var tile);
+        tiles.TryGetValue(entity.Position, out var tile);
         return tile;
     }
 }

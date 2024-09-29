@@ -8,6 +8,18 @@ using UnityEngine.Tilemaps;
 
 public class Force : ICountryEntity, IMapEntity
 {
+    public Force(WorldData world, Character character, MapPosition position)
+    {
+        this.world = world;
+        Character = character;
+        Country = character.Country;
+        Position = position;
+        Destination = position;
+        Direction = Direction.Right;
+    }
+
+    private WorldData world;
+
     /// <summary>
     /// 軍勢の所属国
     /// </summary>
@@ -20,35 +32,62 @@ public class Force : ICountryEntity, IMapEntity
     /// <summary>
     /// 軍勢の位置
     /// </summary>
-    public MapPosition Position { get; set; }
+    public MapPosition Position { get; private set; }
 
     /// <summary>
     /// 軍勢の目的地
     /// </summary>
-    public MapPosition Destination { get; set; }
+    public IMapEntity Destination { get; private set; }
 
     /// <summary>
     /// 軍勢の向き
     /// </summary>
-    public Direction Direction { get; set; }
+    public Direction Direction { get; private set; }
 
     /// <summary>
     /// 隣のタイルに移動するのにかかる残り日数
     /// </summary>
-    public float TileMoveRemainingDays { get; set; } // 向き毎に持つ方がいいかもしれない。
-    
-    public void ResetTileMoveProgress(WorldData world)
+    public float TileMoveRemainingDays { get; set; }
+
+    public void UpdatePosition(MapPosition pos)
     {
-        var tile = world.Map.GetTile(Position);
-        var nextTile = world.Map.GetTile(Destination);
-        TileMoveRemainingDays = CalculateMoveCost(tile, nextTile);
+        Position = pos;
     }
 
-    public float CalculateMoveCost(GameMapTile current, GameMapTile next)
+    /// <summary>
+    /// 目的地を設定します。
+    /// </summary>
+    /// <param name="destination"></param>
+    public void SetDestination(IMapEntity destination)
+    {
+        var prevDestination = Destination;
+        var prevDirection = Direction;
+        Destination = destination;
+        Direction = Position.DirectionTo(destination);
+        // 目的地が変わった場合は移動日数をリセットする
+        if (prevDestination.Position == Position || prevDirection != Direction)
+        {
+            ResetTileMoveProgress();
+        }
+    }
+
+    public void ResetTileMoveProgress()
+    {
+        if (Destination.Position == Position)
+        {
+            TileMoveRemainingDays = 0;
+            return;
+        }
+        TileMoveRemainingDays = CalculateMoveCost(Position.To(Direction));
+    }
+
+    public float CalculateMoveCost(MapPosition nextPos)
     {
         // キャラの攻撃能力に応じて移動コストを補正する。
         var martialAdj = Character.Attack;
         // 自国領の場合は防衛能力との高い方を採用する。
+        var current = world.Map.GetTile(Position);
+        var next = world.Map.GetTile(nextPos);
         if (Country.Has(current) || Country.Has(next))
         {
             martialAdj = Mathf.Max(martialAdj, Character.Defense);
@@ -60,6 +99,11 @@ public class Force : ICountryEntity, IMapEntity
         var currentCost = tileMoveCost[current.Terrain];
         var nextCost = tileMoveCost[next.Terrain];
         return (currentCost + nextCost) * martialAdjRate;
+    }
+
+    public override string ToString()
+    {
+        return $"軍勢({Character.Name} at {Position} -> {Destination} ({TileMoveRemainingDays}))";
     }
 
     // タイルの移動にかかる日数
