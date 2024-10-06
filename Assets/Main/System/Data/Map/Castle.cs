@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 using UnityEngine;
 
 /// <summary>
@@ -8,6 +9,8 @@ using UnityEngine;
 /// </summary>
 public class Castle : ICountryEntity, IMapEntity
 {
+    public int Id { get; set; }
+
     /// <summary>
     /// 位置
     /// </summary>
@@ -16,13 +19,16 @@ public class Castle : ICountryEntity, IMapEntity
     /// <summary>
     /// 城が存在するならtrue
     /// </summary>
+    [JsonIgnore]
     public bool Exists { get; set; }
 
     /// <summary>
     /// 所有国
     /// </summary>
+    [JsonIgnore]
     public Country Country { get; set; }
 
+    [JsonIgnore]
     public Character Boss => Members
         .OrderByDescending(m => m == Country.Ruler ? int.MaxValue : m.Contribution)
         .First();
@@ -30,11 +36,13 @@ public class Castle : ICountryEntity, IMapEntity
     /// <summary>
     /// 所属メンバー
     /// </summary>
+    [JsonIgnore]
     public List<Character> Members { get; } = new();
 
     /// <summary>
     /// 町
     /// </summary>
+    [JsonIgnore]
     public List<Town> Towns { get; } = new();
 
     /// <summary>
@@ -47,14 +55,19 @@ public class Castle : ICountryEntity, IMapEntity
     /// 金
     /// </summary>
     public float Gold { get; set; }
+    [JsonIgnore]
     public float GoldIncome => Towns.Sum(t => t.GoldIncome);
+    [JsonIgnore]
     public float GoldIncomeMax => Towns.Sum(t => t.GoldIncomeMax);
+    [JsonIgnore]
     public float GoldBalance => GoldIncome - Members.Sum(m => m.Salary);
     /// <summary>
     /// 食料
     /// </summary>
     public float Food { get; set; }
+    [JsonIgnore]
     public float FoodIncome => Towns.Sum(t => t.FoodIncome);
+    [JsonIgnore]
     public float FoodIncomeMax => Towns.Sum(t => t.FoodIncomeMax);
     /// <summary>
     /// 食料残り月数

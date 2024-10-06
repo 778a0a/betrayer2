@@ -12,8 +12,8 @@ public class GameMapTile : ICountryEntity, IMapEntity
     public HexTile UI { get; }
     public Terrain Terrain { get; }
 
-    public Castle Castle { get; }
-    public Town Town { get; }
+    public Castle Castle { get; set; }
+    public Town Town { get; set; }
     public Country Country => (Town.Castle ?? Castle).Country;
 
     public GameMapTile(GameMap map, MapPosition pos, HexTile ui, Terrain terrain)
@@ -23,8 +23,8 @@ public class GameMapTile : ICountryEntity, IMapEntity
         UI = ui;
         Terrain = terrain;
 
-        Castle = new Castle() { Position = pos };
-        Town = new Town() { Position = pos };
+        Castle = new Castle() { Position = pos, Exists = false };
+        Town = new Town() { Position = pos, Exists = false };
     }
 
     public void AttachWorld(WorldData world)

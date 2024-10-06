@@ -1,4 +1,6 @@
 ﻿
+using Newtonsoft.Json;
+
 /// <summary>
 /// 町
 /// </summary>
@@ -12,24 +14,29 @@ public class Town : ICountryEntity, IMapEntity
     /// <summary>
     /// 町が所属する城
     /// </summary>
+    [JsonIgnore]
     public Castle Castle { get; set; }
 
+    [JsonIgnore]
     public Country Country => Castle.Country;
 
     /// <summary>
     /// 町が存在するならtrue
     /// </summary>
-    public bool Exists { get; set; }
+    [JsonIgnore]
+    public bool Exists { get; set; } = true;
 
     /// <summary>
     /// 食料生産
     /// </summary>
     public float FoodIncome { get; set; }
+    [JsonIgnore]
     public float FoodIncomeMax { get; set; }
 
     /// <summary>
     /// 商業
     /// </summary>
     public float GoldIncome { get; set; }
+    [JsonIgnore]
     public float GoldIncomeMax { get; set; }
 }
