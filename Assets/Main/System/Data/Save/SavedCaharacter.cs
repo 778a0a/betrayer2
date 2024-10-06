@@ -11,6 +11,7 @@ public class SavedCharacter
 {
     public int CountryId { get; set; }
     public int MemberOrderIndex { get; set; }
+    public int CastleId { get; set; }
     public Character Character { get; set; }
 
     public bool IsRuler => !IsFree && MemberOrderIndex == 0;
@@ -32,6 +33,7 @@ public static class SavedCharacters
                 Character = character,
                 CountryId = country != null ? country.Id : -1,
                 MemberOrderIndex = memberIndex,
+                CastleId = world.CastleOf(character)?.Id ?? -1,
             };
             charas.Add(chara);
         }
@@ -56,6 +58,7 @@ public static class SavedCharacters
         // ヘッダー
         sb.Append(nameof(SavedCharacter.CountryId)).Append(delimiter);
         sb.Append(nameof(SavedCharacter.MemberOrderIndex)).Append(delimiter);
+        sb.Append(nameof(SavedCharacter.CastleId)).Append(delimiter);
         foreach (JProperty prop in list[0][nameof(Character)])
         {
             if (!IsTargetProperty(prop)) continue;
@@ -71,6 +74,7 @@ public static class SavedCharacters
 
             sb.Append(obj[nameof(SavedCharacter.CountryId)]).Append(delimiter);
             sb.Append(obj[nameof(SavedCharacter.MemberOrderIndex)]).Append(delimiter);
+            sb.Append(obj[nameof(SavedCharacter.CastleId)]).Append(delimiter);
             foreach (JProperty prop in obj[nameof(Character)])
             {
                 if (!IsTargetProperty(prop)) continue;
@@ -127,10 +131,11 @@ public static class SavedCharacters
             {
                 CountryId = int.Parse(values[0]),
                 MemberOrderIndex = int.Parse(values[1]),
+                CastleId = int.Parse(values[2]),
             };
             var character = new Character();
             var characterType = character.GetType();
-            for (int j = 2; j < header.Length; j++)
+            for (int j = 3; j < header.Length; j++)
             {
                 var propName = header[j];
                 var prop = characterType.GetProperty(propName);

@@ -17,7 +17,7 @@ public class Testing2
 
         var charas = SavedCharacters.FromWorld(world);
         var csv = SavedCharacters.ToCsv(charas) + Environment.NewLine;
-        File.WriteAllText("Assets/Resources/Scenarios/01/character_data2.csv", csv, Encoding.UTF8);
+        File.WriteAllText("Assets/Resources/Scenarios/01/character_data.csv", csv, Encoding.UTF8);
         Debug.Log(csv);
     }
 }

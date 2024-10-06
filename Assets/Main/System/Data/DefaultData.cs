@@ -53,7 +53,12 @@ public class DefaultData
             {
                 country.Ruler = chara.Character;
             }
-            country.Castles.RandomPick().Members.Add(chara.Character);
+
+            if (chara.CastleId != -1)
+            {
+                var tile = map.GetTile(castles.Find(c => c.Data.Id == chara.CastleId).Data.Position);
+                tile.Castle.Members.Add(chara.Character);
+            }
         }
 
         var world = new WorldData
