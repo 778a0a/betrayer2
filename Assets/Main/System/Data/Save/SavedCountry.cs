@@ -7,6 +7,27 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
 
+public class SavedCountry
+{
+    public Country Data { get; set; }
+    public string Memo { get; set; }
+
+    public static SavedCountry ParseCsvRow(string[] header, string line)
+    {
+        var values = line.Split('\t');
+        var country = new SavedCountry
+        {
+            Data = new Country()
+            {
+                Id = int.Parse(values[0]),
+                ColorIndex = int.Parse(values[1]),
+            },
+            Memo = values[2],
+        };
+        return country;
+    }
+}
+
 public static class SavedCountries
 {
     public static List<SavedCountry> FromWorld(WorldData world)
@@ -19,24 +40,6 @@ public static class SavedCountries
             countries.Add(country);
         }
         return countries;
-    }
-
-    public static List<SavedCountry> FromCsv(string csv)
-    {
-        var lines = csv.Trim().Split('\n');
-        var header = lines[0].Trim().Split('\t');
-        var charas = new List<SavedCountry>();
-        for (int i = 1; i < lines.Length; i++)
-        {
-            var line = lines[i].Trim();
-            if (string.IsNullOrEmpty(line))
-            {
-                continue;
-            }
-            var chara = SavedCountry.ParseCsvRow(header, line);
-            charas.Add(chara);
-        }
-        return charas;
     }
 
     public static string ToCsv(List<SavedCountry> countries)
@@ -61,25 +64,22 @@ public static class SavedCountries
         }
         return sb.ToString().TrimEnd();
     }
-}
 
-public class SavedCountry
-{
-    public Country Data { get; set; }
-    public string Memo { get; set; }
-
-    public static SavedCountry ParseCsvRow(string[] header, string line)
+    public static List<SavedCountry> FromCsv(string csv)
     {
-        var values = line.Split('\t');
-        var country = new SavedCountry
+        var lines = csv.Trim().Split('\n');
+        var header = lines[0].Trim().Split('\t');
+        var charas = new List<SavedCountry>();
+        for (int i = 1; i < lines.Length; i++)
         {
-            Data = new Country()
+            var line = lines[i].Trim();
+            if (string.IsNullOrEmpty(line))
             {
-                Id = int.Parse(values[0]),
-                ColorIndex = int.Parse(values[1]),
-            },
-            Memo = values[2],
-        };
-        return country;
+                continue;
+            }
+            var chara = SavedCountry.ParseCsvRow(header, line);
+            charas.Add(chara);
+        }
+        return charas;
     }
 }
