@@ -13,18 +13,22 @@ public class HexTile : MonoBehaviour
         public int order;
         public float width;
     }
-    private readonly Props defaultProps = new()
+    private static readonly Props defaultProps = new()
     {
         color = Color.gray,
         order = 40,
         width = 0.025f,
     };
-    private readonly Props highlightProps = new()
+    private static readonly Props highlightProps = new()
     {
         color = Color.yellow,
         order = 41,
         width = 0.05f,
     };
+
+    [SerializeField] private SpriteRenderer castleSprite;
+    [SerializeField] private SpriteRenderer townSprite;
+    [SerializeField] private SpriteRenderer countryFlagSprite;
 
     private void Awake()
     {
@@ -45,6 +49,22 @@ public class HexTile : MonoBehaviour
         Width = PropsOn(highlight).width;
         Color = PropsOn(highlight).color;
         lineRenderer.sortingOrder = PropsOn(highlight).order;
+    }
+
+    public void SetCastle(bool exists)
+    {
+        castleSprite.enabled = exists;
+    }
+
+    public void SetTown(bool exists)
+    {
+        townSprite.enabled = exists;
+    }
+
+    public void SetCountryFlag(Sprite sprite)
+    {
+        countryFlagSprite.enabled = sprite != null;
+        countryFlagSprite.sprite = sprite;
     }
 
     public Color Color

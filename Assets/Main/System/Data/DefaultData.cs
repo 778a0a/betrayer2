@@ -31,11 +31,12 @@ public class DefaultData
             tile.Castle.Country.Castles.Add(tile.Castle);
             foreach (var town in castle.Towns)
             {
-                tile.Town = town;
-                tile.Town.Castle = tile.Castle;
-                tile.Town.FoodIncomeMax = GameMapTile.TileFoodMax(tile);
-                tile.Town.GoldIncomeMax = GameMapTile.TileGoldMax(tile);
-                tile.Castle.AddTown(tile.Town);
+                var townTile = map.GetTile(town.Position);
+                townTile.Town = town;
+                townTile.Town.Castle = tile.Castle;
+                townTile.Town.FoodIncomeMax = GameMapTile.TileFoodMax(townTile);
+                townTile.Town.GoldIncomeMax = GameMapTile.TileGoldMax(townTile);
+                tile.Castle.AddTown(townTile.Town);
             }
         }
 
@@ -75,6 +76,10 @@ public class DefaultData
         foreach (var chara in world.Characters)
         {
             chara.AttachWorld(world);
+        }
+        foreach (var tile in map.Tiles)
+        {
+            tile.Refresh();
         }
         return world;
     }

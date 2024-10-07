@@ -14,7 +14,7 @@ public class GameMapTile : ICountryEntity, IMapEntity
 
     public Castle Castle { get; set; }
     public Town Town { get; set; }
-    public Country Country => (Town.Castle ?? Castle).Country;
+    public Country Country => (Town.Castle ?? Castle)?.Country;
 
     public GameMapTile(GameMap map, MapPosition pos, HexTile ui, Terrain terrain)
     {
@@ -31,6 +31,15 @@ public class GameMapTile : ICountryEntity, IMapEntity
     {
         this.world = world;
     }
+
+    public void Refresh()
+    {
+        UI.SetCellBorder(false);
+        UI.SetCastle(Castle.Exists);
+        UI.SetTown(!Castle.Exists && Town.Exists);
+        UI.SetCountryFlag(Country?.Sprite);
+    }
+
 
     public IEnumerable<Force> Forces => world.Forces.Where(f => f.Position == Position);
 

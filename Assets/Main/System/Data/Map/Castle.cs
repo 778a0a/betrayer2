@@ -20,7 +20,7 @@ public class Castle : ICountryEntity, IMapEntity
     /// 城が存在するならtrue
     /// </summary>
     [JsonIgnore]
-    public bool Exists { get; set; }
+    public bool Exists { get; set; } = true;
 
     /// <summary>
     /// 所有国
