@@ -31,7 +31,7 @@ public class Castle : ICountryEntity, IMapEntity
     [JsonIgnore]
     public Character Boss => Members
         .OrderByDescending(m => m == Country.Ruler ? int.MaxValue : m.Contribution)
-        .First();
+        .FirstOrDefault();
 
     /// <summary>
     /// 所属メンバー

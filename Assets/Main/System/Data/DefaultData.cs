@@ -68,6 +68,7 @@ public class DefaultData
             Countries = countries.ToArray(),
             Characters = characters.ToArray(),
             Forces = new(),
+            Map = map,
         };
         foreach (var tile in map.Tiles)
         {

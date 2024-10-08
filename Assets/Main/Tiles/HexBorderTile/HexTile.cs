@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 
+[ExecuteAlways]
 public class HexTile : MonoBehaviour
 {
     private LineRenderer lineRenderer;
