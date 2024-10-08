@@ -21,13 +21,17 @@ public class TileInfoEditorWindow : EditorWindow
 
     void OnEnable()
     {
-        var map = FindFirstObjectByType<MapManager>();
-        map.GetType().GetMethod("Awake", BindingFlags.NonPublic | BindingFlags.Instance).Invoke(map, null);
-        world = DefaultData.Create(map.Map);
-
+        LoadWorld();
         grid = FindFirstObjectByType<Grid>();
 
         SceneView.duringSceneGui += DuringSceneGUI;
+    }
+
+    private void LoadWorld()
+    {
+        var map = FindFirstObjectByType<MapManager>();
+        map.GetType().GetMethod("Awake", BindingFlags.NonPublic | BindingFlags.Instance).Invoke(map, null);
+        world = DefaultData.Create(map.Map);
     }
 
     void OnDisable()
@@ -58,13 +62,36 @@ public class TileInfoEditorWindow : EditorWindow
 
     void OnGUI()
     {
+        // 特定のキーが押されたらロック状態をトグルする。
+        if (Event.current.type == EventType.KeyDown && Event.current.keyCode == KeyCode.F1)
+        {
+            Debug.Log("Toggle Lock");
+            isLocked = !isLocked;
+            GUI.FocusControl(null);
+            Repaint();
+        }
+
         if (targetTile == null) return;
 
         // 横並び
         // 左詰め
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.LabelField($"座標: {targetTile.Position}", GUILayout.Width(80));
-        EditorGUILayout.LabelField($"地形: {targetTile.Terrain}");
+        EditorGUILayout.LabelField($"地形: {targetTile.Terrain}", GUILayout.Width(80));
+        if (GUILayout.Button("再読み込み", GUILayout.Width(80)))
+        {
+            LoadWorld();
+        }
+        GUILayout.Label("ロック: " + isLocked, GUILayout.Width(100));
+        if (GUILayout.Button("ロックトグル", GUILayout.Width(100)))
+        {
+            isLocked = !isLocked;
+        }
+        if (GUILayout.Button("保存"))
+        {
+            Debug.Log("保存します。");
+            // TODO
+        }
         EditorGUILayout.EndHorizontal();
         
         var hasCountry = targetCountry != null;
@@ -101,9 +128,21 @@ public class TileInfoEditorWindow : EditorWindow
                 {
                     EditorGUILayout.LabelField($"・{chara.Name}");
                 }
-                EditorGUILayout.LabelField($"Strength: {castle.Strength} / {castle.StrengthMax}");
-                EditorGUILayout.LabelField($"Gold: {castle.Gold} ({castle.GoldBalance:+0;-#}) {castle.GoldIncome} / {castle.GoldIncomeMax}");
-                EditorGUILayout.LabelField($"Food: {castle.Food} {castle.FoodIncome} / {castle.FoodIncomeMax}");
+
+                EditorGUILayout.BeginHorizontal();
+                castle.Strength = EditorGUILayout.FloatField("Strength", castle.Strength);
+                castle.StrengthMax = EditorGUILayout.FloatField("Max", castle.StrengthMax);
+                EditorGUILayout.EndHorizontal();
+
+                EditorGUILayout.BeginHorizontal();
+                castle.Gold = EditorGUILayout.FloatField("Gold", castle.Gold);
+                EditorGUILayout.LabelField($"{castle.GoldIncome} / {castle.GoldIncomeMax} ({castle.GoldBalance:+0;-#})");
+                EditorGUILayout.EndHorizontal();
+                
+                EditorGUILayout.BeginHorizontal();
+                castle.Food = EditorGUILayout.FloatField("Food", castle.Food);
+                EditorGUILayout.LabelField($"{castle.FoodIncome} / {castle.FoodIncomeMax}");
+                EditorGUILayout.EndHorizontal();
             }
 
             // 町情報
@@ -115,8 +154,16 @@ public class TileInfoEditorWindow : EditorWindow
                 EditorGUILayout.LabelField($"町情報 (所属城ID: {town.Castle.Id})", EditorStyles.boldLabel);
 
                 EditorGUILayout.LabelField($"城主: {town.Castle.Boss?.Name ?? ""}");
-                EditorGUILayout.LabelField($"食料: {town.FoodIncome} / {town.FoodIncomeMax}");
-                EditorGUILayout.LabelField($"金: {town.GoldIncome} / {town.GoldIncomeMax}");
+
+                EditorGUILayout.BeginHorizontal();
+                town.GoldIncome = EditorGUILayout.FloatField("GoldIncome", town.GoldIncome);
+                town.GoldIncomeMax = EditorGUILayout.FloatField("Max", town.GoldIncomeMax);
+                EditorGUILayout.EndHorizontal();
+
+                EditorGUILayout.BeginHorizontal();
+                town.FoodIncome = EditorGUILayout.FloatField("FoodIncome", town.FoodIncome);
+                town.FoodIncomeMax = EditorGUILayout.FloatField("Max", town.FoodIncomeMax);
+                EditorGUILayout.EndHorizontal();
             }
 
         }
