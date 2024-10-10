@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -83,5 +84,20 @@ public class DefaultData
             tile.Refresh();
         }
         return world;
+    }
+
+    public static void SaveToResources(WorldData world)
+    {
+        var countries = SavedCountries.FromWorld(world);
+        var castles = SavedCastles.FromWorld(world);
+        var characters = SavedCharacters.FromWorld(world);
+
+        var countryCsv = SavedCountries.ToCsv(countries);
+        var castleCsv = SavedCastles.ToCsv(castles);
+        var charaCsv = SavedCharacters.ToCsv(characters);
+
+        File.WriteAllText("Assets/Resources/Scenarios/01/country_data.csv", countryCsv, Encoding.UTF8);
+        File.WriteAllText("Assets/Resources/Scenarios/01/castle_data.csv", castleCsv, Encoding.UTF8);
+        File.WriteAllText("Assets/Resources/Scenarios/01/character_data.csv", charaCsv, Encoding.UTF8);
     }
 }
