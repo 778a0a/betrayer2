@@ -27,7 +27,10 @@ public static class SavedCharacters
         {
             var character = world.Characters[i];
             var country = world.Countries.FirstOrDefault(c => c.Members.Contains(character));
-            var memberIndex = country?.Members.TakeWhile(c => c != character).Count() ?? -1;
+            var memberIndex =
+                country == null ? -1 :
+                country.Ruler == character ? 0 :
+                country.Members.Except(new[] { country.Ruler }).OrderByDescending(m => m.Contribution).ToList().IndexOf(character) + 1;
             var chara = new SavedCharacter
             {
                 Character = character,
