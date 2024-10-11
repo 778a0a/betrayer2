@@ -60,6 +60,17 @@ public class TileInfoEditorWindow : EditorWindow
         }
     }
 
+    private void Save()
+    {
+        Debug.Log("保存します。");
+        DefaultData.SaveToResources(world);
+    }
+
+
+    private int countryIdForNewCastle;
+    private int castleIdForNewCastle;
+    private int castleIdForNewTown;
+
     void OnGUI()
     {
         // 特定のキーが押されたらロック状態をトグルする。
@@ -76,8 +87,8 @@ public class TileInfoEditorWindow : EditorWindow
         // 横並び
         // 左詰め
         EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField($"座標: {targetTile.Position}", GUILayout.Width(80));
-        EditorGUILayout.LabelField($"地形: {targetTile.Terrain}", GUILayout.Width(80));
+        GUILayout.Label($"座標: {targetTile.Position}", GUILayout.Width(80));
+        GUILayout.Label($"地形: {targetTile.Terrain}", GUILayout.Width(80));
         if (GUILayout.Button("再読み込み", GUILayout.Width(80)))
         {
             LoadWorld();
@@ -89,8 +100,8 @@ public class TileInfoEditorWindow : EditorWindow
         }
         if (GUILayout.Button("保存"))
         {
-            Debug.Log("保存します。");
-            // TODO
+            Save();
+            LoadWorld();
         }
         EditorGUILayout.EndHorizontal();
         
@@ -99,73 +110,158 @@ public class TileInfoEditorWindow : EditorWindow
         {
             EditorGUILayout.BeginHorizontal();
             var ruler = targetCountry.Ruler;
-            if (targetTile.Castle.Exists) EditorGUILayout.LabelField($"城あり", GUILayout.Width(50));
-            if (targetTile.Town.Exists) EditorGUILayout.LabelField($"町あり", GUILayout.Width(50));
+            if (targetTile.Castle.Exists) GUILayout.Label($"城あり", GUILayout.Width(50));
+            if (targetTile.Town.Exists) GUILayout.Label($"町あり", GUILayout.Width(50));
             EditorGUILayout.EndHorizontal();
 
-            EditorGUILayout.LabelField($"君主: {ruler.Name ?? ""}", GUILayout.Width(100));
+            GUILayout.Label($"君主: {ruler.Name} 国ID: {targetCountry.Id}");
             var rulerImage = FaceImageManager.Instance.GetImage(ruler);
             GUILayout.Box(rulerImage, new GUIStyle() { fixedWidth = 100, fixedHeight = 100, margin = new(5, 5, 0, 0) });
+        }
 
-            // 城情報
-            if (targetTile.Castle.Exists)
+        // 城情報
+        if (targetTile.Castle.Exists)
+        {
+            var castle = targetTile.Castle;
+            // ヘッダー
+            EditorGUILayout.Space();
+            GUILayout.Label($"城情報 (ID: {castle.Id})", EditorStyles.boldLabel);
+
+
+            GUILayout.Label($"城主: {castle.Boss?.Name ?? ""}");
+            if (castle.Boss != null)
             {
-                var castle = targetTile.Castle;
-                // ヘッダー
-                EditorGUILayout.Space();
-                EditorGUILayout.LabelField($"城情報 (ID: {castle.Id})", EditorStyles.boldLabel);
+                var bossImage = FaceImageManager.Instance.GetImage(targetTile.Castle.Boss);
+                GUILayout.Box(bossImage, new GUIStyle() { fixedWidth = 100, fixedHeight = 100, margin = new(5, 5, 0, 0) });
+            }
 
+            GUILayout.Label($"配下数: {Mathf.Max(0, castle.Members.Count - 1)}");
+            foreach (var chara in castle.Members.Except(new[] { castle.Boss }))
+            {
+                GUILayout.Label($"・{chara.Name}");
+            }
 
-                EditorGUILayout.LabelField($"城主: {castle.Boss?.Name ?? ""}");
-                if (castle.Boss != null)
-                {
-                    var bossImage = FaceImageManager.Instance.GetImage(targetTile.Castle.Boss);
-                    GUILayout.Box(bossImage, new GUIStyle() { fixedWidth = 100, fixedHeight = 100, margin = new(5, 5, 0, 0) });
-                }
+            EditorGUILayout.BeginHorizontal();
+            castle.Strength = EditorGUILayout.FloatField("Strength", castle.Strength);
+            castle.StrengthMax = EditorGUILayout.FloatField("Max", castle.StrengthMax);
+            EditorGUILayout.EndHorizontal();
 
-                EditorGUILayout.LabelField($"配下数: {Mathf.Max(0, castle.Members.Count - 1)}");
-                foreach (var chara in castle.Members.Except(new[] { castle.Boss }))
-                {
-                    EditorGUILayout.LabelField($"・{chara.Name}");
-                }
-
-                EditorGUILayout.BeginHorizontal();
-                castle.Strength = EditorGUILayout.FloatField("Strength", castle.Strength);
-                castle.StrengthMax = EditorGUILayout.FloatField("Max", castle.StrengthMax);
-                EditorGUILayout.EndHorizontal();
-
-                EditorGUILayout.BeginHorizontal();
-                castle.Gold = EditorGUILayout.FloatField("Gold", castle.Gold);
-                EditorGUILayout.LabelField($"{castle.GoldIncome} / {castle.GoldIncomeMax} ({castle.GoldBalance:+0;-#})");
-                EditorGUILayout.EndHorizontal();
+            EditorGUILayout.BeginHorizontal();
+            castle.Gold = EditorGUILayout.FloatField("Gold", castle.Gold);
+            GUILayout.Label($"{castle.GoldIncome} / {castle.GoldIncomeMax} ({castle.GoldBalance:+0;-#})");
+            EditorGUILayout.EndHorizontal();
                 
-                EditorGUILayout.BeginHorizontal();
-                castle.Food = EditorGUILayout.FloatField("Food", castle.Food);
-                EditorGUILayout.LabelField($"{castle.FoodIncome} / {castle.FoodIncomeMax}");
-                EditorGUILayout.EndHorizontal();
-            }
+            EditorGUILayout.BeginHorizontal();
+            castle.Food = EditorGUILayout.FloatField("Food", castle.Food);
+            GUILayout.Label($"{castle.FoodIncome} / {castle.FoodIncomeMax}");
+            EditorGUILayout.EndHorizontal();
 
-            // 町情報
-            if (targetTile.Town.Exists)
+            if (GUILayout.Button("城を削除"))
             {
-                var town = targetTile.Town;
-                // ヘッダー
-                EditorGUILayout.Space();
-                EditorGUILayout.LabelField($"町情報 (所属城ID: {town.Castle.Id})", EditorStyles.boldLabel);
+                // 確認ダイアログ
+                if (!EditorUtility.DisplayDialog("確認", "本当に削除しますか？", "はい", "いいえ")) return;
+                targetTile.Castle.Exists = false;
+                targetCountry.Castles.Remove(castle);
+                world.Castles.Remove(castle);
+                targetTile.Castle.Towns.ForEach(t => t.Exists = false);
 
-                EditorGUILayout.LabelField($"城主: {town.Castle.Boss?.Name ?? ""}");
+                var otherCastle = targetCountry.Castles.FirstOrDefault(c => c != castle);
+                if (otherCastle != null)
+                {
+                    var members = castle.Members.ToList();
+                    foreach (var member in members)
+                    {
+                        otherCastle.Members.Add(member);
+                    }
+                }
 
-                EditorGUILayout.BeginHorizontal();
-                town.GoldIncome = EditorGUILayout.FloatField("GoldIncome", town.GoldIncome);
-                town.GoldIncomeMax = EditorGUILayout.FloatField("Max", town.GoldIncomeMax);
-                EditorGUILayout.EndHorizontal();
+                Save();
+                LoadWorld();
+            }
+        }
+        else
+        {
+            GUILayout.Label("城なし", EditorStyles.boldLabel);
+            countryIdForNewCastle = EditorGUILayout.IntField("国ID", countryIdForNewCastle);
+            castleIdForNewCastle = EditorGUILayout.IntField("新城ID", castleIdForNewCastle);
 
-                EditorGUILayout.BeginHorizontal();
-                town.FoodIncome = EditorGUILayout.FloatField("FoodIncome", town.FoodIncome);
-                town.FoodIncomeMax = EditorGUILayout.FloatField("Max", town.FoodIncomeMax);
-                EditorGUILayout.EndHorizontal();
+            if (GUILayout.Button("城を作成"))
+            {
+                var country = world.Countries.First(c => c.Id == countryIdForNewCastle);
+                var newCastle = new Castle
+                {
+                    Id = castleIdForNewCastle == -1 ? world.Castles.Max(c => c.Id) + 1 : castleIdForNewCastle,
+                    Country = country,
+                    Position = targetTile.Position,
+                    Exists = true,
+                    Strength = 0,
+                    StrengthMax = 999,
+                    Gold = 0,
+                    Food = 0,
+                };
+                targetTile.Castle = newCastle;
+                world.Castles.Add(newCastle);
+                country.Castles.Add(newCastle);
+                Save();
+                LoadWorld();
+            }
+        }
+
+        // 町情報
+        if (targetTile.Town.Exists)
+        {
+            var town = targetTile.Town;
+            // ヘッダー
+            EditorGUILayout.Space();
+            GUILayout.Label($"町情報 (所属城ID: {town.Castle.Id})", EditorStyles.boldLabel);
+
+            GUILayout.Label($"城主: {town.Castle.Boss?.Name ?? ""}");
+
+            EditorGUILayout.BeginHorizontal();
+            town.GoldIncome = EditorGUILayout.FloatField("GoldIncome", town.GoldIncome);
+            town.GoldIncomeMax = EditorGUILayout.FloatField("Max", town.GoldIncomeMax);
+            EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.BeginHorizontal();
+            town.FoodIncome = EditorGUILayout.FloatField("FoodIncome", town.FoodIncome);
+            town.FoodIncomeMax = EditorGUILayout.FloatField("Max", town.FoodIncomeMax);
+            EditorGUILayout.EndHorizontal();
+
+            if (GUILayout.Button("町を削除"))
+            {
+                // 確認ダイアログ
+                if (!EditorUtility.DisplayDialog("確認", "本当に削除しますか？", "はい", "いいえ")) return;
+                targetTile.Town.Exists = false;
+                targetTile.Town.Castle.Towns.Remove(town);
+                Save();
+                LoadWorld();
+            }
+        }
+        else
+        {
+            GUILayout.Label("町なし", EditorStyles.boldLabel);
+            castleIdForNewTown = EditorGUILayout.IntField("所属城ID", castleIdForNewTown);
+            if (GUILayout.Button("町を作成"))
+            {
+                var targetCastle = world.Castles.First(c => c.Id == castleIdForNewTown);
+                var newTown = new Town
+                {
+                    Position = targetTile.Position,
+                    Castle = targetCastle,
+                    Exists = true,
+                    GoldIncome = 0,
+                    GoldIncomeMax = GameMapTile.TileGoldMax(targetTile),
+                    FoodIncome = 0,
+                    FoodIncomeMax = GameMapTile.TileFoodMax(targetTile),
+                };
+                targetTile.Town = newTown;
+                targetCastle.AddTown(newTown);
+                Save();
+                LoadWorld();
             }
 
+            GUILayout.Label($"DefaultGoldMax {GameMapTile.TileGoldMax(targetTile)}");
+            GUILayout.Label($"DefaultFoodMax {GameMapTile.TileFoodMax(targetTile)}");
         }
     }
 

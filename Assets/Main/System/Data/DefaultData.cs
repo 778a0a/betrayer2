@@ -65,7 +65,7 @@ public class DefaultData
 
         var world = new WorldData
         {
-            Castles = countries.SelectMany(c => c.Castles).ToArray(),
+            Castles = countries.SelectMany(c => c.Castles).ToList(),
             Countries = countries.ToArray(),
             Characters = characters.ToArray(),
             Forces = new(),
@@ -92,9 +92,9 @@ public class DefaultData
         var castles = SavedCastles.FromWorld(world);
         var characters = SavedCharacters.FromWorld(world);
 
-        var countryCsv = SavedCountries.ToCsv(countries);
-        var castleCsv = SavedCastles.ToCsv(castles);
-        var charaCsv = SavedCharacters.ToCsv(characters);
+        var countryCsv = SavedCountries.ToCsv(countries) + Environment.NewLine;
+        var castleCsv = SavedCastles.ToCsv(castles) + Environment.NewLine;
+        var charaCsv = SavedCharacters.ToCsv(characters) + Environment.NewLine;
 
         File.WriteAllText("Assets/Resources/Scenarios/01/country_data.csv", countryCsv, Encoding.UTF8);
         File.WriteAllText("Assets/Resources/Scenarios/01/castle_data.csv", castleCsv, Encoding.UTF8);

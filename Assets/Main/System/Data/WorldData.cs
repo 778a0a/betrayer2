@@ -10,7 +10,7 @@ public class WorldData
     public Character[] Characters { get; set; }
     // なぜかList<T>だと、HotReload後にforeachしたときにエラーが起きるのでIList<T>を使います。
     public IList<Country> Countries { get; set; }
-    public Castle[] Castles { get; set; }
+    public List<Castle> Castles { get; set; }
     public ForceManager Forces { get; set; }
     public GameMap Map { get; set; }
     public Character Player => Characters.FirstOrDefault(c => c.IsPlayer);
