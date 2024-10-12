@@ -1,5 +1,7 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
 
@@ -8,6 +10,7 @@ public class TileInfoEditorWindow : EditorWindow
     private WorldData world;
     private Grid grid;
 
+    private MapPosition targetPosition;
     private GameMapTile targetTile;
     private Country targetCountry;
 
@@ -49,12 +52,7 @@ public class TileInfoEditorWindow : EditorWindow
             var pos = MapPosition.FromGrid(posGrid);
             if (!isLocked)
             {
-                targetTile = world.Map.GetTile(pos);
-                if (targetTile != null)
-                {
-                    targetCountry = targetTile.Country;
-                    GUI.FocusControl(null);
-                }
+                targetPosition = pos;
             }
             Repaint();
         }
@@ -64,15 +62,24 @@ public class TileInfoEditorWindow : EditorWindow
     {
         Debug.Log("保存します。");
         DefaultData.SaveToResources(world);
+        Resources.UnloadUnusedAssets();
     }
 
 
     private int countryIdForNewCastle;
     private int castleIdForNewCastle;
     private int castleIdForNewTown;
+    private int relocateX;
+    private int relocateY;
 
     void OnGUI()
     {
+        targetTile = world.Map.GetTile(targetPosition);
+        if (targetTile != null)
+        {
+            targetCountry = targetTile.Country;
+        }
+
         // 特定のキーが押されたらロック状態をトグルする。
         if (Event.current.type == EventType.KeyDown && Event.current.keyCode == KeyCode.F1)
         {
@@ -101,10 +108,15 @@ public class TileInfoEditorWindow : EditorWindow
         if (GUILayout.Button("保存"))
         {
             Save();
-            LoadWorld();
+            Delay(() => LoadWorld());
         }
         EditorGUILayout.EndHorizontal();
-        
+
+        // スクロール可能にする。
+        EditorGUILayout.BeginScrollView(Vector2.zero);
+        using var _ = Util.Defer(() => EditorGUILayout.EndScrollView());
+
+
         var hasCountry = targetCountry != null;
         if (hasCountry)
         {
@@ -125,7 +137,36 @@ public class TileInfoEditorWindow : EditorWindow
             var castle = targetTile.Castle;
             // ヘッダー
             EditorGUILayout.Space();
+            EditorGUILayout.BeginHorizontal();
             GUILayout.Label($"城情報 (ID: {castle.Id})", EditorStyles.boldLabel);
+            GUILayout.Label("X");
+            relocateX = EditorGUILayout.IntField(relocateX);
+            GUILayout.Label("Y");
+            relocateY = EditorGUILayout.IntField(relocateY);
+            if (GUILayout.Button("再配置"))
+            {
+                var newPos = MapPosition.Of(relocateX, relocateY);
+                var newTile = world.Map.GetTile(newPos);
+                if (newTile.Castle.Exists)
+                {
+                    Debug.LogError("移動先に城があります。");
+                    return;
+                }
+                newTile.Castle = castle;
+                castle.Position = newPos;
+                newTile.Town = targetTile.Town;
+                newTile.Town.Position = newPos;
+                targetTile.Castle = new Castle() { Position = targetTile.Position, Exists = false };
+                targetTile.Town = new Town() { Position = targetTile.Position, Exists = false };
+
+                Save();
+                EditorApplication.delayCall += () =>
+                {
+                    LoadWorld();
+                };
+                return;
+            }
+            EditorGUILayout.EndHorizontal();
 
 
             GUILayout.Label($"城主: {castle.Boss?.Name ?? ""}");
@@ -176,7 +217,7 @@ public class TileInfoEditorWindow : EditorWindow
                 }
 
                 Save();
-                LoadWorld();
+                Delay(() => LoadWorld());
             }
         }
         else
@@ -203,7 +244,7 @@ public class TileInfoEditorWindow : EditorWindow
                 world.Castles.Add(newCastle);
                 country.Castles.Add(newCastle);
                 Save();
-                LoadWorld();
+                Delay(() => LoadWorld());
             }
         }
 
@@ -234,7 +275,7 @@ public class TileInfoEditorWindow : EditorWindow
                 targetTile.Town.Exists = false;
                 targetTile.Town.Castle.Towns.Remove(town);
                 Save();
-                LoadWorld();
+                Delay(() => LoadWorld());
             }
         }
         else
@@ -257,12 +298,22 @@ public class TileInfoEditorWindow : EditorWindow
                 targetTile.Town = newTown;
                 targetCastle.AddTown(newTown);
                 Save();
-                LoadWorld();
+                Delay(() => LoadWorld());
             }
 
             GUILayout.Label($"DefaultGoldMax {GameMapTile.TileGoldMax(targetTile)}");
             GUILayout.Label($"DefaultFoodMax {GameMapTile.TileFoodMax(targetTile)}");
         }
+    }
+
+
+    private static void Delay(Action action, int delayMilliseconds = 100)
+    {
+        EditorApplication.delayCall += async () =>
+        {
+            await Task.Delay(delayMilliseconds);
+            action();
+        };
     }
 
 }
