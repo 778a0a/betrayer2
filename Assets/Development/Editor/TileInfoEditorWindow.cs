@@ -204,7 +204,6 @@ public class TileInfoEditorWindow : EditorWindow
                 if (!EditorUtility.DisplayDialog("確認", "本当に削除しますか？", "はい", "いいえ")) return;
                 targetTile.Castle.Exists = false;
                 targetCountry.Castles.Remove(castle);
-                world.Castles.Remove(castle);
                 targetTile.Castle.Towns.ForEach(t => t.Exists = false);
 
                 var otherCastle = targetCountry.Castles.FirstOrDefault(c => c != castle);
@@ -242,7 +241,6 @@ public class TileInfoEditorWindow : EditorWindow
                     Food = 0,
                 };
                 targetTile.Castle = newCastle;
-                world.Castles.Add(newCastle);
                 country.Castles.Add(newCastle);
                 Save();
                 Delay(() => LoadWorld());

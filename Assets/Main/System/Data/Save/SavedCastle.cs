@@ -20,9 +20,8 @@ public static class SavedCastles
     public static List<SavedCastle> FromWorld(WorldData world)
     {
         var countries = new List<SavedCastle>();
-        for (int i = 0; i < world.Castles.Count; i++)
+        foreach (var original in world.Castles)
         {
-            var original = world.Castles[i];
             var country = new SavedCastle
             {
                 CountryId = original.Country.Id,

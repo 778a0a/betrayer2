@@ -68,8 +68,7 @@ public class DefaultData
 
         var world = new WorldData
         {
-            Castles = countries.SelectMany(c => c.Castles).ToList(),
-            Countries = countries.ToArray(),
+            Countries = new(countries),
             Characters = characters.ToArray(),
             Forces = new(),
             Map = map,
