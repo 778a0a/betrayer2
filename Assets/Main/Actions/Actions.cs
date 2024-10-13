@@ -26,7 +26,7 @@ public class ActionBase
     public GameCore Core { get; set; }
     protected WorldData World => Core.World;
     protected MainUI UI => Core.MainUI;
-    protected GameMap Map => Core.Map.Map;
+    protected GameMapManager Map => Core.Map.Map;
     protected LocalizationManager L => Core.MainUI.L;
 
     public virtual string Label => GetType().Name;

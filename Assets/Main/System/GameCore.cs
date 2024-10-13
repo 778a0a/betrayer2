@@ -11,7 +11,7 @@ public class GameCore
     public static GameCore Instance { get; set; }
 
     public WorldData World { get; }
-    public MapManager Map { get; }
+    public UIMapManager Map { get; }
     public MainUI MainUI { get; }
     public Testing test { get; }
 
@@ -20,7 +20,7 @@ public class GameCore
 
     public GameDate GameDate { get; set; }
 
-    public GameCore(WorldData world, MapManager map, MainUI mainui, Testing test)
+    public GameCore(WorldData world, UIMapManager map, MainUI mainui, Testing test)
     {
         Instance = this;
         World = world;

@@ -12,7 +12,7 @@ public class WorldData
     public IList<Country> Countries { get; set; }
     public List<Castle> Castles { get; set; }
     public ForceManager Forces { get; set; }
-    public GameMap Map { get; set; }
+    public GameMapManager Map { get; set; }
     public Character Player => Characters.FirstOrDefault(c => c.IsPlayer);
 
     public Country CountryOf(Castle castle) => Countries.FirstOrDefault(c => c.Castles.Contains(castle));

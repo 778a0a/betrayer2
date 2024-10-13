@@ -6,9 +6,9 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Tilemaps;
 
-public class MapManager : MonoBehaviour
+public class UIMapManager : MonoBehaviour
 {
-    public static MapManager Instance { get; private set; }
+    public static UIMapManager Instance { get; private set; }
     [SerializeField] public Grid grid;
     [SerializeField] public Tilemap uiTilemap;
     [SerializeField] public Tilemap terrainTilemap;
@@ -23,17 +23,22 @@ public class MapManager : MonoBehaviour
         return countryTiles[countryIndex].sprite;
     }
 
-    public GameMap Map { get; set; }
+    public GameMapManager Map { get; private set; }
+    public void AttachGameMap(GameMapManager map)
+    {
+        Map = map;
+    }
 
     public void Awake()
     {
         Instance = this;
-        Map = new GameMap(this);
     }
 
     private MapPosition currentMousePosition = MapPosition.Of(0, 0);
     void Update()
     {
+        if (Map == null) return;
+
         var mousePoint = Mouse.current.position.ReadValue();
         // マウスカーソル上のセルを取得する。
         var ray = Camera.main.ScreenPointToRay(mousePoint);

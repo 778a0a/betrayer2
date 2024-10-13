@@ -13,10 +13,13 @@ using Random = UnityEngine.Random;
 
 public class DefaultData
 {
-
-    public static WorldData Create(GameMap map)
+    public static WorldData Create()
     {
         Random.InitState(42);
+
+        Debug.Log("地形データ読み込み中...");
+        var terrains = SavedTerrains.FromCsv(Resources.Load<TextAsset>("Scenarios/01/terrain_data").text);
+        var map = new GameMapManager(terrains);
 
         Debug.Log($"国データ読み込み中...");
         var countriesRaw = Resources.Load<TextAsset>("Scenarios/01/country_data").text;
@@ -26,13 +29,13 @@ public class DefaultData
         var castles = SavedCastles.FromCsv(Resources.Load<TextAsset>("Scenarios/01/castle_data").text);
         foreach (var castle in castles)
         {
-            var tile = map.GetTile(castle.Data.Position);
+            var tile = map.GetTile(castle.Data);
             tile.Castle = castle.Data;
             tile.Castle.Country = countries.Find(c => c.Id == castle.CountryId);
             tile.Castle.Country.Castles.Add(tile.Castle);
             foreach (var town in castle.Towns)
             {
-                var townTile = map.GetTile(town.Position);
+                var townTile = map.GetTile(town);
                 townTile.Town = town;
                 townTile.Town.Castle = tile.Castle;
                 townTile.Town.FoodIncomeMax = GameMapTile.TileFoodMax(townTile);
@@ -58,7 +61,7 @@ public class DefaultData
 
             if (chara.CastleId != -1)
             {
-                var tile = map.GetTile(castles.Find(c => c.Data.Id == chara.CastleId).Data.Position);
+                var tile = map.GetTile(castles.Find(c => c.Data.Id == chara.CastleId).Data);
                 tile.Castle.Members.Add(chara.Character);
             }
         }
@@ -78,10 +81,6 @@ public class DefaultData
         foreach (var chara in world.Characters)
         {
             chara.AttachWorld(world);
-        }
-        foreach (var tile in map.Tiles)
-        {
-            tile.Refresh();
         }
         return world;
     }

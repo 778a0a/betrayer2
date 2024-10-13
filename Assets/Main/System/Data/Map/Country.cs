@@ -30,7 +30,7 @@ public class Country : ICountryEntity
     /// マップの国の色のインデックス
     /// </summary>
     public int ColorIndex { get; set; }
-    public Sprite Sprite => MapManager.Instance.GetCountrySprite(ColorIndex);
+    public Sprite Sprite => UIMapManager.Instance.GetCountrySprite(ColorIndex);
 
     public string GetTerritoryName()
     {

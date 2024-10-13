@@ -21,11 +21,12 @@ public class Testing : MonoBehaviour
 
     void Start()
     {
-        var world = DefaultData.Create(MapManager.Instance.Map);
+        var world = DefaultData.Create();
+        world.Map.AttachUI(UIMapManager.Instance);
         world.Characters.FirstOrDefault(c => c.Name == "フレデリック").IsPlayer = true;
 
         UpdatePlaySpeed(PlaySpeedIndex);
-        core = new GameCore(world, MapManager.Instance, MainUI.Instance, this);
+        core = new GameCore(world, UIMapManager.Instance, MainUI.Instance, this);
         core.DoMainLoop().Foreget();
     }
 

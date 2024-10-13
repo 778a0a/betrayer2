@@ -5,22 +5,21 @@ using UnityEngine;
 
 public class GameMapTile : ICountryEntity, IMapEntity
 {
-    private readonly GameMap map;
     private WorldData world;
+    private readonly GameMapManager map;
 
     public MapPosition Position { get; }
-    public HexTile UI { get; }
     public Terrain Terrain { get; }
+    public HexTile UI { get; private set; }
 
     public Castle Castle { get; set; }
     public Town Town { get; set; }
     public Country Country => (Town.Castle ?? Castle)?.Country;
 
-    public GameMapTile(GameMap map, MapPosition pos, HexTile ui, Terrain terrain)
+    public GameMapTile(GameMapManager map, MapPosition pos, Terrain terrain)
     {
         this.map = map;
         Position = pos;
-        UI = ui;
         Terrain = terrain;
 
         Castle = new Castle() { Position = pos, Exists = false };
@@ -30,6 +29,11 @@ public class GameMapTile : ICountryEntity, IMapEntity
     public void AttachWorld(WorldData world)
     {
         this.world = world;
+    }
+
+    public void AttachUI(HexTile ui)
+    {
+        UI = ui;
     }
 
     public void Refresh()

@@ -32,9 +32,10 @@ public class TileInfoEditorWindow : EditorWindow
 
     private void LoadWorld()
     {
-        var map = FindFirstObjectByType<MapManager>();
+        var map = FindFirstObjectByType<UIMapManager>();
         map.Awake();
-        world = DefaultData.Create(map.Map);
+        world = DefaultData.Create();
+        world.Map.AttachUI(map);
     }
 
     void OnDisable()
