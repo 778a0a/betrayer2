@@ -33,7 +33,7 @@ public class TileInfoEditorWindow : EditorWindow
     private void LoadWorld()
     {
         var map = FindFirstObjectByType<MapManager>();
-        map.GetType().GetMethod("Awake", BindingFlags.NonPublic | BindingFlags.Instance).Invoke(map, null);
+        map.Awake();
         world = DefaultData.Create(map.Map);
     }
 

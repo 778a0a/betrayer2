@@ -25,7 +25,7 @@ public class MapManager : MonoBehaviour
 
     public GameMap Map { get; set; }
 
-    private void Awake()
+    public void Awake()
     {
         Instance = this;
         Map = new GameMap(this);

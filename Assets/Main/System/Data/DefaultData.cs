@@ -91,13 +91,16 @@ public class DefaultData
         var countries = SavedCountries.FromWorld(world);
         var castles = SavedCastles.FromWorld(world);
         var characters = SavedCharacters.FromWorld(world);
+        var terrains = SavedTerrains.FromWorld(world);
 
         var countryCsv = SavedCountries.ToCsv(countries) + Environment.NewLine;
         var castleCsv = SavedCastles.ToCsv(castles) + Environment.NewLine;
         var charaCsv = SavedCharacters.ToCsv(characters) + Environment.NewLine;
+        var terrainCsv = SavedTerrains.ToCsv(terrains) + Environment.NewLine;
 
         File.WriteAllText("Assets/Resources/Scenarios/01/country_data.csv", countryCsv, Encoding.UTF8);
         File.WriteAllText("Assets/Resources/Scenarios/01/castle_data.csv", castleCsv, Encoding.UTF8);
         File.WriteAllText("Assets/Resources/Scenarios/01/character_data.csv", charaCsv, Encoding.UTF8);
+        File.WriteAllText("Assets/Resources/Scenarios/01/terrain_data.csv", terrainCsv, Encoding.UTF8);
     }
 }
