@@ -41,6 +41,9 @@ public class GameMapTile : ICountryEntity, IMapEntity
         UI.SetCastle(HasCastle);
         UI.SetTown(!HasCastle && HasTown);
         UI.SetCountryFlag(HasCastle ? Country.Sprite : null);
+        var force = Forces.FirstOrDefault();
+        UI.SetForce(force);
+        UI.SetForceFlag(force?.Country.Sprite);
     }
 
 

@@ -30,6 +30,8 @@ public class HexTile : MonoBehaviour
     [SerializeField] private SpriteRenderer castleSprite;
     [SerializeField] private SpriteRenderer townSprite;
     [SerializeField] private SpriteRenderer countryFlagSprite;
+    [SerializeField] private SpriteRenderer forceSprite;
+    [SerializeField] private SpriteRenderer forceFlagSprite;
 
     private void Awake()
     {
@@ -66,6 +68,21 @@ public class HexTile : MonoBehaviour
     {
         countryFlagSprite.enabled = sprite != null;
         countryFlagSprite.sprite = sprite;
+    }
+
+    public void SetForce(Force force)
+    {
+        forceSprite.enabled = force != null;
+        if (force != null)
+        {
+            forceSprite.transform.rotation = Quaternion.Euler(0, 0, 60 * (int)force.Direction);
+        }
+    }
+
+    public void SetForceFlag(Sprite sprite)
+    {
+        forceFlagSprite.enabled = sprite != null;
+        forceFlagSprite.sprite = sprite;
     }
 
     public Color Color

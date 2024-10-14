@@ -8,15 +8,20 @@ using UnityEngine;
 
 public class ForceManager : IReadOnlyList<Force>
 {
+    private WorldData world => GameCore.Instance.World;
     private readonly List<Force> forces = new();
 
     public void Register(Force force)
     {
         forces.Add(force);
+
+        force.RefreshUI();
     }
 
     public void Unregister(Force force)
     {
+        var oldTile = world.Map.GetTile(force.Position);
+
         forces.Remove(force);
         // 削除対象を目的地にしている軍勢がいる場合は目的地をリセットする。
         foreach (var f in forces.Where(f => f.Destination == force))
@@ -24,6 +29,8 @@ public class ForceManager : IReadOnlyList<Force>
             f.SetDestination(f.Position);
             Debug.Log($"{f} 目的の軍勢が消えたため目的地をリセットしました。");
         }
+
+        oldTile.Refresh();
     }
 
     /// <summary>
@@ -91,6 +98,7 @@ public class ForceManager : IReadOnlyList<Force>
 
         // 上記以外の場合はタイルを移動する。
         force.UpdatePosition(nextPos);
+        
         Debug.Log($"軍勢更新処理 隣のタイルに移動しました。{nextPos}");
     }
 

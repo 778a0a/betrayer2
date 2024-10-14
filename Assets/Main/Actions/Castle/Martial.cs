@@ -47,6 +47,7 @@ partial class CastleActions
             var force = new Force(World, args.Character, args.Castle.Position);
 
             var nears = World.Castles
+                .Where(c => c != args.Castle)
                 .OrderBy(c => c.DistanceTo(args.Castle))
                 .Take(3)
                 .ToArray();

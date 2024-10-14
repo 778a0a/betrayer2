@@ -51,7 +51,16 @@ public class Force : ICountryEntity, IMapEntity
 
     public void UpdatePosition(MapPosition pos)
     {
+        var oldTile = world.Map.GetTile(Position);
         Position = pos;
+        oldTile.Refresh();
+        RefreshUI();
+    }
+
+    public void RefreshUI()
+    {
+        var tile = world.Map.GetTile(Position);
+        tile.Refresh();
     }
 
     /// <summary>
@@ -69,6 +78,8 @@ public class Force : ICountryEntity, IMapEntity
         {
             ResetTileMoveProgress();
         }
+
+        RefreshUI();
     }
 
     public void ResetTileMoveProgress()
