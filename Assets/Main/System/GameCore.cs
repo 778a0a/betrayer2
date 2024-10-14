@@ -45,7 +45,6 @@ public class GameCore
     {
         try
         {
-            Testing2.SaveCsv(World);
             while (true)
             {
                 await Tick();
