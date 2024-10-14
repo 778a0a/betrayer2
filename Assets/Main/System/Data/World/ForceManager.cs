@@ -217,8 +217,7 @@ public class ForceManager : IReadOnlyList<Force>
         }
         
         // 城を攻撃者の国に追加する。
-        castle.Country = force.Country;
-        force.Country.Castles.Add(castle);
+        world.Map.UpdateCastleCountry(force.Country, castle);
 
         // 城の隣接タイルにいて、城が目的地で、進捗が半分以上のキャラは城に入る。
         nextTile.Neighbors

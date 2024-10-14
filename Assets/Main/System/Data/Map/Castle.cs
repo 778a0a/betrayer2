@@ -17,12 +17,6 @@ public class Castle : ICountryEntity, IMapEntity
     public MapPosition Position { get; set; }
 
     /// <summary>
-    /// 城が存在するならtrue
-    /// </summary>
-    [JsonIgnore]
-    public bool Exists { get; set; } = true;
-
-    /// <summary>
     /// 所有国
     /// </summary>
     [JsonIgnore]
@@ -90,22 +84,5 @@ public class Castle : ICountryEntity, IMapEntity
             months++;
         }
         return months;
-    }
-
-    public void SetCountry(Country country)
-    {
-        if (Country != null)
-        {
-            Country.Castles.Remove(this);
-        }
-
-        Country = country;
-        country.Castles.Add(this);
-    }
-
-    public void AddTown(Town town)
-    {
-        town.Castle = this;
-        Towns.Add(town);
     }
 }

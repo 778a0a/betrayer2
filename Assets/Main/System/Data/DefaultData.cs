@@ -27,20 +27,18 @@ public class DefaultData
         
         Debug.Log($"城・町データ読み込み中...");
         var castles = SavedCastles.FromCsv(Resources.Load<TextAsset>("Scenarios/01/castle_data").text);
-        foreach (var castle in castles)
+        foreach (var savedCastle in castles)
         {
-            var tile = map.GetTile(castle.Data);
-            tile.Castle = castle.Data;
-            tile.Castle.Country = countries.Find(c => c.Id == castle.CountryId);
-            tile.Castle.Country.Castles.Add(tile.Castle);
-            foreach (var town in castle.Towns)
+            var castle = savedCastle.Data;
+            var country = countries.Find(c => c.Id == savedCastle.CountryId);
+            map.RegisterCastle(country, castle);
+            foreach (var town in savedCastle.Towns)
             {
-                var townTile = map.GetTile(town);
-                townTile.Town = town;
-                townTile.Town.Castle = tile.Castle;
-                townTile.Town.FoodIncomeMax = GameMapTile.TileFoodMax(townTile);
-                townTile.Town.GoldIncomeMax = GameMapTile.TileGoldMax(townTile);
-                tile.Castle.AddTown(townTile.Town);
+                var townTile = map.GetTile(town.Position);
+                town.FoodIncomeMax = GameMapTile.TileFoodMax(townTile);
+                town.GoldIncomeMax = GameMapTile.TileGoldMax(townTile);
+
+                map.RegisterTown(castle, town);
             }
         }
 
@@ -73,10 +71,7 @@ public class DefaultData
             Forces = new(),
             Map = map,
         };
-        foreach (var tile in map.Tiles)
-        {
-            tile.AttachWorld(world);
-        }
+        map.AttachWorld(world);
         foreach (var chara in world.Characters)
         {
             chara.AttachWorld(world);

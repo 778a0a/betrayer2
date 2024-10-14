@@ -19,8 +19,8 @@ public partial class TileInfoOverlay
         Root.style.display = DisplayStyle.Flex;
 
         labelTileTerrain.text = tile.Terrain.ToString();
-        labelTileHasCastle.style.display = Util.Display(tile.Castle.Exists);
-        labelTileHasTown.style.display = Util.Display(tile.Town.Exists);
+        labelTileHasCastle.style.display = Util.Display(tile.HasCastle);
+        labelTileHasTown.style.display = Util.Display(tile.HasCastle);
 
         var country = tile.Country;
         var hasCountry = country != null;

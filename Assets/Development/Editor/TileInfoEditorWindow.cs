@@ -123,8 +123,8 @@ public class TileInfoEditorWindow : EditorWindow
         {
             EditorGUILayout.BeginHorizontal();
             var ruler = targetCountry.Ruler;
-            if (targetTile.Castle.Exists) GUILayout.Label($"城あり", GUILayout.Width(50));
-            if (targetTile.Town.Exists) GUILayout.Label($"町あり", GUILayout.Width(50));
+            if (targetTile.HasCastle) GUILayout.Label($"城あり", GUILayout.Width(50));
+            if (targetTile.HasTown) GUILayout.Label($"町あり", GUILayout.Width(50));
             EditorGUILayout.EndHorizontal();
 
             GUILayout.Label($"君主: {ruler.Name} 国ID: {targetCountry.Id}");
@@ -133,7 +133,7 @@ public class TileInfoEditorWindow : EditorWindow
         }
 
         // 城情報
-        if (targetTile.Castle.Exists)
+        if (targetTile.HasCastle)
         {
             var castle = targetTile.Castle;
             // ヘッダー
@@ -148,23 +148,14 @@ public class TileInfoEditorWindow : EditorWindow
             {
                 var newPos = MapPosition.Of(relocateX, relocateY);
                 var newTile = world.Map.GetTile(newPos);
-                if (newTile.Castle.Exists)
+                if (newTile.HasCastle)
                 {
                     Debug.LogError("移動先に城があります。");
                     return;
                 }
-                newTile.Castle = castle;
-                castle.Position = newPos;
-                newTile.Town = targetTile.Town;
-                newTile.Town.Position = newPos;
-                targetTile.Castle = new Castle() { Position = targetTile.Position, Exists = false };
-                targetTile.Town = new Town() { Position = targetTile.Position, Exists = false };
-
+                world.Map.ReregisterCastle(newPos, castle);
                 Save();
-                EditorApplication.delayCall += () =>
-                {
-                    LoadWorld();
-                };
+                Delay(() => LoadWorld());
                 return;
             }
             EditorGUILayout.EndHorizontal();
@@ -202,19 +193,7 @@ public class TileInfoEditorWindow : EditorWindow
             {
                 // 確認ダイアログ
                 if (!EditorUtility.DisplayDialog("確認", "本当に削除しますか？", "はい", "いいえ")) return;
-                targetTile.Castle.Exists = false;
-                targetCountry.Castles.Remove(castle);
-                targetTile.Castle.Towns.ForEach(t => t.Exists = false);
-
-                var otherCastle = targetCountry.Castles.FirstOrDefault(c => c != castle);
-                if (otherCastle != null)
-                {
-                    var members = castle.Members.ToList();
-                    foreach (var member in members)
-                    {
-                        otherCastle.Members.Add(member);
-                    }
-                }
+                world.Map.UnregisterCastle(castle);
 
                 Save();
                 Delay(() => LoadWorld());
@@ -232,23 +211,20 @@ public class TileInfoEditorWindow : EditorWindow
                 var newCastle = new Castle
                 {
                     Id = castleIdForNewCastle == -1 ? world.Castles.Max(c => c.Id) + 1 : castleIdForNewCastle,
-                    Country = country,
                     Position = targetTile.Position,
-                    Exists = true,
                     Strength = 0,
                     StrengthMax = 999,
                     Gold = 0,
                     Food = 0,
                 };
-                targetTile.Castle = newCastle;
-                country.Castles.Add(newCastle);
+                world.Map.RegisterCastle(country, newCastle);
                 Save();
                 Delay(() => LoadWorld());
             }
         }
 
         // 町情報
-        if (targetTile.Town.Exists)
+        if (targetTile.HasTown)
         {
             var town = targetTile.Town;
             // ヘッダー
@@ -271,8 +247,7 @@ public class TileInfoEditorWindow : EditorWindow
             {
                 // 確認ダイアログ
                 if (!EditorUtility.DisplayDialog("確認", "本当に削除しますか？", "はい", "いいえ")) return;
-                targetTile.Town.Exists = false;
-                targetTile.Town.Castle.Towns.Remove(town);
+                world.Map.UnregisterTown(town);
                 Save();
                 Delay(() => LoadWorld());
             }
@@ -287,15 +262,12 @@ public class TileInfoEditorWindow : EditorWindow
                 var newTown = new Town
                 {
                     Position = targetTile.Position,
-                    Castle = targetCastle,
-                    Exists = true,
                     GoldIncome = 0,
                     GoldIncomeMax = GameMapTile.TileGoldMax(targetTile),
                     FoodIncome = 0,
                     FoodIncomeMax = GameMapTile.TileFoodMax(targetTile),
                 };
-                targetTile.Town = newTown;
-                targetCastle.AddTown(newTown);
+                world.Map.RegisterTown(targetCastle, newTown);
                 Save();
                 Delay(() => LoadWorld());
             }

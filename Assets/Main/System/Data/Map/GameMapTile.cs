@@ -13,17 +13,16 @@ public class GameMapTile : ICountryEntity, IMapEntity
     public HexTile UI { get; private set; }
 
     public Castle Castle { get; set; }
+    public bool HasCastle => Castle != null;
     public Town Town { get; set; }
-    public Country Country => (Town.Castle ?? Castle)?.Country;
+    public bool HasTown => Town != null;
+    public Country Country => (Town?.Castle ?? Castle)?.Country;
 
     public GameMapTile(GameMapManager map, MapPosition pos, Terrain terrain)
     {
         this.map = map;
         Position = pos;
         Terrain = terrain;
-
-        Castle = new Castle() { Position = pos, Exists = false };
-        Town = new Town() { Position = pos, Exists = false };
     }
 
     public void AttachWorld(WorldData world)
@@ -39,8 +38,8 @@ public class GameMapTile : ICountryEntity, IMapEntity
     public void Refresh()
     {
         UI.SetCellBorder(false);
-        UI.SetCastle(Castle.Exists);
-        UI.SetTown(!Castle.Exists && Town.Exists);
+        UI.SetCastle(HasCastle);
+        UI.SetTown(!HasCastle && HasTown);
         UI.SetCountryFlag(Country?.Sprite);
     }
 

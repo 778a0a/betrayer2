@@ -8,6 +8,7 @@ using UnityEngine.Tilemaps;
 
 public class GameMapManager
 {
+    private WorldData world;
     private readonly Dictionary<MapPosition, GameMapTile> tiles = new();
     
     public IEnumerable<GameMapTile> Tiles => tiles.Values;
@@ -18,6 +19,15 @@ public class GameMapManager
         {
             var tile = new GameMapTile(this, terrain.Position, terrain.Terrain);
             tiles.Add(terrain.Position, tile);
+        }
+    }
+
+    public void AttachWorld(WorldData world)
+    {
+        this.world = world;
+        foreach (var tile in Tiles)
+        {
+            tile.AttachWorld(world);
         }
     }
 
@@ -50,6 +60,77 @@ public class GameMapManager
     {
         tiles.TryGetValue(entity.Position, out var tile);
         return tile;
+    }
+
+    public void RegisterCastle(Country country, Castle castle)
+    {
+        var tile = GetTile(castle);
+        tile.Castle = castle;
+
+        country.Castles.Add(castle);
+        castle.Country = country;
+        Debug.Log($"城({castle.Id})を登録しました。");
+    }
+
+    public void ReregisterCastle(MapPosition newPos, Castle castle)
+    {
+        var origTile = GetTile(castle);
+        var newTile = GetTile(newPos);
+
+        origTile.Castle = null;
+        castle.Position = newPos;
+        newTile.Castle = castle;
+    }
+
+    public void UnregisterCastle(Castle castle)
+    {
+        foreach (var town in castle.Towns)
+        {
+            var townTile = GetTile(town);
+            townTile.Town = null;
+        }
+
+        var tile = GetTile(castle);
+        tile.Castle = null;
+        castle.Country.Castles.Remove(castle);
+
+        var members = castle.Members.ToList();
+        var otherCastle = castle.Country.Castles.FirstOrDefault();
+        if (members.Count > 0 && otherCastle != null)
+        {
+            Debug.LogWarning($"城が削除されたため、所属キャラを移動します。");
+            foreach (var member in members)
+            {
+                otherCastle.Members.Add(member);
+            }
+        }
+        Debug.Log($"城({castle.Id})が削除されました。");
+    }
+
+    public void RegisterTown(Castle castle, Town town)
+    {
+        var tile = GetTile(town);
+        tile.Town = town;
+
+        town.Castle = castle;
+        castle.Towns.Add(town);
+        Debug.Log($"町({town.Position}, 城ID:{town.Castle.Id})を登録しました。");
+    }
+
+    public void UnregisterTown(Town town)
+    {
+        var tile = GetTile(town);
+        tile.Town = null;
+
+        town.Castle.Towns.Remove(town);
+        Debug.Log($"町({town.Position}, 城ID:{town.Castle.Id})が削除されました。");
+    }
+
+    public void UpdateCastleCountry(Country country, Castle castle)
+    {
+        castle.Country?.Castles.Remove(castle);
+        country.Castles.Add(castle);
+        castle.Country = country;
     }
 }
 

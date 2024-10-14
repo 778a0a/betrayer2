@@ -21,12 +21,6 @@ public class Town : ICountryEntity, IMapEntity
     public Country Country => Castle.Country;
 
     /// <summary>
-    /// 町が存在するならtrue
-    /// </summary>
-    [JsonIgnore]
-    public bool Exists { get; set; } = true;
-
-    /// <summary>
     /// 食料生産
     /// </summary>
     public float FoodIncome { get; set; }
