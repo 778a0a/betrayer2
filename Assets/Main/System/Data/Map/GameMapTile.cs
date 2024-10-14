@@ -40,7 +40,7 @@ public class GameMapTile : ICountryEntity, IMapEntity
         UI.SetCellBorder(false);
         UI.SetCastle(HasCastle);
         UI.SetTown(!HasCastle && HasTown);
-        UI.SetCountryFlag(Country?.Sprite);
+        UI.SetCountryFlag(HasCastle ? Country.Sprite : null);
     }
 
 

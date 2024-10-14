@@ -18,15 +18,16 @@ public class DefaultData
         Random.InitState(42);
 
         Debug.Log("地形データ読み込み中...");
-        var terrains = SavedTerrains.FromCsv(Resources.Load<TextAsset>("Scenarios/01/terrain_data").text);
+        var terrains = SavedTerrains.FromCsv(LoadTextFile("Scenarios/01/terrain_data"));
         var map = new GameMapManager(terrains);
 
         Debug.Log($"国データ読み込み中...");
-        var countriesRaw = Resources.Load<TextAsset>("Scenarios/01/country_data").text;
-        var countries = SavedCountries.FromCsv(countriesRaw).Select(c => c.Data).ToList();
-        
+        var countries = SavedCountries.FromCsv(LoadTextFile("Scenarios/01/country_data"))
+            .Select(c => c.Data)
+            .ToList();
+
         Debug.Log($"城・町データ読み込み中...");
-        var castles = SavedCastles.FromCsv(Resources.Load<TextAsset>("Scenarios/01/castle_data").text);
+        var castles = SavedCastles.FromCsv(LoadTextFile("Scenarios/01/castle_data"));
         foreach (var savedCastle in castles)
         {
             var castle = savedCastle.Data;
@@ -43,8 +44,7 @@ public class DefaultData
         }
 
         Debug.Log($"キャラデータ読み込み中...");
-        var oldcsv = Resources.Load<TextAsset>("Scenarios/01/character_data").text;
-        var oldcharas = SavedCharacters.FromCsv(oldcsv);
+        var oldcharas = SavedCharacters.FromCsv(LoadTextFile("Scenarios/01/character_data"));
         var characters = new List<Character>();
         foreach (var chara in oldcharas)
         {
@@ -77,6 +77,16 @@ public class DefaultData
             chara.AttachWorld(world);
         }
         return world;
+    }
+
+    private static string LoadTextFile(string path)
+    {
+#if UNITY_EDITOR
+        // 書き込みを即座に反映させるために、直接読み込みます。
+        return File.ReadAllText($"Assets/Resources/{path}.csv");
+#else
+        return Resources.Load<TextAsset>("").text
+#endif
     }
 
     public static void SaveToResources(WorldData world)
