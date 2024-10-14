@@ -54,6 +54,10 @@ public class Force : ICountryEntity, IMapEntity
         var oldTile = world.Map.GetTile(Position);
         Position = pos;
         oldTile.Refresh();
+
+        Direction = Position.DirectionTo(Destination);
+        ResetTileMoveProgress();
+
         RefreshUI();
     }
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Buffers;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,8 +39,17 @@ public class ForceManager : IReadOnlyList<Force>
     /// </summary>
     public void OnForceMove(GameCore core)
     {
-        foreach (var force in forces)
+        var forcesLength = forces.Count;
+        var forcesCopy = ArrayPool<Force>.Shared.Rent(forcesLength);
+        forces.CopyTo(forcesCopy);
+        for (var i = 0; i < forcesLength; i++)
         {
+            var force = forcesCopy[i];
+            if (!forces.Contains(force))
+            {
+                Debug.LogWarning($"軍勢更新処理 対象の軍勢が存在しません。{force}");
+                continue;
+            }
             OnForceMoveOne(core, force);
         }
     }
@@ -98,7 +108,7 @@ public class ForceManager : IReadOnlyList<Force>
 
         // 上記以外の場合はタイルを移動する。
         force.UpdatePosition(nextPos);
-        
+
         Debug.Log($"軍勢更新処理 隣のタイルに移動しました。{nextPos}");
     }
 

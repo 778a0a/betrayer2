@@ -75,7 +75,7 @@ public class HexTile : MonoBehaviour
         forceSprite.enabled = force != null;
         if (force != null)
         {
-            forceSprite.transform.rotation = Quaternion.Euler(0, 0, 60 * (int)force.Direction);
+            forceSprite.transform.rotation = Quaternion.Euler(0, 0, 30 - 60 * (int)force.Direction);
         }
     }
 
