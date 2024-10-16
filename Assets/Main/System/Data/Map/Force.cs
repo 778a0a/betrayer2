@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -23,10 +24,12 @@ public class Force : ICountryEntity, IMapEntity
     /// <summary>
     /// 軍勢の所属国
     /// </summary>
+    [JsonIgnore]
     public Country Country { get; set; }
     /// <summary>
     /// 軍勢の統率者
     /// </summary>
+    [JsonIgnore]
     public Character Character { get; set; }
 
     /// <summary>
@@ -37,6 +40,7 @@ public class Force : ICountryEntity, IMapEntity
     /// <summary>
     /// 軍勢の目的地
     /// </summary>
+    [JsonIgnore]
     public IMapEntity Destination { get; private set; }
 
     /// <summary>
@@ -71,7 +75,7 @@ public class Force : ICountryEntity, IMapEntity
     /// 目的地を設定します。
     /// </summary>
     /// <param name="destination"></param>
-    public void SetDestination(IMapEntity destination)
+    public void SetDestination(IMapEntity destination, bool updateUI = true)
     {
         var prevDestination = Destination;
         var prevDirection = Direction;
@@ -83,7 +87,10 @@ public class Force : ICountryEntity, IMapEntity
             ResetTileMoveProgress();
         }
 
-        RefreshUI();
+        if (updateUI)
+        {
+            RefreshUI();
+        }
     }
 
     public void ResetTileMoveProgress()

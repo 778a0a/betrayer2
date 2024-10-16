@@ -64,11 +64,26 @@ public class DefaultData
             }
         }
 
+        Debug.Log($"軍勢データ読み込み中...");
+        var savedForces = new List<SavedForce>();
+        //var savedForces = SavedForces.FromCsv(LoadTextFile("Scenarios/01/force_data"));
+        foreach (var force in savedForces)
+        {
+            force.Data.Country = countries.Find(c => c.Id == force.ContryId); ;
+            force.Data.Character = characters.Find(c => c.Id == force.CharacterId);
+            force.Data.SetDestination(force.DestinationType switch
+            {
+                ForceDestinationType.Force => savedForces.Find(f => f.CharacterId == force.DestinationForceCharacterId).Data,
+                ForceDestinationType.Position => map.GetTile(force.DestinationPosition),
+                _ => throw new ArgumentOutOfRangeException(),
+            }, false);
+        }
+
         var world = new WorldData
         {
             Countries = new(countries),
             Characters = characters.ToArray(),
-            Forces = new(),
+            Forces = new(savedForces.Select(f => f.Data)),
             Map = map,
         };
         map.AttachWorld(world);
@@ -95,15 +110,18 @@ public class DefaultData
         var castles = SavedCastles.FromWorld(world);
         var characters = SavedCharacters.FromWorld(world);
         var terrains = SavedTerrains.FromWorld(world);
+        var forces = SavedForces.FromWorld(world);
 
         var countryCsv = SavedCountries.ToCsv(countries) + Environment.NewLine;
         var castleCsv = SavedCastles.ToCsv(castles) + Environment.NewLine;
         var charaCsv = SavedCharacters.ToCsv(characters) + Environment.NewLine;
         var terrainCsv = SavedTerrains.ToCsv(terrains) + Environment.NewLine;
+        var forceCsv = SavedForces.ToCsv(forces) + Environment.NewLine;
 
         File.WriteAllText("Assets/Resources/Scenarios/01/country_data.csv", countryCsv, Encoding.UTF8);
         File.WriteAllText("Assets/Resources/Scenarios/01/castle_data.csv", castleCsv, Encoding.UTF8);
         File.WriteAllText("Assets/Resources/Scenarios/01/character_data.csv", charaCsv, Encoding.UTF8);
         File.WriteAllText("Assets/Resources/Scenarios/01/terrain_data.csv", terrainCsv, Encoding.UTF8);
+        File.WriteAllText("Assets/Resources/Scenarios/01/force_data.csv", forceCsv, Encoding.UTF8);
     }
 }

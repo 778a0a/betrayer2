@@ -12,6 +12,11 @@ public class ForceManager : IReadOnlyList<Force>
     private WorldData world => GameCore.Instance.World;
     private readonly List<Force> forces = new();
 
+    public ForceManager(IEnumerable<Force> initialForces)
+    {
+        forces.AddRange(initialForces);
+    }
+
     public void Register(Force force)
     {
         forces.Add(force);
