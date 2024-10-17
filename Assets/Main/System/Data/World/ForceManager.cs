@@ -243,19 +243,20 @@ public class ForceManager : IReadOnlyList<Force>
         world.Map.UpdateCastleCountry(force.Country, castle);
 
         // 城の隣接タイルにいて、城が目的地で、進捗が半分以上のキャラは城に入る。
-        nextTile.Neighbors
+        var forcesToEnterCastle = nextTile.Neighbors
             .SelectMany(n => n.Forces)
-            .Where(f => f.Destination == castle)
-            .Where(f => f.TileMoveRemainingDays > f.CalculateMoveCost(nextTile.Position) / 0.5f)
-            .ToList()
-            .ForEach(f =>
-            {
-                var oldCastle = world.CastleOf(f.Character);
-                oldCastle.Members.Remove(f.Character);
-                castle.Members.Add(f.Character);
-                Unregister(f);
-                Debug.Log($"{f} 城に入城しました。");
-            });
+            .Where(f => f.Destination.Position == castle.Position)
+            .Where(f => f.TileMoveRemainingDays < f.CalculateMoveCost(nextTile.Position) / 0.5f)
+            .ToArray();
+        foreach (var f in forcesToEnterCastle)
+        {
+            var oldCastle = world.CastleOf(f.Character);
+            oldCastle.Members.Remove(f.Character);
+            castle.Members.Add(f.Character);
+            Unregister(f);
+            Debug.Log($"{f} 城に入城しました。");
+        }
+        nextTile.Refresh();
     }
 
 

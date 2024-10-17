@@ -64,6 +64,11 @@ public class GameMapTile : ICountryEntity, IMapEntity
         }
     }
 
+    public override string ToString()
+    {
+        return $"Tile{Position}";
+    }
+
 
     public static float TileFoodMax(GameMapTile tile) => Mathf.Max(0,
         BaseFoodAdjustment(tile.Terrain) + tile.Neighbors.Sum(t => NeighborFoodAdjustment(t.Terrain)));
