@@ -37,6 +37,7 @@ public class TileInfoEditorWindow : EditorWindow
         map.Awake();
         world = DefaultData.Create();
         world.Map.AttachUI(map);
+        world.Map.Tiles.ToList().ForEach(t => t.Refresh());
     }
 
     void OnDisable()
