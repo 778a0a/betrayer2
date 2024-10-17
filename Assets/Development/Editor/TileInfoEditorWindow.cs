@@ -324,7 +324,7 @@ public class TileInfoEditorWindow : EditorWindow
         }
 
         GUILayout.Label("軍勢一覧", EditorStyles.boldLabel);
-        foreach (var force in world.Forces)
+        foreach (var force in targetTile.Forces)
         {
             EditorGUILayout.BeginHorizontal();
             GUILayout.Label($"{force.Character.Name} (To: {force.Destination}) move: {force.TileMoveRemainingDays}");
