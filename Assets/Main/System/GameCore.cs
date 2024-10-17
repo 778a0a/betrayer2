@@ -166,6 +166,7 @@ public class GameCore
                                 TownActions.ImproveFoodIncome,
                                 CastleActions.ImproveCastleStrength,
                                 CastleActions.TrainSoldiers,
+                                CastleActions.Move,
                     }.RandomPickDefault();
                 }
                 var budget = Math.Min(chara.Gold, chara.Salary / 3);

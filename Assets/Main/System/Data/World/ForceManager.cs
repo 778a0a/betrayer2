@@ -218,7 +218,8 @@ public class ForceManager : IReadOnlyList<Force>
         if (oldCountry.Castles.Count == 0)
         {
             world.Countries.Remove(oldCountry);
-            foreach (var f in forces.Where(f => f.Country == oldCountry))
+            var forcesToRemove = forces.Where(f => f.Country == oldCountry).ToArray();
+            foreach (var f in forcesToRemove)
             {
                 Unregister(f);
             }
