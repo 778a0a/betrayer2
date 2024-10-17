@@ -65,8 +65,7 @@ public class DefaultData
         }
 
         Debug.Log($"軍勢データ読み込み中...");
-        var savedForces = new List<SavedForce>();
-        //var savedForces = SavedForces.FromCsv(LoadTextFile("Scenarios/01/force_data"));
+        var savedForces = SavedForces.FromCsv(LoadTextFile("Scenarios/01/force_data"));
         foreach (var force in savedForces)
         {
             force.Data.Country = countries.Find(c => c.Id == force.ContryId); ;
@@ -76,7 +75,7 @@ public class DefaultData
                 ForceDestinationType.Force => savedForces.Find(f => f.CharacterId == force.DestinationForceCharacterId).Data,
                 ForceDestinationType.Position => map.GetTile(force.DestinationPosition),
                 _ => throw new ArgumentOutOfRangeException(),
-            }, false);
+            }, false, true);
         }
 
         var world = new WorldData
@@ -90,6 +89,10 @@ public class DefaultData
         foreach (var chara in world.Characters)
         {
             chara.AttachWorld(world);
+        }
+        foreach (var force in world.Forces)
+        {
+            force.AttachWorld(world);
         }
         return world;
     }

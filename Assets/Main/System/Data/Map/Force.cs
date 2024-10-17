@@ -13,7 +13,7 @@ public class Force : ICountryEntity, IMapEntity
     {
         this.world = world;
         Character = character;
-        Country = character.Country;
+        Country = character?.Country;
         Position = position;
         Destination = position;
         Direction = Direction.Right;
@@ -75,14 +75,14 @@ public class Force : ICountryEntity, IMapEntity
     /// 目的地を設定します。
     /// </summary>
     /// <param name="destination"></param>
-    public void SetDestination(IMapEntity destination, bool updateUI = true)
+    public void SetDestination(IMapEntity destination, bool updateUI = true, bool isRestoring = false)
     {
         var prevDestination = Destination;
         var prevDirection = Direction;
         Destination = destination;
         Direction = Position.DirectionTo(destination);
         // 目的地が変わった場合は移動日数をリセットする
-        if (prevDestination.Position == Position || prevDirection != Direction)
+        if (!isRestoring && (prevDestination.Position == Position || prevDirection != Direction))
         {
             ResetTileMoveProgress();
         }
@@ -126,6 +126,11 @@ public class Force : ICountryEntity, IMapEntity
     public override string ToString()
     {
         return $"軍勢({Character.Name} at {Position} -> {Destination} ({TileMoveRemainingDays}))";
+    }
+
+    public void AttachWorld(WorldData world)
+    {
+        this.world = world;
     }
 
     // タイルの移動にかかる日数

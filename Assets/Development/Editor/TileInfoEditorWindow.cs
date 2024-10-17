@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class TileInfoEditorWindow : EditorWindow
 {
@@ -281,8 +282,60 @@ public class TileInfoEditorWindow : EditorWindow
                 LoadWorld();
             }
         }
+
+
+        ForceLayout();
     }
 
+    private int forceCreateCharacterId = -1;
+    private MapPosition forceCreateDestination;
+    private void ForceLayout()
+    {
+        GUILayout.Label("軍勢追加", EditorStyles.boldLabel);
+        forceCreateCharacterId = EditorGUILayout.IntField("キャラID", forceCreateCharacterId);
+        EditorGUILayout.BeginHorizontal();
+        GUILayout.Label("目標座標");
+        forceCreateDestination.x = EditorGUILayout.IntField("X", forceCreateDestination.x);
+        forceCreateDestination.y = EditorGUILayout.IntField("Y", forceCreateDestination.y);
+        EditorGUILayout.EndHorizontal();
+        if (GUILayout.Button("追加"))
+        {
+            var destTile = world.Map.GetTile(forceCreateDestination);
+            if (destTile == null)
+            {
+                Debug.LogError("ターゲットが存在しません。");
+                return;
+            }
+            var chara = world.Characters.First(c => c.Id == forceCreateCharacterId);
+            // すでに軍勢を率いている場合はエラー
+            if (world.Forces.Any(f => f.Character == chara))
+            {
+                Debug.LogError("すでに軍勢を率いています。");
+                return;
+            }
+
+            var force = new Force(world, chara, targetTile.Position);
+            world.Forces.Register(force);
+            force.SetDestination(destTile);
+            Save();
+            LoadWorld();
+            return;
+        }
+
+        GUILayout.Label("軍勢一覧", EditorStyles.boldLabel);
+        foreach (var force in world.Forces)
+        {
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.Label($"{force.Character.Name} (To: {force.Destination}) move: {force.TileMoveRemainingDays}");
+            if (GUILayout.Button("削除"))
+            {
+                world.Forces.Unregister(force);
+                Save();
+                LoadWorld();
+            }
+            EditorGUILayout.EndHorizontal();
+        }
+    }
 
     private static void Delay(Action action, int delayMilliseconds = 300)
     {
