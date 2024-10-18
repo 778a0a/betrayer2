@@ -33,6 +33,13 @@ public class TileInfoEditorWindow : EditorWindow
 
     private void LoadWorld()
     {
+        // Playモードの場合は現在の状態を取得する。
+        if (Application.isPlaying)
+        {
+            world = GameCore.Instance.World;
+            return;
+        }
+        
         var map = FindFirstObjectByType<UIMapManager>();
         map.Awake();
         world = DefaultData.Create();

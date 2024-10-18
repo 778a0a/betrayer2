@@ -167,6 +167,32 @@ public class ForceManager : IReadOnlyList<Force>
             return;
         }
 
+        // 移動先が敵城の場合
+        if (nextTile.Castle != null && force.IsEnemy(nextTile.Castle))
+        {
+            // 防衛可能な敵が残っている場合は、移動進捗を半分リセットする。
+            if (nextTile.Castle.Members.Any(e => e.CanDefend))
+            {
+                force.ResetTileMoveProgress();
+                force.TileMoveRemainingDays /= 2;
+                Debug.Log($"軍勢更新処理 野戦(城)に勝利しました。({force.TileMoveRemainingDays})");
+                return;
+            }
+            // 防衛可能な敵が残っていない場合は城を占領する。
+            OnCastleFall(world, force, nextTile.Castle);
+            return;
+        }
+        // 移動先が自分の城の場合は入城する（ありえる？）
+        if (nextTile.Castle != null && force.IsSelf(nextTile.Castle) && force.Destination.Position == nextTile.Position)
+        {
+            var oldCastle = world.CastleOf(force.Character);
+            oldCastle.Members.Remove(force.Character);
+            nextTile.Castle.Members.Add(force.Character);
+            Unregister(force);
+            Debug.Log($"軍勢更新処理 野戦(城)に勝利しました。目的地の城に入城しました。");
+            return;
+        }
+
         // 敵がいなくなった場合はタイルを移動する。
         force.UpdatePosition(nextTile.Position);
         Debug.Log($"軍勢更新処理 野戦に勝利しました。隣のタイルに移動しました。({force.TileMoveRemainingDays})");
@@ -205,6 +231,11 @@ public class ForceManager : IReadOnlyList<Force>
         }
 
         // 防衛可能な敵が残っていない場合は城を占領する。
+        OnCastleFall(world, force, castle);
+    }
+
+    private void OnCastleFall(WorldData world, Force force, Castle castle)
+    {
         // 駐在キャラの行動不能日数を再セットする。
         foreach (var e in castle.Members.Where(e => !e.IsMoving))
         {
@@ -244,10 +275,11 @@ public class ForceManager : IReadOnlyList<Force>
         world.Map.UpdateCastleCountry(force.Country, castle);
 
         // 城の隣接タイルにいて、城が目的地で、進捗が半分以上のキャラは城に入る。
-        var forcesToEnterCastle = nextTile.Neighbors
+        var castleTile = world.Map.GetTile(castle);
+        var forcesToEnterCastle = castleTile.Neighbors
             .SelectMany(n => n.Forces)
             .Where(f => f.Destination.Position == castle.Position)
-            .Where(f => f.TileMoveRemainingDays < f.CalculateMoveCost(nextTile.Position) / 0.5f)
+            .Where(f => f.TileMoveRemainingDays < f.CalculateMoveCost(castleTile.Position) / 0.5f)
             .ToArray();
         foreach (var f in forcesToEnterCastle)
         {
@@ -257,7 +289,7 @@ public class ForceManager : IReadOnlyList<Force>
             Unregister(f);
             Debug.Log($"{f} 城に入城しました。");
         }
-        nextTile.Refresh();
+        castleTile.Refresh();
     }
 
 
