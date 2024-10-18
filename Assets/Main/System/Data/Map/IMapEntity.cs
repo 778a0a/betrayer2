@@ -24,16 +24,36 @@ public static class MapEntityExtensions
             if (targetX < x) return Direction.Left;
             else return Direction.Right;
         }
+        // 奇数行か偶数行かによって処理を分ける（Y座標が奇数か偶数かで判断）
+        bool isOddRow = (y % 2) != 0;
         if (targetY < y)
         {
-            if (targetX < x) return Direction.UpLeft;
-            else return Direction.UpRight;
+            if (isOddRow)
+            {
+                if (targetX <= x) return Direction.UpLeft;
+                else return Direction.UpRight;
+            }
+            else
+            {
+                if (targetX < x) return Direction.UpLeft;
+                else return Direction.UpRight;
+            }
         }
         if (targetY > y)
         {
-            if (targetX < x) return Direction.DownLeft;
-            else return Direction.DownRight;
+            if (isOddRow)
+            {
+                if (targetX <= x) return Direction.DownLeft;
+                else return Direction.DownRight;
+            }
+            else
+            {
+                if (targetX < x) return Direction.DownLeft;
+                else return Direction.DownRight;
+            }
         }
+        throw new InvalidOperationException();
+
         throw new InvalidOperationException();
     }
 
