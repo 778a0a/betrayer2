@@ -169,12 +169,11 @@ public class ForceManager : IReadOnlyList<Force>
             }
         }
 
-
-
         // まだ他に敵がいる場合は移動進捗を少しリセットする。
         if (enemies.Length > 1)
         {
-            force.TileMoveRemainingDays = Math.Max(1, force.CalculateMoveCost(nextTile.Position) / 4);
+            force.ResetTileMoveProgress();
+            force.TileMoveRemainingDays /= 4;
             Debug.Log($"軍勢更新処理 野戦に勝利しました。({force.TileMoveRemainingDays})");
             return;
         }
