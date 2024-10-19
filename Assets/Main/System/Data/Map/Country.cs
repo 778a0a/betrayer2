@@ -55,6 +55,11 @@ public class Country : ICountryEntity
         >= 5 => CountryRank.Duchy,
         _ => CountryRank.Chiefdom,
     };
+
+    public override string ToString()
+    {
+        return $"国({Ruler.Name} 城数: {Castles.Count}, 将数: {Members.Count()})";
+    }
 }
 
 public enum CountryRank

@@ -85,4 +85,9 @@ public class Castle : ICountryEntity, IMapEntity
         }
         return months;
     }
+
+    public override string ToString()
+    {
+        return $"城({Position} 城主: {Boss?.Name ?? "無"} - {Country.Ruler.Name}軍)";
+    }
 }
