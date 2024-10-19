@@ -82,14 +82,15 @@ public class Character
     public bool IsPlayer { get; set; }
 
     /// <summary>
-    /// 侵攻済みならtrue
+    /// 特性
     /// </summary>
-    public bool IsAttacked { get; set; }
-
-    /// <summary>
-    /// 行動済みならtrue
-    /// </summary>
-    public bool IsExhausted { get; set; }
+    [JsonIgnore]
+    public Traits Traits { get; set; }
+    public string TraintsText
+    {
+        get => string.Join("|", Traits.ToString().Split(", "));
+        set => Traits = Enum.Parse<Traits>(string.Join(", ", value.Split(" ")));
+    }
 
     /// <summary>
     /// （内部データ）強さ
