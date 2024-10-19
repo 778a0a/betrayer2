@@ -159,7 +159,7 @@ public class Force : ICountryEntity, IMapEntity
 
                 cameFrom[neighbor] = current;
                 g[neighbor] = gscore;
-                f[neighbor] = gscore + neighbor.DistanceTo(dest) * 8 * 2; // 8*2 = 1マスの大体の移動コスト
+                f[neighbor] = gscore + neighbor.DistanceTo(dest) * 10 * 2; // 1マスの大体の移動コスト
             }
         }
         throw new InvalidOperationException("Path not found");
@@ -206,7 +206,9 @@ public class Force : ICountryEntity, IMapEntity
 
         // TODO traitによる補正
         var currentCost = tileMoveCost[current.Terrain];
+        currentCost *= TerrainTraitMoveAdjustment(current.Terrain, Character.Traits);
         var nextCost = tileMoveCost[next.Terrain];
+        nextCost *= TerrainTraitMoveAdjustment(next.Terrain, Character.Traits);
         return (currentCost + nextCost) * martialAdjRate;
     }
 
@@ -231,6 +233,46 @@ public class Force : ICountryEntity, IMapEntity
         { Terrain.Forest,     10 },
         { Terrain.Mountain,   15 },
     };
+    private static float TerrainTraitMoveAdjustment(Terrain terrain, Traits traits)
+    {
+        var adj = 1f;
+        if (traits.HasFlag(Traits.DivineSpeed)) adj *= 0.5f;
+        switch (terrain)
+        {
+            case Terrain.LargeRiver:
+                if (traits.HasFlag(Traits.Pirate)) adj *= 0.25f;
+                if (traits.HasFlag(Traits.Admiral)) adj *= 0.5f;
+                break;
+            case Terrain.River:
+                if (traits.HasFlag(Traits.Pirate)) adj *= 0.33f;
+                if (traits.HasFlag(Traits.Admiral)) adj *= 0.5f;
+                break;
+            case Terrain.Plain:
+                if (traits.HasFlag(Traits.Pirate)) adj *= 2;
+                if (traits.HasFlag(Traits.Admiral)) adj *= 1.6f;
+                break;
+            case Terrain.Hill:
+                if (traits.HasFlag(Traits.Pirate)) adj *= 2;
+                if (traits.HasFlag(Traits.Admiral)) adj *= 1.25f;
+                if (traits.HasFlag(Traits.Mountaineer)) adj *= 0.6f;
+                if (traits.HasFlag(Traits.Hunter)) adj *= 0.8f;
+                break;
+            case Terrain.Forest:
+                if (traits.HasFlag(Traits.Pirate)) adj *= 2;
+                if (traits.HasFlag(Traits.Admiral)) adj *= 1.25f;
+                if (traits.HasFlag(Traits.Mountaineer)) adj *= 0.8f;
+                if (traits.HasFlag(Traits.Hunter)) adj *= 0.499f;
+                break;
+            case Terrain.Mountain:
+                if (traits.HasFlag(Traits.Pirate)) adj *= 2;
+                if (traits.HasFlag(Traits.Admiral)) adj *= 1.25f;
+                if (traits.HasFlag(Traits.Mountaineer)) adj *= 0.33f;
+                if (traits.HasFlag(Traits.Hunter)) adj *= 0.8f;
+                break;
+        }
+        return adj;
+    }
+
     private struct TerrainDevAdjustmentData
     {
         public float BaseFood;
