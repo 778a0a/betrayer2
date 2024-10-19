@@ -65,7 +65,7 @@ public class UIMapManager : MonoBehaviour
             // 必要ならハイライトを消す。
             if (currentMousePosition.IsValid)
             {
-                Map.GetTile(currentMousePosition)?.UI.SetCellBorder(false);
+                Map.TryGetTile(currentMousePosition)?.UI.SetCellBorder(false);
                 currentMousePosition = MapPosition.Invalid;
             }
             return;
@@ -79,7 +79,7 @@ public class UIMapManager : MonoBehaviour
         {
             // ハイライトを更新する。
             var prevPos = currentMousePosition;
-            Map.GetTile(prevPos)?.UI.SetCellBorder(false);
+            Map.TryGetTile(prevPos)?.UI.SetCellBorder(false);
 
             if (isValidPos)
             {

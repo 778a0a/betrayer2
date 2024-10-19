@@ -43,6 +43,9 @@ public class Force : ICountryEntity, IMapEntity
     [JsonIgnore]
     public IMapEntity Destination { get; private set; }
 
+    [JsonIgnore]
+    public LinkedList<MapPosition> DestinationPath { get; set; }
+
     /// <summary>
     /// 軍勢の向き
     /// </summary>
@@ -59,7 +62,25 @@ public class Force : ICountryEntity, IMapEntity
         Position = pos;
         oldTile.Refresh();
 
-        Direction = Position.DirectionTo(Destination);
+        if (DestinationPath.Count > 0)
+        {
+            var expectedPos = DestinationPath.First();
+            if (expectedPos == pos)
+            {
+                DestinationPath.RemoveFirst();
+                if (DestinationPath.Count > 0)
+                {
+                    Direction = pos.DirectionTo(DestinationPath.First());
+                }
+            }
+            else if (Destination.Position != pos)
+            {
+                Debug.Log($"軍勢の位置がPathと一致しません。経路を再計算します。 {this}");
+                DestinationPath = FindPath(Destination.Position);
+                Direction = Position.DirectionTo(DestinationPath.First());
+            }
+        }
+
         ResetTileMoveProgress();
 
         RefreshUI();
@@ -80,7 +101,11 @@ public class Force : ICountryEntity, IMapEntity
         var prevDestination = Destination;
         var prevDirection = Direction;
         Destination = destination;
-        Direction = Position.DirectionTo(destination);
+        if (Destination.Position != Position)
+        {
+            DestinationPath = FindPath(destination.Position);
+            Direction = Position.DirectionTo(DestinationPath.First());
+        }
         // 目的地が変わった場合は移動日数をリセットする
         if (!isRestoring && (prevDestination.Position == Position || prevDirection != Direction))
         {
@@ -90,6 +115,66 @@ public class Force : ICountryEntity, IMapEntity
         if (updateUI)
         {
             RefreshUI();
+        }
+    }
+
+    private LinkedList<MapPosition> FindPath(MapPosition dest)
+    {
+        if (Position == dest) return new LinkedList<MapPosition>();
+        var start = Position;
+        var open = new List<MapPosition> { start };
+        var close = new List<MapPosition>();
+        var cameFrom = new Dictionary<MapPosition, MapPosition>();
+        var g = new Dictionary<MapPosition, float> { { start, 0 } };
+        var f = new Dictionary<MapPosition, float> { { start, start.DistanceTo(dest) } };
+
+        while (open.Count > 0)
+        {
+            var current = open.OrderBy(p => f.GetValueOrDefault(p, float.MaxValue)).First();
+            if (current == dest)
+            {
+                return ReconstructPath(cameFrom, current);
+            }
+
+            open.Remove(current);
+            close.Add(current);
+
+            foreach (var neighborTile in world.Map.GetTile(current).Neighbors)
+            {
+                var neighbor = neighborTile.Position;
+                if (close.Contains(neighbor))
+                {
+                    continue;
+                }
+
+                var gscore = g[current] + CalculateMoveCost(current, neighbor);
+                if (!open.Contains(neighbor))
+                {
+                    open.Add(neighbor);
+                }
+                else if (gscore >= g.GetValueOrDefault(neighbor, float.MaxValue))
+                {
+                    continue;
+                }
+
+                cameFrom[neighbor] = current;
+                g[neighbor] = gscore;
+                f[neighbor] = gscore + neighbor.DistanceTo(dest) * 8 * 2; // 8*2 = 1マスの大体の移動コスト
+            }
+        }
+        throw new InvalidOperationException("Path not found");
+
+        static LinkedList<MapPosition> ReconstructPath(Dictionary<MapPosition, MapPosition> cameFrom, MapPosition current)
+        {
+            var path = new LinkedList<MapPosition>();
+            path.AddFirst(current);
+            while (cameFrom.ContainsKey(current))
+            {
+                current = cameFrom[current];
+                path.AddFirst(current);
+            }
+            path.RemoveFirst();
+            return path;
         }
     }
 
@@ -103,16 +188,18 @@ public class Force : ICountryEntity, IMapEntity
         TileMoveRemainingDays = CalculateMoveCost(Position.To(Direction));
     }
 
-    public float CalculateMoveCost(MapPosition nextPos)
+    public float CalculateMoveCost(MapPosition nextPos) => CalculateMoveCost(Position, nextPos);
+    public float CalculateMoveCost(MapPosition fromPos, MapPosition nextPos)
     {
         // キャラの攻撃能力に応じて移動コストを補正する。
         var martialAdj = Character.Attack;
-        // 自国領の場合は防衛能力との高い方を採用する。
-        var current = world.Map.GetTile(Position);
+
+        // 自国領の場合は防衛能力で補正する。
+        var current = world.Map.GetTile(fromPos);
         var next = world.Map.GetTile(nextPos);
         if (Country.Has(current) || Country.Has(next))
         {
-            martialAdj = Mathf.Max(martialAdj, Character.Defense);
+            martialAdj = Character.Defense;
         }
         // 能力が70の場合は補正1.0、能力が80の場合は0.9、能力が60の場合は1.1
         var martialAdjRate = 1.0f - (martialAdj - 70) * 0.01f;

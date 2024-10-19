@@ -148,7 +148,7 @@ public class ForceManager : IReadOnlyList<Force>
             // 敵を1タイル後退させる。
             var enemyPos = enemy.Position;
             var backPos = enemyPos.To(force.Direction);
-            var backTile = world.Map.GetTile(backPos);
+            var backTile = world.Map.TryGetTile(backPos);
             // 後退先に移動できないなら、軍勢を削除して行動不能にする。
             if (backTile == null ||
                 backTile.Forces.Any(f => f.IsEnemy(enemy)) ||

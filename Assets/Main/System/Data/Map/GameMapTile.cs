@@ -55,12 +55,12 @@ public class GameMapTile : ICountryEntity, IMapEntity
         get
         {
             var t = default(GameMapTile);
-            if ((t = map.GetTile(Position.UpLeft)) != null) yield return t;
-            if ((t = map.GetTile(Position.UpRight)) != null) yield return t;
-            if ((t = map.GetTile(Position.Left)) != null) yield return t;
-            if ((t = map.GetTile(Position.Right)) != null) yield return t;
-            if ((t = map.GetTile(Position.DownLeft)) != null) yield return t;
-            if ((t = map.GetTile(Position.DownRight)) != null) yield return t;
+            if ((t = map.TryGetTile(Position.UpLeft)) != null) yield return t;
+            if ((t = map.TryGetTile(Position.UpRight)) != null) yield return t;
+            if ((t = map.TryGetTile(Position.Left)) != null) yield return t;
+            if ((t = map.TryGetTile(Position.Right)) != null) yield return t;
+            if ((t = map.TryGetTile(Position.DownLeft)) != null) yield return t;
+            if ((t = map.TryGetTile(Position.DownRight)) != null) yield return t;
         }
     }
 

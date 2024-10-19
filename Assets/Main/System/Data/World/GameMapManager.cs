@@ -58,7 +58,20 @@ public class GameMapManager
 
     public GameMapTile GetTile(IMapEntity entity)
     {
-        tiles.TryGetValue(entity.Position, out var tile);
+        if (tiles.TryGetValue(entity.Position, out var tile))
+        {
+            return tile;
+        }
+        Debug.LogError($"タイルが見つかりません: {entity}");
+        // デバッグ中の場合はポーズ状態にする。
+#if UNITY_EDITOR        
+        Debug.Break();
+#endif
+        throw new InvalidOperationException($"GetTileエラー ({entity.Position})");
+    }
+    public GameMapTile TryGetTile(MapPosition pos)
+    {
+        tiles.TryGetValue(pos, out var tile);
         return tile;
     }
 

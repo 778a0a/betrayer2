@@ -85,7 +85,7 @@ public class TileInfoEditorWindow : EditorWindow
 
     void OnGUI()
     {
-        targetTile = world.Map.GetTile(targetPosition);
+        targetTile = world.Map.TryGetTile(targetPosition);
         if (targetTile != null)
         {
             targetCountry = targetTile.Country;
