@@ -42,7 +42,7 @@ public class TileInfoEditorWindow : EditorWindow
         
         var map = FindFirstObjectByType<UIMapManager>();
         map.Awake();
-        world = DefaultData.Create();
+        world = DefaultData.Create(saveDir);
         world.Map.AttachUI(map);
         world.Map.Tiles.ToList().ForEach(t => t.Refresh());
     }
@@ -71,11 +71,12 @@ public class TileInfoEditorWindow : EditorWindow
     private void Save()
     {
         Debug.Log("保存します。");
-        DefaultData.SaveToResources(world);
+        DefaultData.SaveToResources(world, saveDir);
         Resources.UnloadUnusedAssets();
     }
 
 
+    private string saveDir = "01";
     private int countryIdForNewCastle;
     private int castleIdForNewCastle;
     private int castleIdForNewTown;
@@ -106,11 +107,12 @@ public class TileInfoEditorWindow : EditorWindow
         EditorGUILayout.BeginHorizontal();
         GUILayout.Label($"座標: {targetTile.Position} 地形: {targetTile.Terrain}", GUILayout.Width(150));
         GUILayout.Label($"Gmax: {GameMapTile.TileGoldMax(targetTile):000} Fmax:{GameMapTile.TileFoodMax(targetTile):0000}", GUILayout.Width(150));
-        if (GUILayout.Button("再読み込み", GUILayout.Width(80)))
+        saveDir = EditorGUILayout.TextField(saveDir, GUILayout.Width(50));
+        if (GUILayout.Button("再読込", GUILayout.Width(70)))
         {
             LoadWorld();
         }
-        if (GUILayout.Button(isLocked ? "ロック解除" : "ロック", GUILayout.Width(100)))
+        if (GUILayout.Button(isLocked ? "ﾛｯｸ解除" : "ロック", GUILayout.Width(70)))
         {
             isLocked = !isLocked;
         }

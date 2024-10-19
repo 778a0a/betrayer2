@@ -13,21 +13,21 @@ using Random = UnityEngine.Random;
 
 public class DefaultData
 {
-    public static WorldData Create()
+    public static WorldData Create(string saveDir = "01")
     {
         Random.InitState(42);
 
         Debug.Log("地形データ読み込み中...");
-        var terrains = SavedTerrains.FromCsv(LoadTextFile("Scenarios/01/terrain_data"));
+        var terrains = SavedTerrains.FromCsv(LoadTextFile($"Scenarios/{saveDir}/terrain_data"));
         var map = new GameMapManager(terrains);
 
         Debug.Log($"国データ読み込み中...");
-        var countries = SavedCountries.FromCsv(LoadTextFile("Scenarios/01/country_data"))
+        var countries = SavedCountries.FromCsv(LoadTextFile($"Scenarios/{saveDir}/country_data"))
             .Select(c => c.Data)
             .ToList();
 
         Debug.Log($"城・町データ読み込み中...");
-        var castles = SavedCastles.FromCsv(LoadTextFile("Scenarios/01/castle_data"));
+        var castles = SavedCastles.FromCsv(LoadTextFile($"Scenarios/{saveDir}/castle_data"));
         foreach (var savedCastle in castles)
         {
             var castle = savedCastle.Data;
@@ -44,7 +44,7 @@ public class DefaultData
         }
 
         Debug.Log($"キャラデータ読み込み中...");
-        var oldcharas = SavedCharacters.FromCsv(LoadTextFile("Scenarios/01/character_data"));
+        var oldcharas = SavedCharacters.FromCsv(LoadTextFile($"Scenarios/{saveDir}/character_data"));
         var characters = new List<Character>();
         foreach (var chara in oldcharas)
         {
@@ -65,7 +65,7 @@ public class DefaultData
         }
 
         Debug.Log($"軍勢データ読み込み中...");
-        var savedForces = SavedForces.FromCsv(LoadTextFile("Scenarios/01/force_data"));
+        var savedForces = SavedForces.FromCsv(LoadTextFile($"Scenarios/{saveDir}/force_data"));
         foreach (var force in savedForces)
         {
             force.Data.Country = countries.Find(c => c.Id == force.ContryId); ;
@@ -107,7 +107,7 @@ public class DefaultData
 #endif
     }
 
-    public static void SaveToResources(WorldData world)
+    public static void SaveToResources(WorldData world, string saveDir = "01")
     {
         var countries = SavedCountries.FromWorld(world);
         var castles = SavedCastles.FromWorld(world);
@@ -121,10 +121,12 @@ public class DefaultData
         var terrainCsv = SavedTerrains.ToCsv(terrains) + Environment.NewLine;
         var forceCsv = SavedForces.ToCsv(forces) + Environment.NewLine;
 
-        File.WriteAllText("Assets/Resources/Scenarios/01/country_data.csv", countryCsv, Encoding.UTF8);
-        File.WriteAllText("Assets/Resources/Scenarios/01/castle_data.csv", castleCsv, Encoding.UTF8);
-        File.WriteAllText("Assets/Resources/Scenarios/01/character_data.csv", charaCsv, Encoding.UTF8);
-        File.WriteAllText("Assets/Resources/Scenarios/01/terrain_data.csv", terrainCsv, Encoding.UTF8);
-        File.WriteAllText("Assets/Resources/Scenarios/01/force_data.csv", forceCsv, Encoding.UTF8);
+        var dir = $"Assets/Resources/Scenarios/{saveDir}";
+        Directory.CreateDirectory(dir);
+        File.WriteAllText($"{dir}/country_data.csv", countryCsv, Encoding.UTF8);
+        File.WriteAllText($"{dir}/castle_data.csv", castleCsv, Encoding.UTF8);
+        File.WriteAllText($"{dir}/character_data.csv", charaCsv, Encoding.UTF8);
+        File.WriteAllText($"{dir}/terrain_data.csv", terrainCsv, Encoding.UTF8);
+        File.WriteAllText($"{dir}/force_data.csv", forceCsv, Encoding.UTF8);
     }
 }
