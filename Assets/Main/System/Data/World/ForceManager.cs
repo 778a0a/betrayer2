@@ -278,6 +278,7 @@ public class ForceManager : IReadOnlyList<Force>
         var castleTile = world.Map.GetTile(castle);
         var forcesToEnterCastle = castleTile.Neighbors
             .SelectMany(n => n.Forces)
+            .Where(f => f.Country == castle.Country)
             .Where(f => f.Destination.Position == castle.Position)
             .Where(f => f.TileMoveRemainingDays < f.CalculateMoveCost(castleTile.Position) / 0.5f)
             .ToArray();
