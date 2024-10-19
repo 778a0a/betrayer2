@@ -73,7 +73,7 @@ public class ForceManager : IReadOnlyList<Force>
         // 移動進捗が残っている場合は何もしない。
         if (force.TileMoveRemainingDays > 0)
         {
-            Debug.Log($"軍勢更新処理 {force} 移動中...");
+            //Debug.Log($"軍勢更新処理 {force} 移動中...");
             return;
         }
         Debug.Log($"軍勢更新処理 {force} タイル移動処理開始");
@@ -136,28 +136,40 @@ public class ForceManager : IReadOnlyList<Force>
 
         // 勝った場合
 
-        // 敵を1タイル後退させる。
-        var enemyPos = enemy.Position;
-        var backPos = enemyPos.To(force.Direction);
-        var backTile = world.Map.GetTile(backPos);
-        // 後退先に移動できないなら、軍勢を削除して行動不能にする。
-        if (backTile == null ||
-            backTile.Forces.Any(f => f.IsEnemy(enemy)) ||
-            (backTile.Castle?.IsEnemy(enemy) ?? false))
+        // 敵が敵城タイルにいる場合は、敵軍勢を削除して行動不能にする。
+        if (nextTile.Castle?.Members.Contains(enemy.Character) ?? false)
         {
             enemy.Character.SetIncapacitated();
             Unregister(enemy);
-            Debug.Log($"{enemy} 後退不可な場所で野戦に敗北したため行動不能になりました。");
+            Debug.Log($"{enemy} 野戦(城)に敗北したため行動不能になりました。");
         }
-        // 後退先に移動できるなら、敵を後退させる。
         else
         {
-            var enemyHome = world.CastleOf(enemy.Character);
-            enemy.UpdatePosition(backPos);
-            // 本拠地へ撤退させる。
-            enemy.SetDestination(enemyHome);
-            Debug.Log($"{enemy} 野戦に敗北したため後退しました。");
+            // 敵を1タイル後退させる。
+            var enemyPos = enemy.Position;
+            var backPos = enemyPos.To(force.Direction);
+            var backTile = world.Map.GetTile(backPos);
+            // 後退先に移動できないなら、軍勢を削除して行動不能にする。
+            if (backTile == null ||
+                backTile.Forces.Any(f => f.IsEnemy(enemy)) ||
+                (backTile.Castle?.IsEnemy(enemy) ?? false))
+            {
+                enemy.Character.SetIncapacitated();
+                Unregister(enemy);
+                Debug.Log($"{enemy} 後退不可な場所で野戦に敗北したため行動不能になりました。");
+            }
+            // 後退先に移動できるなら、敵を後退させる。
+            else
+            {
+                var enemyHome = world.CastleOf(enemy.Character);
+                enemy.UpdatePosition(backPos);
+                // 本拠地へ撤退させる。
+                enemy.SetDestination(enemyHome);
+                Debug.Log($"{enemy} 野戦に敗北したため後退しました。");
+            }
         }
+
+
 
         // まだ他に敵がいる場合は移動進捗を少しリセットする。
         if (enemies.Length > 1)
