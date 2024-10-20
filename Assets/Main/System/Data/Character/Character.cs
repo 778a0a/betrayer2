@@ -88,7 +88,7 @@ public class Character
     public Traits Traits { get; set; }
     public string TraintsText
     {
-        get => string.Join("|", Traits.ToString().Split(", "));
+        get => string.Join(" ", Traits.ToString().Split(", "));
         set => Traits = Enum.Parse<Traits>(string.Join(", ", value.Split(" ")));
     }
 
