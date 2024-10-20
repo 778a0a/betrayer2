@@ -105,78 +105,81 @@ public class TileInfoEditorWindow : EditorWindow
             Repaint();
         }
 
-        EditorGUILayout.BeginHorizontal();
-        saveDir = EditorGUILayout.TextField(saveDir, GUILayout.Width(50));
-        if (GUILayout.Button("再読込", GUILayout.Width(70)))
+        using (HorizontalLayout())
         {
-            LoadWorld();
+            saveDir = EditorGUILayout.TextField(saveDir, GUILayout.Width(50));
+            if (GUILayout.Button("再読込", GUILayout.Width(70)))
+            {
+                LoadWorld();
+            }
+            if (GUILayout.Button(isLocked ? "ﾛｯｸ解除" : "ロック",
+                new GUIStyle(GUI.skin.button) { normal = new GUIStyleState() { textColor = isLocked ? Color.yellow : Color.white } },
+                GUILayout.Width(70)))
+            {
+                isLocked = !isLocked;
+            }
+            if (GUILayout.Button("保存"))
+            {
+                Save();
+                LoadWorld();
+            }
         }
-        if (GUILayout.Button(isLocked ? "ﾛｯｸ解除" : "ロック",
-            new GUIStyle(GUI.skin.button) { normal = new GUIStyleState() { textColor = isLocked ? Color.yellow : Color.white } },
-            GUILayout.Width(70)))
-        {
-            isLocked = !isLocked;
-        }
-        if (GUILayout.Button("保存"))
-        {
-            Save();
-            LoadWorld();
-        }
-        EditorGUILayout.EndHorizontal();
 
         if (targetTile == null) return;
-        EditorGUILayout.BeginHorizontal();
-        GUILayout.Label($"座標: {targetTile.Position} 地形: {targetTile.Terrain}", GUILayout.Width(150));
-        GUILayout.Label($"Gmax: {GameMapTile.TileGoldMax(targetTile):000} Fmax:{GameMapTile.TileFoodMax(targetTile):0000}", GUILayout.Width(150));
-        EditorGUILayout.EndHorizontal();
+        using (HorizontalLayout())
+        {
+            GUILayout.Label($"座標: {targetTile.Position} 地形: {targetTile.Terrain}", GUILayout.Width(150));
+            GUILayout.Label($"Gmax: {GameMapTile.TileGoldMax(targetTile):000} Fmax:{GameMapTile.TileFoodMax(targetTile):0000}", GUILayout.Width(150));
+        }
 
         // スクロール可能にする。
-        EditorGUILayout.BeginScrollView(Vector2.zero);
-        using var _ = Util.Defer(() => EditorGUILayout.EndScrollView());
-
+        using var _scroll = ScrollView(Vector2.zero);
 
         var hasCountry = targetCountry != null;
         if (hasCountry)
         {
             var ruler = targetCountry.Ruler;
 
-            EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.BeginVertical(GUILayout.Width(110));
-            GUILayout.Label($"国: {targetCountry.Id} {ruler.Name}", GUILayout.Width(110));
-            var rulerImage = FaceImageManager.Instance.GetImage(ruler);
-            GUILayout.Box(rulerImage, new GUIStyle() { fixedWidth = 100, fixedHeight = 100, margin = new(5, 5, 0, 0) });
-            EditorGUILayout.EndVertical();
+            using var _ = HorizontalLayout();
+
+            using (VerticalLayout(GUILayout.Width(110)))
+            {
+                GUILayout.Label($"国: {targetCountry.Id} {ruler.Name}", GUILayout.Width(110));
+                var rulerImage = FaceImageManager.Instance.GetImage(ruler);
+                GUILayout.Box(rulerImage, new GUIStyle() { fixedWidth = 100, fixedHeight = 100, margin = new(5, 5, 0, 0) });
+            }
 
             if (targetTile.HasCastle)
             {
-                EditorGUILayout.BeginVertical(GUILayout.Width(100));
                 var castle = targetTile.Castle;
-                GUILayout.Label($"城主: {castle.Boss?.Name ?? ""}", GUILayout.Width(100));
-                if (castle.Boss != null)
+                using (VerticalLayout(GUILayout.Width(100)))
                 {
-                    var bossImage = FaceImageManager.Instance.GetImage(targetTile.Castle.Boss);
-                    GUILayout.Box(bossImage, new GUIStyle() { fixedWidth = 100, fixedHeight = 100, margin = new(5, 5, 0, 0) });
+                    GUILayout.Label($"城主: {castle.Boss?.Name ?? ""}", GUILayout.Width(100));
+                    if (castle.Boss != null)
+                    {
+                        var bossImage = FaceImageManager.Instance.GetImage(targetTile.Castle.Boss);
+                        GUILayout.Box(bossImage, new GUIStyle() { fixedWidth = 100, fixedHeight = 100, margin = new(5, 5, 0, 0) });
+                    }
                 }
-                EditorGUILayout.EndVertical();
 
-                EditorGUILayout.BeginVertical();
-                GUILayout.Label($"将数: {castle.Members.Count}", GUILayout.Width(100));
-                EditorGUILayout.BeginHorizontal();
-                foreach (var chara in castle.Members.Where(m => m != castle.Boss))
+                using (VerticalLayout(GUILayout.Width(100)))
                 {
-                    var image = FaceImageManager.Instance.GetImage(chara);
-                    GUILayout.Box(image, new GUIStyle() { fixedWidth = 45, fixedHeight = 45, margin = new(5, 5, 0, 0) });
+                    GUILayout.Label($"将数: {castle.Members.Count}", GUILayout.Width(100));
+                    using (HorizontalLayout())
+                    {
+                        foreach (var chara in castle.Members.Where(m => m != castle.Boss))
+                        {
+                            var image = FaceImageManager.Instance.GetImage(chara);
+                            GUILayout.Box(image, new GUIStyle() { fixedWidth = 45, fixedHeight = 45, margin = new(5, 5, 0, 0) });
+                        }
+                    }
                 }
-                EditorGUILayout.EndHorizontal();
-                EditorGUILayout.EndVertical();
             }
-            EditorGUILayout.EndHorizontal();
         }
 
         if (hasCountry) countryIdForNewCastle = targetCountry.Id;
         if (targetTile.HasCastle) castleIdForNewCastle = targetTile.Castle.Id;
         if (targetTile.HasCastle) castleIdForNewTown = targetTile.Castle.Id;
-
 
         // 城情報
         if (targetTile.HasCastle)
@@ -366,6 +369,24 @@ public class TileInfoEditorWindow : EditorWindow
             await Task.Delay(delayMilliseconds);
             action();
         };
+    }
+
+    private IDisposable HorizontalLayout(params GUILayoutOption[] options)
+    {
+        EditorGUILayout.BeginHorizontal(options);
+        return Util.Defer(() => EditorGUILayout.EndHorizontal());
+    }
+
+    private IDisposable VerticalLayout(params GUILayoutOption[] options)
+    {
+        EditorGUILayout.BeginVertical(options);
+        return Util.Defer(() => EditorGUILayout.EndVertical());
+    }
+
+    private IDisposable ScrollView(Vector2 scrollPos)
+    {
+        EditorGUILayout.BeginScrollView(scrollPos);
+        return Util.Defer(() => EditorGUILayout.EndScrollView());
     }
 
 }
