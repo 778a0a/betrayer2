@@ -142,7 +142,7 @@ public class TileInfoEditorWindow : EditorWindow
 
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.BeginVertical(GUILayout.Width(110));
-            GUILayout.Label($"君主:{ruler.Name} 国:{targetCountry.Id}", GUILayout.Width(110));
+            GUILayout.Label($"国: {targetCountry.Id} {ruler.Name}", GUILayout.Width(110));
             var rulerImage = FaceImageManager.Instance.GetImage(ruler);
             GUILayout.Box(rulerImage, new GUIStyle() { fixedWidth = 100, fixedHeight = 100, margin = new(5, 5, 0, 0) });
             EditorGUILayout.EndVertical();
@@ -157,6 +157,17 @@ public class TileInfoEditorWindow : EditorWindow
                     var bossImage = FaceImageManager.Instance.GetImage(targetTile.Castle.Boss);
                     GUILayout.Box(bossImage, new GUIStyle() { fixedWidth = 100, fixedHeight = 100, margin = new(5, 5, 0, 0) });
                 }
+                EditorGUILayout.EndVertical();
+
+                EditorGUILayout.BeginVertical();
+                GUILayout.Label($"将数: {castle.Members.Count}", GUILayout.Width(100));
+                EditorGUILayout.BeginHorizontal();
+                foreach (var chara in castle.Members.Where(m => m != castle.Boss))
+                {
+                    var image = FaceImageManager.Instance.GetImage(chara);
+                    GUILayout.Box(image, new GUIStyle() { fixedWidth = 45, fixedHeight = 45, margin = new(5, 5, 0, 0) });
+                }
+                EditorGUILayout.EndHorizontal();
                 EditorGUILayout.EndVertical();
             }
             EditorGUILayout.EndHorizontal();
@@ -194,12 +205,6 @@ public class TileInfoEditorWindow : EditorWindow
                 return;
             }
             EditorGUILayout.EndHorizontal();
-
-            GUILayout.Label($"配下数: {Mathf.Max(0, castle.Members.Count - 1)}");
-            foreach (var chara in castle.Members.Except(new[] { castle.Boss }))
-            {
-                GUILayout.Label($"・{chara.Name}");
-            }
 
             EditorGUILayout.BeginHorizontal();
             castle.Strength = EditorGUILayout.FloatField("Strength", castle.Strength);
