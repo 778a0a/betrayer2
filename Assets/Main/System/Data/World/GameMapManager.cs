@@ -82,7 +82,7 @@ public class GameMapManager
 
         country.Castles.Add(castle);
         castle.Country = country;
-        Debug.Log($"城({castle.Id})を登録しました。");
+        //Debug.Log($"城({castle.Id})を登録しました。");
     }
 
     public void ReregisterCastle(MapPosition newPos, Castle castle)
@@ -127,7 +127,7 @@ public class GameMapManager
 
         town.Castle = castle;
         castle.Towns.Add(town);
-        Debug.Log($"町({town.Position}, 城ID:{town.Castle.Id})を登録しました。");
+        //Debug.Log($"町({town.Position}, 城ID:{town.Castle.Id})を登録しました。");
     }
 
     public void UnregisterTown(Town town)
