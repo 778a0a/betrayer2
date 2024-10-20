@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 
 public class TileInfoEditorWindow : EditorWindow
@@ -25,6 +26,7 @@ public class TileInfoEditorWindow : EditorWindow
 
     void OnEnable()
     {
+        Debug.Log("OnEnable");
         LoadWorld();
         grid = FindFirstObjectByType<Grid>();
 
@@ -52,6 +54,7 @@ public class TileInfoEditorWindow : EditorWindow
         SceneView.duringSceneGui -= DuringSceneGUI;
     }
 
+    private bool prevF1;
     void DuringSceneGUI(SceneView sceneView)
     {
         var ray = HandleUtility.GUIPointToWorldRay(Event.current.mousePosition);
@@ -92,7 +95,9 @@ public class TileInfoEditorWindow : EditorWindow
         }
 
         // 特定のキーが押されたらロック状態をトグルする。
-        if (Event.current.type == EventType.KeyDown && Event.current.keyCode == KeyCode.F1)
+        var oldF1 = prevF1;
+        prevF1 = Keyboard.current.f1Key.isPressed;
+        if (prevF1 && !oldF1)
         {
             Debug.Log("Toggle Lock");
             isLocked = !isLocked;
@@ -100,19 +105,15 @@ public class TileInfoEditorWindow : EditorWindow
             Repaint();
         }
 
-        if (targetTile == null) return;
-
-        // 横並び
-        // 左詰め
         EditorGUILayout.BeginHorizontal();
-        GUILayout.Label($"座標: {targetTile.Position} 地形: {targetTile.Terrain}", GUILayout.Width(150));
-        GUILayout.Label($"Gmax: {GameMapTile.TileGoldMax(targetTile):000} Fmax:{GameMapTile.TileFoodMax(targetTile):0000}", GUILayout.Width(150));
         saveDir = EditorGUILayout.TextField(saveDir, GUILayout.Width(50));
         if (GUILayout.Button("再読込", GUILayout.Width(70)))
         {
             LoadWorld();
         }
-        if (GUILayout.Button(isLocked ? "ﾛｯｸ解除" : "ロック", GUILayout.Width(70)))
+        if (GUILayout.Button(isLocked ? "ﾛｯｸ解除" : "ロック",
+            new GUIStyle(GUI.skin.button) { normal = new GUIStyleState() { textColor = isLocked ? Color.yellow : Color.white } },
+            GUILayout.Width(70)))
         {
             isLocked = !isLocked;
         }
@@ -121,6 +122,12 @@ public class TileInfoEditorWindow : EditorWindow
             Save();
             LoadWorld();
         }
+        EditorGUILayout.EndHorizontal();
+
+        if (targetTile == null) return;
+        EditorGUILayout.BeginHorizontal();
+        GUILayout.Label($"座標: {targetTile.Position} 地形: {targetTile.Terrain}", GUILayout.Width(150));
+        GUILayout.Label($"Gmax: {GameMapTile.TileGoldMax(targetTile):000} Fmax:{GameMapTile.TileFoodMax(targetTile):0000}", GUILayout.Width(150));
         EditorGUILayout.EndHorizontal();
 
         // スクロール可能にする。
