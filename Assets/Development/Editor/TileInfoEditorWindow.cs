@@ -192,11 +192,59 @@ public class TileInfoEditorWindow : EditorWindow
         {
             GUILayout.Space(5);
             using var _ = HorizontalLayout();
-            CharaImage(chara);
+            chara.csvDebugData = DropableCharaImage(chara.csvDebugData, chara);
+            static string DropableCharaImage(string path, Character chara)
+            {
+                var dropArea = GUILayoutUtility.GetRect(100f, 100.0f, GUILayout.ExpandWidth(true));
+                CharaImage(chara, rect: dropArea);
+                var e = Event.current;
+                switch (e.type)
+                {
+                    // なぜかExplorerからドロップしてもDragPerformが呼ばれないので、
+                    // DragUpdatedで更新する。
+                    case EventType.DragUpdated:
+                        //case EventType.DragPerform:
+                        if (!dropArea.Contains(e.mousePosition)) break;
+                        DragAndDrop.visualMode = DragAndDropVisualMode.Copy;
+                        DragAndDrop.AcceptDrag();
+                        DragAndDrop.activeControlID = 0;
+                        Event.current.Use();
+                        foreach (var p in DragAndDrop.paths)
+                        {
+                            Debug.Log($"Accepted: {p}");
+                            return p;
+                        }
+                        break;
+                }
+                return path;
+            }
 
             using var __ = VerticalLayout();
-            Label($"ID:{chara.Id}\t{chara}");
+            using (HorizontalLayout())
+            {
+                Label($"ID:{chara.Id}", 50);
+                chara.Name = EditorGUILayout.TextField(chara.Name);
+                Label("");
+            }
 
+            // 能力値
+            using (HorizontalLayout())
+            {
+                Label("A", 15);
+                chara.Attack = EditorGUILayout.IntField(chara.Attack);
+                Label("D", 15);
+                chara.Defense = EditorGUILayout.IntField(chara.Defense);
+                Label("I", 15);
+                chara.Intelligence = EditorGUILayout.IntField(chara.Intelligence);
+                Label("G", 15);
+                chara.Governing = EditorGUILayout.IntField(chara.Governing);
+                Label("L", 15);
+                chara.LoyaltyBase = EditorGUILayout.IntField(chara.LoyaltyBase);
+            }
+
+            chara.csvDebugData = EditorGUILayout.TextField("顔画像", chara.csvDebugData);
+
+            // 城移動
             using (HorizontalLayout())
             {
                 Label("城ID:");
@@ -217,6 +265,25 @@ public class TileInfoEditorWindow : EditorWindow
                 }
 
             }
+        }
+        if (GUILayout.Button("新規キャラクター追加"))
+        {
+            var newChara = new Character
+            {
+                Id = world.Characters.Max(c => c.Id) + 1,
+                Name = "新規キャラクター",
+                Attack = 70,
+                Defense = 70,
+                Intelligence = 70,
+                Governing = 70,
+                LoyaltyBase = 80,
+                // 適当に既存のデータを流用する。すぐに再読込みするので問題ない。
+                Soldiers = world.Characters[0].Soldiers,
+            };
+            world.Characters.Add(newChara);
+            castle.Members.Add(newChara);
+            Save();
+            LoadWorld();
         }
     }
 
@@ -458,10 +525,17 @@ public class TileInfoEditorWindow : EditorWindow
     }
 
     private static void SmallCharaImage(Character chara) => CharaImage(chara, 45);
-    private static void CharaImage(Character chara, int size = -1)
+    private static void CharaImage(Character chara, int size = -1, Rect? rect = null)
     {
         if (size == -1) size = 100;
         var image = FaceImageManager.Instance.GetImage(chara);
+
+        if (rect != null)
+        {
+            GUI.DrawTexture(rect.Value, image);
+            return;
+        }
+
         GUILayout.Box(image, new GUIStyle()
         {
             fixedWidth = size,

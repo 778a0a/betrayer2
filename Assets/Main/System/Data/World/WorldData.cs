@@ -7,7 +7,7 @@ using Random = UnityEngine.Random;
 
 public class WorldData
 {
-    public Character[] Characters { get; set; }
+    public List<Character> Characters { get; set; }
     public CountryManager Countries { get; set; }
     public ForceManager Forces { get; set; }
     public GameMapManager Map { get; set; }
@@ -18,5 +18,5 @@ public class WorldData
     public Country CountryOf(Castle castle) => Countries.FirstOrDefault(c => c.Castles.Contains(castle));
     public Castle CastleOf(Character chara) => Castles.FirstOrDefault(c => c.Members.Contains(chara));
 
-    public override string ToString() => $"WorldData {Characters.Length} characters, {Countries.Count} countries";
+    public override string ToString() => $"WorldData {Characters.Count} characters, {Countries.Count} countries";
 }

@@ -23,7 +23,7 @@ public static class SavedCharacters
     public static List<SavedCharacter> FromWorld(WorldData world)
     {
         var charas = new List<SavedCharacter>();
-        for (int i = 0; i < world.Characters.Length; i++)
+        for (int i = 0; i < world.Characters.Count; i++)
         {
             var character = world.Characters[i];
             var country = world.Countries.FirstOrDefault(c => c.Members.Contains(character));
@@ -50,13 +50,6 @@ public static class SavedCharacters
         var list = JsonConvert.DeserializeObject<List<JObject>>(json);
         var sb = new StringBuilder();
 
-        bool IsTargetProperty(JProperty prop)
-        {
-            return
-                !prop.Name.Equals(nameof(Character.debugMemo)) &&
-                !prop.Name.Equals(nameof(Character.debugImagePath));
-        }
-
         var delimiter = "\t";
         // ヘッダー
         sb.Append(nameof(SavedCharacter.CountryId)).Append(delimiter);
@@ -64,7 +57,6 @@ public static class SavedCharacters
         sb.Append(nameof(SavedCharacter.CastleId)).Append(delimiter);
         foreach (JProperty prop in list[0][nameof(Character)])
         {
-            if (!IsTargetProperty(prop)) continue;
             sb.Append(prop.Name).Append(delimiter);
         }
         sb.AppendLine();
@@ -80,8 +72,6 @@ public static class SavedCharacters
             sb.Append(obj[nameof(SavedCharacter.CastleId)]).Append(delimiter);
             foreach (JProperty prop in obj[nameof(Character)])
             {
-                if (!IsTargetProperty(prop)) continue;
-
                 if (prop.Name.Equals(nameof(global::Character.Soldiers)))
                 {
                     var sbsub = new StringBuilder();

@@ -81,7 +81,7 @@ public class DefaultData
         var world = new WorldData
         {
             Countries = new(countries),
-            Characters = characters.ToArray(),
+            Characters = characters,
             Forces = new(savedForces.Select(f => f.Data)),
             Map = map,
         };

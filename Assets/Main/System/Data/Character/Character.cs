@@ -100,9 +100,6 @@ public class Character
 
     //public string GetLoyaltyText(WorldData world) => world.IsRuler(this) ? "--" : Loyalty.ToString();
 
-    public string debugImagePath { get; set; }
-    public string debugMemo { get; set; }
-
     /// <summary>
     /// 恨み
     /// </summary>
