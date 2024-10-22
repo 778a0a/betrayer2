@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -16,9 +17,9 @@ public class TileInfoEditorWindow : EditorWindow
     private GameMapTile targetTile;
     private Country targetCountry;
 
-    private bool prevF1;
+    private bool prevFKey;
     private bool isLocked = false;
-    private bool prevF2;
+    private bool prevCKey;
     private EditMode mode = EditMode.EditBuilding;
     private enum EditMode
     {
@@ -75,7 +76,33 @@ public class TileInfoEditorWindow : EditorWindow
                 targetPosition = pos;
             }
             Repaint();
+
+            if (waitingClickForCharacterMove)
+            {
+                Event e = Event.current;
+                if (e.type == EventType.MouseDown && e.button == 0)
+                {
+                    e.Use();
+                    var tile = world.Map.TryGetTile(pos);
+                    if (!tile?.HasCastle ?? true)
+                    {
+                        Debug.LogError("ターゲットが存在しません。");
+                    }
+                    else
+                    {
+                        var castle = tile.Castle;
+                        var oldCastle = world.CastleOf(characterForCharacterMove);
+                        oldCastle.Members.Remove(characterForCharacterMove);
+                        castle.Members.Add(characterForCharacterMove);
+
+                        Save();
+                        LoadWorld();
+                        waitingClickForCharacterMove = false;
+                    }
+                }
+            }
         }
+
     }
 
     private void Save()
@@ -86,9 +113,9 @@ public class TileInfoEditorWindow : EditorWindow
     }
 
 
+    private Vector2 scrollPosition;
     private string saveDir = "01";
     private int countryIdForNewCastle;
-    private int castleIdForNewCastle;
     private int castleIdForNewTown;
     private int relocateX;
     private int relocateY;
@@ -101,26 +128,32 @@ public class TileInfoEditorWindow : EditorWindow
             targetCountry = targetTile.Country;
         }
 
-        // 特定のキーが押されたらロック状態をトグルする。
-        var oldF1 = prevF1;
-        prevF1 = Keyboard.current.f1Key.isPressed;
-        if (prevF1 && !oldF1)
+        // Ctrl+特定のキーが押されたらロック状態をトグルする。
+        if (Keyboard.current.fKey.isPressed)
         {
             Debug.Log("Toggle Lock");
-            isLocked = !isLocked;
-            GUI.FocusControl(null);
-            Repaint();
         }
-        var oldF2 = prevF2;
-        prevF2 = Keyboard.current.f2Key.isPressed;
-        if (prevF2 && !oldF2)
+        if (Event.current.control)
         {
-            Debug.Log("Toggle Edit Mode");
-            mode = mode == EditMode.EditBuilding ? EditMode.EditCharacter : EditMode.EditBuilding;
-            GUI.FocusControl(null);
-            Repaint();
+            var oldFKey = prevFKey;
+            prevFKey = Keyboard.current.fKey.isPressed;
+            if (prevFKey && !oldFKey)
+            {
+                Debug.Log("Toggle Lock");
+                isLocked = !isLocked;
+                GUI.FocusControl(null);
+                Repaint();
+            }
+            var oldCKey = prevCKey;
+            prevCKey = Keyboard.current.cKey.isPressed;
+            if (prevCKey && !oldCKey)
+            {
+                Debug.Log("Toggle Edit Mode");
+                mode = mode == EditMode.EditBuilding ? EditMode.EditCharacter : EditMode.EditBuilding;
+                GUI.FocusControl(null);
+                Repaint();
+            }
         }
-
 
         // ヘッダー 保存ボタンなど
         using (HorizontalLayout())
@@ -161,7 +194,8 @@ public class TileInfoEditorWindow : EditorWindow
         }
 
         // スクロール可能にする。
-        using var _scroll = ScrollView(Vector2.zero);
+        scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
+        using var _scroll = Util.Defer(() => EditorGUILayout.EndScrollView());
 
         if (targetTile.Country != null)
         {
@@ -181,6 +215,9 @@ public class TileInfoEditorWindow : EditorWindow
         }
     }
 
+    private bool waitingClickForCharacterMove;
+    private Character characterForCharacterMove;
+
     private int moveCharacterCastleId;
     private void DrawEditCharacter()
     {
@@ -192,10 +229,15 @@ public class TileInfoEditorWindow : EditorWindow
         {
             GUILayout.Space(5);
             using var _ = HorizontalLayout();
+            var prev = chara.csvDebugData;
             chara.csvDebugData = DropableCharaImage(chara.csvDebugData, chara);
+            if (prev != chara.csvDebugData)
+            {
+                Debug.Log("Prev: " + prev);
+            }
             static string DropableCharaImage(string path, Character chara)
             {
-                var dropArea = GUILayoutUtility.GetRect(100f, 100.0f, GUILayout.ExpandWidth(true));
+                var dropArea = GUILayoutUtility.GetRect(200f, 200.0f, GUILayout.ExpandWidth(true));
                 CharaImage(chara, rect: dropArea);
                 var e = Event.current;
                 switch (e.type)
@@ -240,6 +282,8 @@ public class TileInfoEditorWindow : EditorWindow
                 chara.Governing = EditorGUILayout.IntField(chara.Governing);
                 Label("L", 15);
                 chara.LoyaltyBase = EditorGUILayout.IntField(chara.LoyaltyBase);
+                Label("C", 15);
+                chara.Contribution = EditorGUILayout.IntField(chara.Contribution);
             }
 
             chara.csvDebugData = EditorGUILayout.TextField("顔画像", chara.csvDebugData);
@@ -247,21 +291,19 @@ public class TileInfoEditorWindow : EditorWindow
             // 城移動
             using (HorizontalLayout())
             {
-                Label("城ID:");
-                moveCharacterCastleId = EditorGUILayout.IntField(moveCharacterCastleId);
-                if (GUILayout.Button("へ移動"))
+                var moving = chara == characterForCharacterMove && waitingClickForCharacterMove;
+                var color = moving ? Color.yellow : Color.white;
+                var style = new GUIStyle(GUI.skin.button);
+                style.normal.textColor = color;
+                if (GUILayout.Button(moving ? "城をクリック!" : "マップクリックで移動", style, GUILayout.Width(120)))
                 {
-                    var newCastle = world.Castles.FirstOrDefault(c => c.Id == moveCharacterCastleId);
-                    if (newCastle == null)
+                    var on = chara != characterForCharacterMove;
+                    waitingClickForCharacterMove = on;
+                    characterForCharacterMove = null;
+                    if (on)
                     {
-                        Debug.LogError("移動先の城が見つかりません。");
-                        return;
+                        characterForCharacterMove = chara;
                     }
-                    castle.Members.Remove(chara);
-                    newCastle.Members.Add(chara);
-                    Save();
-                    LoadWorld();
-                    return;
                 }
 
             }
@@ -291,7 +333,6 @@ public class TileInfoEditorWindow : EditorWindow
     {
         var hasCountry = targetCountry != null;
         if (hasCountry) countryIdForNewCastle = targetCountry.Id;
-        if (targetTile.HasCastle) castleIdForNewCastle = targetTile.Castle.Id;
         if (targetTile.HasCastle) castleIdForNewTown = targetTile.Castle.Id;
 
         // 城情報
@@ -350,14 +391,13 @@ public class TileInfoEditorWindow : EditorWindow
         {
             BoldLabel("城なし");
             countryIdForNewCastle = EditorGUILayout.IntField("国ID", countryIdForNewCastle);
-            castleIdForNewCastle = EditorGUILayout.IntField("新城ID", castleIdForNewCastle);
 
             if (GUILayout.Button("城を作成"))
             {
                 var country = world.Countries.First(c => c.Id == countryIdForNewCastle);
                 var newCastle = new Castle
                 {
-                    Id = castleIdForNewCastle == -1 ? world.Castles.Max(c => c.Id) + 1 : castleIdForNewCastle,
+                    Id = world.Castles.Max(c => c.Id) + 1,
                     Position = targetTile.Position,
                     Strength = 0,
                     StrengthMax = 999,
@@ -453,12 +493,27 @@ public class TileInfoEditorWindow : EditorWindow
             using (VerticalLayout(GUILayout.Width(100)))
             {
                 Label($"将数: {castle.Members.Count}");
-                using (HorizontalLayout())
+
+                var i = 0;
+                foreach (var chara in castle.Members.Where(m => m != castle.Boss))
                 {
-                    foreach (var chara in castle.Members.Where(m => m != castle.Boss))
+                    if (i % 6 == 0)
                     {
-                        SmallCharaImage(chara);
+                        GUILayout.BeginHorizontal();
                     }
+
+                    SmallCharaImage(chara);
+
+                    if (i % 6 == 5)
+                    {
+                        GUILayout.EndHorizontal();
+                        GUILayout.Space(5);
+                    }
+                    i++;
+                }
+                if (i % 6 != 0)
+                {
+                    GUILayout.EndHorizontal();
                 }
             }
         }
@@ -580,11 +635,4 @@ public class TileInfoEditorWindow : EditorWindow
         EditorGUILayout.BeginVertical(options);
         return Util.Defer(() => EditorGUILayout.EndVertical());
     }
-
-    private IDisposable ScrollView(Vector2 scrollPos)
-    {
-        EditorGUILayout.BeginScrollView(scrollPos);
-        return Util.Defer(() => EditorGUILayout.EndScrollView());
-    }
-
 }

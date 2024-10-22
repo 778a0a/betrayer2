@@ -7,6 +7,8 @@
 2	5	{"x":3,"y":-6}	100.0	999.0	30.0	500.0	[{"Position":{"x":3,"y":-6},"FoodIncome":300.0,"GoldIncome":30.0},{"Position":{"x":3,"y":-5},"FoodIncome":0.0,"GoldIncome":0.0}]	"ナオミ"	
 2	6	{"x":-1,"y":-9}	100.0	999.0	30.0	500.0	[{"Position":{"x":-1,"y":-9},"FoodIncome":300.0,"GoldIncome":30.0},{"Position":{"x":0,"y":-8},"FoodIncome":0.0,"GoldIncome":0.0}]	"ナオミ"	
 2	7	{"x":2,"y":-11}	100.0	999.0	30.0	500.0	[{"Position":{"x":2,"y":-11},"FoodIncome":300.0,"GoldIncome":30.0},{"Position":{"x":2,"y":-10},"FoodIncome":0.0,"GoldIncome":0.0}]	"ナオミ"	
+2	35	{"x":-2,"y":-2}	0.0	999.0	0.0	0.0	[]	"ナオミ"	
+2	37	{"x":-12,"y":-12}	0.0	999.0	0.0	0.0	[]	"ナオミ"	
 3	8	{"x":11,"y":-11}	100.0	999.0	30.0	500.0	[{"Position":{"x":11,"y":-11},"FoodIncome":300.0,"GoldIncome":30.0}]	"エルシア"	
 4	9	{"x":9,"y":-3}	100.0	999.0	30.0	500.0	[{"Position":{"x":9,"y":-3},"FoodIncome":300.0,"GoldIncome":30.0},{"Position":{"x":8,"y":-3},"FoodIncome":0.0,"GoldIncome":0.0}]	"ドラゴミール"	
 4	10	{"x":8,"y":-8}	100.0	999.0	30.0	500.0	[{"Position":{"x":8,"y":-8},"FoodIncome":300.0,"GoldIncome":30.0},{"Position":{"x":8,"y":-9},"FoodIncome":0.0,"GoldIncome":0.0}]	"ドラゴミール"	
