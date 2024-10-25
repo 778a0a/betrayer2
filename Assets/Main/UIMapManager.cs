@@ -14,13 +14,13 @@ public class UIMapManager : MonoBehaviour
     [SerializeField] public Tilemap terrainTilemap;
     [SerializeField] public Tilemap castleTilemap;
     [SerializeField] public Tile[] terrainTiles;
-    [SerializeField] public Tile[] countryTiles;
+    [SerializeField] public Sprite[] countrySprites;
 
     private MainUI MainUI => MainUI.Instance;
 
     public Sprite GetCountrySprite(int countryIndex)
     {
-        return countryTiles[countryIndex].sprite;
+        return countrySprites[countryIndex];
     }
 
     public GameMapManager Map { get; private set; }
