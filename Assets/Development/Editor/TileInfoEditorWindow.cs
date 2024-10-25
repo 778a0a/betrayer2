@@ -292,7 +292,7 @@ public class TileInfoEditorWindow : EditorWindow
             chara.Intelligence = ParamField("I", chara.Intelligence, Color.cyan);
             chara.Governing = ParamField("G", chara.Governing, new Color(1, 0.5f, 0));
             //chara.LoyaltyBase = ParamField("L", chara.LoyaltyBase, Color.yellow);
-            //chara.Contribution = ParamField("C", chara.Contribution, Color.black);
+            chara.Contribution = ParamField("C", chara.Contribution, Color.black);
             //chara.Prestige = ParamField("P", chara.Prestige, Color.white);
             Label($"合計: {chara.Attack + chara.Defense + chara.Intelligence + chara.Governing}");
 
@@ -305,18 +305,23 @@ public class TileInfoEditorWindow : EditorWindow
                 else chara.Traits &= ~target;
             }
 
-            // 特性
-            GUILayout.BeginHorizontal();
-            var traits = Util.EnumArray<Traits>();
-            for (var i = 0; i < traits.Length; i++)
-            {
-                var trait = traits[i];
-                if (trait == Traits.None) continue;
-                if (i % 5 == 0) GUILayout.EndHorizontal();
-                if (i % 5 == 0) GUILayout.BeginHorizontal();
-                TraitCheckbox(chara, trait);
-            }
-            GUILayout.EndHorizontal();
+            //// 特性
+            Label(chara.Traits.ToString());
+            //GUILayout.BeginHorizontal();
+            //var traits = Util.EnumArray<Traits>();
+            //for (var i = 0; i < traits.Length; i++)
+            //{
+            //    var trait = traits[i];
+            //    if (trait == Traits.None) continue;
+            //    if (i % 5 == 0) GUILayout.EndHorizontal();
+            //    if (i % 5 == 0) GUILayout.BeginHorizontal();
+            //    TraitCheckbox(chara, trait);
+            //}
+            //GUILayout.EndHorizontal();
+
+            // memo
+            chara.csvDebugMemo = EditorGUILayout.TextField("Memo", chara.csvDebugMemo);
+
 
             // 顔画像パス直接入力
             //chara.csvDebugData = EditorGUILayout.TextField("顔画像", chara.csvDebugData);

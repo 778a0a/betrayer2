@@ -215,6 +215,7 @@ public class Character
     }
 
     public string csvDebugData { get; set; } = "";
+    public string csvDebugMemo { get; set; } = "";
 
     public override string ToString() => $"{Name} G:{Gold} P:{Power} (A:{Attack} D:{Defense} I:{Intelligence})";
 }
