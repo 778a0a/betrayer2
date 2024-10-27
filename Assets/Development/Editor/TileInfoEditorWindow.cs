@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -19,7 +20,7 @@ public class TileInfoEditorWindow : EditorWindow
 
     private bool prevFKey;
     private bool isLocked = false;
-    private bool prevCKey;
+    private bool prevTKey;
     private EditMode mode = EditMode.EditBuilding;
     private enum EditMode
     {
@@ -144,12 +145,12 @@ public class TileInfoEditorWindow : EditorWindow
                 GUI.FocusControl(null);
                 Repaint();
             }
-            var oldCKey = prevCKey;
-            prevCKey = Keyboard.current.cKey.isPressed;
-            if (prevCKey && !oldCKey)
+            var oldTKey = prevTKey;
+            prevTKey = Keyboard.current.tKey.isPressed;
+            if (prevTKey && !oldTKey)
             {
-                Debug.Log("Toggle Edit Mode");
-                mode = mode == EditMode.EditBuilding ? EditMode.EditCharacter : EditMode.EditBuilding;
+                mode = (EditMode)((int)(mode + 1) % Enum.GetValues(typeof(EditMode)).Length);
+                Debug.Log($"Change Edit Mode: {mode}");
                 GUI.FocusControl(null);
                 Repaint();
             }
@@ -177,15 +178,16 @@ public class TileInfoEditorWindow : EditorWindow
                 isLocked = !isLocked;
             }
 
-            if (GUILayout.Button(mode == EditMode.EditBuilding ? "施設編集" : "キャラ編集"))
+            if (GUILayout.Button(mode.ToString(), GUILayout.Width(150)))
             {
-                mode = mode == EditMode.EditBuilding ? EditMode.EditCharacter : EditMode.EditBuilding;
+                mode = (EditMode)((int)(mode + 1) % Enum.GetValues(typeof(EditMode)).Length);
             }
         }
 
-        // 有効なタイルでなければ何もしない。
-        if (targetTile == null) return;
-
+        if (targetTile == null)
+        {
+            return;
+        }
 
         using (HorizontalLayout())
         {
@@ -215,6 +217,77 @@ public class TileInfoEditorWindow : EditorWindow
         }
     }
 
+    private Dictionary<int, int> characterId2Order;
+    private int currentPage = 0;
+    private int characterPerPage = 4;
+    private void DrawFree()
+    {
+        if (GUILayout.Button("順番リフレッシュ"))
+        {
+            characterId2Order = null;
+            GUI.FocusControl(null);
+        }
+
+        GUILayout.Label("所属なし");
+        if (characterId2Order == null)
+        {
+            characterId2Order = new Dictionary<int, int>();
+            var characters = world.Characters
+                .Where(c => c.Country == null)
+                .OrderBy(c => c.csvDebugMemo)
+                .ToArray();
+            for (int i = 0; i < characters.Length; i++)
+            {
+                characterId2Order[characters[i].Id] = i;
+            }
+        }
+
+        var frees = world.Characters
+            .Where(c => c.Country == null)
+            .OrderBy(c => characterId2Order[c.Id])
+            .ToArray();
+        var pageCount = frees.Length / characterPerPage;
+
+        GUILayout.BeginHorizontal();
+        // 前後ボタン
+        if (GUILayout.Button("前へ"))
+        {
+            currentPage = Mathf.Max(0, currentPage - 1);
+            GUI.FocusControl(null);
+        }
+        if (GUILayout.Button("次へ"))
+        {
+            currentPage = Mathf.Min(pageCount, currentPage + 1);
+            GUI.FocusControl(null);
+        }
+
+        if (Event.current.type == EventType.KeyDown && Event.current.keyCode == KeyCode.PageUp)
+        {
+            currentPage = Mathf.Max(0, currentPage - 1);
+            GUI.FocusControl(null);
+            Repaint();
+        }
+        if (Event.current.type == EventType.KeyDown && Event.current.keyCode == KeyCode.PageDown)
+        {
+            currentPage = Mathf.Min(pageCount, currentPage + 1);
+            GUI.FocusControl(null);
+            Repaint();
+        }
+
+        // 現在のページとページ数
+        GUILayout.Label($"{currentPage + 1}/{pageCount + 1}");
+        GUILayout.EndHorizontal();
+
+        //scrollPosition = GUILayout.BeginScrollView(scrollPosition);
+        var startIndex = currentPage * characterPerPage;
+        var endIndex = Mathf.Min((currentPage + 1) * characterPerPage, frees.Length);
+        for (int i = startIndex; i < endIndex; i++)
+        {
+            DrawCharacter(frees[i]);
+        }
+        //GUILayout.EndScrollView();
+    }
+
     private bool waitingClickForCharacterMove;
     private Character characterForCharacterMove;
 
@@ -222,128 +295,16 @@ public class TileInfoEditorWindow : EditorWindow
     private void DrawEditCharacter()
     {
         var castle = targetTile.Castle;
-        if (castle == null) return;
+        if (castle == null)
+        {
+            DrawFree();
+            return;
+        }
 
         BoldLabel("キャラ一覧");
         foreach (var chara in castle.Members)
         {
-            GUILayout.Space(5);
-            using var _ = HorizontalLayout();
-            var prev = chara.csvDebugData;
-            chara.csvDebugData = DropableCharaImage(chara.csvDebugData, chara);
-            if (prev != chara.csvDebugData)
-            {
-                Debug.Log("Prev: " + prev);
-            }
-            static string DropableCharaImage(string path, Character chara)
-            {
-                var dropArea = GUILayoutUtility.GetRect(200f, 200.0f, GUILayout.ExpandWidth(true));
-                CharaImage(chara, rect: dropArea);
-                var e = Event.current;
-                switch (e.type)
-                {
-                    // なぜかExplorerからドロップしてもDragPerformが呼ばれないので、
-                    // DragUpdatedで更新する。
-                    case EventType.DragUpdated:
-                        //case EventType.DragPerform:
-                        if (!dropArea.Contains(e.mousePosition)) break;
-                        DragAndDrop.visualMode = DragAndDropVisualMode.Copy;
-                        DragAndDrop.AcceptDrag();
-                        DragAndDrop.activeControlID = 0;
-                        Event.current.Use();
-                        foreach (var p in DragAndDrop.paths)
-                        {
-                            Debug.Log($"Accepted: {p}");
-                            return p;
-                        }
-                        break;
-                }
-                return path;
-            }
-
-            using var __ = VerticalLayout();
-            using (HorizontalLayout())
-            {
-                Label($"ID:{chara.Id}", 50);
-                chara.Name = EditorGUILayout.TextField(chara.Name);
-                Label("");
-            }
-
-            int ParamField(string label, int value, Color color, int max = 100)
-            {
-                GUILayout.BeginHorizontal();
-                Label(label, 15);
-                value = EditorGUILayout.IntField(value, GUILayout.Width(40));
-                var rect = GUILayoutUtility.GetRect(1, 20);
-                value = (int)GUI.HorizontalSlider(rect, value, 0, max);
-                EditorGUI.DrawRect(rect, Color.gray);
-                var rect2 = new Rect(rect.xMin, rect.yMin, rect.width * value / (float)max, rect.height);
-                EditorGUI.DrawRect(rect2, color);
-                
-                GUILayoutUtility.GetRect(1, 20);
-                GUILayout.EndHorizontal();
-                GUILayout.Space(5);
-                return value;
-            }
-
-            // 能力値
-            chara.Attack = ParamField("A", chara.Attack, Color.red);
-            chara.Defense = ParamField("D", chara.Defense, Color.green);
-            chara.Intelligence = ParamField("I", chara.Intelligence, Color.cyan);
-            chara.Governing = ParamField("G", chara.Governing, new Color(1, 0.5f, 0));
-            //chara.LoyaltyBase = ParamField("L", chara.LoyaltyBase, Color.yellow);
-            chara.Contribution = ParamField("C", chara.Contribution, Color.black);
-            //chara.Prestige = ParamField("P", chara.Prestige, Color.white);
-            Label($"合計: {chara.Attack + chara.Defense + chara.Intelligence + chara.Governing}");
-
-            void TraitCheckbox(Character chara, Traits target)
-            {
-                var on = chara.Traits.HasFlag(target);
-                var rect = GUILayoutUtility.GetRect(0, 20, GUILayout.Width(85));
-                var onAfter = GUI.Toggle(rect, on, target.ToString(), EditorStyles.miniButton);
-                if (onAfter) chara.Traits |= target;
-                else chara.Traits &= ~target;
-            }
-
-            //// 特性
-            Label(chara.Traits.ToString());
-            //GUILayout.BeginHorizontal();
-            //var traits = Util.EnumArray<Traits>();
-            //for (var i = 0; i < traits.Length; i++)
-            //{
-            //    var trait = traits[i];
-            //    if (trait == Traits.None) continue;
-            //    if (i % 5 == 0) GUILayout.EndHorizontal();
-            //    if (i % 5 == 0) GUILayout.BeginHorizontal();
-            //    TraitCheckbox(chara, trait);
-            //}
-            //GUILayout.EndHorizontal();
-
-            // memo
-            chara.csvDebugMemo = EditorGUILayout.TextField("Memo", chara.csvDebugMemo);
-
-
-            // 顔画像パス直接入力
-            //chara.csvDebugData = EditorGUILayout.TextField("顔画像", chara.csvDebugData);
-
-            //城移動
-            //using (HorizontalLayout())
-            //{
-            //    var moving = chara == characterForCharacterMove && waitingClickForCharacterMove;
-            //    var color = moving ? Color.yellow : Color.white;
-            //    var style = new GUIStyle(GUI.skin.button);
-            //    style.normal.textColor = color;
-            //    if (GUILayout.Button(moving ? "城をクリック!" : "マップクリックで移動", style, GUILayout.Width(120)))
-            //    {
-            //        var on = chara != characterForCharacterMove;
-            //        waitingClickForCharacterMove = on;
-            //        characterForCharacterMove = null;
-            //        if (on)
-            //        {
-            //            characterForCharacterMove = chara;
-            //        }
-            //    }
-            //}
+            DrawCharacter(chara);
         }
         if (GUILayout.Button("新規キャラクター追加"))
         {
@@ -366,6 +327,127 @@ public class TileInfoEditorWindow : EditorWindow
         }
     }
 
+
+    private void DrawCharacter(Character chara)
+    {
+        GUILayout.Space(5);
+        using var _ = HorizontalLayout();
+        var prev = chara.csvDebugData;
+        chara.csvDebugData = DropableCharaImage(chara.csvDebugData, chara);
+        if (prev != chara.csvDebugData)
+        {
+            Debug.Log("Prev: " + prev);
+        }
+        static string DropableCharaImage(string path, Character chara)
+        {
+            var dropArea = GUILayoutUtility.GetRect(200f, 200.0f, GUILayout.ExpandWidth(true));
+            CharaImage(chara, rect: dropArea);
+            var e = Event.current;
+            switch (e.type)
+            {
+                // なぜかExplorerからドロップしてもDragPerformが呼ばれないので、
+                // DragUpdatedで更新する。
+                case EventType.DragUpdated:
+                    //case EventType.DragPerform:
+                    if (!dropArea.Contains(e.mousePosition)) break;
+                    DragAndDrop.visualMode = DragAndDropVisualMode.Copy;
+                    DragAndDrop.AcceptDrag();
+                    DragAndDrop.activeControlID = 0;
+                    Event.current.Use();
+                    foreach (var p in DragAndDrop.paths)
+                    {
+                        Debug.Log($"Accepted: {p}");
+                        return p;
+                    }
+                    break;
+            }
+            return path;
+        }
+
+        using var __ = VerticalLayout();
+        using (HorizontalLayout())
+        {
+            Label($"ID:{chara.Id}", 50);
+            chara.Name = EditorGUILayout.TextField(chara.Name);
+            Label("");
+        }
+
+        int ParamField(string label, int value, Color color, int max = 100)
+        {
+            GUILayout.BeginHorizontal();
+            Label(label, 15);
+            value = EditorGUILayout.IntField(value, GUILayout.Width(40));
+            var rect = GUILayoutUtility.GetRect(1, 20);
+            value = (int)GUI.HorizontalSlider(rect, value, 0, max);
+            EditorGUI.DrawRect(rect, Color.gray);
+            var rect2 = new Rect(rect.xMin, rect.yMin, rect.width * value / (float)max, rect.height);
+            EditorGUI.DrawRect(rect2, color);
+
+            GUILayoutUtility.GetRect(1, 20);
+            GUILayout.EndHorizontal();
+            GUILayout.Space(5);
+            return value;
+        }
+
+        // 能力値
+        chara.Attack = ParamField("A", chara.Attack, Color.red);
+        chara.Defense = ParamField("D", chara.Defense, Color.green);
+        chara.Intelligence = ParamField("I", chara.Intelligence, Color.cyan);
+        chara.Governing = ParamField("G", chara.Governing, new Color(1, 0.5f, 0));
+        //chara.LoyaltyBase = ParamField("L", chara.LoyaltyBase, Color.yellow);
+        chara.Contribution = ParamField("C", chara.Contribution, Color.black);
+        //chara.Prestige = ParamField("P", chara.Prestige, Color.white);
+        Label($"合計: {chara.Attack + chara.Defense + chara.Intelligence + chara.Governing}");
+
+        void TraitCheckbox(Character chara, Traits target)
+        {
+            var on = chara.Traits.HasFlag(target);
+            var rect = GUILayoutUtility.GetRect(0, 20, GUILayout.Width(85));
+            var onAfter = GUI.Toggle(rect, on, target.ToString(), EditorStyles.miniButton);
+            if (onAfter) chara.Traits |= target;
+            else chara.Traits &= ~target;
+        }
+
+        //// 特性
+        Label(chara.Traits.ToString());
+        //GUILayout.BeginHorizontal();
+        //var traits = Util.EnumArray<Traits>();
+        //for (var i = 0; i < traits.Length; i++)
+        //{
+        //    var trait = traits[i];
+        //    if (trait == Traits.None) continue;
+        //    if (i % 5 == 0) GUILayout.EndHorizontal();
+        //    if (i % 5 == 0) GUILayout.BeginHorizontal();
+        //    TraitCheckbox(chara, trait);
+        //}
+        //GUILayout.EndHorizontal();
+
+        // memo
+        chara.csvDebugMemo = EditorGUILayout.TextField("Memo", chara.csvDebugMemo);
+
+
+        // 顔画像パス直接入力
+        //chara.csvDebugData = EditorGUILayout.TextField("顔画像", chara.csvDebugData);
+
+        //城移動
+        //using (HorizontalLayout())
+        //{
+        //    var moving = chara == characterForCharacterMove && waitingClickForCharacterMove;
+        //    var color = moving ? Color.yellow : Color.white;
+        //    var style = new GUIStyle(GUI.skin.button);
+        //    style.normal.textColor = color;
+        //    if (GUILayout.Button(moving ? "城をクリック!" : "マップクリックで移動", style, GUILayout.Width(120)))
+        //    {
+        //        var on = chara != characterForCharacterMove;
+        //        waitingClickForCharacterMove = on;
+        //        characterForCharacterMove = null;
+        //        if (on)
+        //        {
+        //            characterForCharacterMove = chara;
+        //        }
+        //    }
+        //}
+    }
     private void DrawEditBuilding()
     {
         var hasCountry = targetCountry != null;
