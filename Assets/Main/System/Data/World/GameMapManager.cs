@@ -127,7 +127,8 @@ public class GameMapManager
 
         town.Castle = castle;
         castle.Towns.Add(town);
-        //Debug.Log($"町({town.Position}, 城ID:{town.Castle.Id})を登録しました。");
+        town.FoodIncomeMaxBase = GameMapTile.TileFoodMax(tile);
+        town.GoldIncomeMaxBase = GameMapTile.TileGoldMax(tile);
     }
 
     public void UnregisterTown(Town town)

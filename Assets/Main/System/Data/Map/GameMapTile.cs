@@ -81,12 +81,12 @@ public class GameMapTile : ICountryEntity, IMapEntity
     public static float NeighborGoldAdjustment(Terrain terrain) => devAdjustments[terrain].NeighborGold;
     private static readonly Dictionary<Terrain, TerrainDevAdjustmentData> devAdjustments = new()
     {
-        { Terrain.LargeRiver, new(-300, 050, -30, 030) },
-        { Terrain.River,      new(-300, 050, -30, 020) },
-        { Terrain.Plain,      new(1000, 150, 030, 000) },
-        { Terrain.Hill,       new(0700, 000, 050, 010) },
-        { Terrain.Forest,     new(0500, 000, 080, 020) },
-        { Terrain.Mountain,   new(0400, 000, 040, 015) },
+        { Terrain.LargeRiver, new(-300, 050, -30, 020) },
+        { Terrain.River,      new(-300, 050, -30, 010) },
+        { Terrain.Plain,      new(0500, 100, 030, 000) },
+        { Terrain.Hill,       new(0350, 000, 040, 005) },
+        { Terrain.Forest,     new(0250, 000, 040, 010) },
+        { Terrain.Mountain,   new(0200, 000, 040, 005) },
     };
     private struct TerrainDevAdjustmentData
     {

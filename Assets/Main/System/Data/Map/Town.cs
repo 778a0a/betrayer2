@@ -25,12 +25,21 @@ public class Town : ICountryEntity, IMapEntity
     /// </summary>
     public float FoodIncome { get; set; }
     [JsonIgnore]
-    public float FoodIncomeMax { get; set; }
+    public float FoodIncomeMaxBase { get; set; }
+    [JsonIgnore]
+    public float FoodIncomeMax => CalculateMax(FoodIncomeMaxBase, Castle.DevelopmentLevel);
 
     /// <summary>
     /// 商業
     /// </summary>
     public float GoldIncome { get; set; }
     [JsonIgnore]
-    public float GoldIncomeMax { get; set; }
+    public float GoldIncomeMaxBase { get; set; }
+    [JsonIgnore]
+    public float GoldIncomeMax => CalculateMax(GoldIncomeMaxBase, Castle.DevelopmentLevel);
+    
+    private static float CalculateMax(float baseVal, int level)
+    {
+        return baseVal + baseVal * 0.5f * level;
+    }
 }

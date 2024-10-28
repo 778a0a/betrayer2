@@ -36,9 +36,6 @@ public class DefaultData
             foreach (var town in savedCastle.Towns)
             {
                 var townTile = map.GetTile(town.Position);
-                town.FoodIncomeMax = GameMapTile.TileFoodMax(townTile);
-                town.GoldIncomeMax = GameMapTile.TileGoldMax(townTile);
-
                 map.RegisterTown(castle, town);
             }
         }

@@ -40,10 +40,20 @@ public class Castle : ICountryEntity, IMapEntity
     public List<Town> Towns { get; } = new();
 
     /// <summary>
+    /// 開発レベル
+    /// </summary>
+    public int DevelopmentLevel { get; set; } = 1;
+    /// <summary>
+    /// 城塞レベル
+    /// </summary>
+    public int FortressLevel { get; set; } = 1;
+
+    /// <summary>
     /// 砦強度
     /// </summary>
     public float Strength { get; set; }
-    public float StrengthMax { get; set; }
+    [JsonIgnore]
+    public float StrengthMax => FortressLevel * 100;
 
     /// <summary>
     /// 金

@@ -482,9 +482,13 @@ public class TileInfoEditorWindow : EditorWindow
             EditorGUILayout.EndHorizontal();
 
             EditorGUILayout.BeginHorizontal();
-            castle.Strength = EditorGUILayout.FloatField("Strength", castle.Strength);
-            castle.StrengthMax = EditorGUILayout.FloatField("Max", castle.StrengthMax);
+            Label("発展度");
+            castle.DevelopmentLevel = EditorGUILayout.IntField(castle.DevelopmentLevel);
+            Label("城塞レベル");
+            castle.FortressLevel = EditorGUILayout.IntField(castle.FortressLevel);
             EditorGUILayout.EndHorizontal();
+
+            castle.Strength = EditorGUILayout.FloatField("Strength", castle.Strength);
 
             EditorGUILayout.BeginHorizontal();
             castle.Gold = EditorGUILayout.FloatField("Gold", castle.Gold);
@@ -519,7 +523,6 @@ public class TileInfoEditorWindow : EditorWindow
                     Id = world.Castles.Max(c => c.Id) + 1,
                     Position = targetTile.Position,
                     Strength = 0,
-                    StrengthMax = 999,
                     Gold = 0,
                     Food = 0,
                 };
@@ -539,13 +542,13 @@ public class TileInfoEditorWindow : EditorWindow
             Label($"城主: {town.Castle.Boss?.Name ?? ""}");
 
             EditorGUILayout.BeginHorizontal();
-            town.GoldIncome = EditorGUILayout.FloatField("GoldIncome", town.GoldIncome);
-            town.GoldIncomeMax = EditorGUILayout.FloatField("Max", town.GoldIncomeMax);
+            town.GoldIncome = EditorGUILayout.FloatField("GoldIncome", town.GoldIncome, GUILayout.Width(250));
+            Label($"Max: {town.GoldIncomeMax} (Base: {town.GoldIncomeMaxBase})");
             EditorGUILayout.EndHorizontal();
 
             EditorGUILayout.BeginHorizontal();
-            town.FoodIncome = EditorGUILayout.FloatField("FoodIncome", town.FoodIncome);
-            town.FoodIncomeMax = EditorGUILayout.FloatField("Max", town.FoodIncomeMax);
+            town.FoodIncome = EditorGUILayout.FloatField("FoodIncome", town.FoodIncome, GUILayout.Width(250));
+            Label($"Max: {town.FoodIncomeMax} (Base: {town.FoodIncomeMaxBase})");
             EditorGUILayout.EndHorizontal();
 
             if (GUILayout.Button("町を削除"))
@@ -568,9 +571,7 @@ public class TileInfoEditorWindow : EditorWindow
                 {
                     Position = targetTile.Position,
                     GoldIncome = 0,
-                    GoldIncomeMax = GameMapTile.TileGoldMax(targetTile),
                     FoodIncome = 0,
-                    FoodIncomeMax = GameMapTile.TileFoodMax(targetTile),
                 };
                 world.Map.RegisterTown(targetCastle, newTown);
                 Save();
