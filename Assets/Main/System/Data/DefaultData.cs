@@ -26,6 +26,9 @@ public class DefaultData
             .Select(c => c.Data)
             .ToList();
 
+        Debug.Log($"国関係データ読み込み中...");
+        var rels = SavedCountryRelations.FromCsv(LoadTextFile($"Scenarios/{saveDir}/country_relation_data"));
+
         Debug.Log($"城・町データ読み込み中...");
         var castles = SavedCastles.FromCsv(LoadTextFile($"Scenarios/{saveDir}/castle_data"));
         foreach (var savedCastle in castles)
@@ -107,12 +110,14 @@ public class DefaultData
     public static void SaveToResources(WorldData world, string saveDir = "01")
     {
         var countries = SavedCountries.FromWorld(world);
+        var rels = SavedCountryRelations.FromWorld(world);
         var castles = SavedCastles.FromWorld(world);
         var characters = SavedCharacters.FromWorld(world);
         var terrains = SavedTerrains.FromWorld(world);
         var forces = SavedForces.FromWorld(world);
 
         var countryCsv = SavedCountries.ToCsv(countries) + Environment.NewLine;
+        var relCsv = SavedCountryRelations.ToCsv(rels) + Environment.NewLine;
         var castleCsv = SavedCastles.ToCsv(castles) + Environment.NewLine;
         var charaCsv = SavedCharacters.ToCsv(characters) + Environment.NewLine;
         var terrainCsv = SavedTerrains.ToCsv(terrains) + Environment.NewLine;
@@ -121,6 +126,7 @@ public class DefaultData
         var dir = $"Assets/Resources/Scenarios/{saveDir}";
         Directory.CreateDirectory(dir);
         File.WriteAllText($"{dir}/country_data.csv", countryCsv, Encoding.UTF8);
+        File.WriteAllText($"{dir}/country_relation_data.csv", relCsv, Encoding.UTF8);
         File.WriteAllText($"{dir}/castle_data.csv", castleCsv, Encoding.UTF8);
         File.WriteAllText($"{dir}/character_data.csv", charaCsv, Encoding.UTF8);
         File.WriteAllText($"{dir}/terrain_data.csv", terrainCsv, Encoding.UTF8);
