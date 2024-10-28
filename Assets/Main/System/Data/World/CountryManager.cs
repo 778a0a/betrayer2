@@ -46,4 +46,14 @@ public class CountryManager : IReadOnlyList<Country>
         }
         return 50;
     }
+
+    public void SetRelation(Country a, Country b, float value)
+    {
+        if (a == null) throw new ArgumentNullException(nameof(a));
+        if (b == null) throw new ArgumentNullException(nameof(b));
+        if (a == b) throw new ArgumentException("SetRelation a == b");
+        if (a.Id > b.Id) (a, b) = (b, a);
+
+        relations[(a, b)] = value;
+    }
 }

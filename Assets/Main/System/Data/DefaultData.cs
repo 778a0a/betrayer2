@@ -80,7 +80,7 @@ public class DefaultData
 
         var world = new WorldData
         {
-            Countries = new(countries),
+            Countries = new(countries, rels),
             Characters = characters,
             Forces = new(savedForces.Select(f => f.Data)),
             Map = map,
@@ -103,7 +103,7 @@ public class DefaultData
         // 書き込みを即座に反映させるために、直接読み込みます。
         return File.ReadAllText($"Assets/Resources/{path}.csv");
 #else
-        return Resources.Load<TextAsset>("").text
+        return Resources.Load<TextAsset>(path).text
 #endif
     }
 

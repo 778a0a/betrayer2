@@ -26,6 +26,7 @@ public class TileInfoEditorWindow : EditorWindow
     {
         EditBuilding,
         EditCharacter,
+        EditRelation,
     }
 
     [MenuItem("開発/タイル情報")]
@@ -212,8 +213,43 @@ public class TileInfoEditorWindow : EditorWindow
             case EditMode.EditCharacter:
                 DrawEditCharacter();
                 break;
+            case EditMode.EditRelation:
+                DrawEditRelation();
+                break;
             default:
                 break;
+        }
+    }
+
+    private void DrawEditRelation()
+    {
+        if (targetCountry == null)
+        {
+            GUILayout.Label("国を選択してください。");
+            return;
+        }
+
+        var country = targetCountry;
+        BoldLabel($"国: {country.Id} {country.Ruler.Name}");
+
+        // 関係
+        foreach (var other in world.Countries)
+        {
+            if (other == country) continue;
+            var relation = world.Countries.GetRelation(country, other);
+            EditorGUILayout.BeginHorizontal();
+            CharaImage(other.Ruler, 80);
+            EditorGUILayout.BeginVertical();
+            Label($"国: {other.Id} {other.Ruler.Name}", 150);
+            EditorGUILayout.BeginHorizontal();
+            if (GUILayout.Button("-10", GUILayout.Width(50), GUILayout.Height(30))) relation -= 10;
+            if (GUILayout.Button("+10", GUILayout.Width(50), GUILayout.Height(30))) relation += 10;
+            EditorGUILayout.EndHorizontal();
+            relation = (int)EditorGUILayout.Slider(relation, 0, 100);
+            world.Countries.SetRelation(country, other, relation);
+            EditorGUILayout.EndVertical();
+            EditorGUILayout.EndHorizontal();
+            GUILayout.Space(5);
         }
     }
 
@@ -378,7 +414,8 @@ public class TileInfoEditorWindow : EditorWindow
             Label(label, 15);
             value = EditorGUILayout.IntField(value, GUILayout.Width(40));
             var rect = GUILayoutUtility.GetRect(1, 20);
-            value = (int)GUI.HorizontalSlider(rect, value, 0, max);
+            // 誤操作防止のためスライダーは無効にしておく。
+            //value = (int)GUI.HorizontalSlider(rect, value, 0, max);
             EditorGUI.DrawRect(rect, Color.gray);
             var rect2 = new Rect(rect.xMin, rect.yMin, rect.width * value / (float)max, rect.height);
             EditorGUI.DrawRect(rect2, color);
