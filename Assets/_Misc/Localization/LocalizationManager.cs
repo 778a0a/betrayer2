@@ -83,7 +83,7 @@ public class LocalizationManager : MonoBehaviour
         var entry = table[key];
         if (entry == null)
         {
-            Debug.LogWarning($"Key not found: {key}");
+            //Debug.LogWarning($"Key not found: {key}");
             return string.Format(key, args);
         }
         var value = table[key].LocalizedValue;
