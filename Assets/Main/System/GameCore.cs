@@ -130,6 +130,24 @@ public class GameCore
         }
     }
 
+    private readonly Lazy<ActionBase[]> vassalActions = new(() => new ActionBase[]
+    {
+        Instance.TownActions.ImproveGoldIncome,
+        Instance.TownActions.ImproveFoodIncome,
+        Instance.CastleActions.ImproveCastleStrength,
+        Instance.CastleActions.TrainSoldiers,
+        Instance.CastleActions.Move,
+    });
+    private readonly Lazy<ActionBase[]> bossActions = new(() => new ActionBase[]
+    {
+        Instance.TownActions.ImproveGoldIncome,
+        Instance.TownActions.ImproveFoodIncome,
+        Instance.CastleActions.ImproveCastleStrength,
+        Instance.CastleActions.TrainSoldiers,
+        Instance.CastleActions.Move,
+        Instance.CastleActions.HireVassal,
+    });
+
     /// <summary>
     /// キャラクターの行動を行う。
     /// </summary>
@@ -140,7 +158,6 @@ public class GameCore
         // 10日毎に行動を行う。
         if (GameDate.Day == 10 || GameDate.Day == 20 || GameDate.Day == 30)
         {
-            Debug.Log("行動");
             // 収入の1/3分、農業・商業・築城・訓練をランダムに行う。
             var args = new ActionArgs();
             foreach (var chara in World.Characters)
@@ -160,21 +177,35 @@ public class GameCore
                 {
                     args.Castle = World.CastleOf(chara);
                     args.Town = args.Castle?.Towns.RandomPick();
-                    action = new ActionBase[]
+
+                    if (args.Castle.Boss == chara)
                     {
-                                TownActions.ImproveGoldIncome,
-                                TownActions.ImproveFoodIncome,
-                                CastleActions.ImproveCastleStrength,
-                                CastleActions.TrainSoldiers,
-                                CastleActions.Move,
-                    }.RandomPickDefault();
+                        action = bossActions.Value.RandomPick();
+                    }
+                    else
+                    {
+                        action = vassalActions.Value.RandomPick();
+                    }
                 }
-                var budget = Math.Min(chara.Gold, chara.Salary / 3);
-                while (budget > 0)
+
+                // 繰り返し実行可能なアクションの場合
+                if (action != CastleActions.Move && action != CastleActions.HireVassal)
                 {
-                    if (!action.CanDo(args)) break;
-                    budget -= action.Cost(args);
-                    await action.Do(args);
+                    var budget = Math.Min(chara.Gold, chara.Salary / 3);
+                    while (budget > 0)
+                    {
+                        if (!action.CanDo(args)) break;
+                        budget -= action.Cost(args);
+                        await action.Do(args);
+                    }
+                }
+                // そうでない場合は1回だけ自校する。
+                else
+                {
+                    if (action.CanDo(args))
+                    {
+                        await action.Do(args);
+                    }
                 }
             }
         }
