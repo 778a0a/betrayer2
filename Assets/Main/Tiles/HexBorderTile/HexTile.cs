@@ -1,4 +1,5 @@
 using System;
+using TMPro;
 using UnityEngine;
 
 [ExecuteAlways]
@@ -32,6 +33,7 @@ public class HexTile : MonoBehaviour
     [SerializeField] private SpriteRenderer countryFlagSprite;
     [SerializeField] private SpriteRenderer forceSprite;
     [SerializeField] private SpriteRenderer forceFlagSprite;
+    [SerializeField] private TextMeshPro debugText;
 
     private void Awake()
     {
@@ -92,6 +94,22 @@ public class HexTile : MonoBehaviour
         {
             lineRenderer.startColor = value;
             lineRenderer.endColor = value;
+        }
+    }
+
+    public void ShowDebugText(string text, float durationSeconds = -1, Color? color = null)
+    {
+        debugText.gameObject.SetActive(true);
+        debugText.text = text;
+        debugText.color = color ?? Color.white;
+        if (durationSeconds > 0)
+        {
+            Invoke(nameof(HideDebugText), durationSeconds);
+        }
+
+        void HideDebugText()
+        {
+            debugText.gameObject.SetActive(false);
         }
     }
 

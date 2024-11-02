@@ -205,6 +205,29 @@ public class TileInfoEditorWindow : EditorWindow
             DrawBuildingOverview();
         }
 
+        //if (GUILayout.Button("距離表示"))
+        //{
+        //    Debug.Log("距離表示");
+        //    foreach (var tile in world.Map.Tiles)
+        //    {
+        //        tile.UI.ShowDebugText(tile.DistanceTo(targetTile).ToString(), color: Color.red);
+        //        tile.Refresh();
+        //    }
+        //}
+        //if (targetTile.HasCastle)
+        //{
+        //    Label("近隣の城");
+        //    var c = targetTile.Castle;
+        //    foreach (var cc in c.Neighbors)
+        //    {
+        //        GUILayout.BeginHorizontal();
+        //        SmallCharaImage(cc.Boss);
+        //        Label($"Distance: {c.DistanceTo(cc)}");
+        //        GUILayout.EndHorizontal();
+        //        GUILayout.Space(5);
+        //    }
+        //}
+
         switch (mode)
         {
             case EditMode.EditBuilding:

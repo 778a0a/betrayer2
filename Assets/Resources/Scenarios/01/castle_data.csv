@@ -25,7 +25,7 @@
 20	3	{"x":-4,"y":-5}	6	2	100.0	30.0	500.0	[{"Position":{"x":-4,"y":-5},"FoodIncome":300.0,"GoldIncome":30.0},{"Position":{"x":-3,"y":-5},"FoodIncome":0.0,"GoldIncome":0.0}]	"アストリッド"	
 21	0	{"x":-10,"y":-6}	3	1	100.0	30.0	500.0	[{"Position":{"x":-10,"y":-6},"FoodIncome":300.0,"GoldIncome":30.0},{"Position":{"x":-10,"y":-5},"FoodIncome":0.0,"GoldIncome":0.0}]	"ジョージ"	
 22	30	{"x":-10,"y":14}	4	1	100.0	30.0	500.0	[{"Position":{"x":-10,"y":14},"FoodIncome":300.0,"GoldIncome":30.0},{"Position":{"x":-10,"y":13},"FoodIncome":0.0,"GoldIncome":0.0}]	"デューン"	
-23	31	{"x":-4,"y":14}	6	1	100.0	30.0	500.0	[{"Position":{"x":-4,"y":14},"FoodIncome":300.0,"GoldIncome":30.0},{"Position":{"x":-4,"y":13},"FoodIncome":0.0,"GoldIncome":0.0}]	"カメリア"	
+23	31	{"x":-5,"y":14}	6	1	100.0	30.0	500.0	[{"Position":{"x":-5,"y":14},"FoodIncome":0.0,"GoldIncome":0.0},{"Position":{"x":-5,"y":13},"FoodIncome":0.0,"GoldIncome":0.0}]	"カメリア"	
 24	18	{"x":-8,"y":1}	5	1	100.0	30.0	500.0	[{"Position":{"x":-8,"y":1},"FoodIncome":300.0,"GoldIncome":30.0},{"Position":{"x":-7,"y":1},"FoodIncome":0.0,"GoldIncome":0.0}]	"リヴィア"	
 25	17	{"x":-4,"y":4}	6	1	100.0	30.0	500.0	[{"Position":{"x":-4,"y":4},"FoodIncome":300.0,"GoldIncome":30.0},{"Position":{"x":-5,"y":5},"FoodIncome":0.0,"GoldIncome":0.0}]	"サフィラ"	
 26	23	{"x":-4,"y":10}	2	0	100.0	30.0	500.0	[{"Position":{"x":-4,"y":10},"FoodIncome":300.0,"GoldIncome":30.0}]	"アステル"	

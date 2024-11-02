@@ -102,6 +102,12 @@ public class Castle : ICountryEntity, IMapEntity
         return months;
     }
 
+    [JsonIgnore]
+    public Dictionary<Castle, float> Distances { get; } = new();
+    [JsonIgnore]
+    public List<Castle> Neighbors { get; set; } = new();
+    public const int NeighborDistanceMax = 5;
+
     public override string ToString()
     {
         return $"城({Position} 城主: {Boss?.Name ?? "無"} - {Country.Ruler.Name}軍)";

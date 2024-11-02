@@ -42,6 +42,19 @@ public class DefaultData
                 map.RegisterTown(castle, town);
             }
         }
+        foreach (var a in countries.SelectMany(c => c.Castles))
+        {
+            foreach (var b in countries.SelectMany(c => c.Castles))
+            {
+                if (a == b) continue;
+                var d = a.DistanceTo(b);
+                a.Distances[b] = d;
+                if (d <= Castle.NeighborDistanceMax)
+                {
+                    a.Neighbors.Add(b);
+                }
+            }
+        }
 
         Debug.Log($"キャラデータ読み込み中...");
         var oldcharas = SavedCharacters.FromCsv(LoadTextFile($"Scenarios/{saveDir}/character_data"));
