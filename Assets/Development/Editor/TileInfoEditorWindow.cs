@@ -110,7 +110,7 @@ public class TileInfoEditorWindow : EditorWindow
     private void Save()
     {
         Debug.Log("保存します。");
-        DefaultData.SaveToResources(world, saveDir);
+        DefaultData.SaveToResources(world, saveDir, true);
         Resources.UnloadUnusedAssets();
     }
 

@@ -20,7 +20,7 @@ public class SavedCharacter
 
 public static class SavedCharacters
 {
-    public static List<SavedCharacter> FromWorld(WorldData world)
+    public static List<SavedCharacter> FromWorld(WorldData world, bool retainFreeCharaCastleRandom)
     {
         var charas = new List<SavedCharacter>();
         for (int i = 0; i < world.Characters.Count; i++)
@@ -36,7 +36,9 @@ public static class SavedCharacters
                 Character = character,
                 CountryId = country != null ? country.Id : -1,
                 MemberOrderIndex = memberIndex,
-                CastleId = character.Castle.Id,
+                CastleId = retainFreeCharaCastleRandom && character.IsFree ?
+                    -1 :
+                    character.Castle.Id,
             };
             charas.Add(chara);
         }

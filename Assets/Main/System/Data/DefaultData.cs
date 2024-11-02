@@ -136,12 +136,12 @@ public class DefaultData
 #endif
     }
 
-    public static void SaveToResources(WorldData world, string saveDir = "01")
+    public static void SaveToResources(WorldData world, string saveDir = "01", bool retainFreeCharaCastleRandom = false)
     {
         var countries = SavedCountries.FromWorld(world);
         var rels = SavedCountryRelations.FromWorld(world);
         var castles = SavedCastles.FromWorld(world);
-        var characters = SavedCharacters.FromWorld(world);
+        var characters = SavedCharacters.FromWorld(world, retainFreeCharaCastleRandom);
         var terrains = SavedTerrains.FromWorld(world);
         var forces = SavedForces.FromWorld(world);
 
