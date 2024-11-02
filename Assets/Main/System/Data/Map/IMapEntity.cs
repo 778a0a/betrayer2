@@ -57,17 +57,18 @@ public static class MapEntityExtensions
         throw new InvalidOperationException();
     }
 
-    public static float DistanceTo(this IMapEntity self, IMapEntity target)
+    public static int DistanceTo(this IMapEntity self, IMapEntity target)
     {
-        var dx = target.Position.x - self.Position.x;
-        var dy = target.Position.y - self.Position.y;
-        if (dy % 2 == 0)
+        var a = OffsetToCube(self.Position.x, self.Position.y);
+        var b = OffsetToCube(target.Position.x, target.Position.y);
+        return Mathf.Max(Mathf.Abs(a.x - b.x), Mathf.Abs(a.y - b.y), Mathf.Abs(a.z - b.z));
+
+        static Vector3Int OffsetToCube(int col, int row)
         {
-            return Mathf.Abs(dx) + Mathf.Abs(dy) / 2;
-        }
-        else
-        {
-            return Mathf.Abs(dx) + (Mathf.Abs(dy) - 1) / 2;
+            int x = col - (row - (row & 1)) / 2;
+            int z = row;
+            int y = -x - z;
+            return new(x, y, z);
         }
     }
 }
