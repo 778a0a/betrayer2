@@ -49,18 +49,34 @@ public class DefaultData
         foreach (var chara in oldcharas)
         {
             characters.Add(chara.Character);
-            if (chara.IsFree) continue;
-            
-            var country = countries[chara.CountryId];
-            if (chara.IsRuler)
+
+            if (!chara.IsFree)
             {
-                country.Ruler = chara.Character;
+                var country = countries[chara.CountryId];
+                if (chara.IsRuler)
+                {
+                    country.Ruler = chara.Character;
+                }
             }
 
             if (chara.CastleId != -1)
             {
                 var tile = map.GetTile(castles.Find(c => c.Data.Id == chara.CastleId).Data);
-                tile.Castle.Members.Add(chara.Character);
+                if (chara.IsFree)
+                {
+                    tile.Castle.Frees.Add(chara.Character);
+                }
+                else
+                {
+                    tile.Castle.Members.Add(chara.Character);
+                }
+            }
+            else
+            {
+                Debug.Assert(chara.IsFree);
+                // ランダムに配置する。
+                var tile = map.GetTile(castles.RandomPick().Data);
+                tile.Castle.Frees.Add(chara.Character);
             }
         }
 

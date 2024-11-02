@@ -16,7 +16,6 @@ public class WorldData
     public IEnumerable<Castle> Castles => Countries.SelectMany(c => c.Castles);
 
     public Country CountryOf(Castle castle) => Countries.FirstOrDefault(c => c.Castles.Contains(castle));
-    public Castle CastleOf(Character chara) => Castles.FirstOrDefault(c => c.Members.Contains(chara));
 
     public override string ToString() => $"WorldData {Characters.Count} characters, {Countries.Count} countries";
 }

@@ -36,7 +36,7 @@ public static class SavedCharacters
                 Character = character,
                 CountryId = country != null ? country.Id : -1,
                 MemberOrderIndex = memberIndex,
-                CastleId = world.CastleOf(character)?.Id ?? -1,
+                CastleId = character.Castle.Id,
             };
             charas.Add(chara);
         }

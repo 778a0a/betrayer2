@@ -34,6 +34,12 @@ public class Castle : ICountryEntity, IMapEntity
     public List<Character> Members { get; } = new();
 
     /// <summary>
+    /// 未所属メンバー
+    /// </summary>
+    [JsonIgnore]
+    public List<Character> Frees { get; } = new();
+
+    /// <summary>
     /// 町
     /// </summary>
     [JsonIgnore]

@@ -97,6 +97,7 @@ partial class CastleActions
             //    }
             //}
 
+            target.Castle.Frees.Remove(target);
             var castle = args.Castle;
             castle.Members.Add(target);
 

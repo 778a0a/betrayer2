@@ -176,6 +176,10 @@ public class Character
     public bool IsFree => Country == null;
     [JsonIgnore]
     public bool IsRulerOrVassal => !IsFree;
+    [JsonIgnore]
+    public Castle Castle =>
+        Country?.Castles.FirstOrDefault(c => c.Members.Contains(this)) ??
+        world.Castles.FirstOrDefault(c => c.Frees.Contains(this));
 
     /// <summary>
     /// 地位

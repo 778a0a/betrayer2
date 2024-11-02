@@ -36,7 +36,7 @@ public partial class CharacterInfoPanel
             imageRuler.style.backgroundImage = FaceImageManager.Instance.GetImage(ruler);
 
         }
-        var boss = world.CastleOf(chara).Boss;
+        var boss = chara.Castle.Boss;
         var isBoss = chara == boss;
         BossImageContainer.style.display = Util.Display(!isBoss && ruler != boss);
         if (!isBoss)

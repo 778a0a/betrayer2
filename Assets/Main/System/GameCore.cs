@@ -162,7 +162,7 @@ public class GameCore
                 if (chara.IsFree) continue;
 
                 // 所属ありの場合
-                var castle = World.CastleOf(chara);
+                var castle = chara.Castle;
 
                 // 君主の場合
                 if (chara.IsRuler)
@@ -217,7 +217,7 @@ public class GameCore
                 }
                 else
                 {
-                    args.Castle = World.CastleOf(chara);
+                    args.Castle = chara.Castle;
                     args.Town = args.Castle?.Towns.RandomPick();
                     action = vassalActions.Value.RandomPick();
                 }

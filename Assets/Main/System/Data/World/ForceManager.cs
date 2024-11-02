@@ -101,7 +101,7 @@ public class ForceManager : IReadOnlyList<Force>
         // 移動先が目的地で自国の城の場合は城に入る。
         if (nextTile.Castle == force.Destination && force.IsSelf(nextTile))
         {
-            var oldCastle = world.CastleOf(force.Character);
+            var oldCastle = force.Character.Castle;
             oldCastle.Members.Remove(force.Character);
             var castle = nextTile.Castle;
             castle.Members.Add(force.Character);
@@ -128,7 +128,7 @@ public class ForceManager : IReadOnlyList<Force>
         // 負けた場合は本拠地へ撤退を始める。
         if (!win)
         {
-            var home = world.CastleOf(force.Character);
+            var home = force.Character.Castle;
             force.SetDestination(home);
             Debug.Log($"軍勢更新処理 野戦に敗北しました。撤退します。({force.TileMoveRemainingDays})");
             return;
@@ -161,7 +161,7 @@ public class ForceManager : IReadOnlyList<Force>
             // 後退先に移動できるなら、敵を後退させる。
             else
             {
-                var enemyHome = world.CastleOf(enemy.Character);
+                var enemyHome = enemy.Character.Castle;
                 enemy.UpdatePosition(backPos);
                 // 本拠地へ撤退させる。
                 enemy.SetDestination(enemyHome);
@@ -196,7 +196,7 @@ public class ForceManager : IReadOnlyList<Force>
         // 移動先が自分の城の場合は入城する（ありえる？）
         if (nextTile.Castle != null && force.IsSelf(nextTile.Castle) && force.Destination.Position == nextTile.Position)
         {
-            var oldCastle = world.CastleOf(force.Character);
+            var oldCastle = force.Character.Castle;
             oldCastle.Members.Remove(force.Character);
             nextTile.Castle.Members.Add(force.Character);
             Unregister(force);
@@ -221,7 +221,7 @@ public class ForceManager : IReadOnlyList<Force>
         // 負けた場合は本拠地へ撤退を始める。
         if (!win)
         {
-            var home = world.CastleOf(force.Character);
+            var home = force.Character.Castle;
             force.SetDestination(home);
             Debug.Log($"軍勢更新処理 攻城戦に敗北しました。撤退します。({force.TileMoveRemainingDays})");
             return;
@@ -266,6 +266,11 @@ public class ForceManager : IReadOnlyList<Force>
                 Unregister(f);
             }
 
+            foreach (var m in castle.Members)
+            {
+                castle.Frees.Add(m);
+            }
+            // TODO ランダムに散らす。
             castle.Members.Clear();
             // TODO 他に必要な処理が色々ありそう。
         }
@@ -295,7 +300,7 @@ public class ForceManager : IReadOnlyList<Force>
             .ToArray();
         foreach (var f in forcesToEnterCastle)
         {
-            var oldCastle = world.CastleOf(f.Character);
+            var oldCastle = f.Character.Castle;
             oldCastle.Members.Remove(f.Character);
             castle.Members.Add(f.Character);
             Unregister(f);

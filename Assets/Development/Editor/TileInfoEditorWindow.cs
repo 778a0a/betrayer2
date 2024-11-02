@@ -93,7 +93,7 @@ public class TileInfoEditorWindow : EditorWindow
                     else
                     {
                         var castle = tile.Castle;
-                        var oldCastle = world.CastleOf(characterForCharacterMove);
+                        var oldCastle = characterForCharacterMove.Castle;
                         oldCastle.Members.Remove(characterForCharacterMove);
                         castle.Members.Add(characterForCharacterMove);
 
