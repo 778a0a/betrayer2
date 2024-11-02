@@ -64,14 +64,10 @@ public class GameCore
     {
         await Awaitable.WaitForSecondsAsync(test.TickWait);
 
-        await test.HoldIfNeeded();
         var player = World.Player;
 
-        MainUI.Frame.SetDatePanelData(this);
-        MainUI.Frame.SetPlayerPanelData(player);
-
-        // 月初になったら収支計算を行う。
-        if (GameDate.Day == 1)
+        // 収入月の場合
+        if (GameDate.IsIncomeMonth)
         {
             OnIncome();
         }
@@ -79,6 +75,10 @@ public class GameCore
         World.Forces.OnForceMove(this);
 
         await OnCharacterMove(player);
+
+        MainUI.Frame.SetDatePanelData(this);
+        MainUI.Frame.SetPlayerPanelData(player);
+        await test.HoldIfNeeded();
 
         GameDate++;
     }
@@ -89,16 +89,13 @@ public class GameCore
     private void OnIncome()
     {
         Debug.Log("収支計算");
-        // 7月になったら収穫を行う。
         foreach (var castle in World.Countries.SelectMany(c => c.Castles))
         {
             // 町の収入
             foreach (var town in castle.Towns)
             {
-                // ゴールド収入
                 castle.Gold += town.GoldIncome;
-                // 食料収入
-                if (GameDate.IsFoodIncomeMonth) castle.Food += town.FoodIncome;
+                castle.Food += town.FoodIncome;
             }
             // キャラ・軍隊への支払い
             foreach (var chara in castle.Members)
@@ -136,16 +133,6 @@ public class GameCore
         Instance.TownActions.ImproveFoodIncome,
         Instance.CastleActions.ImproveCastleStrength,
         Instance.CastleActions.TrainSoldiers,
-        Instance.CastleActions.Move,
-    });
-    private readonly Lazy<ActionBase[]> bossActions = new(() => new ActionBase[]
-    {
-        Instance.TownActions.ImproveGoldIncome,
-        Instance.TownActions.ImproveFoodIncome,
-        Instance.CastleActions.ImproveCastleStrength,
-        Instance.CastleActions.TrainSoldiers,
-        Instance.CastleActions.Move,
-        Instance.CastleActions.HireVassal,
     });
 
     /// <summary>
@@ -155,14 +142,69 @@ public class GameCore
     /// <returns></returns>
     private async Task OnCharacterMove(Character player)
     {
-        // 10日毎に行動を行う。
-        if (GameDate.Day == 10 || GameDate.Day == 20 || GameDate.Day == 30)
+        // 収入月の場合は未所属キャラを移動させる。
+        if (GameDate.IsIncomeMonth && GameDate.Day == 1)
         {
-            // 収入の1/3分、農業・商業・築城・訓練をランダムに行う。
+            foreach (var chara in World.Characters.Where(c => c.IsFree))
+            {
+                if (chara == player) continue;
+
+                // ランダムに拠点を移動する。
+            }
+        }
+
+        // 月初の場合
+        if (GameDate.Day == 1)
+        {
+            foreach (var chara in World.Characters)
+            {
+                if (chara == player) continue;
+                if (chara.IsFree) continue;
+
+                // 所属ありの場合
+                var castle = World.CastleOf(chara);
+
+                // 君主の場合
+                if (chara.IsRuler)
+                {
+                    // 収入月の場合
+                    if (GameDate.IsIncomeMonth)
+                    {
+                        // 各城の方針を設定する。
+                    }
+                    // 外交を行う。
+                    // 同盟
+                    // 親善
+                }
+                // 城主の場合（君主も含む）
+                if (castle.Boss == chara)
+                {
+                    // 採用を行うか判定する。
+                    // 追放を行うか判定する。
+                    // 町建設・城増築・投資を行うか判定する。
+                    // 君主でない場合反乱を起こすか判定する。
+                    // 進軍を行うか判定する。
+                    // 売買を行うか判定する。
+                    // 挑発を行うか判定する。
+                    // 反乱を起こすか判定する。
+                }
+                // 配下の場合
+                else
+                {
+                    // 反乱を起こすか判定する。
+                }
+            }
+        }
+
+        // 15日毎に行動を行う。
+        if (GameDate.Day == 15 || GameDate.Day == 30)
+        {
+            // 収入の1/6分、農業・商業・築城・訓練をランダムに行う。
             var args = new ActionArgs();
             foreach (var chara in World.Characters)
             {
                 if (chara == player) continue;
+                if (chara.IsMoving) continue;
 
                 args.Character = chara;
 
@@ -177,36 +219,17 @@ public class GameCore
                 {
                     args.Castle = World.CastleOf(chara);
                     args.Town = args.Castle?.Towns.RandomPick();
-
-                    if (args.Castle.Boss == chara)
-                    {
-                        action = bossActions.Value.RandomPick();
-                    }
-                    else
-                    {
-                        action = vassalActions.Value.RandomPick();
-                    }
+                    action = vassalActions.Value.RandomPick();
                 }
 
-                // 繰り返し実行可能なアクションの場合
-                if (action != CastleActions.Move && action != CastleActions.HireVassal)
+                var budget = Math.Min(chara.Gold, chara.Salary / 6);
+                do
                 {
-                    var budget = Math.Min(chara.Gold, chara.Salary / 3);
-                    while (budget > 0)
-                    {
-                        if (!action.CanDo(args)) break;
-                        budget -= action.Cost(args);
-                        await action.Do(args);
-                    }
+                    if (!action.CanDo(args)) break;
+                    budget -= action.Cost(args);
+                    await action.Do(args);
                 }
-                // そうでない場合は1回だけ自校する。
-                else
-                {
-                    if (action.CanDo(args))
-                    {
-                        await action.Do(args);
-                    }
-                }
+                while (budget > 0);
             }
         }
     }

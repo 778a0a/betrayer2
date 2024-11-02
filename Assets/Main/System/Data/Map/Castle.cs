@@ -87,7 +87,7 @@ public class Castle : ICountryEntity, IMapEntity
         {
             date = date.NextMonth();
             remaining -= comsumptionPerMonth;
-            if (date.IsFoodIncomeMonth) remaining += incomePerYear;
+            if (date.IsIncomeMonth) remaining += incomePerYear;
             if (remaining <= 0) break;
             // 無限ループにならないように適当に打ち切る。
             if (months > 30) return months;

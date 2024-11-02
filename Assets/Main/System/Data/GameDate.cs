@@ -10,8 +10,6 @@ public struct GameDate
     public const int MonthsPerYear = 12;
     public const int DaysPerYear = DaysPerMonth * MonthsPerYear;
 
-    public const int FoodIncomeMonth = 6;
-
     private readonly int ticks;
     public readonly int Year => ticks / DaysPerYear + 1;
     public readonly int Month => (ticks % DaysPerYear) / DaysPerMonth + 1;
@@ -30,7 +28,10 @@ public struct GameDate
     public static GameDate operator ++(GameDate date) => date.NextDay();
     public static GameDate operator +(GameDate date, int days) => date.AddDays(days);
 
-    public readonly bool IsFoodIncomeMonth => Month == FoodIncomeMonth;
+    /// <summary>
+    /// 1月、4月、7月、10月は収入月
+    /// </summary>
+    public readonly bool IsIncomeMonth => Month % 3 == 1;
 
     public override readonly string ToString()
     {
