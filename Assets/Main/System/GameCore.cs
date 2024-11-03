@@ -145,11 +145,17 @@ public class GameCore
         // 収入月の場合は未所属キャラを移動させる。
         if (GameDate.IsIncomeMonth && GameDate.Day == 1)
         {
-            foreach (var chara in World.Characters.Where(c => c.IsFree))
+            foreach (var chara in World.Characters)
             {
                 if (chara == player) continue;
+                if (!chara.IsFree) continue;
 
                 // ランダムに拠点を移動する。
+                var oldCastle = chara.Castle;
+                var newCastle = oldCastle.Neighbors.RandomPick();
+                oldCastle.Frees.Remove(chara);
+                newCastle.Frees.Add(chara);
+                //Debug.Log($"{chara.Name}が{oldCastle}から{newCastle}に移動しました。");
             }
         }
 
