@@ -33,6 +33,18 @@ public class Castle : ICountryEntity, IMapEntity
     [JsonIgnore]
     public List<Character> Members { get; } = new();
 
+    [JsonIgnore]
+    public float Power => Members
+        .Select(m => m.Power)
+        .DefaultIfEmpty(0)
+        .Sum();
+    [JsonIgnore]
+    public float DefencePower => Members
+        .Where(m => !m.IsMoving && !m.IsIncapacitated)
+        .Select(m => m.Power)
+        .DefaultIfEmpty(0)
+        .Sum();
+
     /// <summary>
     /// 未所属メンバー
     /// </summary>
@@ -62,6 +74,11 @@ public class Castle : ICountryEntity, IMapEntity
     public float StrengthMax => FortressLevel * 100;
 
     /// <summary>
+    /// 安定度
+    /// </summary>
+    public float Stability { get; set; }
+
+    /// <summary>
     /// 金
     /// </summary>
     public float Gold { get; set; }
@@ -79,6 +96,8 @@ public class Castle : ICountryEntity, IMapEntity
     public float FoodIncome => Towns.Sum(t => t.FoodIncome);
     [JsonIgnore]
     public float FoodIncomeMax => Towns.Sum(t => t.FoodIncomeMax);
+    [JsonIgnore]
+    public float FoodBalance => FoodIncome - 3 * Members.Sum(m => m.FoodConsumption);
     /// <summary>
     /// 食料残り月数
     /// </summary>
@@ -108,8 +127,24 @@ public class Castle : ICountryEntity, IMapEntity
     public List<Castle> Neighbors { get; set; } = new();
     public const int NeighborDistanceMax = 5;
 
+    /// <summary>
+    /// 方針
+    /// </summary>
+    public CastleObjective Objective { get; set; }
+
     public override string ToString()
     {
         return $"城({Position} 城主: {Boss?.Name ?? "無"} - {Country.Ruler.Name}軍)";
     }
+}
+
+public enum CastleObjective
+{
+    None,
+    Attack,
+    Train,
+    CastleStrength,
+    Stability,
+    Commerce,
+    Agriculture,
 }

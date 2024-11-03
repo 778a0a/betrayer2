@@ -131,7 +131,7 @@ public class Character
     /// <summary>
     /// 食料消費
     /// </summary>
-    public int FoodConsumption => Soldiers.Sum(s => s.MaxHp) / 12;
+    public int FoodConsumption => Soldiers.Sum(s => s.Hp);
 
     /// <summary>
     /// 行動力
