@@ -29,8 +29,8 @@ partial class TownActions
         public override ValueTask Do(ActionArgs args)
         {
             Assert.IsTrue(CanDo(args));
-            var chara = args.Actor;
-            var town = args.TargetTown;
+            var chara = args.actor;
+            var town = args.targetTown;
 
             town.GoldIncome += 0.1f * chara.Governing / 100f;
 
@@ -55,8 +55,8 @@ partial class TownActions
         public override ValueTask Do(ActionArgs args)
         {
             Assert.IsTrue(CanDo(args));
-            var chara = args.Actor;
-            var town = args.TargetTown;
+            var chara = args.actor;
+            var town = args.targetTown;
 
             town.FoodIncome += 10 * chara.Governing / 100f;
 

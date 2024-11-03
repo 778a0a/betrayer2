@@ -28,8 +28,8 @@ partial class CastleActions
         public override ValueTask Do(ActionArgs args)
         {
             Assert.IsTrue(CanDo(args));
-            var chara = args.Actor;
-            var castle = args.TargetCastle;
+            var chara = args.actor;
+            var castle = args.targetCastle;
 
             castle.Strength += 0.5f * chara.Governing / 100f;
 

@@ -68,6 +68,15 @@ public partial class GameCore
 
         var player = World.Player;
 
+        // 行動不能残り日数を更新する。
+        foreach (var chara in World.Characters)
+        {
+            if (chara.IsIncapacitated)
+            {
+                chara.IncapacitatedDaysRemaining--;
+            }
+        }
+
         // 収入月の場合
         if (GameDate.Day == 1 && GameDate.IsIncomeMonth)
         {

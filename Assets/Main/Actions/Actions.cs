@@ -44,7 +44,7 @@ public class ActionBase
     /// </summary>
     public bool CanDo(ActionArgs args) =>
         CanSelect(args) &&
-        args.Actor.CanPay(Cost(args)) &&
+        args.actor.CanPay(Cost(args)) &&
         CanDoCore(args);
     /// <summary>
     /// アクションを実行可能ならtrue（子クラスでのオーバーライド用）
@@ -59,11 +59,11 @@ public class ActionBase
     protected void PayCost(ActionArgs args)
     {
         var cost = Cost(args);
-        args.Actor.Gold -= cost.actorGold;
-        args.Actor.ActionPoints -= cost.actionPoints;
+        args.actor.Gold -= cost.actorGold;
+        args.actor.ActionPoints -= cost.actionPoints;
         if (cost.castleGold > 0)
         {
-            args.Actor.Castle.Gold -= cost.castleGold;
+            args.actor.Castle.Gold -= cost.castleGold;
         }
     }
 }
@@ -91,26 +91,29 @@ public struct ActionCost
 
 public struct ActionArgs
 {
-    public Character Actor { get; set; }
-    public Castle TargetCastle { get; set; }
-    public Town TargetTown { get; set; }
-    public Country TargetCountry { get; set; }
+    public Character actor;
+    public Castle targetCastle;
+    public Town targetTown;
+    public Country targetCountry;
+    public Character targetCharacter;
 
     public ActionArgs(
         Character actor,
         Castle targetCastle = null,
         Town targetTown = null,
-        Country targetCountry = null)
+        Country targetCountry = null,
+        Character targetCharacter = null)
     {
-        Actor = actor;
-        TargetCastle = targetCastle;
-        TargetTown = targetTown;
-        TargetCountry = targetCountry;
+        this.actor = actor;
+        this.targetCastle = targetCastle;
+        this.targetTown = targetTown;
+        this.targetCountry = targetCountry;
+        this.targetCharacter = targetCharacter;
     }
 
     public override readonly string ToString()
     {
-        return $"{Actor.Name} -> {(object)TargetCastle ?? (object)TargetTown ?? TargetCountry}";
+        return $"{actor.Name} -> {(object)targetCastle ?? (object)targetTown ?? targetCountry}";
     }
 }
 

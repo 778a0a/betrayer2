@@ -68,7 +68,7 @@ public partial class TileDetailPanel
     private ActionButton[] castleGoverningActions;
     private ActionButton[] castleMartialActions;
     private ActionButton[] castleStrategyActions;
-    private ActionButton[] castleDiplomaciesActions;
+    //private ActionButton[] castleDiplomaciesActions;
     private ActionButton[] townGoverningActions;
     private ActionButton[] currentShowingActions;
     private void InitializeActionButtons()
@@ -77,7 +77,7 @@ public partial class TileDetailPanel
         castleGoverningActions = core.CastleActions.Governings.Select(a => new ActionButton(this, a)).ToArray();
         castleMartialActions = core.CastleActions.Martials.Select(a => new ActionButton(this, a)).ToArray();
         castleStrategyActions = core.CastleActions.Strategies.Select(a => new ActionButton(this, a)).ToArray();
-        castleDiplomaciesActions = core.CastleActions.Diplomacies.Select(a => new ActionButton(this, a)).ToArray();
+        //castleDiplomaciesActions = core.CastleActions.Diplomacies.Select(a => new ActionButton(this, a)).ToArray();
         townGoverningActions = core.TownActions.Governings.Select(a => new ActionButton(this, a)).ToArray();
 
         var mmm = new[]
@@ -108,9 +108,9 @@ public partial class TileDetailPanel
                 var player = GameCore.Instance.World.Player;
                 actionArgs = new ActionArgs
                 {
-                    Actor = player,
-                    TargetCastle = CurrentData.Castle,
-                    TargetTown = CurrentData.Town
+                    actor = player,
+                    targetCastle = CurrentData.Castle,
+                    targetTown = CurrentData.Town
                 };
 
                 ActionButtonContainer.Clear();

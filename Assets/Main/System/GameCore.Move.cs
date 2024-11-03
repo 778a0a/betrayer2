@@ -79,14 +79,18 @@ partial class GameCore
                 // 城主の場合（君主も含む）
                 if (castle.Boss == chara)
                 {
+                    // TODO 経済の仕組みを更新してから実装する
                     // 採用を行うか判定する。
                     // 追放を行うか判定する。
                     // 町建設・城増築・投資を行うか判定する。
-                    // 君主でない場合反乱を起こすか判定する。
-                    // 進軍を行うか判定する。
                     // 売買を行うか判定する。
+
+                    // 進軍を行うか判定する。
+                    AI.Deploy(castle);
+
                     // 挑発を行うか判定する。
-                    // 反乱を起こすか判定する。
+
+                    // 君主でない場合反乱を起こすか判定する。
                 }
                 // 配下の場合
                 else
@@ -104,21 +108,21 @@ partial class GameCore
             foreach (var chara in World.Characters)
             {
                 if (chara == player) continue;
-                if (chara.IsMoving) continue;
+                if (chara.IsMoving || chara.IsIncapacitated) continue;
 
-                args.Actor = chara;
+                args.actor = chara;
 
                 var action = default(ActionBase);
                 if (chara.IsFree)
                 {
-                    args.TargetCastle = null;
-                    args.TargetTown = null;
+                    args.targetCastle = null;
+                    args.targetTown = null;
                     action = CastleActions.TrainSoldiers;
                 }
                 else
                 {
-                    args.TargetCastle = chara.Castle;
-                    args.TargetTown = args.TargetCastle?.Towns.RandomPick();
+                    args.targetCastle = chara.Castle;
+                    args.targetTown = args.targetCastle?.Towns.RandomPick();
                     action = vassalActions.Value.RandomPick();
                 }
 

@@ -40,7 +40,7 @@ partial class CastleActions
             // 探索は成否に拘らずコストを消費する。
             PayCost(args);
 
-            var chara = args.Actor;
+            var chara = args.actor;
 
             // ランダムに所属なしのキャラを選ぶ。
             var frees = World.Characters.Where(c => c.IsFree).ToList();
@@ -98,7 +98,7 @@ partial class CastleActions
             //}
 
             target.Castle.Frees.Remove(target);
-            var castle = args.TargetCastle;
+            var castle = args.targetCastle;
             castle.Members.Add(target);
 
             Debug.Log($"{chara.Name}: {target.Name}を配下にしました。");
