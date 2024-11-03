@@ -80,10 +80,12 @@ partial class GameCore
                 if (castle.Boss == chara)
                 {
                     // TODO 経済の仕組みを更新してから実装する
-                    // 採用を行うか判定する。
                     // 追放を行うか判定する。
                     // 町建設・城増築・投資を行うか判定する。
                     // 売買を行うか判定する。
+
+                    // 採用を行うか判定する。
+                    AI.HireVassal(castle);
 
                     // 進軍を行うか判定する。
                     AI.Deploy(castle);

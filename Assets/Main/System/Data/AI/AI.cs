@@ -196,4 +196,25 @@ public class AI
             }
         }
     }
+
+    public void HireVassal(Castle castle)
+    {
+        // 未所属キャラがいないなら何もしない。
+        if (castle.Frees.Count == 0)
+        {
+            return;
+        }
+
+        // 人数が少ない場合
+        if (castle.Members.Count <= 2)
+        {
+            var chara = castle.Frees.RandomPick();
+            castle.Members.Add(chara);
+            castle.Frees.Remove(chara);
+            Debug.Log($"{chara} が {castle} に採用されました。");
+        }
+
+        // 人数が十分いる場合は、十分に豊かな場合のみ採用する。
+        // TODO
+    }
 }
