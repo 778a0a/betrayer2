@@ -159,8 +159,27 @@ public class GameCore
             }
         }
 
-        // 月初の場合
+        // 君主の月毎アクションを行う。
         if (GameDate.Day == 1)
+        {
+            foreach (var chara in World.Countries.Select(c => c.Ruler))
+            {
+                if (chara == player) continue;
+                
+                // 収入月の場合
+                if (GameDate.IsIncomeMonth)
+                {
+                    // 各城の方針を設定する。
+                }
+                // 外交を行う。
+                // 同盟
+                // 親善
+            }
+        }
+
+        // 各キャラの月毎アクションを行う。
+        // プレーヤー君主の行動を反映させるため、2日目に行う。
+        if (GameDate.Day == 2)
         {
             foreach (var chara in World.Characters)
             {
@@ -170,18 +189,6 @@ public class GameCore
                 // 所属ありの場合
                 var castle = chara.Castle;
 
-                // 君主の場合
-                if (chara.IsRuler)
-                {
-                    // 収入月の場合
-                    if (GameDate.IsIncomeMonth)
-                    {
-                        // 各城の方針を設定する。
-                    }
-                    // 外交を行う。
-                    // 同盟
-                    // 親善
-                }
                 // 城主の場合（君主も含む）
                 if (castle.Boss == chara)
                 {
