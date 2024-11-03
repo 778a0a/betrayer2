@@ -8,6 +8,7 @@ using UnityEngine;
 /// </summary>
 public class Country : ICountryEntity
 {
+    public CountryManager manager;
     Country ICountryEntity.Country => this;
 
     /// <summary>
@@ -25,6 +26,18 @@ public class Country : ICountryEntity
 
     public IEnumerable<Character> Members => Castles.SelectMany(c => c.Members);
     public IEnumerable<Character> Vassals => Members.Where(c => c != Ruler);
+
+    public IEnumerable<Country> Neighbors => Castles
+        .SelectMany(c => c.Neighbors)
+        .Select(c => c.Country)
+        .Distinct()
+        .Where(c => c != this);
+
+    public const int AllyRelation = 100;
+    public const int EnemyRelation = 0;
+    public bool IsAlly(Country other) => Relation(other) == AllyRelation;
+    public bool IsEnemy(Country other) => Relation(other) == EnemyRelation;
+    public float Relation(Country other) => manager.GetRelation(this, other);
 
     /// <summary>
     /// マップの国の色のインデックス

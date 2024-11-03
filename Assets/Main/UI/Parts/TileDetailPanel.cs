@@ -108,9 +108,9 @@ public partial class TileDetailPanel
                 var player = GameCore.Instance.World.Player;
                 actionArgs = new ActionArgs
                 {
-                    Character = player,
-                    Castle = CurrentData.Castle,
-                    Town = CurrentData.Town
+                    Actor = player,
+                    TargetCastle = CurrentData.Castle,
+                    TargetTown = CurrentData.Town
                 };
 
                 ActionButtonContainer.Clear();

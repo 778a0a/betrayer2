@@ -36,15 +36,15 @@ public class ActionBase
     /// </summary>
     public virtual bool CanSelect(ActionArgs args) => true;
     /// <summary>
-    /// アクションの実行に必要なGold
+    /// アクションの実行に必要なコスト
     /// </summary>
-    public virtual int Cost(ActionArgs args) => 0;
+    public virtual ActionCost Cost(ActionArgs args) => 0;
     /// <summary>
     /// アクションを実行可能ならtrue
     /// </summary>
     public bool CanDo(ActionArgs args) =>
         CanSelect(args) &&
-        args.Character.Gold >= Cost(args) &&
+        args.Actor.CanPay(Cost(args)) &&
         CanDoCore(args);
     /// <summary>
     /// アクションを実行可能ならtrue（子クラスでのオーバーライド用）
@@ -58,15 +58,60 @@ public class ActionBase
 
     protected void PayCost(ActionArgs args)
     {
-        args.Character.Gold -= Cost(args);
+        var cost = Cost(args);
+        args.Actor.Gold -= cost.actorGold;
+        args.Actor.ActionPoints -= cost.actionPoints;
+        if (cost.castleGold > 0)
+        {
+            args.Actor.Castle.Gold -= cost.castleGold;
+        }
     }
 }
 
-public class ActionArgs
+public struct ActionCost
 {
-    public Character Character { get; set; }
-    public Castle Castle { get; set; }
-    public Town Town { get; set; }
+    public int actorGold;
+    public int actionPoints;
+    public int castleGold;
+
+    public readonly bool CanPay(Character chara) =>
+        chara.Gold >= actorGold &&
+        chara.ActionPoints >= actionPoints &&
+        (castleGold == 0 || chara.Castle.Gold >= castleGold);
+
+    public static ActionCost Of(int gold, int points = 0, int countryGold = 0) => new()
+    {
+        actorGold = gold,
+        actionPoints = points,
+        castleGold = countryGold,
+    };
+
+    public static implicit operator ActionCost(int gold) => new() { actorGold = gold };
+}
+
+public struct ActionArgs
+{
+    public Character Actor { get; set; }
+    public Castle TargetCastle { get; set; }
+    public Town TargetTown { get; set; }
+    public Country TargetCountry { get; set; }
+
+    public ActionArgs(
+        Character actor,
+        Castle targetCastle = null,
+        Town targetTown = null,
+        Country targetCountry = null)
+    {
+        Actor = actor;
+        TargetCastle = targetCastle;
+        TargetTown = targetTown;
+        TargetCountry = targetCountry;
+    }
+
+    public override readonly string ToString()
+    {
+        return $"{Actor.Name} -> {(object)TargetCastle ?? (object)TargetTown ?? TargetCountry}";
+    }
 }
 
 

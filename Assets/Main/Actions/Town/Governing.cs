@@ -24,13 +24,13 @@ partial class TownActions
         public override string Label => L["商業"];
         public override string Description => L["ゴールド収入を改善します。"];
 
-        public override int Cost(ActionArgs args) => 2;
+        public override ActionCost Cost(ActionArgs args) => 2;
 
         public override ValueTask Do(ActionArgs args)
         {
             Assert.IsTrue(CanDo(args));
-            var chara = args.Character;
-            var town = args.Town;
+            var chara = args.Actor;
+            var town = args.TargetTown;
 
             town.GoldIncome += 0.1f * chara.Governing / 100f;
 
@@ -50,13 +50,13 @@ partial class TownActions
         public override string Label => L["開墾"];
         public override string Description => L["食料収入を改善します。"];
 
-        public override int Cost(ActionArgs args) => 2;
+        public override ActionCost Cost(ActionArgs args) => 2;
 
         public override ValueTask Do(ActionArgs args)
         {
             Assert.IsTrue(CanDo(args));
-            var chara = args.Character;
-            var town = args.Town;
+            var chara = args.Actor;
+            var town = args.TargetTown;
 
             town.FoodIncome += 10 * chara.Governing / 100f;
 
@@ -76,7 +76,7 @@ partial class TownActions
         public override string Label => L["破棄"];
         public override string Description => L["町を破棄します。"];
 
-        public override int Cost(ActionArgs args) => 40;
+        public override ActionCost Cost(ActionArgs args) => 40;
 
         public override ValueTask Do(ActionArgs args)
         {

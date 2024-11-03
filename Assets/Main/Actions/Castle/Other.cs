@@ -17,7 +17,7 @@ partial class CastleActions
         public override string Label => L["人物一覧"];
         public override string Description => L["人物一覧を表示します。"];
 
-        public override int Cost(ActionArgs args) => 5;
+        public override ActionCost Cost(ActionArgs args) => 5;
 
         public override ValueTask Do(ActionArgs args)
         {

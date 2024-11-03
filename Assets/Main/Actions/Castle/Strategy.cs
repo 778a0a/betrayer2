@@ -24,7 +24,7 @@ partial class CastleActions
         public override string Label => L["人材募集"];
         public override string Description => L["配下を雇います。"];
 
-        public override int Cost(ActionArgs args) => 10;
+        public override ActionCost Cost(ActionArgs args) => 10;
 
         protected override bool CanDoCore(ActionArgs args)
         {
@@ -40,7 +40,7 @@ partial class CastleActions
             // 探索は成否に拘らずコストを消費する。
             PayCost(args);
 
-            var chara = args.Character;
+            var chara = args.Actor;
 
             // ランダムに所属なしのキャラを選ぶ。
             var frees = World.Characters.Where(c => c.IsFree).ToList();
@@ -98,7 +98,7 @@ partial class CastleActions
             //}
 
             target.Castle.Frees.Remove(target);
-            var castle = args.Castle;
+            var castle = args.TargetCastle;
             castle.Members.Add(target);
 
             Debug.Log($"{chara.Name}: {target.Name}を配下にしました。");
@@ -121,7 +121,7 @@ partial class CastleActions
         public override string Label => L["追放"];
         public override string Description => L["配下を解雇します。"];
 
-        public override int Cost(ActionArgs args) => 5;
+        public override ActionCost Cost(ActionArgs args) => 5;
 
         public override ValueTask Do(ActionArgs args)
         {
@@ -142,7 +142,7 @@ partial class CastleActions
         public override string Label => L["放浪"];
         public override string Description => L["勢力を捨てて放浪します。"];
 
-        public override int Cost(ActionArgs args) => 5;
+        public override ActionCost Cost(ActionArgs args) => 5;
 
         public override ValueTask Do(ActionArgs args)
         {

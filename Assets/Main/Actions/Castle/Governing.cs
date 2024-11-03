@@ -23,13 +23,13 @@ partial class CastleActions
         public override string Label => L["城壁強化"];
         public override string Description => L["城の強度を改善します。"];
 
-        public override int Cost(ActionArgs args) => 3;
+        public override ActionCost Cost(ActionArgs args) => 3;
 
         public override ValueTask Do(ActionArgs args)
         {
             Assert.IsTrue(CanDo(args));
-            var chara = args.Character;
-            var castle = args.Castle;
+            var chara = args.Actor;
+            var castle = args.TargetCastle;
 
             castle.Strength += 0.5f * chara.Governing / 100f;
 
@@ -49,7 +49,7 @@ partial class CastleActions
         public override string Label => L["町建設"];
         public override string Description => L["新しい町を建設します。"];
 
-        public override int Cost(ActionArgs args) => 40;
+        public override ActionCost Cost(ActionArgs args) => 40;
 
         public override ValueTask Do(ActionArgs args)
         {

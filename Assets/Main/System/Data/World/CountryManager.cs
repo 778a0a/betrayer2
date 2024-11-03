@@ -17,6 +17,10 @@ public class CountryManager : IReadOnlyList<Country>
     public CountryManager(IEnumerable<Country> data, List<SavedCountryRelation> rels)
     {
         countries.AddRange(data);
+        foreach (var c in data)
+        {
+            c.manager = this;
+        }
         foreach (var rel in rels)
         {
             var a = countries.Find(c => c.Id == rel.CountryA);

@@ -40,12 +40,11 @@ public static class SavedCountryRelations
             {
                 if (a == b) continue;
                 if (a.Id > b.Id) continue;
-                var value = world.Countries.GetRelation(a, b);
                 rels.Add(new()
                 {
                     CountryA = a.Id,
                     CountryB = b.Id,
-                    Relation = value,
+                    Relation = a.Relation(b),
                     Memo = $"{a.Ruler.Name} - {b.Ruler.Name}",
                 });
             }

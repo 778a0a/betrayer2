@@ -13,7 +13,7 @@ partial class GameCore
     /// </summary>
     /// <param name="player"></param>
     /// <returns></returns>
-    private async Task OnCharacterMove(Character player)
+    private async Awaitable OnCharacterMove(Character player)
     {
         // 収入月の場合は未所属キャラを移動させる。
         if (GameDate.IsIncomeMonth && GameDate.Day == 1)
@@ -46,14 +46,21 @@ partial class GameCore
                     // 各城の方針を設定する。
                     foreach (var castle in country.Castles)
                     {
+                        var prevObjective = castle.Objective;
                         castle.Objective = AI.SelectCastleObjective(chara, castle);
-                        Debug.Log($"{castle}の方針は{castle.Objective}です。");
+                        if (prevObjective != castle.Objective)
+                        {
+                            //Debug.Log($"方針: 更新 {castle.Objective} <- {prevObjective} at {castle}");
+                        }
+                        else
+                        {
+                            //Debug.Log($"方針継続: {castle.Objective} at {castle}");
+                        }
                     }
                 }
 
                 // 外交を行う。
-                // 同盟
-                // 親善
+                await AI.Diplomacy(country);
             }
         }
 
@@ -99,19 +106,19 @@ partial class GameCore
                 if (chara == player) continue;
                 if (chara.IsMoving) continue;
 
-                args.Character = chara;
+                args.Actor = chara;
 
                 var action = default(ActionBase);
                 if (chara.IsFree)
                 {
-                    args.Castle = null;
-                    args.Town = null;
+                    args.TargetCastle = null;
+                    args.TargetTown = null;
                     action = CastleActions.TrainSoldiers;
                 }
                 else
                 {
-                    args.Castle = chara.Castle;
-                    args.Town = args.Castle?.Towns.RandomPick();
+                    args.TargetCastle = chara.Castle;
+                    args.TargetTown = args.TargetCastle?.Towns.RandomPick();
                     action = vassalActions.Value.RandomPick();
                 }
 
@@ -119,7 +126,7 @@ partial class GameCore
                 do
                 {
                     if (!action.CanDo(args)) break;
-                    budget -= action.Cost(args);
+                    budget -= action.Cost(args).actorGold;
                     await action.Do(args);
                 }
                 while (budget > 0);

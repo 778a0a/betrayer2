@@ -163,6 +163,7 @@ public class Character
         }
     }
 
+    public bool CanPay(ActionCost cost) => cost.CanPay(this);
     [JsonIgnore]
     public bool IsMoving => world.Forces.Any(f => f.Character == this);
     [JsonIgnore]

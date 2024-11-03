@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class AI
 {
@@ -23,7 +24,7 @@ public class AI
         var country = castle.Country;
         var neighbors = castle.Neighbors.Where(c => c.Country != country);
         var minRel = neighbors
-            .Select(n => world.Countries.GetRelation(n.Country, country))
+            .Select(n => n.Country.Relation(country))
             .DefaultIfEmpty(100)
             .Min();
         return Util.EnumArray<CastleObjective>().RandomPickWeighted(o =>
@@ -38,7 +39,7 @@ public class AI
                     var val = 0f;
                     foreach (var neighbor in neighbors)
                     {
-                        var rel = world.Countries.GetRelation(neighbor.Country, country);
+                        var rel = neighbor.Country.Relation(country);
                         if (rel <= 40)
                         {
                             var hateAdj = Mathf.Lerp(100, 400, (40 - rel) / 40f);
@@ -82,5 +83,40 @@ public class AI
                     return 0;
             }
         }, true);
+    }
+
+    /// <summary>
+    /// 外交を行います。
+    /// </summary>
+    public async Awaitable Diplomacy(Country country)
+    {
+        var neighbors = country.Neighbors.ToList();
+
+        // 同盟
+        foreach (var neighbor in neighbors)
+        {
+            var rel = country.Relation(neighbor);
+            if (rel == Country.AllyRelation) continue;
+            if (rel < 80) continue;
+
+            var prob = Mathf.Lerp(0.3f, 0.8f, (rel - 80) / 20f);
+            if ((prob / 12).Chance())
+            {
+                // 同盟を申し込む。
+                var act = core.CastleActions.Ally;
+                var args = act.Args(country.Ruler, neighbor);
+                if (act.CanDo(args))
+                {
+                    await act.Do(args);
+                }
+                else
+                {
+                    Debug.Log($"前提不足のため同盟申し込みできませんでした。{args}");
+                }
+            }
+        }
+
+        // 親善
+        // TODO
     }
 }

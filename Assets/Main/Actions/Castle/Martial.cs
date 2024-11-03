@@ -28,7 +28,7 @@ partial class CastleActions
 
         protected override bool CanDoCore(ActionArgs args)
         {
-            var chara = args.Character;
+            var chara = args.Actor;
             // すでに軍勢を率いている場合は不可。
             if (chara.IsMoving)
             {
@@ -38,17 +38,17 @@ partial class CastleActions
             return true;
         }
 
-        public override int Cost(ActionArgs args) => 5;
+        public override ActionCost Cost(ActionArgs args) => 5;
 
         public override ValueTask Do(ActionArgs args)
         {
             Assert.IsTrue(CanDo(args));
 
-            var force = new Force(World, args.Character, args.Castle.Position);
+            var force = new Force(World, args.Actor, args.TargetCastle.Position);
 
             var nears = World.Castles
-                .Where(c => c != args.Castle)
-                .OrderBy(c => c.DistanceTo(args.Castle))
+                .Where(c => c != args.TargetCastle)
+                .OrderBy(c => c.DistanceTo(args.TargetCastle))
                 .Take(3)
                 .ToArray();
 
@@ -69,13 +69,13 @@ partial class CastleActions
         public override string Label => L["雇兵"];
         public override string Description => L["兵士を雇います。"];
 
-        public override int Cost(ActionArgs args) => 2;
-        protected override bool CanDoCore(ActionArgs args) => args.Character.Soldiers.HasEmptySlot;
+        public override ActionCost Cost(ActionArgs args) => 2;
+        protected override bool CanDoCore(ActionArgs args) => args.Actor.Soldiers.HasEmptySlot;
 
         public override ValueTask Do(ActionArgs args)
         {
             Assert.IsTrue(CanDo(args));
-            var chara = args.Character;
+            var chara = args.Actor;
 
             var targetSlot = chara.Soldiers.First(s => s.IsEmptySlot);
             targetSlot.IsEmptySlot = false;
@@ -99,9 +99,9 @@ partial class CastleActions
         public override string Label => L["訓練"];
         public override string Description => L["兵士を訓練します。"];
 
-        public override int Cost(ActionArgs args)
+        public override ActionCost Cost(ActionArgs args)
         {
-            var chara = args.Character;
+            var chara = args.Actor;
 
             var averageLevel = chara.Soldiers.Average(s => s.Level);
             return Mathf.Max(1, (int)averageLevel);
@@ -110,7 +110,7 @@ partial class CastleActions
         public override ValueTask Do(ActionArgs args)
         {
             Assert.IsTrue(CanDo(args));
-            var chara = args.Character;
+            var chara = args.Actor;
 
             foreach (var soldier in chara.Soldiers)
             {
@@ -133,7 +133,7 @@ partial class CastleActions
         public override string Label => L["反乱"];
         public override string Description => L["反乱を起こします。"];
 
-        public override int Cost(ActionArgs args) => 5;
+        public override ActionCost Cost(ActionArgs args) => 5;
 
         public override ValueTask Do(ActionArgs args)
         {
@@ -154,7 +154,7 @@ partial class CastleActions
         public override string Label => L["独立"];
         public override string Description => L["独立します。"];
 
-        public override int Cost(ActionArgs args) => 5;
+        public override ActionCost Cost(ActionArgs args) => 5;
 
         public override ValueTask Do(ActionArgs args)
         {

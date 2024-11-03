@@ -259,7 +259,7 @@ public class TileInfoEditorWindow : EditorWindow
         foreach (var other in world.Countries)
         {
             if (other == country) continue;
-            var relation = world.Countries.GetRelation(country, other);
+            var relation = country.Relation(other);
             EditorGUILayout.BeginHorizontal();
             CharaImage(other.Ruler, 80);
             EditorGUILayout.BeginVertical();
