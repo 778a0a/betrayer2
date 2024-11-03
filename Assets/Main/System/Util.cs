@@ -26,16 +26,23 @@ public static class Util
     public static T RandomPick<T>(this IEnumerable<T> list) => list.ElementAt(Random.Range(0, list.Count()));
     public static T RandomPickDefault<T>(this IList<T> list) => list.Count == 0 ? default : RandomPick(list);
     public static T RandomPickDefault<T>(this IEnumerable<T> list) => list.Count() == 0 ? default : RandomPick(list);
-    public static T RandomPickWeighted<T>(this IEnumerable<T> l, Func<T, float> weightFunc)
+    public static T RandomPickWeighted<T>(this IEnumerable<T> l, Func<T, float> weightFunc, bool debug = false)
     {
         var list = l.ToList();
         if (list.Count == 0) return default;
 
         var totalWeight = list.Sum(weightFunc);
-        //foreach (var item in list)
-        //{
-        //    Debug.Log($"{weightFunc(item) / totalWeight:0.000} {item}");
-        //}
+        if (debug)
+        {
+            var sb = new StringBuilder();
+            foreach (var item in list)
+            {
+                var weight = weightFunc(item);
+                if (weight == 0) continue;
+                sb.Append($" {item}:{100 * weight / totalWeight:0}%({weight}) |");
+            }
+            Debug.Log("重み:" + sb.ToString());
+        }
 
         var value = Random.Range(0f, totalWeight);
         foreach (var item in list)

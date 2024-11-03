@@ -63,7 +63,7 @@ public class AI
                     return 50;
 
                 case CastleObjective.Stability:
-                    if (castle.Stability < 90) return 500;
+                    if (castle.Stability < 90) return 700;
                     if (castle.Stability < 100) return 100;
                     return 0;
 
@@ -74,13 +74,13 @@ public class AI
                     return 100;
 
                 case CastleObjective.Commerce:
-                    if (castle.Stability < 100) return 0;
+                    if (castle.Stability < 90) return 0;
                     if (castle.GoldIncome == castle.GoldIncomeMax) return 0;
                     if (castle.GoldBalance < 0) return 500;
                     return 100;
                 default:
                     return 0;
             }
-        });
+        }, true);
     }
 }

@@ -69,7 +69,7 @@ public partial class GameCore
         var player = World.Player;
 
         // 収入月の場合
-        if (GameDate.IsIncomeMonth)
+        if (GameDate.Day == 1 && GameDate.IsIncomeMonth)
         {
             OnIncome();
         }

@@ -131,6 +131,7 @@ public class Character
     /// <summary>
     /// 食料消費
     /// </summary>
+    [JsonIgnore]
     public int FoodConsumption => Soldiers.Sum(s => s.Hp);
 
     /// <summary>
