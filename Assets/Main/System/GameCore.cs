@@ -68,12 +68,25 @@ public partial class GameCore
 
         var player = World.Player;
 
-        // 行動不能残り日数を更新する。
         foreach (var chara in World.Characters)
         {
+            // 行動不能残り日数を更新する。
             if (chara.IsIncapacitated)
             {
                 chara.IncapacitatedDaysRemaining--;
+            }
+            else
+            {
+                // 兵士を回復させる。
+                var rate = 0.01f;
+                if (chara.IsMoving) rate = 0.005f;
+                foreach (var s in chara.Soldiers)
+                {
+                    if (s.IsEmptySlot) continue;
+                    if (s.HpFloat >= s.MaxHp) continue;
+                    var newHp = s.HpFloat + s.MaxHp * rate;
+                    s.HpFloat = Mathf.Min(s.MaxHp, newHp);
+                }
             }
         }
 
