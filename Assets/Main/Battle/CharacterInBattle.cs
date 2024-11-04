@@ -28,6 +28,7 @@ public record CharacterInBattle(
     /// 戦闘に利用する戦闘能力値
     /// </summary>
     public int Strength => IsInOwnTerritory ? Character.Defense : Character.Attack;
+    public int Intelligence => Character.Intelligence;
 
     public Soldiers Soldiers = Character.Soldiers;
     public bool IsPlayer = Character.IsPlayer;
@@ -46,10 +47,13 @@ public record CharacterInBattle(
 
         // 戦闘開始直後は撤退しない。
         if (tickCount < 3) return false;
-        // 敵より智謀が低いなら追加で2tick撤退不可にしてみる。
+        // 敵より智謀が低いなら追加で撤退不可にしてみる。
+        // TODO プレーヤーの場合も同様に制限する。
         if (Opponent.Character.Intelligence > Character.Intelligence)
         {
-            if (tickCount < 5) return false;
+            var limit = 5;
+            limit += (Opponent.Character.Intelligence - Character.Intelligence) / 10;
+            if (tickCount < limit) return false;
         }
 
         // まだ損耗が多くないなら撤退しない。
@@ -80,7 +84,7 @@ public record CharacterInBattle(
     /// <summary>
     /// 戦闘後の回復処理
     /// </summary>
-    public static void Recover(Character chara, bool win, float winRate, float loseRate, float[] maxRecoveryCounts = null)
+    public static void Recover(Character chara, bool win, float winRate, float loseRate, float[] maxRecoveryCounts)
     {
         if (chara == null) return;
 
@@ -89,13 +93,10 @@ public record CharacterInBattle(
             var s = chara.Soldiers[i];
             if (!s.IsAlive) continue;
 
-            var baseAmount = s.MaxHp * (win ? winRate : loseRate);
-            var adj = Mathf.Max(0, (chara.Intelligence - 80) / 100f / 2);
+            var baseAmount = maxRecoveryCounts[i] * (win ? winRate : loseRate);
+            var adj = Mathf.Max(0, (chara.Intelligence - 80) / 100f / 2) * (win ? 1 : 0.5f);
             var newHp = s.HpFloat + (baseAmount * (1 + adj));
-            if (maxRecoveryCounts != null)
-            {
-                newHp = Mathf.Min(maxRecoveryCounts[i], newHp);
-            }
+            newHp = Mathf.Min(maxRecoveryCounts[i], newHp);
             s.HpFloat = Mathf.Min(s.MaxHp, newHp);
         }
     }

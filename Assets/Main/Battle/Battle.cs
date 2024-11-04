@@ -19,7 +19,8 @@ public class Battle
 
     private BattleWindow UI => GameCore.Instance.MainUI.BattleWindow;
     public bool NeedInteraction => false; // Attacker.IsPlayer || Defender.IsPlayer;
-    private bool NeedWatchBattle => true;
+    private bool NeedWatchBattle => false;
+    private bool DebugWatch => false;
 
     public Battle(CharacterInBattle atk, CharacterInBattle def, BattleType type)
     {
@@ -37,8 +38,10 @@ public class Battle
             UI.Root.style.display = DisplayStyle.Flex;
             UI.SetData(this);
 
-            // デバッグ用
-            await UI.WaitPlayerClick();
+            if (DebugWatch)
+            {
+                await UI.WaitPlayerClick();
+            }
         }
 
         var result = default(BattleResult);
@@ -62,8 +65,7 @@ public class Battle
             }
             else if (NeedWatchBattle)
             {
-                //await Awaitable.WaitForSecondsAsync(0.025f);
-                await Awaitable.WaitForSecondsAsync(0.1f);
+                await Awaitable.WaitForSecondsAsync(0.025f);
             }
 
             if (Atk.ShouldRetreat(TickCount, this))
@@ -103,10 +105,10 @@ public class Battle
             }
             else
             {
-                //await Awaitable.WaitForSecondsAsync(0.45f);
-                await UI.WaitPlayerClick();
+                if (DebugWatch) await UI.WaitPlayerClick();
+                else await Awaitable.WaitForSecondsAsync(0.45f);
             }
-            //UI.Root.style.display = DisplayStyle.None;
+            UI.Root.style.display = DisplayStyle.None;
         }
 
         // 死んだ兵士のスロットを空にする。
@@ -123,11 +125,13 @@ public class Battle
             (Def, Atk);
 
         // 兵士の回復処理を行う。
-        CharacterInBattle.Recover(winner, true, 0.6f, 0.2f, winner.InitialSoldierCounts);
-        CharacterInBattle.Recover(loser, false, 0.6f, 0.2f, loser.InitialSoldierCounts);
+        CharacterInBattle.Recover(winner, true, 0.5f, 0.15f, winner.InitialSoldierCounts);
+        CharacterInBattle.Recover(loser, false, 0.5f, 0.15f, loser.InitialSoldierCounts);
 
         // 回復処理確認用
+        if (DebugWatch)
         {
+            UI.Root.style.display = DisplayStyle.Flex;
             UI.SetData(this, result);
             await UI.WaitPlayerClick();
             UI.Root.style.display = DisplayStyle.None;
@@ -154,17 +158,17 @@ public class Battle
     };
     public static float TerrainTraitsAdjustment(Terrain t, Traits traits)
     {
-        var adj = 1f;
+        var adj = 0f;
         if (traits.HasFlag(Traits.Merchant)) adj += -0.05f;
         if (traits.HasFlag(Traits.Knight)) adj += +0.025f;
         switch (t)
         {
             case Terrain.LargeRiver:
-                if (traits.HasFlag(Traits.Pirate)) adj += +0.25f;
+                if (traits.HasFlag(Traits.Pirate)) adj += +0.30f;
                 if (traits.HasFlag(Traits.Admiral)) adj += +0.10f;
                 break;
             case Terrain.River:
-                if (traits.HasFlag(Traits.Pirate)) adj += +0.15f;
+                if (traits.HasFlag(Traits.Pirate)) adj += +0.20f;
                 if (traits.HasFlag(Traits.Admiral)) adj += +0.10f;
                 break;
             case Terrain.Plain:
@@ -206,33 +210,38 @@ public class Battle
             .ToArray()
             .ShuffleInPlace();
 
-        var baseAdjustment = new Dictionary<Character, float>
+        var baseAdjustment = new Dictionary<Character, (float, string)>
         {
             {Attacker, BaseAdjustment(Attacker, TickCount)},
             {Defender , BaseAdjustment(Defender, TickCount)},
         };
-        static float BaseAdjustment(CharacterInBattle chara, int tickCount)
+        static (float, string) BaseAdjustment(CharacterInBattle chara, int tickCount)
         {
+            var sb = new StringBuilder();
+
             var op = chara.Opponent;
             var adj = 1f;
-            adj += (chara.Strength - 50) / 100f;
-            adj -= (op.Strength - 50) / 100f;
-            adj += (chara.Character.Intelligence - 50) / 100f * Mathf.Min(1, tickCount / 10f);
-            adj -= (op.Character.Intelligence - 50) / 100f * Mathf.Min(1, tickCount / 10f);
-            adj += TerrainAdjustment(chara.Terrain);
-            adj -= TerrainAdjustment(op.Terrain);
-            adj += TerrainTraitsAdjustment(chara.Terrain, chara.Character.Traits);
-            adj += TerrainTraitsAdjustment(op.Terrain, chara.Character.Traits);
-            adj -= TerrainTraitsAdjustment(op.Terrain, op.Character.Traits);
-            adj -= TerrainTraitsAdjustment(chara.Terrain, op.Character.Traits);
-            if (op.IsInCastle) adj -= op.Tile.Castle.Strength / 1000;
-            if (chara.IsInOwnTerritory) adj += 0.05f;
-            if (op.IsInOwnTerritory) adj -= 0.05f;
-            if (chara.IsInEnemyTerritory) adj -= 0.05f;
-            if (op.IsInEnemyTerritory) adj += 0.05f;
-            return adj;
+            adj += Tap("戦闘差", (chara.Strength - op.Strength) / 100f);
+            adj += Tap("智謀差", (chara.Intelligence - op.Intelligence) / 100f * Mathf.Min(1, tickCount / 10f));
+            adj += Tap("地形差", TerrainAdjustment(chara.Terrain) - TerrainAdjustment(op.Terrain));
+            adj += Tap("自特性", +(TerrainTraitsAdjustment(chara.Terrain, chara.Character.Traits) + TerrainTraitsAdjustment(op.Terrain, chara.Character.Traits)));
+            adj += Tap("敵特性", -(TerrainTraitsAdjustment(op.Terrain, op.Character.Traits) + TerrainTraitsAdjustment(chara.Terrain, op.Character.Traits)));
+            if (chara.IsInCastle) adj += Tap("自城", +chara.Tile.Castle.Strength / 1000 / 2);
+            if (op.IsInCastle) adj += Tap("敵城", -op.Tile.Castle.Strength / 1000 / 2);
+            if (chara.IsInOwnTerritory) adj += Tap("自領1", +0.05f);
+            if (op.IsInEnemyTerritory) adj += Tap("自領2", +0.05f);
+            if (chara.IsInEnemyTerritory) adj += Tap("敵地1", -0.05f);
+            if (op.IsInOwnTerritory) adj += Tap("敵地2", -0.05f);
+            return (adj, sb.ToString());
+
+            float Tap(string label, float v)
+            {
+                if (v != 0) sb.AppendFormat($"{label}:{v*100:＋00;－00} ");
+                return v;
+            }
         }
-        Debug.Log($"[戦闘処理] 基本調整値: atk:{baseAdjustment[Attacker]:0.00} def:{baseAdjustment[Defender]:0.00}");
+        Debug.Log($"[戦闘処理] 基本調整値: atk:{baseAdjustment[Attacker].Item1:0.00} def:{baseAdjustment[Defender].Item1:0.00}"
+            + $"\n{baseAdjustment[Attacker].Item2}\n{baseAdjustment[Defender].Item2}");
 
         var attackerTotalDamage = 0f;
         var defenderTotalDamage = 0f;
@@ -243,7 +252,7 @@ public class Battle
             var target = opponent.Soldiers.Where(s => s.IsAlive).RandomPickDefault();
             if (target == null) continue;
 
-            var adj = baseAdjustment[owner];
+            var adj = baseAdjustment[owner].Item1;
             adj += Random.Range(-0.2f, 0.2f);
             adj += soldier.Level / 10f;
 
