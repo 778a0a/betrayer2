@@ -93,7 +93,7 @@ public class AI
     /// </summary>
     public async ValueTask Diplomacy(Country country)
     {
-        var neighbors = country.Neighbors.ToList();
+        var neighbors = country.DiplomacyTargets.ToList();
 
         // 同盟
         foreach (var neighbor in neighbors)
@@ -120,7 +120,50 @@ public class AI
         }
 
         // 親善
-        // TODO
+        foreach (var neighbor in neighbors)
+        {
+            void Do()
+            {
+            }
+
+            switch (country.Ruler.Personality)
+            {
+                case Personality.Conqueror:
+                    // 自城が豊かなら+
+                    // 敵対国と敵対しているなら+
+                    // 他に敵対国がなくて一番仲の悪い国とは行わない
+                    // 友好度50以上なら+
+                    break;
+                case Personality.Leader:
+                    // 自城が豊かなら+
+                    // 貧しい同盟国なら+
+                    // 敵対国と敵対しているなら+
+                    // 友好度40以上なら+
+                    break;
+                case Personality.Pacifism:
+                    // 自城が豊かなら+
+                    // 友好度30以上で友好度が高いほど+
+                    // 敵対国と敵対しているなら+
+                    // 相手が強いほど+
+                    break;
+                case Personality.Merchant:
+                    // 自城が豊かなら+
+                    // 友好度40以上で友好度が低いほど+
+                    // 敵対国と敵対しているなら+
+                    break;
+                case Personality.Warrior:
+                case Personality.Pirate:
+                case Personality.Chaos:
+                    // 行わない
+                    break;
+                case Personality.Knight:
+                case Personality.Normal:
+                default:
+                    // 自城が豊かなら+
+                    // 友好度40以上なら+
+                    break;
+            }
+        }
     }
 
     /// <summary>

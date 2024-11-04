@@ -33,6 +33,14 @@ public class Country : ICountryEntity
         .Distinct()
         .Where(c => c != this);
 
+    public IEnumerable<Country> DiplomacyTargets => Ruler.Personality switch
+    {
+        Personality.Merchant or Personality.Leader =>
+            Neighbors.Concat(Neighbors.SelectMany(c => c.Neighbors)).Distinct().Where(c => c != this),
+        _ => Neighbors,
+    };
+
+
     public const int AllyRelation = 100;
     public const int EnemyRelation = 0;
     public bool IsAlly(Country other) => GetRelation(other) == AllyRelation;
