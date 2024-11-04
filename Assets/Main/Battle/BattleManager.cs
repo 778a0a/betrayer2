@@ -14,14 +14,9 @@ public class BattleManager
         Force attacker,
         Force defender)
     {
-        var world = GameCore.Instance.World;
-        var map = world.Map;
-
-        var attackerTerrain = map.GetTile(attacker).Terrain;
-        var defenderTerrain = map.GetTile(defender).Terrain;
-
-        var atk = new CharacterInBattle(attacker.Character, attackerTerrain, true);
-        var def = new CharacterInBattle(defender.Character, defenderTerrain, false);
+        var map = GameCore.Instance.World.Map;
+        var atk = new CharacterInBattle(attacker.Character, map.GetTile(attacker), true, false);
+        var def = new CharacterInBattle(defender.Character, map.GetTile(defender), false, false);
         atk.Opponent = def;
         def.Opponent = atk;
 
@@ -33,14 +28,9 @@ public class BattleManager
         Force attacker,
         Character defender)
     {
-        var world = GameCore.Instance.World;
-        var map = world.Map;
-
-        var attackerTerrain = map.GetTile(attacker).Terrain;
-        var defenderTerrain = map.GetTile(defender.Castle).Terrain;
-
-        var atk = new CharacterInBattle(attacker.Character, attackerTerrain, true);
-        var def = new CharacterInBattle(defender, defenderTerrain, false);
+        var map = GameCore.Instance.World.Map;
+        var atk = new CharacterInBattle(attacker.Character, map.GetTile(attacker), true, false);
+        var def = new CharacterInBattle(defender, map.GetTile(defender.Castle), false, true);
         atk.Opponent = def;
         def.Opponent = atk;
 

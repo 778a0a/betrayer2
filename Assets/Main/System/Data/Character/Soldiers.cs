@@ -4,7 +4,7 @@ using System.Linq;
 /// <summary>
 /// キャラの所有兵士
 /// </summary>
-public class Soldiers : IEnumerable<Soldier>
+public class Soldiers : IReadOnlyList<Soldier>
 {
     /// <summary>
     /// 兵士
@@ -35,6 +35,7 @@ public class Soldiers : IEnumerable<Soldier>
     }
 
 
+    public int Count => SoldierArray.Length;
     public IEnumerator<Soldier> GetEnumerator() => ((IEnumerable<Soldier>)SoldierArray).GetEnumerator();
     System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => SoldierArray.GetEnumerator();
 

@@ -8,18 +8,26 @@ using Random = UnityEngine.Random;
 
 public record CharacterInBattle(
     Character Character,
-    Terrain Terrain,
-    bool IsAttacker)
+    GameMapTile Tile,
+    bool IsAttacker,
+    bool IsInCastle)
 {
     public CharacterInBattle Opponent { get; set; }
     public Country Country = Character.Country; // TODO 奪取の場合
     public bool IsDefender = !IsAttacker;
+    public bool IsInOwnTerritory = Tile.Country == Character.Country;
+    public bool IsInEnemyTerritory => Tile.Country == Opponent.Country;
+    public Terrain Terrain = Tile.Terrain;
 
     /// <summary>
-    /// 戦闘の強さ
-    /// 攻撃側ならAttack、防御側ならDefense
+    /// 戦闘前の兵士数
     /// </summary>
-    public int Strength => IsAttacker ? Character.Attack : Character.Defense;
+    public float[] InitialSoldierCounts = Character.Soldiers.Select(s => s.HpFloat).ToArray();
+
+    /// <summary>
+    /// 戦闘に利用する戦闘能力値
+    /// </summary>
+    public int Strength => IsInOwnTerritory ? Character.Defense : Character.Attack;
 
     public Soldiers Soldiers = Character.Soldiers;
     public bool IsPlayer = Character.IsPlayer;
@@ -39,6 +47,11 @@ public record CharacterInBattle(
 
         // 戦闘開始直後は撤退しない。
         if (tickCount < 3) return false;
+        // 敵より智謀が低いなら追加で2tick撤退不可にしてみる。
+        if (Opponent.Character.Intelligence > Character.Intelligence)
+        {
+            if (tickCount < 5) return false;
+        }
 
         // まだ損耗が多くないなら撤退しない。
         // （現在の戦闘で全滅した兵士も数えるために、IsAliveではなく!IsEmptySlotを使う）
@@ -54,9 +67,12 @@ public record CharacterInBattle(
         var opAboutToDie = Opponent.Soldiers.Any(s => s.IsAlive && s.Hp <= 3);
         if (opAboutToDie) return false;
 
-        // 自国の最後の領土の防衛なら撤退しない。
-        var lastArea = Country.Castles.Count == 1;
-        if (lastArea && IsDefender) return false;
+        if (IsInCastle && IsDefender)
+        {
+            // 自国の最後の領土の防衛なら撤退しない。
+            var lastCastle = Country.Castles.Count == 1;
+            if (lastCastle) return false;
+        }
 
         // 撤退する。
         return true;
@@ -65,18 +81,23 @@ public record CharacterInBattle(
     /// <summary>
     /// 戦闘後の回復処理
     /// </summary>
-    public static void Recover(Character chara, bool win, float winRate, float loseRate)
+    public static void Recover(Character chara, bool win, float winRate, float loseRate, float[] maxRecoveryCounts = null)
     {
         if (chara == null) return;
 
-        foreach (var s in chara.Soldiers)
+        for (int i = 0; i < chara.Soldiers.Count; i++)
         {
+            var s = chara.Soldiers[i];
             if (!s.IsAlive) continue;
 
             var baseAmount = s.MaxHp * (win ? winRate : loseRate);
             var adj = Mathf.Max(0, (chara.Intelligence - 80) / 100f / 2);
-            var amount = (int)(baseAmount * (1 + adj));
-            s.Hp = Mathf.Min(s.MaxHp, s.Hp + amount);
+            var newHp = s.HpFloat + (baseAmount * (1 + adj));
+            if (maxRecoveryCounts != null)
+            {
+                newHp = Mathf.Min(maxRecoveryCounts[i], newHp);
+            }
+            s.HpFloat = Mathf.Min(s.MaxHp, newHp);
         }
     }
 

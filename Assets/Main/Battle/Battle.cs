@@ -122,8 +122,8 @@ public class Battle
             (Def, Atk);
 
         // 兵士の回復処理を行う。
-        CharacterInBattle.Recover(winner, true, 0.1f, 0.05f);
-        CharacterInBattle.Recover(loser, false, 0.1f, 0.05f);
+        CharacterInBattle.Recover(winner, true, 0.6f, 0.2f, winner.InitialSoldierCounts);
+        CharacterInBattle.Recover(loser, false, 0.6f, 0.2f, loser.InitialSoldierCounts);
 
         // 名声の処理を行う。
         var loserPrestigeLoss = loser.Character.Prestige / 3;
@@ -134,16 +134,58 @@ public class Battle
         return result;
     }
 
-    public static float TerrainDamageAdjustment(Terrain t) => t switch
+    public static float TerrainAdjustment(Terrain t) => t switch
     {
-        Terrain.LargeRiver => 0.25f,
-        Terrain.River => 0.15f,
+        Terrain.LargeRiver => -0.25f,
+        Terrain.River => -0.15f,
         Terrain.Plain => 0.00f,
-        Terrain.Hill => -0.10f,
-        Terrain.Forest => -0.15f,
-        Terrain.Mountain => -0.20f,
+        Terrain.Hill => +0.10f,
+        Terrain.Forest => +0.15f,
+        Terrain.Mountain => +0.20f,
         _ => 0f,
     };
+    public static float TerrainTraitsAdjustment(Terrain t, Traits traits)
+    {
+        var adj = 1f;
+        if (traits.HasFlag(Traits.Merchant)) adj += -0.05f;
+        if (traits.HasFlag(Traits.Knight)) adj += +0.025f;
+        switch (t)
+        {
+            case Terrain.LargeRiver:
+                if (traits.HasFlag(Traits.Pirate)) adj += +0.25f;
+                if (traits.HasFlag(Traits.Admiral)) adj += +0.10f;
+                break;
+            case Terrain.River:
+                if (traits.HasFlag(Traits.Pirate)) adj += +0.15f;
+                if (traits.HasFlag(Traits.Admiral)) adj += +0.10f;
+                break;
+            case Terrain.Plain:
+                if (traits.HasFlag(Traits.Pirate)) adj += -0.10f;
+                if (traits.HasFlag(Traits.Admiral)) adj += -0.05f;
+                if (traits.HasFlag(Traits.Mountaineer)) adj += -0.10f;
+                if (traits.HasFlag(Traits.Hunter)) adj += -0.05f;
+                break;
+            case Terrain.Hill:
+                if (traits.HasFlag(Traits.Pirate)) adj += -0.15f;
+                if (traits.HasFlag(Traits.Admiral)) adj += -0.05f;
+                if (traits.HasFlag(Traits.Mountaineer)) adj += +0.20f;
+                if (traits.HasFlag(Traits.Hunter)) adj += +0.05f;
+                break;
+            case Terrain.Forest:
+                if (traits.HasFlag(Traits.Pirate)) adj += -0.15f;
+                if (traits.HasFlag(Traits.Admiral)) adj += -0.05f;
+                if (traits.HasFlag(Traits.Mountaineer)) adj += +0.10f;
+                if (traits.HasFlag(Traits.Hunter)) adj += +0.20f;
+                break;
+            case Terrain.Mountain:
+                if (traits.HasFlag(Traits.Pirate)) adj += -0.15f;
+                if (traits.HasFlag(Traits.Admiral)) adj += -0.05f;
+                if (traits.HasFlag(Traits.Mountaineer)) adj += +0.40f;
+                if (traits.HasFlag(Traits.Hunter)) adj += +0.05f;
+                break;
+        }
+        return adj;
+    }
 
     private void Tick()
     {
@@ -169,8 +211,17 @@ public class Battle
             adj -= (op.Strength - 50) / 100f;
             adj += (chara.Character.Intelligence - 50) / 100f * Mathf.Min(1, tickCount / 10f);
             adj -= (op.Character.Intelligence - 50) / 100f * Mathf.Min(1, tickCount / 10f);
-            adj -= TerrainDamageAdjustment(chara.Terrain);
-            adj += TerrainDamageAdjustment(op.Terrain);
+            adj += TerrainAdjustment(chara.Terrain);
+            adj -= TerrainAdjustment(op.Terrain);
+            adj += TerrainTraitsAdjustment(chara.Terrain, chara.Character.Traits);
+            adj += TerrainTraitsAdjustment(op.Terrain, chara.Character.Traits);
+            adj -= TerrainTraitsAdjustment(op.Terrain, op.Character.Traits);
+            adj -= TerrainTraitsAdjustment(chara.Terrain, op.Character.Traits);
+            if (op.IsInCastle) adj -= op.Tile.Castle.Strength / 1000;
+            if (chara.IsInOwnTerritory) adj += 0.05f;
+            if (op.IsInOwnTerritory) adj -= 0.05f;
+            if (chara.IsInEnemyTerritory) adj -= 0.05f;
+            if (op.IsInEnemyTerritory) adj += 0.05f;
             return adj;
         }
         Debug.Log($"[戦闘処理] 基本調整値: atk:{baseAdjustment[Attacker]:0.00} def:{baseAdjustment[Defender]:0.00}");
