@@ -91,7 +91,7 @@ public class AI
     /// <summary>
     /// 外交を行います。
     /// </summary>
-    public async Awaitable Diplomacy(Country country)
+    public async ValueTask Diplomacy(Country country)
     {
         var neighbors = country.Neighbors.ToList();
 

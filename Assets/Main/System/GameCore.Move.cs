@@ -13,7 +13,7 @@ partial class GameCore
     /// </summary>
     /// <param name="player"></param>
     /// <returns></returns>
-    private async Awaitable OnCharacterMove(Character player)
+    private async ValueTask OnCharacterMove(Character player)
     {
         // 収入月の場合は未所属キャラを移動させる。
         if (GameDate.IsIncomeMonth && GameDate.Day == 1)
@@ -127,8 +127,12 @@ partial class GameCore
                     args.targetTown = args.targetCastle?.Towns.RandomPick();
                     action = vassalActions.Value.RandomPick();
                 }
+                if (chara.Soldiers.HasEmptySlot)
+                {
+                    action = CastleActions.HireSoldier;
+                }
 
-                var budget = Math.Min(chara.Gold, chara.Salary / 6);
+                var budget = Math.Min(chara.Gold, Math.Max(chara.Gold - chara.Salary, 0) + chara.Salary / 6);
                 do
                 {
                     if (!action.CanDo(args)) break;
