@@ -32,3 +32,9 @@ MonoBehaviour:
     _path: Assets/Main/UI/Parts/TileDetailPanel.uxml
   - _type: 1
     _path: Assets/Main/UI/Parts/CharacterInfoPanel.uxml
+  - _type: 1
+    _path: Assets/Main/UI/Windows/BattleWindow.uxml
+  - _type: 1
+    _path: Assets/Main/UI/Parts/BattleSoldierIconAttackSide.uxml
+  - _type: 1
+    _path: Assets/Main/UI/Parts/BattleSoldierIconDefenceSide.uxml

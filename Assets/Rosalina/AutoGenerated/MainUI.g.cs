@@ -15,6 +15,8 @@ public partial class MainUI
 {
     [SerializeField]
     private UIDocument _document;
+    public BattleWindow BattleWindow { get; private set; }
+
     public MainUIFrame Frame { get; private set; }
 
     public TileInfoOverlay TileInfo { get; private set; }
@@ -26,6 +28,7 @@ public partial class MainUI
     public VisualElement Root => _document?.rootVisualElement;
     public void InitializeDocument()
     {
+        BattleWindow = new BattleWindow(Root?.Q<VisualElement>("BattleWindow"));
         Frame = new MainUIFrame(Root?.Q<VisualElement>("Frame"));
         TileInfo = new TileInfoOverlay(Root?.Q<VisualElement>("TileInfo"));
         TileDetail = new TileDetailPanel(Root?.Q<VisualElement>("TileDetail"));

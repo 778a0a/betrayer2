@@ -42,7 +42,7 @@ public class ForceManager : IReadOnlyList<Force>
     /// <summary>
     /// 軍勢の移動処理を行う。
     /// </summary>
-    public void OnForceMove(GameCore core)
+    public async ValueTask OnForceMove(GameCore core)
     {
         var forcesLength = forces.Count;
         var forcesCopy = ArrayPool<Force>.Shared.Rent(forcesLength);
@@ -55,11 +55,11 @@ public class ForceManager : IReadOnlyList<Force>
                 Debug.LogWarning($"軍勢更新処理 対象の軍勢が存在しません。{force}");
                 continue;
             }
-            OnForceMoveOne(core, force);
+            await OnForceMoveOne(core, force);
         }
     }
 
-    private void OnForceMoveOne(GameCore core, Force force)
+    private async ValueTask OnForceMoveOne(GameCore core, Force force)
     {
         // 移動の必要がないなら何もしない。
         if (force.Destination.Position == force.Position)
@@ -87,14 +87,14 @@ public class ForceManager : IReadOnlyList<Force>
         var nextEnemies = nextTile.Forces.Where(f => f.IsEnemy(force)).ToArray();
         if (nextEnemies.Length > 0)
         {
-            OnFieldBattle(world, force, nextTile, nextEnemies);
+            await OnFieldBattle(world, force, nextTile, nextEnemies);
             return;
         }
 
         // 移動先が自国以外の城の場合は攻城戦を行う。
         if (nextTile.Castle != null && force.IsEnemy(nextTile))
         {
-            OnSiege(world, force, nextTile);
+            await OnSiege(world, force, nextTile);
             return;
         }
 
@@ -120,11 +120,11 @@ public class ForceManager : IReadOnlyList<Force>
     /// <summary>
     /// 野戦処理
     /// </summary>
-    private void OnFieldBattle(WorldData world, Force force, GameMapTile nextTile, Force[] enemies)
+    private async ValueTask OnFieldBattle(WorldData world, Force force, GameMapTile nextTile, Force[] enemies)
     {
         var enemy = enemies.RandomPick();
         var battle = BattleManager.PrepareFieldBattle(force, enemy);
-        var result = battle.Do();
+        var result = await battle.Do();
         var win = result == BattleResult.AttackerWin;
 
         // 負けた場合は本拠地へ撤退を始める。
@@ -214,7 +214,7 @@ public class ForceManager : IReadOnlyList<Force>
     /// <summary>
     /// 攻城戦処理
     /// </summary>
-    private void OnSiege(WorldData world, Force force, GameMapTile nextTile)
+    private async ValueTask OnSiege(WorldData world, Force force, GameMapTile nextTile)
     {
         var castle = nextTile.Castle;
         var enemy = castle.Members.Where(e => e.CanDefend).RandomPickDefault();
@@ -222,7 +222,7 @@ public class ForceManager : IReadOnlyList<Force>
         if (enemy != null)
         {
             var battle = BattleManager.PrepareSiegeBattle(force, enemy);
-            var result = battle.Do();
+            var result = await battle.Do();
             win = result == BattleResult.AttackerWin;
         }
         else

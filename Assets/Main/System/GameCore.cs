@@ -96,7 +96,7 @@ public partial class GameCore
             OnIncome();
         }
 
-        World.Forces.OnForceMove(this);
+        await World.Forces.OnForceMove(this);
 
         await OnCharacterMove(player);
 

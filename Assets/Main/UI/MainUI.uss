@@ -4,6 +4,56 @@ Button
     padding: 5px 6px 5px 6px;
 }
 
+.window {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.window Label {
+    color: white;
+}
+
+.bg {
+    background-color: rgb(0, 17, 34);
+}
+
+.border {
+    border-left-color: rgb(0, 156, 143);
+    border-right-color: rgb(0, 156, 143);
+    border-top-color: rgb(0, 156, 143);
+    border-bottom-color: rgb(0, 156, 143);
+    border-top-width: 1px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+.attacker-lose .attacker-info,
+.defender-lose .defender-info,
+.attacker-lose #AttackerSoldiers,
+.defender-lose #DefenderSoldiers {
+    opacity: 0.4;
+}
+
+#imageAttacker,
+#imageDefender {
+    background-color: rgba(28, 255, 229, 0.33);
+}
+
+.attacker-lose #imageAttacker,
+.defender-lose #imageDefender {
+    background-color: default;
+}
+
+
+
 .TileInfoOverlayRoot * {
 	font-size: 18px;
 }

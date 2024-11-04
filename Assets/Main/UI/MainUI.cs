@@ -15,6 +15,7 @@ public partial class MainUI : MonoBehaviour
     private void OnEnable()
     {
         InitializeDocument();
+        BattleWindow.Initialize();
         Frame.Initialize();
         TileInfo.Initialize();
         TileDetail.Initialize();

@@ -17,9 +17,9 @@ public class Battle
     private CharacterInBattle Atk => Attacker;
     private CharacterInBattle Def => Defender;
 
-    //private BattleWindow UI => GameCore.Instance.MainUI.BattleWindow;
+    private BattleWindow UI => GameCore.Instance.MainUI.BattleWindow;
     public bool NeedInteraction => false; // Attacker.IsPlayer || Defender.IsPlayer;
-    private bool NeedWatchBattle => false;
+    private bool NeedWatchBattle => true;
 
     public Battle(CharacterInBattle atk, CharacterInBattle def, BattleType type)
     {
@@ -28,15 +28,17 @@ public class Battle
         Type = type;
     }
 
-    public BattleResult Do()
+    public async ValueTask<BattleResult> Do()
     {
         Debug.Log($"[戦闘処理] {Atk}) -> {Def} ({Type}) 攻撃側地形: {Atk.Terrain} 防御側地形: {Def.Terrain}");
 
         if (NeedWatchBattle || NeedInteraction)
         {
-            // TODO
-            //UI.Root.style.display = DisplayStyle.Flex;
-            //UI.SetData(this);
+            UI.Root.style.display = DisplayStyle.Flex;
+            UI.SetData(this);
+
+            // デバッグ用
+            await UI.WaitPlayerClick();
         }
 
         var result = default(BattleResult);
@@ -45,24 +47,23 @@ public class Battle
             // 撤退判断を行う。
             if (NeedWatchBattle || NeedInteraction)
             {
-                // TODO
-                //UI.SetData(this);
+                UI.SetData(this);
             }
             if (NeedInteraction)
             {
-                // TODO
-                //var shouldContinue = await UI.WaitPlayerClick();
-                //if (!shouldContinue)
-                //{
-                //    result = Atk.IsPlayer ?
-                //        BattleResult.DefenderWin :
-                //        BattleResult.AttackerWin;
-                //    break;
-                //}
+                var shouldContinue = await UI.WaitPlayerClick();
+                if (!shouldContinue)
+                {
+                    result = Atk.IsPlayer ?
+                        BattleResult.DefenderWin :
+                        BattleResult.AttackerWin;
+                    break;
+                }
             }
             else if (NeedWatchBattle)
             {
                 //await Awaitable.WaitForSecondsAsync(0.025f);
+                await Awaitable.WaitForSecondsAsync(0.1f);
             }
 
             if (Atk.ShouldRetreat(TickCount, this))
@@ -90,21 +91,21 @@ public class Battle
         // 画面を更新する。
         if (NeedWatchBattle || NeedInteraction)
         {
-            // TODO
-            //UI.SetData(this, result);
-            //if (NeedInteraction)
-            //{
-            //    await UI.WaitPlayerClick();
-            //}
-            //// 自分が君主で配下の戦闘の場合もボタンクリックを待つ。
-            //else if (Atk.Country.Ruler.IsPlayer || Def.Country.Ruler.IsPlayer)
-            //{
-            //    await UI.WaitPlayerClick();
-            //}
-            //else
-            //{
-            //    await Awaitable.WaitForSecondsAsync(0.45f);
-            //}
+            UI.SetData(this, result);
+            if (NeedInteraction)
+            {
+                await UI.WaitPlayerClick();
+            }
+            // 自分が君主で配下の戦闘の場合もボタンクリックを待つ。
+            else if (Atk.Country.Ruler.IsPlayer || Def.Country.Ruler.IsPlayer)
+            {
+                await UI.WaitPlayerClick();
+            }
+            else
+            {
+                //await Awaitable.WaitForSecondsAsync(0.45f);
+                await UI.WaitPlayerClick();
+            }
             //UI.Root.style.display = DisplayStyle.None;
         }
 
@@ -124,6 +125,13 @@ public class Battle
         // 兵士の回復処理を行う。
         CharacterInBattle.Recover(winner, true, 0.6f, 0.2f, winner.InitialSoldierCounts);
         CharacterInBattle.Recover(loser, false, 0.6f, 0.2f, loser.InitialSoldierCounts);
+
+        // 回復処理確認用
+        {
+            UI.SetData(this, result);
+            await UI.WaitPlayerClick();
+            UI.Root.style.display = DisplayStyle.None;
+        }
 
         // 名声の処理を行う。
         var loserPrestigeLoss = loser.Character.Prestige / 3;
@@ -168,20 +176,20 @@ public class Battle
             case Terrain.Hill:
                 if (traits.HasFlag(Traits.Pirate)) adj += -0.15f;
                 if (traits.HasFlag(Traits.Admiral)) adj += -0.05f;
-                if (traits.HasFlag(Traits.Mountaineer)) adj += +0.20f;
-                if (traits.HasFlag(Traits.Hunter)) adj += +0.05f;
+                if (traits.HasFlag(Traits.Mountaineer)) adj += +0.10f;
+                if (traits.HasFlag(Traits.Hunter)) adj += +0.025f;
                 break;
             case Terrain.Forest:
                 if (traits.HasFlag(Traits.Pirate)) adj += -0.15f;
                 if (traits.HasFlag(Traits.Admiral)) adj += -0.05f;
-                if (traits.HasFlag(Traits.Mountaineer)) adj += +0.10f;
-                if (traits.HasFlag(Traits.Hunter)) adj += +0.20f;
+                if (traits.HasFlag(Traits.Mountaineer)) adj += +0.05f;
+                if (traits.HasFlag(Traits.Hunter)) adj += +0.10f;
                 break;
             case Terrain.Mountain:
                 if (traits.HasFlag(Traits.Pirate)) adj += -0.15f;
                 if (traits.HasFlag(Traits.Admiral)) adj += -0.05f;
-                if (traits.HasFlag(Traits.Mountaineer)) adj += +0.40f;
-                if (traits.HasFlag(Traits.Hunter)) adj += +0.05f;
+                if (traits.HasFlag(Traits.Mountaineer)) adj += +0.20f;
+                if (traits.HasFlag(Traits.Hunter)) adj += +0.025f;
                 break;
         }
         return adj;

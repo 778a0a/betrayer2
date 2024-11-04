@@ -37,9 +37,8 @@ public record CharacterInBattle(
 
     public bool ShouldRetreat(int tickCount, Battle battle)
     {
-        // TODO
-        //// プレーヤーの場合はUIで判断しているので処理不要。
-        //if (IsPlayer) return false;
+        // プレーヤーの場合はUIで判断しているので処理不要。
+        if (IsPlayer) return false;
 
         // TODO
         //// 私闘の場合は撤退しない。
