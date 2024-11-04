@@ -11,38 +11,32 @@ public class Battle
 {
     public CharacterInBattle Attacker { get; set; }
     public CharacterInBattle Defender { get; set; }
-    public ActionBase Type { get; set; }
+    public BattleType Type { get; set; }
     private int TickCount { get; set; }
 
     private CharacterInBattle Atk => Attacker;
     private CharacterInBattle Def => Defender;
 
-    private BattleWindow UI => GameCore.Instance.MainUI.BattleWindow;
-    public bool NeedInteraction => Attacker.IsPlayer || Defender.IsPlayer;
-    private bool NeedWatchBattle => Test.Instance.showOthersBattle;
+    //private BattleWindow UI => GameCore.Instance.MainUI.BattleWindow;
+    public bool NeedInteraction => false; // Attacker.IsPlayer || Defender.IsPlayer;
+    private bool NeedWatchBattle => false;
 
-    public Battle(CharacterInBattle atk, CharacterInBattle def, ActionBase type)
+    public Battle(CharacterInBattle atk, CharacterInBattle def, BattleType type)
     {
         Attacker = atk;
         Defender = def;
         Type = type;
     }
 
-    public async ValueTask<BattleResult> Do()
+    public BattleResult Do()
     {
-        Debug.Log($"[戦闘処理] {Atk}) -> {Def} at {Atk.Area.Position} -> {Def.Area.Position}");
-        Debug.Log($"[戦闘処理] 攻撃側地形: {Atk.Terrain} 防御側地形: {Def.Terrain}");
-        if (Def.Character == null)
-        {
-            Debug.Log($"[戦闘処理] 防御側がいないので侵攻側の勝利です。");
-            Atk.Character.Prestige += 1;
-            return BattleResult.AttackerWin;
-        }
+        Debug.Log($"[戦闘処理] {Atk}) -> {Def} ({Type}) 攻撃側地形: {Atk.Terrain} 防御側地形: {Def.Terrain}");
 
         if (NeedWatchBattle || NeedInteraction)
         {
-            UI.Root.style.display = DisplayStyle.Flex;
-            UI.SetData(this);
+            // TODO
+            //UI.Root.style.display = DisplayStyle.Flex;
+            //UI.SetData(this);
         }
 
         var result = default(BattleResult);
@@ -51,22 +45,24 @@ public class Battle
             // 撤退判断を行う。
             if (NeedWatchBattle || NeedInteraction)
             {
-                UI.SetData(this);
+                // TODO
+                //UI.SetData(this);
             }
             if (NeedInteraction)
             {
-                var shouldContinue = await UI.WaitPlayerClick();
-                if (!shouldContinue)
-                {
-                    result = Atk.IsPlayer ?
-                        BattleResult.DefenderWin :
-                        BattleResult.AttackerWin;
-                    break;
-                }
+                // TODO
+                //var shouldContinue = await UI.WaitPlayerClick();
+                //if (!shouldContinue)
+                //{
+                //    result = Atk.IsPlayer ?
+                //        BattleResult.DefenderWin :
+                //        BattleResult.AttackerWin;
+                //    break;
+                //}
             }
             else if (NeedWatchBattle)
             {
-                await Awaitable.WaitForSecondsAsync(0.025f);
+                //await Awaitable.WaitForSecondsAsync(0.025f);
             }
 
             if (Atk.ShouldRetreat(TickCount, this))
@@ -75,7 +71,7 @@ public class Battle
                 break;
             }
             if (Def.ShouldRetreat(TickCount, this))
-            {
+            { 
                 result = BattleResult.AttackerWin;
                 break;
             }
@@ -94,26 +90,26 @@ public class Battle
         // 画面を更新する。
         if (NeedWatchBattle || NeedInteraction)
         {
-            UI.SetData(this, result);
-
-            if (NeedInteraction)
-            {
-                await UI.WaitPlayerClick();
-            }
-            // 自分が君主で配下の戦闘の場合もボタンクリックを待つ。
-            else if (Atk.Country.Ruler.IsPlayer || Def.Country.Ruler.IsPlayer)
-            {
-                await UI.WaitPlayerClick();
-            }
-            else
-            {
-                await Awaitable.WaitForSecondsAsync(0.45f);
-            }
-            UI.Root.style.display = DisplayStyle.None;
+            // TODO
+            //UI.SetData(this, result);
+            //if (NeedInteraction)
+            //{
+            //    await UI.WaitPlayerClick();
+            //}
+            //// 自分が君主で配下の戦闘の場合もボタンクリックを待つ。
+            //else if (Atk.Country.Ruler.IsPlayer || Def.Country.Ruler.IsPlayer)
+            //{
+            //    await UI.WaitPlayerClick();
+            //}
+            //else
+            //{
+            //    await Awaitable.WaitForSecondsAsync(0.45f);
+            //}
+            //UI.Root.style.display = DisplayStyle.None;
         }
 
         // 死んだ兵士のスロットを空にする。
-        foreach (var sol in Atk.Force.Soldiers.Concat(Def.Force.Soldiers))
+        foreach (var sol in Atk.Soldiers.Concat(Def.Soldiers))
         {
             if (sol.Hp == 0)
             {
@@ -121,8 +117,9 @@ public class Battle
             }
         }
 
-        var winner = result == BattleResult.AttackerWin ? Atk : Def;
-        var loser = result == BattleResult.AttackerWin ? Def : Atk;
+        var (winner, loser) = result == BattleResult.AttackerWin ?
+            (Atk, Def) :
+            (Def, Atk);
 
         // 兵士の回復処理を行う。
         CharacterInBattle.Recover(winner, true, 0.1f, 0.05f);
@@ -145,7 +142,6 @@ public class Battle
         Terrain.Hill => -0.10f,
         Terrain.Forest => -0.15f,
         Terrain.Mountain => -0.20f,
-        Terrain.Fort => -0.25f,
         _ => 0f,
     };
 
@@ -154,8 +150,8 @@ public class Battle
         TickCount += 1;
 
         // 両方の兵士をランダムな順番の配列にいれる。
-        var all = Atk.Force.Soldiers.Select(s => (soldier: s, owner: Attacker))
-            .Concat(Def.Force.Soldiers.Select(s => (soldier: s, owner: Defender)))
+        var all = Atk.Soldiers.Select(s => (soldier: s, owner: Attacker))
+            .Concat(Def.Soldiers.Select(s => (soldier: s, owner: Defender)))
             .Where(x => x.soldier.IsAlive)
             .ToArray()
             .ShuffleInPlace();
@@ -185,7 +181,7 @@ public class Battle
         {
             var opponent = owner.Opponent;
             if (!soldier.IsAlive) continue;
-            var target = opponent.Force.Soldiers.Where(s => s.IsAlive).RandomPickDefault();
+            var target = opponent.Soldiers.Where(s => s.IsAlive).RandomPickDefault();
             if (target == null) continue;
 
             var adj = baseAdjustment[owner];

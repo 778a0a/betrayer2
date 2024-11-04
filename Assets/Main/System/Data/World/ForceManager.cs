@@ -123,7 +123,9 @@ public class ForceManager : IReadOnlyList<Force>
     private void OnFieldBattle(WorldData world, Force force, GameMapTile nextTile, Force[] enemies)
     {
         var enemy = enemies.RandomPick();
-        var win = 0.5.Chance(); // TODO Battle
+        var battle = BattleManager.PrepareFieldBattle(force, enemy);
+        var result = battle.Do();
+        var win = result == BattleResult.AttackerWin;
 
         // 負けた場合は本拠地へ撤退を始める。
         if (!win)
@@ -216,7 +218,18 @@ public class ForceManager : IReadOnlyList<Force>
     {
         var castle = nextTile.Castle;
         var enemy = castle.Members.Where(e => e.CanDefend).RandomPickDefault();
-        var win = enemy == null || 0.5.Chance(); // TODO Battle
+        var win = true;
+        if (enemy != null)
+        {
+            var battle = BattleManager.PrepareSiegeBattle(force, enemy);
+            var result = battle.Do();
+            win = result == BattleResult.AttackerWin;
+        }
+        else
+        {
+            Debug.Log($"軍勢更新処理 防衛可能な敵がいません。{castle}");
+            force.Character.Prestige += 1;
+        }
 
         // 負けた場合は本拠地へ撤退を始める。
         if (!win)

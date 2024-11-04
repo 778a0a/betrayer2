@@ -10,28 +10,55 @@ using Random = UnityEngine.Random;
 
 public class BattleManager
 {
-    public static Battle Prepare(
-        Area sourceArea,
-        Area targetArea,
-        Character attacker,
-        Character defender,
-        ActionBase actionType)
+    public static Battle PrepareFieldBattle(
+        Force attacker,
+        Force defender)
     {
         var world = GameCore.Instance.World;
         var map = world.Map;
 
-        var dir = sourceArea.GetDirectionTo(targetArea);
-        var attackerTerrain = map.Helper.GetAttackerTerrain(sourceArea.Position, dir);
-        var defenderTerrain = targetArea.Terrain;
+        var attackerTerrain = map.GetTile(attacker).Terrain;
+        var defenderTerrain = map.GetTile(defender).Terrain;
 
-        var atk = new CharacterInBattle(attacker, attackerTerrain, sourceArea, true);
-        var def = new CharacterInBattle(defender, defenderTerrain, targetArea, false);
+        var atk = new CharacterInBattle(attacker.Character, attackerTerrain, true);
+        var def = new CharacterInBattle(defender.Character, defenderTerrain, false);
         atk.Opponent = def;
         def.Opponent = atk;
 
-        var battle = new Battle(atk, def, actionType);
+        var battle = new Battle(atk, def, BattleType.Field);
+        return battle;
+    }
+
+    public static Battle PrepareSiegeBattle(
+        Force attacker,
+        Character defender)
+    {
+        var world = GameCore.Instance.World;
+        var map = world.Map;
+
+        var attackerTerrain = map.GetTile(attacker).Terrain;
+        var defenderTerrain = map.GetTile(defender.Castle).Terrain;
+
+        var atk = new CharacterInBattle(attacker.Character, attackerTerrain, true);
+        var def = new CharacterInBattle(defender, defenderTerrain, false);
+        atk.Opponent = def;
+        def.Opponent = atk;
+
+        var battle = new Battle(atk, def, BattleType.Siege);
         return battle;
     }
 }
 
+public enum BattleType
+{
+    Field,
+    Siege,
+}
 
+public enum BattleResult
+{
+    None = 0,
+    AttackerWin,
+    DefenderWin,
+    Draw,
+}
