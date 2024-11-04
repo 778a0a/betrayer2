@@ -482,8 +482,11 @@ public class TileInfoEditorWindow : EditorWindow
         //}
         //GUILayout.EndHorizontal();
 
-        // memo
-        chara.csvDebugMemo = EditorGUILayout.TextField("Memo", chara.csvDebugMemo);
+        // 性格
+        chara.Personality = (Personality)EditorGUILayout.EnumPopup(chara.Personality);
+
+        //// memo
+        //chara.csvDebugMemo = EditorGUILayout.TextField("Memo", chara.csvDebugMemo);
 
 
         // 顔画像パス直接入力

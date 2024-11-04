@@ -45,6 +45,28 @@ public class Character
     public int Governing { get; set; }
 
     /// <summary>
+    /// 性格
+    /// </summary>
+    [JsonIgnore]
+    public Personality Personality { get; set; }
+    public string PersonalityText
+    {
+        get => Personality.ToString();
+        set => Personality = Enum.Parse<Personality>(value);
+    }
+
+    /// <summary>
+    /// 特性
+    /// </summary>
+    [JsonIgnore]
+    public Traits Traits { get; set; }
+    public string TraintsText
+    {
+        get => string.Join(" ", Traits.ToString().Split(", "));
+        set => Traits = Enum.Parse<Traits>(string.Join(", ", value.Split(" ")));
+    }
+
+    /// <summary>
     /// 忠誠基本値
     /// </summary>
     public int LoyaltyBase { get; set; }
@@ -80,17 +102,6 @@ public class Character
     /// プレーヤーならtrue
     /// </summary>
     public bool IsPlayer { get; set; }
-
-    /// <summary>
-    /// 特性
-    /// </summary>
-    [JsonIgnore]
-    public Traits Traits { get; set; }
-    public string TraintsText
-    {
-        get => string.Join(" ", Traits.ToString().Split(", "));
-        set => Traits = Enum.Parse<Traits>(string.Join(", ", value.Split(" ")));
-    }
 
     /// <summary>
     /// （内部データ）強さ
