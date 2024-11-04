@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 
 public class CountryManager : IReadOnlyList<Country>
 {
@@ -58,6 +59,6 @@ public class CountryManager : IReadOnlyList<Country>
         if (a == b) throw new ArgumentException("SetRelation a == b");
         if (a.Id > b.Id) (a, b) = (b, a);
 
-        relations[(a, b)] = value;
+        relations[(a, b)] = Mathf.Clamp(value, 0, 100);
     }
 }

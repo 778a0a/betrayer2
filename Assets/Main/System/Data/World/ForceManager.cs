@@ -218,6 +218,7 @@ public class ForceManager : IReadOnlyList<Force>
     {
         var castle = nextTile.Castle;
         var enemy = castle.Members.Where(e => e.CanDefend).RandomPickDefault();
+        force.Country.SetEnemy(castle.Country);
         var win = true;
         if (enemy != null)
         {

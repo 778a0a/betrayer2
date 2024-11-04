@@ -26,7 +26,7 @@ public class AI
         var country = castle.Country;
         var neighbors = castle.Neighbors.Where(c => c.Country != country);
         var minRel = neighbors
-            .Select(n => n.Country.Relation(country))
+            .Select(n => n.Country.GetRelation(country))
             .DefaultIfEmpty(100)
             .Min();
         return Util.EnumArray<CastleObjective>().RandomPickWeighted(o =>
@@ -41,7 +41,7 @@ public class AI
                     var val = 0f;
                     foreach (var neighbor in neighbors)
                     {
-                        var rel = neighbor.Country.Relation(country);
+                        var rel = neighbor.Country.GetRelation(country);
                         if (rel <= 40)
                         {
                             var hateAdj = Mathf.Lerp(100, 400, (40 - rel) / 40f);
@@ -98,7 +98,7 @@ public class AI
         // 同盟
         foreach (var neighbor in neighbors)
         {
-            var rel = country.Relation(neighbor);
+            var rel = country.GetRelation(neighbor);
             if (rel == Country.AllyRelation) continue;
             if (rel < 80) continue;
 
@@ -151,7 +151,7 @@ public class AI
         var targetCands = new List<Castle>();
         foreach (var neighbor in neighbors)
         {
-            var rel = neighbor.Country.Relation(castle.Country);
+            var rel = neighbor.Country.GetRelation(castle.Country);
             if (rel >= 50) continue;
             targetCands.Add(neighbor);
         }
@@ -165,7 +165,7 @@ public class AI
         var target = targetCands.RandomPickWeighted(neighbor =>
         {
             var val = 100f;
-            var rel = neighbor.Country.Relation(castle.Country);
+            var rel = neighbor.Country.GetRelation(castle.Country);
             var hateAdj = Mathf.Lerp(100, 400, (40 - rel) / 40f);
             var powerAdj = Mathf.Lerp(0, 200, (castle.Power / (neighbor.Power + 0.01f)) - 1);
             var powerAdj2 = Mathf.Lerp(0, 200, (castle.Power / (neighbor.DefencePower + 0.01f)) - 1);

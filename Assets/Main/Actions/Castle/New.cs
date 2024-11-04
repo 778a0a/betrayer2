@@ -29,7 +29,7 @@ partial class CastleActions
 
             var target = args.targetCountry;
             // TODO 思考処理
-            World.Countries.SetRelation(args.actor.Country, target, Country.AllyRelation);
+            args.actor.Country.SetAlly(target);
             Debug.Log($"{args.actor.Country} と {target} が同盟しました。");
 
             return default;

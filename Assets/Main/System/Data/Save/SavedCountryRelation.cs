@@ -44,7 +44,7 @@ public static class SavedCountryRelations
                 {
                     CountryA = a.Id,
                     CountryB = b.Id,
-                    Relation = a.Relation(b),
+                    Relation = a.GetRelation(b),
                     Memo = $"{a.Ruler.Name} - {b.Ruler.Name}",
                 });
             }
