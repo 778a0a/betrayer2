@@ -20,7 +20,7 @@ public class Battle
     private BattleWindow UI => GameCore.Instance.MainUI.BattleWindow;
     public bool NeedInteraction => false; // Attacker.IsPlayer || Defender.IsPlayer;
     private bool NeedWatchBattle => false;
-    private bool DebugWatch => false;
+    private bool DebugWatch => false; // Atk.Country.Ruler.Name == "フレデリック" || Def.Country.Ruler.Name == "フレデリック";
 
     public Battle(CharacterInBattle atk, CharacterInBattle def, BattleType type)
     {
@@ -33,7 +33,7 @@ public class Battle
     {
         Debug.Log($"[戦闘処理] {Atk}) -> {Def} ({Type}) 攻撃側地形: {Atk.Terrain} 防御側地形: {Def.Terrain}");
 
-        if (NeedWatchBattle || NeedInteraction)
+        if (NeedWatchBattle || NeedInteraction || DebugWatch)
         {
             UI.Root.style.display = DisplayStyle.Flex;
             UI.SetData(this);
@@ -48,7 +48,7 @@ public class Battle
         while (!Atk.AllSoldiersDead && !Def.AllSoldiersDead)
         {
             // 撤退判断を行う。
-            if (NeedWatchBattle || NeedInteraction)
+            if (NeedWatchBattle || NeedInteraction || DebugWatch)
             {
                 UI.SetData(this);
             }
@@ -63,7 +63,7 @@ public class Battle
                     break;
                 }
             }
-            else if (NeedWatchBattle)
+            else if (NeedWatchBattle || DebugWatch)
             {
                 await Awaitable.WaitForSecondsAsync(0.025f);
             }
@@ -91,7 +91,7 @@ public class Battle
         Debug.Log($"[戦闘処理] 結果: {result}");
 
         // 画面を更新する。
-        if (NeedWatchBattle || NeedInteraction)
+        if (NeedWatchBattle || NeedInteraction || DebugWatch)
         {
             UI.SetData(this, result);
             if (NeedInteraction)
