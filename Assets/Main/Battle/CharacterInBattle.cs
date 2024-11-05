@@ -72,9 +72,10 @@ public record CharacterInBattle(
 
         if (IsInCastle && IsDefender)
         {
-            // 自国の最後の領土の防衛なら撤退しない。
+            // 君主で自国の最後の領土の防衛なら撤退しない。
             var lastCastle = Country.Castles.Count == 1;
-            if (lastCastle) return false;
+            var isRuler = Character == Country.Ruler;
+            if (lastCastle && isRuler) return false;
         }
 
         // 撤退する。
