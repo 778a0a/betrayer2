@@ -42,9 +42,15 @@ public class AI
                     foreach (var neighbor in neighbors)
                     {
                         var rel = neighbor.Country.GetRelation(country);
-                        if (rel <= 40)
+                        var relThresh = country.Ruler.Personality switch
                         {
-                            var hateAdj = Mathf.Lerp(100, 400, (40 - rel) / 40f);
+                            Personality.Merchant => 15,
+                            Personality.Pacifism => 15,
+                            _ => 40,
+                        };
+                        if (rel <= relThresh)
+                        {
+                            var hateAdj = Mathf.Lerp(100, 400, (relThresh - rel) / relThresh);
                             var powerAdj = Mathf.Lerp(0, 200, (castle.Power / (neighbor.Power + 0.01f)) - 1);
                             var powerAdj2 = Mathf.Lerp(0, 200, (castle.Power / (neighbor.DefencePower + 0.01f)) - 1);
                             val = Mathf.Max(val, hateAdj + powerAdj + powerAdj2);
@@ -228,7 +234,7 @@ public class AI
         // 攻撃するか判定する。
         var shouldAttack = castle.Objective == CastleObjective.Attack ?
             0.3f :
-            0.1f;
+            0.05f;
         if (!shouldAttack.Chance())
         {
             Debug.Log($"出撃判定 {castle} shouldAttack == false");
@@ -243,10 +249,16 @@ public class AI
         }
 
         var targetCands = new List<Castle>();
+        var relThresh = castle.Country.Ruler.Personality switch
+        {
+            Personality.Merchant => 15,
+            Personality.Pacifism => 15,
+            _ => 45,
+        };
         foreach (var neighbor in neighbors)
         {
             var rel = neighbor.Country.GetRelation(castle.Country);
-            if (rel >= 45) continue;
+            if (rel >= relThresh) continue;
             targetCands.Add(neighbor);
         }
 
@@ -254,6 +266,13 @@ public class AI
         {
             Debug.Log($"出撃判定 {castle} 目標なし");
             return;
+        }
+
+        // 敵対国がある場合はそちらを優先する。
+        var targetCandsEnemy = targetCands.Where(c => c.Country.IsEnemy(castle.Country)).ToList();
+        if (targetCandsEnemy.Count > 0)
+        {
+            targetCands = targetCandsEnemy;
         }
 
         var target = targetCands.RandomPickWeighted(neighbor =>
