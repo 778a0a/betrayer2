@@ -36,6 +36,43 @@ partial class CastleActions
         }
     }
 
+    /// <summary>
+    /// 他勢力との関係を改善します。
+    /// </summary>
+    public GoodwillAction Goodwill { get; } = new();
+    public class GoodwillAction : CastleActionBase
+    {
+        public override string Label => L["親善"];
+        public override string Description => L["他勢力との関係を改善します。"];
+
+        public ActionArgs Args(Character actor, Country target) => new(actor, targetCountry: target);
+
+        public override ActionCost Cost(ActionArgs args) => ActionCost.Of(0, 1, 10);
+
+        public override ValueTask Do(ActionArgs args)
+        {
+            Assert.IsTrue(CanDo(args));
+
+            PayCost(args);
+
+            var target = args.targetCountry;
+            // TODO 思考処理
+            if (args.actor.Country.IsAlly(target))
+            {
+                // TODO
+                Debug.Log($"{args.actor.Country} と {target} が関係改善しました（同盟済み）");
+            }
+            else
+            {
+                var rel = args.actor.Country.GetRelation(target);
+                var newRel = Mathf.Min(Country.AllyRelation - 1, rel + 10);
+                args.actor.Country.SetRelation(target, newRel);
+                Debug.Log($"{args.actor.Country} と {target} が関係改善しました（{rel} -> {newRel}）");
+            }
+
+            return default;
+        }
+    }
 
     /// <summary>
     /// 指定した場所へ進軍します。

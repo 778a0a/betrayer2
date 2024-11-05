@@ -120,36 +120,78 @@ public class AI
         }
 
         // 親善
-        foreach (var neighbor in neighbors)
+        foreach (var neighbor in neighbors.OrderBy(_ => Random.value))
         {
             void Do()
             {
+                var action = core.CastleActions.Goodwill;
+                var args = action.Args(country.Ruler, neighbor);
+                if (action.CanDo(args))
+                {
+                    action.Do(args);
+                }
             }
 
+            var castle = country.Ruler.Castle;
+            var rel = country.GetRelation(neighbor);
+
+            // 自城が豊かなら+
+            var probGold = castle.GoldBalance > 0;
+            // 敵対国と敵対しているなら+
+            var probEnemyEnemy = neighbor.Neighbors
+                .Where(n => n != country)
+                .Any(n => neighbor.GetRelation(n) < 20 && country.GetRelation(n) < 20);
+            // 相手が強いほど+
+            var probTargetStrong = country.Members.Sum(m => m.Power) < neighbor.Members.Sum(m => m.Power);
+
+            var prob = 0f;
             switch (country.Ruler.Personality)
             {
                 case Personality.Conqueror:
                     // 自城が豊かなら+
+                    prob += probGold ? 0.1f : 0;
                     // 敵対国と敵対しているなら+
+                    prob += probEnemyEnemy ? 0.1f : 0;
                     // 他に敵対国がなくて一番仲の悪い国とは行わない
-                    // 友好度50以上なら+
+                    if (neighbors.Except(new[] { neighbor }).All(n => n.GetRelation(country) >= 50)) return;
+                    // 友好度45以上なら+
+                    if (rel < 45) return;
+                    // 友好度が高すぎるなら-
+                    if (rel >= 90) prob *= 0.5f;
                     break;
                 case Personality.Leader:
                     // 自城が豊かなら+
-                    // 貧しい同盟国なら+
+                    prob += probGold ? 0.1f : 0;
                     // 敵対国と敵対しているなら+
+                    prob += probEnemyEnemy ? 0.2f : 0;
                     // 友好度40以上なら+
+                    if (rel < 40) return;
+                    // 友好度が高すぎるなら-
+                    if (rel >= 90) prob *= 0.5f;
                     break;
                 case Personality.Pacifism:
                     // 自城が豊かなら+
+                    prob += probGold ? 0.1f : 0;
                     // 友好度30以上で友好度が高いほど+
+                    prob += Mathf.Lerp(0.1f, 0.2f, (rel - 30) / 70f);
                     // 敵対国と敵対しているなら+
+                    prob += probEnemyEnemy ? 0.1f : 0;
                     // 相手が強いほど+
+                    prob += probTargetStrong ? 0.1f : 0;
+                    // 友好度40以上なら+
+                    if (rel < 40) return;
                     break;
                 case Personality.Merchant:
                     // 自城が豊かなら+
+                    prob += probGold ? 0.2f : 0;
                     // 友好度40以上で友好度が低いほど+
+                    prob += Mathf.Lerp(0.3f, 0.0f, (rel - 40) / 60f);
                     // 敵対国と敵対しているなら+
+                    prob += probEnemyEnemy ? 0.2f : 0;
+                    // 友好度40以上なら+
+                    if (rel < 40) return;
+                    // 友好度が高すぎるなら-
+                    if (rel >= 90) prob *= 0.5f;
                     break;
                 case Personality.Warrior:
                 case Personality.Pirate:
@@ -160,8 +202,17 @@ public class AI
                 case Personality.Normal:
                 default:
                     // 自城が豊かなら+
+                    prob += probGold ? 0.1f : 0;
                     // 友好度40以上なら+
+                    if (rel < 40) return;
+                    // 友好度が高すぎるなら-
+                    if (rel >= 90) prob *= 0.5f;
                     break;
+            }
+
+            if ((prob / 12).Chance())
+            {
+                Do();
             }
         }
     }
@@ -195,7 +246,7 @@ public class AI
         foreach (var neighbor in neighbors)
         {
             var rel = neighbor.Country.GetRelation(castle.Country);
-            if (rel >= 50) continue;
+            if (rel >= 45) continue;
             targetCands.Add(neighbor);
         }
 
