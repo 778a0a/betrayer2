@@ -90,6 +90,22 @@ partial class GameCore
                     // 進軍を行うか判定する。
                     AI.Deploy(castle);
 
+                    // 後方から移動する（適当）
+                    if (castle.Members.Count > 2 && castle.Neighbors.All(n => n.Country == castle.Country))
+                    {
+                        var cands = castle.Members
+                            .Where(m => m != chara)
+                            .Where(m => m.IsDefenceable)
+                            .ToList();
+                        var moveTarget = cands.RandomPickDefault();
+                        if (moveTarget != null && 0.5f.Chance())
+                        {
+                            var action = CastleActions.Move;
+                            var args = action.Args(chara, moveTarget, castle.Neighbors.RandomPick());
+                            await action.Do(args);
+                        }
+                    }
+
                     // 挑発を行うか判定する。
 
                     // 君主でない場合反乱を起こすか判定する。
