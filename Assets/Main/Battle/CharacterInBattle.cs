@@ -94,7 +94,8 @@ public record CharacterInBattle(
             var s = chara.Soldiers[i];
             if (!s.IsAlive) continue;
 
-            var baseAmount = maxRecoveryCounts[i] * (win ? winRate : loseRate);
+            var tiredAdj = Mathf.Pow(0.9f, chara.ConsecutiveBattleCount);
+            var baseAmount = maxRecoveryCounts[i] * (win ? winRate : loseRate) * tiredAdj;
             var adj = Mathf.Max(0, (chara.Intelligence - 80) / 100f / 2) * (win ? 1 : 0.5f);
             var newHp = s.HpFloat + (baseAmount * (1 + adj));
             newHp = Mathf.Min(maxRecoveryCounts[i], newHp);

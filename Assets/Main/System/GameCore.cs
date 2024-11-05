@@ -90,23 +90,33 @@ public partial class GameCore
             }
         }
 
-        // 収入月の場合
-        if (GameDate.Day == 1 && GameDate.IsIncomeMonth)
+        if (GameDate.Day == 1)
         {
-            OnIncome();
-
-            // 隣接する国の友好度を徐々に減らす。
-            foreach (var country in World.Countries)
+            // 出撃中でないキャラの連戦回数をリセットする。
+            foreach (var chara in World.Characters)
             {
-                foreach (var neighbor in country.Neighbors)
-                {
-                    // 重複して減らさないようにする。
-                    if (country.Id > neighbor.Id) continue;
+                if (!chara.IsMoving) chara.ConsecutiveBattleCount = 0;
+            }
 
-                    var rel = country.GetRelation(neighbor);
-                    // 同盟しているなら減らさない。
-                    if (rel == Country.AllyRelation) continue;
-                    country.SetRelation(neighbor, rel - 1);
+
+            // 収入月の場合
+            if (GameDate.IsIncomeMonth)
+            {
+                OnIncome();
+
+                // 隣接する国の友好度を徐々に減らす。
+                foreach (var country in World.Countries)
+                {
+                    foreach (var neighbor in country.Neighbors)
+                    {
+                        // 重複して減らさないようにする。
+                        if (country.Id > neighbor.Id) continue;
+
+                        var rel = country.GetRelation(neighbor);
+                        // 同盟しているなら減らさない。
+                        if (rel == Country.AllyRelation) continue;
+                        country.SetRelation(neighbor, rel - 1);
+                    }
                 }
             }
         }

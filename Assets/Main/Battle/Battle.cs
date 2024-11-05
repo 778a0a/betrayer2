@@ -127,6 +127,8 @@ public class Battle
         // 兵士の回復処理を行う。
         CharacterInBattle.Recover(winner, true, 0.5f, 0.15f, winner.InitialSoldierCounts);
         CharacterInBattle.Recover(loser, false, 0.5f, 0.15f, loser.InitialSoldierCounts);
+        winner.Character.ConsecutiveBattleCount++;
+        loser.Character.ConsecutiveBattleCount++;
 
         // 回復処理確認用
         if (DebugWatch)

@@ -99,6 +99,11 @@ public class Character
     public Soldiers Soldiers { get; set; }
 
     /// <summary>
+    /// 連戦回数
+    /// </summary>
+    public int ConsecutiveBattleCount { get; set; }
+
+    /// <summary>
     /// プレーヤーならtrue
     /// </summary>
     public bool IsPlayer { get; set; }
