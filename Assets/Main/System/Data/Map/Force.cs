@@ -76,7 +76,7 @@ public class Force : ICountryEntity, IMapEntity
             else if (Destination.Position != pos)
             {
                 Debug.Log($"軍勢の位置がPathと一致しません。経路を再計算します。 {this}");
-                DestinationPath = FindPath(Destination.Position);
+                DestinationPath = FindPath(Destination);
                 Direction = Position.DirectionTo(DestinationPath.First());
             }
         }
@@ -103,7 +103,7 @@ public class Force : ICountryEntity, IMapEntity
         Destination = destination;
         if (Destination.Position != Position)
         {
-            DestinationPath = FindPath(destination.Position);
+            DestinationPath = FindPath(destination);
             Direction = Position.DirectionTo(DestinationPath.First());
         }
         // 目的地が変わった場合は移動日数をリセットする
@@ -118,7 +118,37 @@ public class Force : ICountryEntity, IMapEntity
         }
     }
 
-    private LinkedList<MapPosition> FindPath(MapPosition dest)
+    private LinkedList<MapPosition> FindPath(IMapEntity dest)
+    {
+        var path = FindPathCore(dest.Position);
+        
+        // NPCの場合
+        //if (!Character.IsPlayer && !Character.Country.Ruler.IsPlayer)
+        if (dest is Castle castle)
+        {
+            // 敵対国の城が目的地の場合
+            if (castle.Country != Character.Country && !castle.Country.IsAlly(Character.Country))
+            {
+                // 城の目前のタイルの両隣が攻撃に有利な地形ならそちらに移動する。
+                if (path.Count >= 2)
+                {
+                    Debug.Assert(dest.Position == path.Last.Value);
+                    var castleTile = world.Map.GetTile(dest);
+                    var castlePrevTile = world.Map.GetTile(path.Last.Previous.Value);
+                    var cands = castleTile.Neighbors.Intersect(new[] { castlePrevTile }.Concat(castlePrevTile.Neighbors));
+                    var target = cands.OrderByDescending(tile =>
+                        Battle.TerrainTraitsAdjustment(tile.Terrain, Character.Traits) +
+                        Battle.TerrainAdjustment(tile.Terrain) +
+                        (tile.Position == castlePrevTile.Position ? 0.001f : 0)).First();
+                    path = FindPathCore(target.Position);
+                    path.AddLast(dest.Position);
+                }
+            }
+        }
+        return path;
+    }
+
+    private LinkedList<MapPosition> FindPathCore(MapPosition dest)
     {
         if (Position == dest) return new LinkedList<MapPosition>();
         var start = Position;
