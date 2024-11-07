@@ -72,10 +72,10 @@ public record CharacterInBattle(
 
         if (IsInCastle && IsDefender)
         {
-            // 君主で自国の最後の領土の防衛なら撤退しない。
+            // 君主か忠誠100の家臣で自国の最後の領土の防衛なら撤退しない。
             var lastCastle = Country.Castles.Count == 1;
-            var isRuler = Character == Country.Ruler;
-            if (lastCastle && isRuler) return false;
+            var loyal = Character == Country.Ruler || true; // TODO
+            if (lastCastle && loyal) return false;
         }
 
         // 撤退する。
@@ -89,18 +89,20 @@ public record CharacterInBattle(
     {
         if (chara == null) return;
 
+        var tiredAdj = Mathf.Pow(0.8f, chara.ConsecutiveBattleCount);
+        var intelliAdj = Mathf.Max(0, (chara.Intelligence - 80) / 100f / 2) * (win ? 1 : 0.5f);
+        var winAdj = win ? winRate : loseRate;
+        var adj = (winAdj + intelliAdj) * tiredAdj;
         for (int i = 0; i < chara.Soldiers.Count; i++)
         {
             var s = chara.Soldiers[i];
             if (!s.IsAlive) continue;
-
-            var tiredAdj = Mathf.Pow(0.9f, chara.ConsecutiveBattleCount);
-            var baseAmount = maxRecoveryCounts[i] * (win ? winRate : loseRate) * tiredAdj;
-            var adj = Mathf.Max(0, (chara.Intelligence - 80) / 100f / 2) * (win ? 1 : 0.5f);
-            var newHp = s.HpFloat + (baseAmount * (1 + adj));
+            var baseAmount = maxRecoveryCounts[i];
+            var newHp = s.HpFloat + (baseAmount * adj);
             newHp = Mathf.Min(maxRecoveryCounts[i], newHp);
             s.HpFloat = Mathf.Min(s.MaxHp, newHp);
         }
+        Debug.Log($"{chara.Name} adj:{adj} win:{winAdj} intelli:{intelliAdj} tired: {tiredAdj} ({chara.ConsecutiveBattleCount})");
     }
 
     public override string ToString() => $"{Character?.Name}({Character?.Power})";
