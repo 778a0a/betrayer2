@@ -129,13 +129,18 @@ public class Force : ICountryEntity, IMapEntity
             // 敵対国の城が目的地の場合
             if (castle.Country != Character.Country && !castle.Country.IsAlly(Character.Country))
             {
-                // 城の目前のタイルの両隣が攻撃に有利な地形ならそちらに移動する。
                 if (path.Count >= 2)
                 {
                     Debug.Assert(dest.Position == path.Last.Value);
                     var castleTile = world.Map.GetTile(dest);
+                    // 城の目前のタイルの両隣が攻撃に有利な地形ならそちらに移動する。
                     var castlePrevTile = world.Map.GetTile(path.Last.Previous.Value);
                     var cands = castleTile.Neighbors.Intersect(new[] { castlePrevTile }.Concat(castlePrevTile.Neighbors));
+                    // 水軍または海賊なら、城に隣接する川・大河マスも候補にする
+                    if (Character.Traits.HasFlag(Traits.Admiral) || Character.Traits.HasFlag(Traits.Pirate))
+                    {
+                        cands = cands.Concat(castleTile.Neighbors.Where(tile => tile.Terrain == Terrain.River || tile.Terrain == Terrain.LargeRiver));
+                    }
                     var target = cands.OrderByDescending(tile =>
                         Battle.TerrainTraitsAdjustment(tile.Terrain, Character.Traits) +
                         Battle.TerrainAdjustment(tile.Terrain) +
@@ -151,17 +156,17 @@ public class Force : ICountryEntity, IMapEntity
     private LinkedList<MapPosition> FindPathCore(MapPosition dest)
     {
         if (Position == dest) return new LinkedList<MapPosition>();
-        var start = Position;
-        var open = new List<MapPosition> { start };
-        var close = new List<MapPosition>();
-        var cameFrom = new Dictionary<MapPosition, MapPosition>();
-        var g = new Dictionary<MapPosition, float> { { start, 0 } };
-        var f = new Dictionary<MapPosition, float> { { start, start.DistanceTo(dest) } };
+        var start = world.Map.GetTile(Position);
+        var open = new List<GameMapTile> { start };
+        var close = new HashSet<GameMapTile>();
+        var cameFrom = new Dictionary<GameMapTile, GameMapTile>();
+        var g = new Dictionary<GameMapTile, float> { { start, 0 } };
+        var f = new Dictionary<GameMapTile, float> { { start, H(start, dest) } };
 
         while (open.Count > 0)
         {
             var current = open.OrderBy(p => f.GetValueOrDefault(p, float.MaxValue)).First();
-            if (current == dest)
+            if (current.Position == dest)
             {
                 return ReconstructPath(cameFrom, current);
             }
@@ -169,9 +174,11 @@ public class Force : ICountryEntity, IMapEntity
             open.Remove(current);
             close.Add(current);
 
-            foreach (var neighborTile in world.Map.GetTile(current).Neighbors)
+            // 目的地以外の城は移動禁止にする。
+            var cands = current.Neighbors.Where(tile => tile.Castle == null || tile.Position == dest);
+            foreach (var neighborTile in cands)
             {
-                var neighbor = neighborTile.Position;
+                var neighbor = neighborTile;
                 if (close.Contains(neighbor))
                 {
                     continue;
@@ -189,19 +196,24 @@ public class Force : ICountryEntity, IMapEntity
 
                 cameFrom[neighbor] = current;
                 g[neighbor] = gscore;
-                f[neighbor] = gscore + neighbor.DistanceTo(dest) * 10 * 2; // 1マスの大体の移動コスト
+                f[neighbor] = gscore + H(neighbor, dest);
             }
         }
         throw new InvalidOperationException("Path not found");
 
-        static LinkedList<MapPosition> ReconstructPath(Dictionary<MapPosition, MapPosition> cameFrom, MapPosition current)
+        static float H(GameMapTile pos, MapPosition dest)
+        {
+            return pos.DistanceTo(dest) * 30 * 2; // 1マスの最大移動コスト
+        }
+
+        static LinkedList<MapPosition> ReconstructPath(Dictionary<GameMapTile, GameMapTile> cameFrom, GameMapTile current)
         {
             var path = new LinkedList<MapPosition>();
-            path.AddFirst(current);
+            path.AddFirst(current.Position);
             while (cameFrom.ContainsKey(current))
             {
                 current = cameFrom[current];
-                path.AddFirst(current);
+                path.AddFirst(current.Position);
             }
             path.RemoveFirst();
             return path;
@@ -219,14 +231,13 @@ public class Force : ICountryEntity, IMapEntity
     }
 
     public float CalculateMoveCost(MapPosition nextPos) => CalculateMoveCost(Position, nextPos);
-    public float CalculateMoveCost(MapPosition fromPos, MapPosition nextPos)
+    public float CalculateMoveCost(MapPosition fromPos, MapPosition nextPos) => CalculateMoveCost(world.Map.GetTile(fromPos), world.Map.GetTile(nextPos));
+    public float CalculateMoveCost(GameMapTile current, GameMapTile next)
     {
         // キャラの攻撃能力に応じて移動コストを補正する。
         var martialAdj = Character.Attack;
 
         // 自国領の場合は防衛能力で補正する。
-        var current = world.Map.GetTile(fromPos);
-        var next = world.Map.GetTile(nextPos);
         if (Country.Has(current) || Country.Has(next))
         {
             martialAdj = Character.Defense;
@@ -234,7 +245,6 @@ public class Force : ICountryEntity, IMapEntity
         // 能力が70の場合は補正1.0、能力が80の場合は0.9、能力が60の場合は1.1
         var martialAdjRate = 1.0f - (martialAdj - 70) * 0.01f;
 
-        // TODO traitによる補正
         var currentCost = tileMoveCost[current.Terrain];
         currentCost *= TerrainTraitMoveAdjustment(current.Terrain, Character.Traits);
         var nextCost = tileMoveCost[next.Terrain];
