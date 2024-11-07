@@ -27,7 +27,7 @@ public class Testing : MonoBehaviour
 
         var world = DefaultData.Create();
         world.Map.AttachUI(UIMapManager.Instance);
-        world.Characters.FirstOrDefault(c => c.Name == "オーロラ").IsPlayer = true;
+        //world.Characters.FirstOrDefault(c => c.Name == "オーロラ").IsPlayer = true;
 
         UpdatePlaySpeed(PlaySpeedIndex);
         core = new GameCore(world, UIMapManager.Instance, MainUI.Instance, this);
