@@ -153,9 +153,20 @@ public class Force : ICountryEntity, IMapEntity
         return path;
     }
 
-    private LinkedList<MapPosition> FindPathCore(MapPosition dest)
+    private LinkedList<MapPosition> FindPathCore(MapPosition dest, bool recursive = false, bool useRiver = false)
     {
         if (Position == dest) return new LinkedList<MapPosition>();
+        // 水軍か海賊の場合、川・大河を使う経路を優先する。
+        if (!recursive && (Character.Traits.HasFlag(Traits.Admiral) || Character.Traits.HasFlag(Traits.Pirate)))
+        {
+            var res = FindPathCore(dest, true, true);
+            // 経路が見つかって、極端に長くなければ採用する。
+            if (res != null && res.Count < 10)
+            {
+                return res;
+            }
+        }
+
         var start = world.Map.GetTile(Position);
         var open = new List<GameMapTile> { start };
         var close = new HashSet<GameMapTile>();
@@ -174,8 +185,10 @@ public class Force : ICountryEntity, IMapEntity
             open.Remove(current);
             close.Add(current);
 
-            // 目的地以外の城は移動禁止にする。
-            var cands = current.Neighbors.Where(tile => tile.Castle == null || tile.Position == dest);
+            var cands = useRiver ?
+                current.Neighbors.Where(tile => tile.Terrain == Terrain.River || tile.Terrain == Terrain.LargeRiver || tile.Position == dest) :
+                // 目的地以外の城は移動禁止にする。
+                current.Neighbors.Where(tile => tile.Castle == null || tile.Position == dest);
             foreach (var neighborTile in cands)
             {
                 var neighbor = neighborTile;
@@ -199,7 +212,7 @@ public class Force : ICountryEntity, IMapEntity
                 f[neighbor] = gscore + H(neighbor, dest);
             }
         }
-        throw new InvalidOperationException("Path not found");
+        return null;
 
         static float H(GameMapTile pos, MapPosition dest)
         {
