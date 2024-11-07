@@ -130,7 +130,10 @@ public class ForceManager : IReadOnlyList<Force>
         // 負けた場合は本拠地へ撤退を始める。
         if (!win)
         {
+            // TODO 全滅した場合の処理
+
             var home = force.Character.Castle;
+            force.ResetTileMoveProgress();
             force.SetDestination(home);
             Debug.Log($"軍勢更新処理 野戦に敗北しました。撤退します。({force.TileMoveRemainingDays})");
             return;
@@ -147,6 +150,8 @@ public class ForceManager : IReadOnlyList<Force>
         }
         else
         {
+            // TODO 全滅した場合の処理
+
             // 敵を1タイル後退させる。
             var enemyPos = enemy.Position;
             var backPos = enemyPos.To(force.Direction);
@@ -235,6 +240,7 @@ public class ForceManager : IReadOnlyList<Force>
         // 負けた場合は本拠地へ撤退を始める。
         if (!win)
         {
+            // TODO 全滅した場合の処理
             var home = force.Character.Castle;
             force.SetDestination(home);
             Debug.Log($"軍勢更新処理 攻城戦に敗北しました。撤退します。({force.TileMoveRemainingDays})");
