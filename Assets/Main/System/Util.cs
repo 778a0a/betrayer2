@@ -155,6 +155,10 @@ public static class Util
         raw.CopyTo(rawMs);
         return Encoding.UTF8.GetString(rawMs.ToArray());
     }
+
+
+    public static bool IsMarine(Traits t) => t.HasFlag(Traits.Admiral) || t.HasFlag(Traits.Pirate);
+    public static bool IsMarine(Terrain t) => t == Terrain.River || t == Terrain.LargeRiver;
 }
 
 public class Defer : IDisposable
