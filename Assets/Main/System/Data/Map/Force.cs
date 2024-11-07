@@ -142,7 +142,7 @@ public class Force : ICountryEntity, IMapEntity
                         cands = cands.Concat(castleTile.Neighbors.Where(tile => tile.Terrain == Terrain.River || tile.Terrain == Terrain.LargeRiver));
                     }
                     var target = cands.OrderByDescending(tile =>
-                        Battle.TerrainTraitsAdjustment(tile.Terrain, Character.Traits) +
+                        Battle.TraitsAdjustment(tile, Character.Traits) +
                         Battle.TerrainAdjustment(tile.Terrain) +
                         (tile.Position == castlePrevTile.Position ? 0.001f : 0)).First();
                     path = FindPathCore(target.Position);

@@ -158,12 +158,12 @@ public class Battle
         Terrain.Mountain => +0.20f,
         _ => 0f,
     };
-    public static float TerrainTraitsAdjustment(Terrain t, Traits traits)
+    public static float TraitsAdjustment(GameMapTile t, Traits traits)
     {
         var adj = 0f;
         if (traits.HasFlag(Traits.Merchant)) adj += -0.05f;
         if (traits.HasFlag(Traits.Knight)) adj += +0.025f;
-        switch (t)
+        switch (t.Terrain)
         {
             case Terrain.LargeRiver:
                 if (traits.HasFlag(Traits.Pirate)) adj += +0.50f;
@@ -174,31 +174,36 @@ public class Battle
                 if (traits.HasFlag(Traits.Admiral)) adj += +0.20f;
                 break;
             case Terrain.Plain:
-                if (traits.HasFlag(Traits.Pirate)) adj += -0.15f;
-                if (traits.HasFlag(Traits.Admiral)) adj += -0.05f;
+                if (traits.HasFlag(Traits.Pirate)) adj += IsMarineSide(t) ? 0 : -0.15f;
+                if (traits.HasFlag(Traits.Admiral)) adj += IsMarineSide(t) ? 0 : -0.05f;
                 if (traits.HasFlag(Traits.Mountaineer)) adj += -0.10f;
                 if (traits.HasFlag(Traits.Hunter)) adj += -0.05f;
                 break;
             case Terrain.Hill:
-                if (traits.HasFlag(Traits.Pirate)) adj += -0.15f;
-                if (traits.HasFlag(Traits.Admiral)) adj += -0.05f;
+                if (traits.HasFlag(Traits.Pirate)) adj += IsMarineSide(t) ? 0 : -0.15f;
+                if (traits.HasFlag(Traits.Admiral)) adj += IsMarineSide(t) ? 0 : -0.05f;
                 if (traits.HasFlag(Traits.Mountaineer)) adj += +0.10f;
                 if (traits.HasFlag(Traits.Hunter)) adj += +0.025f;
                 break;
             case Terrain.Forest:
-                if (traits.HasFlag(Traits.Pirate)) adj += -0.15f;
-                if (traits.HasFlag(Traits.Admiral)) adj += -0.05f;
+                if (traits.HasFlag(Traits.Pirate)) adj += IsMarineSide(t) ? 0 : -0.15f;
+                if (traits.HasFlag(Traits.Admiral)) adj += IsMarineSide(t) ? 0 : -0.05f;
                 if (traits.HasFlag(Traits.Mountaineer)) adj += +0.05f;
                 if (traits.HasFlag(Traits.Hunter)) adj += +0.10f;
                 break;
             case Terrain.Mountain:
-                if (traits.HasFlag(Traits.Pirate)) adj += -0.15f;
-                if (traits.HasFlag(Traits.Admiral)) adj += -0.05f;
+                if (traits.HasFlag(Traits.Pirate)) adj += IsMarineSide(t) ? 0 : -0.15f;
+                if (traits.HasFlag(Traits.Admiral)) adj += IsMarineSide(t) ? 0 : -0.05f;
                 if (traits.HasFlag(Traits.Mountaineer)) adj += +0.20f;
                 if (traits.HasFlag(Traits.Hunter)) adj += +0.025f;
                 break;
         }
         return adj;
+
+        static bool IsMarineSide(GameMapTile tile)
+        {
+            return tile.Neighbors.Count(t => Util.IsMarine(t.Terrain)) >= 3;
+        }
     }
 
     private void Tick()
@@ -226,10 +231,10 @@ public class Battle
             adj += Tap("戦闘差", (chara.Strength - op.Strength) / 100f);
             adj += Tap("智謀差", (chara.Intelligence - op.Intelligence) / 100f * Mathf.Min(1, tickCount / 10f));
             adj += Tap("地形差", TerrainAdjustment(chara.Terrain) - TerrainAdjustment(op.Terrain));
-            if (Util.IsMarine(chara.Character.Traits) && isMarine) adj += Tap("自特性", +(Mathf.Max(0, TerrainTraitsAdjustment(chara.Terrain, chara.Character.Traits)) + Mathf.Max(0, TerrainTraitsAdjustment(op.Terrain, chara.Character.Traits))));
-            else adj += Tap("自特性", +(TerrainTraitsAdjustment(chara.Terrain, chara.Character.Traits) + TerrainTraitsAdjustment(op.Terrain, chara.Character.Traits)));
-            if (Util.IsMarine(op.Character.Traits) && isMarine) adj += Tap("敵特性", -(Mathf.Max(0, TerrainTraitsAdjustment(op.Terrain, op.Character.Traits)) + Mathf.Max(0, TerrainTraitsAdjustment(chara.Terrain, op.Character.Traits))));
-            else adj += Tap("敵特性", -(TerrainTraitsAdjustment(op.Terrain, op.Character.Traits) + TerrainTraitsAdjustment(chara.Terrain, op.Character.Traits)));
+            if (Util.IsMarine(chara.Character.Traits) && isMarine) adj += Tap("自特性", +(Mathf.Max(0, TraitsAdjustment(chara.Tile, chara.Character.Traits)) + Mathf.Max(0, TraitsAdjustment(op.Tile, chara.Character.Traits))));
+            else adj += Tap("自特性", +(TraitsAdjustment(chara.Tile, chara.Character.Traits) + TraitsAdjustment(op.Tile, chara.Character.Traits)));
+            if (Util.IsMarine(op.Character.Traits) && isMarine) adj += Tap("敵特性", -(Mathf.Max(0, TraitsAdjustment(op.Tile, op.Character.Traits)) + Mathf.Max(0, TraitsAdjustment(chara.Tile, op.Character.Traits))));
+            else adj += Tap("敵特性", -(TraitsAdjustment(op.Tile, op.Character.Traits) + TraitsAdjustment(chara.Tile, op.Character.Traits)));
             if (chara.IsInCastle) adj += Tap("自城", +chara.Tile.Castle.Strength / 1000 / 2);
             if (op.IsInCastle) adj += Tap("敵城", -op.Tile.Castle.Strength / 1000 / 2);
             if (chara.IsInOwnTerritory) adj += Tap("自領1", +0.05f);
