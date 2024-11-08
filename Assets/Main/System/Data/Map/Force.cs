@@ -161,7 +161,7 @@ public class Force : ICountryEntity, IMapEntity
         {
             var res = FindPathCore(dest, true, true);
             // 経路が見つかって、極端に長くなければ採用する。
-            if (res != null && res.Count < 10)
+            if (res != null && res.Count < 9)
             {
                 return res;
             }
