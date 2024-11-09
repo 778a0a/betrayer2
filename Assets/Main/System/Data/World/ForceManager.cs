@@ -84,7 +84,7 @@ public class ForceManager : IReadOnlyList<Force>
         var nextTile = world.Map.GetTile(nextPos);
 
         // 移動先に自国以外の軍勢がいる場合は野戦を行う。
-        var nextEnemies = nextTile.Forces.Where(f => f.IsEnemy(force)).ToArray();
+        var nextEnemies = nextTile.Forces.Where(f => f.IsAttackable(force)).ToArray();
         if (nextEnemies.Length > 0)
         {
             await OnFieldBattle(world, force, nextTile, nextEnemies);
@@ -92,7 +92,7 @@ public class ForceManager : IReadOnlyList<Force>
         }
 
         // 移動先が自国以外の城の場合は攻城戦を行う。
-        if (nextTile.Castle != null && force.IsEnemy(nextTile))
+        if (nextTile.Castle != null && force.IsAttackable(nextTile))
         {
             await OnSiege(world, force, nextTile);
             return;
@@ -170,8 +170,8 @@ public class ForceManager : IReadOnlyList<Force>
             var backTile = world.Map.TryGetTile(backPos);
             // 後退先に移動できないなら、軍勢を削除して行動不能にする。
             if (backTile == null ||
-                backTile.Forces.Any(f => f.IsEnemy(enemy)) ||
-                (backTile.Castle?.IsEnemy(enemy) ?? false))
+                backTile.Forces.Any(f => f.IsAttackable(enemy)) ||
+                (backTile.Castle?.IsAttackable(enemy) ?? false))
             {
                 enemy.Character.SetIncapacitated();
                 Unregister(enemy);
@@ -198,7 +198,7 @@ public class ForceManager : IReadOnlyList<Force>
         }
 
         // 移動先が敵城の場合
-        if (nextTile.Castle != null && force.IsEnemy(nextTile.Castle))
+        if (nextTile.Castle != null && force.IsAttackable(nextTile.Castle))
         {
             // 防衛可能な敵が残っている場合は、移動進捗を半分リセットする。
             if (nextTile.Castle.Members.Any(e => e.CanDefend))

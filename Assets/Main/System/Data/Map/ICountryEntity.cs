@@ -11,24 +11,23 @@ public interface ICountryEntity
 
 public static class CountryEntityExtensions
 {
-    public static CountryDiplomacy GetStance(this ICountryEntity self, ICountryEntity target)
-    {
-        if (self == target) return CountryDiplomacy.Self;
-        if (self.Country == null || target.Country == null) return CountryDiplomacy.Enemy;
-        if (self.Country == target.Country) return CountryDiplomacy.Self;
-        // TODO 同盟国
-        return CountryDiplomacy.Enemy;
-    }
+    /// <summary>
+    /// 自国ならtrue
+    /// </summary>
+    public static bool IsSelf(this ICountryEntity self, ICountryEntity target) => self.Country == target.Country;
 
-    public static bool IsSelf(this ICountryEntity self, ICountryEntity target) => self.GetStance(target) == CountryDiplomacy.Self;
-    public static bool IsAlly(this ICountryEntity self, ICountryEntity target) => self.GetStance(target) == CountryDiplomacy.Allied;
-    public static bool IsEnemy(this ICountryEntity self, ICountryEntity target) => self.GetStance(target) == CountryDiplomacy.Enemy;
-    public static bool IsFriend(this ICountryEntity self, ICountryEntity target) => self.IsSelf(target) || self.IsAlly(target);
-}
+    /// <summary>
+    /// 同盟国ならtrue
+    /// </summary>
+    public static bool IsAlly(this ICountryEntity self, ICountryEntity target) => self.Country.GetRelation(target.Country) == Country.AllyRelation;
 
-public enum CountryDiplomacy
-{
-    Self,
-    Allied,
-    Enemy,
+    /// <summary>
+    /// 敵対国(過去に戦闘したことがある)ならtrue
+    /// </summary>
+    public static bool IsEnemy(this ICountryEntity self, ICountryEntity target) => self.Country.GetRelation(target.Country) == Country.EnemyRelation;
+
+    /// <summary>
+    /// 自国か同盟国でないならtrue
+    /// </summary>
+    public static bool IsAttackable(this ICountryEntity self, ICountryEntity target) => !self.IsSelf(target) && !self.IsAlly(target);
 }

@@ -127,7 +127,7 @@ public class Force : ICountryEntity, IMapEntity
         if (dest is Castle castle)
         {
             // 敵対国の城が目的地の場合
-            if (castle.Country != Character.Country && !castle.Country.IsAlly(Character.Country))
+            if (this.IsAttackable(castle))
             {
                 if (path.Count >= 2)
                 {

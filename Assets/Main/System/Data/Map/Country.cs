@@ -40,12 +40,8 @@ public class Country : ICountryEntity
         _ => Neighbors,
     };
 
-
     public const int AllyRelation = 100;
     public const int EnemyRelation = 0;
-    public bool IsAlly(Country other) => GetRelation(other) == AllyRelation;
-    public bool IsEnemy(Country other) => GetRelation(other) == EnemyRelation;
-
     public float GetRelation(Country other) => manager.GetRelation(this, other);
     public void SetRelation(Country other, float rel) => manager.SetRelation(this, other, rel);
     public void SetAlly(Country other) => manager.SetRelation(this, other, AllyRelation);
