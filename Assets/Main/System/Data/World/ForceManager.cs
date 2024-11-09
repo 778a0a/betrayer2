@@ -12,6 +12,8 @@ public class ForceManager : IReadOnlyList<Force>
     private WorldData world => GameCore.Instance.World;
     private readonly List<Force> forces = new();
 
+    public bool ShouldCheckDefenceStatus { get; set; } = true;
+
     public ForceManager(IEnumerable<Force> initialForces)
     {
         forces.AddRange(initialForces);
@@ -21,6 +23,7 @@ public class ForceManager : IReadOnlyList<Force>
     {
         forces.Add(force);
 
+        ShouldCheckDefenceStatus = true;
         force.RefreshUI();
     }
 
@@ -36,7 +39,54 @@ public class ForceManager : IReadOnlyList<Force>
             Debug.Log($"{f} 目的の軍勢が消えたため目的地をリセットしました。");
         }
 
+        ShouldCheckDefenceStatus = true;
         oldTile.Refresh();
+    }
+
+    private GameDate prevCheck = new(0);
+    /// <summary>
+    /// 各城の防衛状況を確認します。
+    /// </summary>
+    public void OnCheckDefenceStatus(GameCore core)
+    {
+        if (!ShouldCheckDefenceStatus) return;
+        ShouldCheckDefenceStatus = false;
+        var prev = prevCheck;
+        prevCheck = core.GameDate;
+        Debug.LogError("城の防衛状況を確認します。" + (core.GameDate - prev));
+        foreach (var castle in world.Castles)
+        {
+            var dangers = SearchDangerForces(castle);
+            world.Map.GetTile(castle).UI.ShowDebugText(dangers.Count == 0 ? "" : "!");
+            if (dangers.Count == 0) continue;
+
+            // まずは、1個でも危険軍勢がいれば出撃軍勢を戻すことにする。
+            foreach (var myForce in forces.Where(f => castle.Members.Contains(f.Character)).ToList())
+            {
+                if (myForce.Position == castle.Position)
+                {
+                    Unregister(myForce);
+                }
+                if (myForce.Destination.Position != castle.Position)
+                {
+                    myForce.SetDestination(myForce.Character.Castle);
+                    Debug.LogWarning($"危険軍勢がいるため退却します。{myForce}");
+                }
+            }
+        }
+
+        List<Force> SearchDangerForces(Castle castle)
+        {
+            var cands = forces
+                // 友好的でない
+                .Where(f => f.Country != castle.Country && f.Country.GetRelation(castle.Country) < 60)
+                // 5マス以内にいる
+                .Where(f => f.Position.DistanceTo(castle.Position) <= 5)
+                // 目的地が自城または、プレーヤーが操作する軍勢で城の周囲2マス以内に移動経路が含まれている(TODO)。
+                .Where(f => f.Destination.Position == castle.Position)
+                .ToList();
+            return cands;
+        }
     }
 
     /// <summary>

@@ -27,6 +27,7 @@ public struct GameDate
 
     public static GameDate operator ++(GameDate date) => date.NextDay();
     public static GameDate operator +(GameDate date, int days) => date.AddDays(days);
+    public static int operator -(GameDate date, GameDate date2) => date.Ticks - date2.Ticks;
 
     /// <summary>
     /// 1月、4月、7月、10月は収入月

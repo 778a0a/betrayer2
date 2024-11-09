@@ -121,6 +121,7 @@ public partial class GameCore
             }
         }
 
+        World.Forces.OnCheckDefenceStatus(this);
         await World.Forces.OnForceMove(this);
 
         await OnCharacterMove(player);

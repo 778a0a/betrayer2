@@ -83,6 +83,7 @@ public class Force : ICountryEntity, IMapEntity
 
         ResetTileMoveProgress();
 
+        world.Forces.ShouldCheckDefenceStatus = true;
         RefreshUI();
     }
 
@@ -112,6 +113,7 @@ public class Force : ICountryEntity, IMapEntity
             ResetTileMoveProgress();
         }
 
+        world.Forces.ShouldCheckDefenceStatus = true;
         if (updateUI)
         {
             RefreshUI();
