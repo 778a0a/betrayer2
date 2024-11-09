@@ -98,10 +98,11 @@ partial class GameCore
                             .Where(m => m.IsDefenceable)
                             .ToList();
                         var moveTarget = cands.RandomPickDefault();
-                        if (moveTarget != null && 0.5f.Chance())
+                        var moveCastle = castle.Neighbors.Where(n => castle.IsSelf(n)).RandomPickDefault();
+                        if (moveTarget != null && moveCastle != null && 0.5f.Chance())
                         {
                             var action = CastleActions.Move;
-                            var args = action.Args(chara, moveTarget, castle.Neighbors.RandomPick());
+                            var args = action.Args(chara, moveTarget, moveCastle);
                             await action.Do(args);
                         }
                     }
