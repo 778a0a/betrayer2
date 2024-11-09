@@ -53,25 +53,49 @@ public class ForceManager : IReadOnlyList<Force>
         ShouldCheckDefenceStatus = false;
         var prev = prevCheck;
         prevCheck = core.GameDate;
-        Debug.LogError("城の防衛状況を確認します。" + (core.GameDate - prev));
+        //Debug.Log("城の防衛状況を確認します。" + (core.GameDate - prev));
         foreach (var castle in world.Castles)
         {
             var dangers = SearchDangerForces(castle);
             world.Map.GetTile(castle).UI.ShowDebugText(dangers.Count == 0 ? "" : "!");
             if (dangers.Count == 0) continue;
 
-            // まずは、1個でも危険軍勢がいれば出撃軍勢を戻すことにする。
-            foreach (var myForce in forces.Where(f => castle.Members.Contains(f.Character)).ToList())
+            var dangerPower = dangers.Sum(f => f.Character.Power);
+            // 守兵の兵力
+            var defPower = castle.Members.Where(m => m.IsDefendable).Sum(c => c.Power);
+            // 城に向かっている味方軍勢の兵力
+            defPower += forces
+                .Where(f => f.IsSelfOrAlly(castle))
+                .Where(f => f.Destination.Position == castle.Position)
+                .Sum(f => f.Character.Power);
+
+            if (dangerPower < defPower)
             {
+                //Debug.LogWarning($"危険軍勢が存在しますが、守兵の兵力が十分なため何もしません。{castle}");
+                continue;
+            }
+            // まずは、1個でも危険軍勢がいれば出撃軍勢を戻すことにする。
+            var castleForces = forces
+                .Where(f => castle.Members.Contains(f.Character))
+                .Where(f => f.Destination.Position != castle.Position)
+                .ShuffleAsArray();
+            foreach (var myForce in castleForces)
+            {
+                if (dangerPower < defPower)
+                {
+                    Debug.Log($"防衛戦力が十分なため退却しません。{myForce}");
+                    continue;
+                }
                 if (myForce.Position == castle.Position)
                 {
                     Unregister(myForce);
                 }
-                if (myForce.Destination.Position != castle.Position)
+                else
                 {
                     myForce.SetDestination(myForce.Character.Castle);
                     Debug.LogWarning($"危険軍勢がいるため退却します。{myForce}");
                 }
+                defPower += myForce.Character.Power;
             }
         }
 

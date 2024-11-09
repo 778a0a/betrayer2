@@ -242,7 +242,7 @@ public class AI
         }
 
         // 防衛可能なメンバーが少ないなら何もしない。
-        if (castle.Members.Count(m => m.IsDefenceable) < 2)
+        if (castle.Members.Count(m => m.IsDefendable) < 2)
         {
             Debug.Log($"出撃判定 {castle} 防衛メンバー過少");
             return;
@@ -292,9 +292,9 @@ public class AI
 
         // 城に残す人数
         var leaveCount = Random.Range(1, 3);
-        while (castle.Members.Count(m => m.IsDefenceable) > leaveCount)
+        while (castle.Members.Count(m => m.IsDefendable) > leaveCount)
         {
-            var attacker = castle.Members.Where(m => m.IsDefenceable).RandomPick();
+            var attacker = castle.Members.Where(m => m.IsDefendable).RandomPick();
             var act = core.CastleActions.Move;
             var args = act.Args(boss, attacker, target);
 

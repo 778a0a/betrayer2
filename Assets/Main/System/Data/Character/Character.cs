@@ -163,7 +163,7 @@ public class Character
     public bool IsIncapacitated => IncapacitatedDaysRemaining > 0;
     
     [JsonIgnore]
-    public bool IsDefenceable => !IsIncapacitated && !IsMoving;
+    public bool IsDefendable => !IsIncapacitated && !IsMoving;
 
     /// <summary>
     /// 行動不能状態にします。

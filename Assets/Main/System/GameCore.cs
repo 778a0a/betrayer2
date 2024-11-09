@@ -90,15 +90,18 @@ public partial class GameCore
             }
         }
 
-        if (GameDate.Day == 1)
+        if (GameDate.Day % 10 == 0)
         {
-            // 出撃中でないキャラの連戦回数をリセットする。
+            // 出撃中でないキャラの連戦回数を減らす。
             foreach (var chara in World.Characters)
             {
-                if (!chara.IsMoving) chara.ConsecutiveBattleCount = 0;
+                var count = chara.ConsecutiveBattleCount;
+                if (!chara.IsMoving) chara.ConsecutiveBattleCount = Mathf.Max(0, count - 1);
             }
+        }
 
-
+        if (GameDate.Day == 1)
+        {
             // 収入月の場合
             if (GameDate.IsIncomeMonth)
             {

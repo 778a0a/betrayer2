@@ -40,7 +40,7 @@ public class Castle : ICountryEntity, IMapEntity
         .Sum();
     [JsonIgnore]
     public float DefencePower => Members
-        .Where(m => m.IsDefenceable)
+        .Where(m => m.IsDefendable)
         .Select(m => m.Power)
         .DefaultIfEmpty(0)
         .Sum();

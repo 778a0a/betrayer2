@@ -95,7 +95,7 @@ partial class GameCore
                     {
                         var cands = castle.Members
                             .Where(m => m != chara)
-                            .Where(m => m.IsDefenceable)
+                            .Where(m => m.IsDefendable)
                             .ToList();
                         var moveTarget = cands.RandomPickDefault();
                         var moveCastle = castle.Neighbors.Where(n => castle.IsSelf(n)).RandomPickDefault();

@@ -30,4 +30,8 @@ public static class CountryEntityExtensions
     /// 自国か同盟国でないならtrue
     /// </summary>
     public static bool IsAttackable(this ICountryEntity self, ICountryEntity target) => !self.IsSelf(target) && !self.IsAlly(target);
+    /// <summary>
+    /// 自国か同盟国ならtrue
+    /// </summary>
+    public static bool IsSelfOrAlly(this ICountryEntity self, ICountryEntity target) => self.IsSelf(target) || self.IsAlly(target);
 }
