@@ -87,6 +87,14 @@ public class ForceManager : IReadOnlyList<Force>
         var nextEnemies = nextTile.Forces.Where(f => f.IsAttackable(force)).ToArray();
         if (nextEnemies.Length > 0)
         {
+            // 移動先が目的地でなく、移動先に有効的な軍勢しかいない場合は迂回するように進路を変更する。
+            if (nextEnemies.All(e => e.Country.GetRelation(force.Country) >= 60))
+            {
+                force.ResetTileMoveProgress();
+                force.SetDestination(force.Destination, prohibiteds: nextTile.Position);
+                Debug.LogWarning($"軍勢更新処理 移動先に友好勢力がいるため迂回します。{force}");
+                return;
+            }
             await OnFieldBattle(world, force, nextTile, nextEnemies);
             return;
         }

@@ -96,14 +96,14 @@ public class Force : ICountryEntity, IMapEntity
     /// 目的地を設定します。
     /// </summary>
     /// <param name="destination"></param>
-    public void SetDestination(IMapEntity destination, bool updateUI = true, bool isRestoring = false)
+    public void SetDestination(IMapEntity destination, bool updateUI = true, bool isRestoring = false, params MapPosition[] prohibiteds)
     {
         var prevDestination = Destination;
         var prevDirection = Direction;
         Destination = destination;
         if (Destination.Position != Position)
         {
-            DestinationPath = FindPath(destination);
+            DestinationPath = FindPath(destination, prohibiteds);
             Direction = Position.DirectionTo(DestinationPath.First());
         }
         // 目的地が変わった場合は移動日数をリセットする
@@ -118,9 +118,9 @@ public class Force : ICountryEntity, IMapEntity
         }
     }
 
-    private LinkedList<MapPosition> FindPath(IMapEntity dest)
+    private LinkedList<MapPosition> FindPath(IMapEntity dest, params MapPosition[] prohibiteds)
     {
-        var path = FindPathCore(dest.Position);
+        var path = FindPathCore(dest.Position, prohibiteds: prohibiteds);
         
         // NPCの場合
         //if (!Character.IsPlayer && !Character.Country.Ruler.IsPlayer)
@@ -145,21 +145,24 @@ public class Force : ICountryEntity, IMapEntity
                         Battle.TraitsAdjustment(tile, Character.Traits) +
                         Battle.TerrainAdjustment(tile.Terrain) +
                         (tile.Position == castlePrevTile.Position ? 0.001f : 0)).First();
-                    path = FindPathCore(target.Position);
-                    path.AddLast(dest.Position);
+                    if (target != castlePrevTile)
+                    {
+                        path = FindPathCore(target.Position, prohibiteds: prohibiteds);
+                        path.AddLast(dest.Position);
+                    }
                 }
             }
         }
         return path;
     }
 
-    private LinkedList<MapPosition> FindPathCore(MapPosition dest, bool recursive = false, bool useRiver = false)
+    private LinkedList<MapPosition> FindPathCore(MapPosition dest, bool recursive = false, bool useRiver = false, params MapPosition[] prohibiteds)
     {
         if (Position == dest) return new LinkedList<MapPosition>();
         // 水軍か海賊の場合、川・大河を使う経路を優先する。
         if (!recursive && (Character.Traits.HasFlag(Traits.Admiral) || Character.Traits.HasFlag(Traits.Pirate)))
         {
-            var res = FindPathCore(dest, true, true);
+            var res = FindPathCore(dest, true, true, prohibiteds);
             // 経路が見つかって、極端に長くなければ採用する。
             if (res != null && res.Count < 9)
             {
@@ -185,10 +188,14 @@ public class Force : ICountryEntity, IMapEntity
             open.Remove(current);
             close.Add(current);
 
-            var cands = useRiver ?
-                current.Neighbors.Where(tile => tile.Terrain == Terrain.River || tile.Terrain == Terrain.LargeRiver || tile.Position == dest) :
+            var cands = current.Neighbors
                 // 目的地以外の城は移動禁止にする。
-                current.Neighbors.Where(tile => tile.Castle == null || tile.Position == dest);
+                .Where(tile => tile.Castle == null || tile.Position == dest) 
+                .Where(tile => !prohibiteds.Contains(tile.Position));
+            if (useRiver)
+            {
+                cands = cands.Where(tile => Util.IsMarine(tile.Terrain) || tile.Position == dest);
+            }
             foreach (var neighborTile in cands)
             {
                 var neighbor = neighborTile;
