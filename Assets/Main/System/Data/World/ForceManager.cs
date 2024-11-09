@@ -92,7 +92,7 @@ public class ForceManager : IReadOnlyList<Force>
             {
                 force.ResetTileMoveProgress();
                 force.SetDestination(force.Destination, prohibiteds: nextTile.Position);
-                Debug.LogWarning($"軍勢更新処理 移動先に友好勢力がいるため迂回します。{force}");
+                Debug.Log($"軍勢更新処理 移動先に友好勢力がいるため迂回します。{force}");
                 return;
             }
             await OnFieldBattle(world, force, nextTile, nextEnemies);
@@ -354,6 +354,38 @@ public class ForceManager : IReadOnlyList<Force>
             Unregister(f);
             Debug.Log($"{f} 城に入城しました。");
         }
+
+        // 城を目的地にしている他の国の軍勢について
+        foreach (var group in forces.Where(f => f.Destination.Position == castle.Position).GroupBy(f => f.Country))
+        {
+            var otherCountry = group.Key;
+            if (otherCountry == force.Country) continue;
+            var rel = otherCountry.GetRelation(force.Country);
+            var goHome =
+                // 同盟国の場合は諦めて帰る。
+                rel == Country.AllyRelation ||
+                // 友好国の場合も諦めて帰る。
+                rel >= 60 ||
+                // 敵対していない場合は友好度に応じて帰るかどうかを決める。
+                (rel > 0 && Mathf.Lerp(0, 1, (60 - rel) / 60).Chance());
+            if (goHome)
+            {
+                foreach (var otherForce in group)
+                {
+                    var home = otherForce.Character.Castle;
+                    otherForce.SetDestination(home);
+                    Debug.Log($"{otherForce} 城が他国に占領されたため帰還します。");
+                }
+            }
+            else
+            {
+                foreach (var otherForce in group)
+                {
+                    Debug.Log($"{otherForce} 城が他国に占領されましたが攻撃を続行します。");
+                }
+            }
+        }
+
         castleTile.Refresh();
     }
 
