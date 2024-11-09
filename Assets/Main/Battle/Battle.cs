@@ -20,7 +20,9 @@ public class Battle
     private BattleWindow UI => GameCore.Instance.MainUI.BattleWindow;
     public bool NeedInteraction => false; // Attacker.IsPlayer || Defender.IsPlayer;
     private bool NeedWatchBattle => false;
-    private bool DebugWatch => false; // Atk.Country.Ruler.Name == "フレデリック" || Def.Country.Ruler.Name == "フレデリック";
+    private bool DebugWatch => false && WatchCountry("セレスト");
+    private bool WatchCountry(string name) => Atk.Country.Ruler.Name == name || Def.Country.Ruler.Name == name;
+
 
     public Battle(CharacterInBattle atk, CharacterInBattle def, BattleType type)
     {
