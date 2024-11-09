@@ -106,9 +106,9 @@ public class AI
         {
             var rel = country.GetRelation(neighbor);
             if (rel == Country.AllyRelation) continue;
-            if (rel < 80) continue;
+            if (rel < 75) continue;
 
-            var prob = Mathf.Lerp(0.3f, 0.8f, (rel - 80) / 20f);
+            var prob = Mathf.Lerp(0.3f, 0.8f, (rel - 75) / 20f);
             if ((prob / 12).Chance())
             {
                 // 同盟を申し込む。
