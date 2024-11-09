@@ -126,6 +126,7 @@ public class ForceManager : IReadOnlyList<Force>
         var battle = BattleManager.PrepareFieldBattle(force, enemy);
         var result = await battle.Do();
         var win = result == BattleResult.AttackerWin;
+        force.Country.SetEnemy(enemy.Country);
 
         // 負けた場合は本拠地へ撤退を始める。
         if (!win)
