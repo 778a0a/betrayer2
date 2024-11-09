@@ -157,19 +157,20 @@ public class ForceManager : IReadOnlyList<Force>
 
         // 勝った場合
 
-        // 敵が敵城タイルにいる場合は、敵軍勢を削除して行動不能にする。
+        // 敵が敵城タイルにいる場合は、敵軍勢を削除する。
         if (nextTile.Castle?.Members.Contains(enemy.Character) ?? false)
         {
-            enemy.Character.SetIncapacitated();
+            // やっぱり行動不能にはしない。
+            //enemy.Character.SetIncapacitated();
             Unregister(enemy);
-            Debug.Log($"{enemy} 野戦(城)に敗北したため行動不能になりました。");
+            Debug.Log($"{enemy} 野戦(城)に敗北したため城に退却します。");
         }
         // 全滅した場合
         else if (enemy.Character.Soldiers.IsAllDead)
         {
             enemy.Character.SetIncapacitated();
             Unregister(enemy);
-            Debug.Log($"{enemy} 野戦(城)に敗北し、全滅しました。");
+            Debug.Log($"{enemy} 野戦に敗北し、全滅しました。");
         }
         else
         {
