@@ -91,7 +91,7 @@ partial class GameCore
                     AI.Deploy(castle);
 
                     // 後方から移動する（適当）
-                    if (castle.Members.Count > 2 && castle.Neighbors.All(n => n.Country == castle.Country))
+                    if (castle.Members.Count > 2 && castle.Neighbors.All(n => !castle.IsAttackable(n)))
                     {
                         var cands = castle.Members
                             .Where(m => m != chara)
