@@ -40,6 +40,7 @@ public class Soldiers : IReadOnlyList<Soldier>
     System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => SoldierArray.GetEnumerator();
 
     public bool HasEmptySlot => SoldierArray.Any(s => s.IsEmptySlot);
+    public bool IsAllDead => SoldierArray.All(s => s.IsEmptySlot || s.HpFloat <= 0);
 
     public int Power => (int)SoldierArray.Sum(s => s.IsEmptySlot ? 0 : s.Hp / 35f * (1 + 0.2f * (s.Level - 1)));
     public int SoldierCount => SoldierArray.Where(s => !s.IsEmptySlot).Sum(s => s.Hp);

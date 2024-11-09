@@ -130,7 +130,14 @@ public class ForceManager : IReadOnlyList<Force>
         // 負けた場合は本拠地へ撤退を始める。
         if (!win)
         {
-            // TODO 全滅した場合の処理
+            // 全滅した場合
+            if (force.Character.Soldiers.IsAllDead)
+            {
+                force.Character.SetIncapacitated();
+                Unregister(force);
+                Debug.Log($"軍勢更新処理 野戦に敗北し、全滅しました。");
+                return;
+            }
 
             var home = force.Character.Castle;
             force.ResetTileMoveProgress();
@@ -148,10 +155,15 @@ public class ForceManager : IReadOnlyList<Force>
             Unregister(enemy);
             Debug.Log($"{enemy} 野戦(城)に敗北したため行動不能になりました。");
         }
+        // 全滅した場合
+        else if (enemy.Character.Soldiers.IsAllDead)
+        {
+            enemy.Character.SetIncapacitated();
+            Unregister(enemy);
+            Debug.Log($"{enemy} 野戦(城)に敗北し、全滅しました。");
+        }
         else
         {
-            // TODO 全滅した場合の処理
-
             // 敵を1タイル後退させる。
             var enemyPos = enemy.Position;
             var backPos = enemyPos.To(force.Direction);
@@ -240,7 +252,14 @@ public class ForceManager : IReadOnlyList<Force>
         // 負けた場合は本拠地へ撤退を始める。
         if (!win)
         {
-            // TODO 全滅した場合の処理
+            // 全滅した場合
+            if (force.Character.Soldiers.IsAllDead)
+            {
+                force.Character.SetIncapacitated();
+                Unregister(force);
+                Debug.Log($"軍勢更新処理 攻城戦に敗北し、全滅しました。");
+                return;
+            }
             var home = force.Character.Castle;
             force.SetDestination(home);
             Debug.Log($"軍勢更新処理 攻城戦に敗北しました。撤退します。({force.TileMoveRemainingDays})");
