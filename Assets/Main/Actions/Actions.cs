@@ -75,7 +75,7 @@ public struct ActionCost
     public int castleGold;
 
     public readonly bool CanPay(Character chara) =>
-        chara.Gold >= actorGold &&
+        (actorGold == 0 || chara.Gold >= actorGold) &&
         chara.ActionPoints >= actionPoints &&
         (castleGold == 0 || chara.Castle.Gold >= castleGold);
 
@@ -87,6 +87,8 @@ public struct ActionCost
     };
 
     public static implicit operator ActionCost(int gold) => new() { actorGold = gold };
+
+    public override string ToString() => $"{actorGold},{actionPoints},{castleGold}";
 }
 
 public struct ActionArgs
