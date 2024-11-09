@@ -147,11 +147,20 @@ public class Force : ICountryEntity, IMapEntity
                         (tile.Position == castlePrevTile.Position ? 0.001f : 0)).First();
                     if (target != castlePrevTile)
                     {
-                        path = FindPathCore(target.Position, prohibiteds: prohibiteds);
-                        path.AddLast(dest.Position);
+                        var path2 = FindPathCore(target.Position, prohibiteds: prohibiteds);
+                        if (path2 != null)
+                        {
+                            path = path2;
+                            path.AddLast(dest.Position);
+                        }
                     }
                 }
             }
+        }
+        if (path == null)
+        {
+            Debug.Log($"経路が見つかりませんでした。 {this} -> {dest}");
+            path = new LinkedList<MapPosition>();
         }
         return path;
     }
