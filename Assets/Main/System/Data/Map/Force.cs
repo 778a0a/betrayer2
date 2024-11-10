@@ -56,6 +56,25 @@ public class Force : ICountryEntity, IMapEntity
     /// </summary>
     public float TileMoveRemainingDays { get; set; }
 
+    /// <summary>
+    /// 到着予想日数
+    /// </summary>
+    [JsonIgnore]
+    public float ETADays
+    {
+        get
+        {
+            var days = TileMoveRemainingDays;
+            var pos = Position;
+            foreach (var next in DestinationPath)
+            {
+                days += CalculateMoveCost(pos, next);
+                pos = next;
+            }
+            return days;
+        }
+    }
+
     public void UpdatePosition(MapPosition pos)
     {
         var oldTile = world.Map.GetTile(Position);

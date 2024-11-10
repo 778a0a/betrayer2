@@ -22,6 +22,7 @@ public class TileInfoEditorWindow : EditorWindow
 
     private bool prevFKey;
     private bool isLocked = false;
+    private bool isAutoUpdate = false;
     private bool prevTKey;
     private EditMode mode = EditMode.EditBuilding;
     private enum EditMode
@@ -43,6 +44,15 @@ public class TileInfoEditorWindow : EditorWindow
         Debug.Log("OnEnable!");
         LoadWorld();
         SceneView.duringSceneGui += DuringSceneGUI;
+        EditorApplication.update += Update;
+    }
+
+    private void Update()
+    {
+        if (isAutoUpdate)
+        {
+            Repaint();
+        }
     }
 
     private void LoadWorld()
@@ -145,10 +155,6 @@ public class TileInfoEditorWindow : EditorWindow
         }
 
         // Ctrl+特定のキーが押されたらロック状態をトグルする。
-        if (Keyboard.current.fKey.isPressed)
-        {
-            Debug.Log("Toggle Lock");
-        }
         if (Event.current.control)
         {
             var oldFKey = prevFKey;
@@ -196,6 +202,11 @@ public class TileInfoEditorWindow : EditorWindow
             if (GUILayout.Button(mode.ToString(), GUILayout.Width(150)))
             {
                 mode = (EditMode)((int)(mode + 1) % Enum.GetValues(typeof(EditMode)).Length);
+            }
+
+            if (GUILayout.Button(isAutoUpdate ? "常時更新" : "更新無効"))
+            {
+                isAutoUpdate = !isAutoUpdate;
             }
         }
 
@@ -368,52 +379,95 @@ public class TileInfoEditorWindow : EditorWindow
     private void DrawEditCharacterStatus()
     {
         var castle = targetTile.Castle;
-        if (castle == null)
+        if (castle != null)
         {
-            return;
-        }
+            Label(
+                $"兵力: {castle.Power} " +
+                $"守備兵力: {castle.DefencePower} " +
+                $"城外援軍: {castle.ReinforcementForces(world.Forces).Sum(f => f.Character.Power)} " +
+                $"危険兵力: {castle.DangerForces(world.Forces).Sum(f => f.Character.Power)} " +
+                "");
 
-        Label(
-            $"総兵力: {castle.Power} " +
-            $"総守備兵力: {castle.DefencePower} " +
-            $"城外援軍: {castle.ReinforcementForces(world.Forces).Sum(f => f.Character.Power)} ");
-
-        BoldLabel("キャラ一覧");
-        foreach (var chara in castle.Members)
-        {
-            DrawCharacterStatus(chara);
-        }
-    }
-
-    private void DrawCharacterStatus(Character chara)
-    {
-        GUILayout.Space(5);
-        using var _ = HorizontalLayout();
-        var prev = chara.csvDebugData;
-        CharaImage(chara);
-
-        using var __ = VerticalLayout();
-        using (HorizontalLayout())
-        {
-            Label($"ID:{chara.Id}", 50);
-            Label(chara.ToString());
-        }
-
-        using (HorizontalLayout())
-        {
-            foreach (var f in chara.Soldiers)
+            BoldLabel("キャラ一覧");
+            foreach (var chara in castle.Members)
             {
-                using var ___ = VerticalLayout();
-                var sp = f.Image;
-                if (sp != null)
-                {
-                    GUILayout.Label(sp, GUILayout.Width(50), GUILayout.Height(50));
-                }
-                if (f.IsAlive) Label($"{f.Level:0}:{f.Hp:00}");
-                else Label("-:--/--");
+                DrawCharacterStatus(chara);
             }
         }
 
+        BoldLabel("軍勢一覧");
+        foreach (var f in world.Forces.Where(f => f.Position == targetTile.Position))
+        {
+            DrawCharacterStatus(f.Character, f);
+        }
+    }
+
+    private void DrawCharacterStatus(Character chara, Force f = null)
+    {
+        if (f == null && chara.IsMoving) return;
+        GUILayout.Space(10);
+        using (HorizontalLayout())
+        {
+            CharaImage(chara, 70);
+
+            using var __ = VerticalLayout();
+            using (HorizontalLayout())
+            {
+                Label($"ID:{chara.Id}", 50);
+                Label($"{chara}");
+                if (chara.IsMoving)
+                {
+                    var style = new GUIStyle();
+                    style.normal.textColor = Color.red;
+                    Label($"出撃中", style: style);
+                }
+                if (chara.IsIncapacitated)
+                {
+                    var style = new GUIStyle();
+                    style.normal.textColor = Color.yellow;
+                    Label($"行動不能", style: style);
+                }
+            }
+
+            using var _____ = VerticalLayout();
+            for (int i = 0; i < 2; i++)
+            {
+                using var ___ = HorizontalLayout();
+                for (int j = 0; j < 10; j++)
+                {
+                    var s = chara.Soldiers[i * 5 + j];
+                    if (s.IsAlive)
+                    {
+                        GUILayout.BeginHorizontal();
+                        var r = GUILayoutUtility.GetRect(10, 20);
+                        GUI.DrawTexture(r, s.Image);
+                        GUILayout.BeginVertical();
+                        Label($"{s.Level:0}:{s.Hp:00}");
+                    }
+                    else
+                    {
+                        GUILayout.BeginHorizontal();
+                        var r = GUILayoutUtility.GetRect(10, 20);
+                        EditorGUI.DrawRect(r, Color.gray);
+                        GUILayout.BeginVertical();
+                        Label("0:00");
+                    }
+                    var rect = GUILayoutUtility.GetRect(1, 3);
+                    EditorGUI.DrawRect(rect, Color.gray);
+                    var rect2 = new Rect(rect.xMin, rect.yMin, rect.width * s.HpFloat / s.MaxHp, rect.height);
+                    EditorGUI.DrawRect(rect2, Color.cyan);
+                    GUILayout.EndVertical();
+                    GUILayout.EndHorizontal();
+                }
+            }
+        }
+        if (f != null)
+        {
+            Label($"所属: {f.Character.Castle}");
+            Label($"位置: {f.Position} 向き: {f.Direction} 残日数: {f.ETADays} ({f.TileMoveRemainingDays})");
+            Label($"目的地: {f.Destination}");
+            Label($"path: {string.Join("→", f.DestinationPath)}");
+        }
     }
     #endregion
 

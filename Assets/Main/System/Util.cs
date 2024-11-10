@@ -39,9 +39,9 @@ public static class Util
             {
                 var weight = weightFunc(item);
                 if (weight == 0) continue;
-                sb.Append($" {item}:{100 * weight / totalWeight:0}%({weight}) |");
+                sb.Append($"{100 * weight / totalWeight:00}% {item} ({weight})\n");
             }
-            Debug.Log("重み:" + sb.ToString());
+            Debug.Log("重み:\n" + sb.ToString());
         }
 
         var value = Random.Range(0f, totalWeight);

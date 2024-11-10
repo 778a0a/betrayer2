@@ -44,9 +44,25 @@ public class Castle : ICountryEntity, IMapEntity
         .Select(m => m.Power)
         .DefaultIfEmpty(0)
         .Sum();
-    public IEnumerable<Force> ReinforcementForces(ForceManager fm) => fm
-        .Where(f => Members.Contains(f.Character))
+    public IEnumerable<Force> ReinforcementForces(ForceManager forces) => forces
+        .Where(f => this.IsSelfOrAlly(f))
         .Where(f => f.Destination.Position == Position);
+    public IEnumerable<Force> DangerForces(ForceManager forces) => forces
+        // 友好的でない
+        .Where(f => f.Country != Country && f.Country.GetRelation(Country) < 60)
+        // 5マス以内にいる
+        .Where(f => f.Position.DistanceTo(Position) <= 5)
+        // 目的地が自城または、プレーヤーが操作する軍勢で城の周囲2マス以内に移動経路が含まれている(TODO)。
+        .Where(f => f.Destination.Position == Position);
+
+    public float DefenceAndReinforcementPower(ForceManager forces)
+    {
+        // 守兵の兵力
+        var defPower = DefencePower;
+        // 城に向かっている味方軍勢の兵力
+        var forcesPower = ReinforcementForces(forces).Sum(f => f.Character.Power);
+        return defPower + forcesPower;
+    }
 
     [JsonIgnore]
     public bool DangerForcesExists { get; set; }

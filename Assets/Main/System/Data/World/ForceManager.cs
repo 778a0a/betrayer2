@@ -56,13 +56,13 @@ public class ForceManager : IReadOnlyList<Force>
         //Debug.Log("城の防衛状況を確認します。" + (core.GameDate - prev));
         foreach (var castle in world.Castles)
         {
-            var dangers = SearchDangerForces(castle);
-            castle.DangerForcesExists = dangers.Count > 0;
+            var dangers = castle.DangerForces(this).ToArray();
+            castle.DangerForcesExists = dangers.Length > 0;
             world.Map.GetTile(castle).UI.ShowDebugText(castle.DangerForcesExists ? "!" : "");
             if (!castle.DangerForcesExists) continue;
 
             var dangerPower = dangers.Sum(f => f.Character.Power);
-            var defPower = SearchDefencePower(castle);
+            var defPower = castle.DefenceAndReinforcementPower(this);
             if (dangerPower < defPower)
             {
                 //Debug.LogWarning($"危険軍勢が存在しますが、守兵の兵力が十分なため何もしません。{castle}");
@@ -93,28 +93,6 @@ public class ForceManager : IReadOnlyList<Force>
             }
         }
 
-    }
-
-    public List<Force> SearchDangerForces(Castle castle)
-    {
-        var cands = forces
-            // 友好的でない
-            .Where(f => f.Country != castle.Country && f.Country.GetRelation(castle.Country) < 60)
-            // 5マス以内にいる
-            .Where(f => f.Position.DistanceTo(castle.Position) <= 5)
-            // 目的地が自城または、プレーヤーが操作する軍勢で城の周囲2マス以内に移動経路が含まれている(TODO)。
-            .Where(f => f.Destination.Position == castle.Position)
-            .ToList();
-        return cands;
-    }
-
-    public float SearchDefencePower(Castle castle)
-    {
-        // 守兵の兵力
-        var defPower = castle.DefencePower;
-        // 城に向かっている味方軍勢の兵力
-        var forcesPower = castle.ReinforcementForces(this).Sum(f => f.Character.Power);
-        return defPower + forcesPower;
     }
 
     /// <summary>
@@ -468,6 +446,12 @@ public class ForceManager : IReadOnlyList<Force>
         castleTile.Refresh();
     }
 
+    public float ETADays(Character chara, MapPosition start, IMapEntity dest)
+    {
+        var force = new Force(world, chara, start);
+        force.SetDestination(dest);
+        return force.ETADays;
+    }
 
     public Force this[int index] => forces[index];
     public int Count => forces.Count;

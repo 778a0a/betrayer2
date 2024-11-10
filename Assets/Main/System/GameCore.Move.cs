@@ -69,35 +69,54 @@ partial class GameCore
         {
             foreach (var castle in World.Castles.Where(c => c.DangerForcesExists))
             {
-                var dangerForces = World.Forces.SearchDangerForces(castle);
+                var dangerForces = castle.DangerForces(World.Forces).ToList();
                 if (dangerForces.Count == 0)
                 {
                     castle.DangerForcesExists = false;
                     continue;
                 }
                 var dangerPower = dangerForces.Sum(f => f.Character.Power);
-                var defPower = World.Forces.SearchDefencePower(castle);
+                var defPower = castle.DefenceAndReinforcementPower(World.Forces);
                 // 防衛兵力が十分なら何もしない。
                 if (dangerPower < defPower) continue;
 
                 // 隣接する城が危険でなければ、援軍を送る。
-                foreach (var neighbor in castle.Neighbors.Where(n => n.Country == castle.Country).Shuffle())
+                var cands = castle.Neighbors
+                    .Where(n => n.Country == castle.Country)
+                    .Where(n => !n.DangerForcesExists)
+                    .Where(n => n.Members.Count(m => m.IsDefendable) > 1)
+                    .SelectMany(n => n.Members.Where(m => m.IsDefendable).Select(m => (n, m, World.Forces.ETADays(m, n.Position, castle))))
+                    .ToList();
+                // 援軍候補がない場合は何もしない。
+                if (cands.Count == 0) continue;
+
+                var dispatched = false;
+                var maxETA = cands.Select(x => x.Item3).Max();
+                Debug.LogWarning($"cands:\n{string.Join("\n", cands)}");
+                while (dangerPower > defPower && cands.Count > 0)
                 {
-                    if (neighbor.DangerForcesExists) continue;
-                    var defendables = neighbor.Members.Where(m => m.IsDefendable).ToList();
-                    if (defendables.Count <= 1) continue;
-
-                    var rein = defendables.RandomPickWeighted(m => m.Power);
-
+                    var target = cands.RandomPickWeighted(x => Mathf.Pow(10 + maxETA - x.Item3, 2), true);
+                    var (neighbor, member, eta) = target;
+                    var defendables = neighbor.Members.Count(m => m.IsDefendable);
+                    if (defendables <= 1)
+                    {
+                        cands.Remove((neighbor, member, eta));
+                        continue;
+                    }
                     var action = CastleActions.Move;
-                    var args = action.Args(castle.Country.Ruler, rein, castle);
+                    var args = action.Args(castle.Country.Ruler, member, castle);
                     if (action.CanDo(args))
                     {
                         await action.Do(args);
-                        defPower += rein.Power;
-                        Debug.LogWarning($"{rein.Name}が{castle}へ援軍として出撃しました。");
-                        Pause();
+                        defPower += member.Power;
+                        cands.Remove(target);
+                        Debug.LogWarning($"{member.Name}が{castle}へ援軍として出撃しました。");
+                        dispatched = true;
                     }
+                }
+                if (dispatched)
+                {
+                    //Pause();
                 }
             }
         }
