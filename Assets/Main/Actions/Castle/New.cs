@@ -103,7 +103,7 @@ partial class CastleActions
         {
             Assert.IsTrue(CanDo(args));
 
-            var force = new Force(World, args.targetCharacter, args.actor.Castle.Position);
+            var force = new Force(World, args.targetCharacter, args.targetCharacter.Castle.Position);
 
             force.SetDestination(args.targetCastle);
             World.Forces.Register(force);

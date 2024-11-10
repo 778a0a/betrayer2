@@ -64,6 +64,44 @@ partial class GameCore
             }
         }
 
+        // 危険軍勢の対処を行う。
+        if (GameDate.Day % 5 == 0)
+        {
+            foreach (var castle in World.Castles.Where(c => c.DangerForcesExists))
+            {
+                var dangerForces = World.Forces.SearchDangerForces(castle);
+                if (dangerForces.Count == 0)
+                {
+                    castle.DangerForcesExists = false;
+                    continue;
+                }
+                var dangerPower = dangerForces.Sum(f => f.Character.Power);
+                var defPower = World.Forces.SearchDefencePower(castle);
+                // 防衛兵力が十分なら何もしない。
+                if (dangerPower < defPower) continue;
+
+                // 隣接する城が危険でなければ、援軍を送る。
+                foreach (var neighbor in castle.Neighbors.Where(n => n.Country == castle.Country).Shuffle())
+                {
+                    if (neighbor.DangerForcesExists) continue;
+                    var defendables = neighbor.Members.Where(m => m.IsDefendable).ToList();
+                    if (defendables.Count <= 1) continue;
+
+                    var rein = defendables.RandomPickWeighted(m => m.Power);
+
+                    var action = CastleActions.Move;
+                    var args = action.Args(castle.Country.Ruler, rein, castle);
+                    if (action.CanDo(args))
+                    {
+                        await action.Do(args);
+                        defPower += rein.Power;
+                        Debug.LogWarning($"{rein.Name}が{castle}へ援軍として出撃しました。");
+                        Pause();
+                    }
+                }
+            }
+        }
+
         // 各キャラの月毎アクションを行う。
         // プレーヤー君主の行動を反映させるため、2日目に行う。
         if (GameDate.Day == 2)
@@ -159,6 +197,11 @@ partial class GameCore
                 while (budget > 0);
             }
         }
+    }
+
+    private void Pause()
+    {
+        test.hold = true;
     }
 
     private readonly Lazy<ActionBase[]> vassalActions = new(() => new ActionBase[]

@@ -57,18 +57,12 @@ public class ForceManager : IReadOnlyList<Force>
         foreach (var castle in world.Castles)
         {
             var dangers = SearchDangerForces(castle);
-            world.Map.GetTile(castle).UI.ShowDebugText(dangers.Count == 0 ? "" : "!");
-            if (dangers.Count == 0) continue;
+            castle.DangerForcesExists = dangers.Count > 0;
+            world.Map.GetTile(castle).UI.ShowDebugText(castle.DangerForcesExists ? "!" : "");
+            if (!castle.DangerForcesExists) continue;
 
             var dangerPower = dangers.Sum(f => f.Character.Power);
-            // 守兵の兵力
-            var defPower = castle.Members.Where(m => m.IsDefendable).Sum(c => c.Power);
-            // 城に向かっている味方軍勢の兵力
-            defPower += forces
-                .Where(f => f.IsSelfOrAlly(castle))
-                .Where(f => f.Destination.Position == castle.Position)
-                .Sum(f => f.Character.Power);
-
+            var defPower = SearchDefencePower(castle);
             if (dangerPower < defPower)
             {
                 //Debug.LogWarning($"危険軍勢が存在しますが、守兵の兵力が十分なため何もしません。{castle}");
@@ -99,18 +93,28 @@ public class ForceManager : IReadOnlyList<Force>
             }
         }
 
-        List<Force> SearchDangerForces(Castle castle)
-        {
-            var cands = forces
-                // 友好的でない
-                .Where(f => f.Country != castle.Country && f.Country.GetRelation(castle.Country) < 60)
-                // 5マス以内にいる
-                .Where(f => f.Position.DistanceTo(castle.Position) <= 5)
-                // 目的地が自城または、プレーヤーが操作する軍勢で城の周囲2マス以内に移動経路が含まれている(TODO)。
-                .Where(f => f.Destination.Position == castle.Position)
-                .ToList();
-            return cands;
-        }
+    }
+
+    public List<Force> SearchDangerForces(Castle castle)
+    {
+        var cands = forces
+            // 友好的でない
+            .Where(f => f.Country != castle.Country && f.Country.GetRelation(castle.Country) < 60)
+            // 5マス以内にいる
+            .Where(f => f.Position.DistanceTo(castle.Position) <= 5)
+            // 目的地が自城または、プレーヤーが操作する軍勢で城の周囲2マス以内に移動経路が含まれている(TODO)。
+            .Where(f => f.Destination.Position == castle.Position)
+            .ToList();
+        return cands;
+    }
+
+    public float SearchDefencePower(Castle castle)
+    {
+        // 守兵の兵力
+        var defPower = castle.DefencePower;
+        // 城に向かっている味方軍勢の兵力
+        var forcesPower = castle.ReinforcementForces(this).Sum(f => f.Character.Power);
+        return defPower + forcesPower;
     }
 
     /// <summary>

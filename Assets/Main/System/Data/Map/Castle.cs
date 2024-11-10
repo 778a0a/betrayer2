@@ -44,6 +44,12 @@ public class Castle : ICountryEntity, IMapEntity
         .Select(m => m.Power)
         .DefaultIfEmpty(0)
         .Sum();
+    public IEnumerable<Force> ReinforcementForces(ForceManager fm) => fm
+        .Where(f => Members.Contains(f.Character))
+        .Where(f => f.Destination.Position == Position);
+
+    [JsonIgnore]
+    public bool DangerForcesExists { get; set; }
 
     /// <summary>
     /// 未所属メンバー
