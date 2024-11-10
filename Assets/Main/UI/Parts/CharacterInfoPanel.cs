@@ -26,14 +26,14 @@ public partial class CharacterInfoPanel
     {
         Root.style.display = DisplayStyle.Flex;
 
-        imageChara.style.backgroundImage = FaceImageManager.Instance.GetImage(chara);
+        imageChara.style.backgroundImage = Static.Instance.GetFaceImage(chara);
 
         var isVasal = chara.IsVassal;
         var ruler = chara.Country.Ruler;
         RulerImageContainer.style.display = Util.Display(isVasal);
         if (isVasal)
         {
-            imageRuler.style.backgroundImage = FaceImageManager.Instance.GetImage(ruler);
+            imageRuler.style.backgroundImage = Static.Instance.GetFaceImage(ruler);
 
         }
         var boss = chara.Castle.Boss;
@@ -41,7 +41,7 @@ public partial class CharacterInfoPanel
         BossImageContainer.style.display = Util.Display(!isBoss && ruler != boss);
         if (!isBoss)
         {
-            imageBoss.style.backgroundImage = FaceImageManager.Instance.GetImage(boss);
+            imageBoss.style.backgroundImage = Static.Instance.GetFaceImage(boss);
         }
 
 

@@ -77,12 +77,12 @@ public partial class BattleWindow// : IWindow
             _defenderSoldiers[i].SetData(soldier);
         }
 
-        imageAttacker.style.backgroundImage = FaceImageManager.Instance.GetImage(attacker);
+        imageAttacker.style.backgroundImage = Static.Instance.GetFaceImage(attacker);
         labelAttackerAttack.text = battle.Attacker.Strength.ToString();
         labelAttackerIntelligense.text = attacker.Intelligence.ToString();
         labelAttackerTerrain.text = attackerTerrain.ToString();
 
-        imageDefender.style.backgroundImage = FaceImageManager.Instance.GetImage(defender);
+        imageDefender.style.backgroundImage = Static.Instance.GetFaceImage(defender);
         labelDefenderDefence.text = battle.Defender.Strength.ToString();
         labelDefenderIntelligense.text = defender.Intelligence.ToString();
         labelDefenderTerrain.text = defenderTerrain.ToString();

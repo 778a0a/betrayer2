@@ -14,7 +14,7 @@ public class TileInfoEditorWindow : EditorWindow
     private WorldData world;
     private Grid grid;
     private UIMapManager uimap;
-    private StaticAssets staticAssets;
+    private Static staticAssets;
 
     private MapPosition targetPosition;
     private GameMapTile targetTile;
@@ -57,7 +57,7 @@ public class TileInfoEditorWindow : EditorWindow
             world = GameCore.Instance.World;
             return;
         }
-        staticAssets = FindAnyObjectByType<StaticAssets>();
+        staticAssets = FindAnyObjectByType<Static>();
         staticAssets.Initialize();
         world = DefaultData.Create(saveDir);
         world.Map.AttachUI(uimap);
@@ -404,10 +404,10 @@ public class TileInfoEditorWindow : EditorWindow
             foreach (var f in chara.Soldiers)
             {
                 using var ___ = VerticalLayout();
-                var sp = SoldierImageManager.Instance.GetSprite(f.Level);
+                var sp = f.Image;
                 if (sp != null)
                 {
-                    GUILayout.Label(sp.texture, GUILayout.Width(50), GUILayout.Height(50));
+                    GUILayout.Label(sp, GUILayout.Width(50), GUILayout.Height(50));
                 }
                 if (f.IsAlive) Label($"{f.Level:0}:{f.Hp:00}");
                 else Label("-:--/--");
@@ -838,7 +838,7 @@ public class TileInfoEditorWindow : EditorWindow
     private static void CharaImage(Character chara, int size = -1, Rect? rect = null)
     {
         if (size == -1) size = 100;
-        var image = FaceImageManager.Instance.GetImage(chara);
+        var image = Static.Instance.GetFaceImage(chara);
 
         if (rect != null)
         {

@@ -21,7 +21,7 @@ public static class BattleSoldierIconExtensions
         }
         el.Root.style.visibility = Visibility.Visible;
 
-        el.SoldierImage.image = SoldierImageManager.Instance.GetTexture(soldier.Level);
+        el.SoldierImage.image = soldier.Image;
 
         el.labelHP.text = soldier.Hp.ToString();
 

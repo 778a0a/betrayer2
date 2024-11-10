@@ -10,10 +10,6 @@ public class UIMapManager : MonoBehaviour
 {
     [SerializeField] public Grid grid;
     [SerializeField] public Tilemap uiTilemap;
-    [SerializeField] public Tilemap terrainTilemap;
-    [SerializeField] public Tilemap castleTilemap;
-    [SerializeField] public Tile[] terrainTiles;
-    [SerializeField] public Sprite[] countrySprites;
 
     public event EventHandler<MapPosition> CellMouseOver;
 
