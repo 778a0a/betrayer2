@@ -281,24 +281,39 @@ public class TileInfoEditorWindow : EditorWindow
         }
 
         var country = targetCountry;
-        BoldLabel($"国: {country.Id} {country.Ruler.Name}");
+        BoldLabel($"国: {country.Id} {country.Ruler.Name}  ({country.Ruler.Personality})");
 
         // 関係
-        foreach (var other in world.Countries)
+        var rels = world.Countries
+            .Where(c => c != country)
+            .OrderBy(o => o.GetRelation(country) == 50 ? 999 : o.GetRelation(country));
+        foreach (var other in rels)
         {
             if (other == country) continue;
             var relation = country.GetRelation(other);
             EditorGUILayout.BeginHorizontal();
-            CharaImage(other.Ruler, 80);
-            EditorGUILayout.BeginVertical();
-            Label($"国: {other.Id} {other.Ruler.Name}", 150);
+            CharaImage(other.Ruler, 30);
             EditorGUILayout.BeginHorizontal();
-            if (GUILayout.Button("-10", GUILayout.Width(50), GUILayout.Height(30))) relation -= 10;
-            if (GUILayout.Button("+10", GUILayout.Width(50), GUILayout.Height(30))) relation += 10;
-            EditorGUILayout.EndHorizontal();
+            EditorGUILayout.BeginVertical();
+            var style = new GUIStyle();
+            style.normal.textColor =
+                country.IsAlly(other) ? Color.green :
+                country.IsEnemy(other) ? Color.red :
+                relation > 50 ? Color.LerpUnclamped(Color.white, Color.green, (relation-50) / 50f) :
+                relation < 50 ? Color.LerpUnclamped(Color.red, Color.white, relation / 50f) :
+                Color.gray;
+
+            Label($"国: {other.Id} {other.Ruler.Name}" +
+                $"{(country.IsAlly(other) ? "  同盟" : "")}" +
+                $"{(country.IsEnemy(other) ? "  敵対" : "")}" +
+                $"{(country.Neighbors.Contains(other) ? "  隣接" : "")}" +
+                "", 150, style);
+            EditorGUILayout.EndVertical();
             relation = (int)EditorGUILayout.Slider(relation, 0, 100);
             world.Countries.SetRelation(country, other, relation);
-            EditorGUILayout.EndVertical();
+            if (GUILayout.Button("-10", GUILayout.Width(50), GUILayout.Height(25))) relation -= 10;
+            if (GUILayout.Button("+10", GUILayout.Width(50), GUILayout.Height(25))) relation += 10;
+            EditorGUILayout.EndHorizontal();
             EditorGUILayout.EndHorizontal();
             GUILayout.Space(5);
         }
