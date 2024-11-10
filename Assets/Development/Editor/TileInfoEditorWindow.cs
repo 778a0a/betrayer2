@@ -13,6 +13,8 @@ public class TileInfoEditorWindow : EditorWindow
 {
     private WorldData world;
     private Grid grid;
+    private UIMapManager uimap;
+    private StaticAssets staticAssets;
 
     private MapPosition targetPosition;
     private GameMapTile targetTile;
@@ -27,6 +29,7 @@ public class TileInfoEditorWindow : EditorWindow
         EditBuilding,
         EditCharacter,
         EditRelation,
+        EditCharacterStatus,
     }
 
     [MenuItem("開発/タイル情報")]
@@ -37,32 +40,43 @@ public class TileInfoEditorWindow : EditorWindow
 
     void OnEnable()
     {
-        Debug.Log("OnEnable");
+        Debug.Log("OnEnable!");
         LoadWorld();
-        grid = FindFirstObjectByType<Grid>();
-
         SceneView.duringSceneGui += DuringSceneGUI;
     }
 
     private void LoadWorld()
     {
+        grid = FindFirstObjectByType<Grid>();
+        if (uimap != null) uimap.CellMouseOver -= Uimap_CellMouseOver;
+        uimap = FindFirstObjectByType<UIMapManager>();
+        uimap.CellMouseOver += Uimap_CellMouseOver;
         // Playモードの場合は現在の状態を取得する。
         if (Application.isPlaying)
         {
             world = GameCore.Instance.World;
             return;
         }
-
-        var map = FindFirstObjectByType<UIMapManager>();
-        map.Awake();
+        staticAssets = FindAnyObjectByType<StaticAssets>();
+        staticAssets.Initialize();
         world = DefaultData.Create(saveDir);
-        world.Map.AttachUI(map);
+        world.Map.AttachUI(uimap);
         world.Map.Tiles.ToList().ForEach(t => t.Refresh());
     }
 
     void OnDisable()
     {
         SceneView.duringSceneGui -= DuringSceneGUI;
+        uimap.CellMouseOver -= Uimap_CellMouseOver;
+    }
+
+    private void Uimap_CellMouseOver(object sender, MapPosition e)
+    {
+        if (!isLocked)
+        {
+            targetPosition = e;
+            Repaint();
+        }
     }
 
     void DuringSceneGUI(SceneView sceneView)
@@ -239,6 +253,9 @@ public class TileInfoEditorWindow : EditorWindow
             case EditMode.EditRelation:
                 DrawEditRelation();
                 break;
+            case EditMode.EditCharacterStatus:
+                DrawEditCharacterStatus();
+                break;
             default:
                 break;
         }
@@ -347,6 +364,60 @@ public class TileInfoEditorWindow : EditorWindow
         //GUILayout.EndScrollView();
     }
 
+    #region EditCharacterStatus
+    private void DrawEditCharacterStatus()
+    {
+        var castle = targetTile.Castle;
+        if (castle == null)
+        {
+            return;
+        }
+
+        Label(
+            $"総兵力: {castle.Power} " +
+            $"総守備兵力: {castle.DefencePower} " +
+            $"城外援軍: {castle.ReinforcementForces(world.Forces).Sum(f => f.Character.Power)} ");
+
+        BoldLabel("キャラ一覧");
+        foreach (var chara in castle.Members)
+        {
+            DrawCharacterStatus(chara);
+        }
+    }
+
+    private void DrawCharacterStatus(Character chara)
+    {
+        GUILayout.Space(5);
+        using var _ = HorizontalLayout();
+        var prev = chara.csvDebugData;
+        CharaImage(chara);
+
+        using var __ = VerticalLayout();
+        using (HorizontalLayout())
+        {
+            Label($"ID:{chara.Id}", 50);
+            Label(chara.ToString());
+        }
+
+        using (HorizontalLayout())
+        {
+            foreach (var f in chara.Soldiers)
+            {
+                using var ___ = VerticalLayout();
+                var sp = SoldierImageManager.Instance.GetSprite(f.Level);
+                if (sp != null)
+                {
+                    GUILayout.Label(sp.texture, GUILayout.Width(50), GUILayout.Height(50));
+                }
+                if (f.IsAlive) Label($"{f.Level:0}:{f.Hp:00}");
+                else Label("-:--/--");
+            }
+        }
+
+    }
+    #endregion
+
+    #region EditCharacter
     private bool waitingClickForCharacterMove;
     private Character characterForCharacterMove;
 
@@ -385,7 +456,6 @@ public class TileInfoEditorWindow : EditorWindow
             LoadWorld();
         }
     }
-
 
     private void DrawCharacter(Character chara)
     {
@@ -511,6 +581,8 @@ public class TileInfoEditorWindow : EditorWindow
         //    }
         //}
     }
+    #endregion
+
     private void DrawEditBuilding()
     {
         var hasCountry = targetCountry != null;

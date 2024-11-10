@@ -8,7 +8,6 @@ using UnityEngine.Tilemaps;
 
 public class UIMapManager : MonoBehaviour
 {
-    public static UIMapManager Instance { get; private set; }
     [SerializeField] public Grid grid;
     [SerializeField] public Tilemap uiTilemap;
     [SerializeField] public Tilemap terrainTilemap;
@@ -16,22 +15,14 @@ public class UIMapManager : MonoBehaviour
     [SerializeField] public Tile[] terrainTiles;
     [SerializeField] public Sprite[] countrySprites;
 
-    private MainUI MainUI => MainUI.Instance;
+    public event EventHandler<MapPosition> CellMouseOver;
 
-    public Sprite GetCountrySprite(int countryIndex)
-    {
-        return countrySprites[countryIndex];
-    }
+    private MainUI MainUI => MainUI.Instance;
 
     public GameMapManager Map { get; private set; }
     public void AttachGameMap(GameMapManager map)
     {
         Map = map;
-    }
-
-    public void Awake()
-    {
-        Instance = this;
     }
 
     private MapPosition currentMousePosition = MapPosition.Of(0, 0);
@@ -87,6 +78,7 @@ public class UIMapManager : MonoBehaviour
                 var tile = Map.GetTile(pos);
                 tile.UI.SetCellBorder(true);
                 MainUI.TileInfo.SetData(tile);
+                CellMouseOver?.Invoke(this, pos);
 
                 //var fmax = GameMapTile.TileFoodMax(tile);
                 //var gmax = GameMapTile.TileGoldMax(tile);

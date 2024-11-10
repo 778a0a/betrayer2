@@ -5,9 +5,9 @@ using UnityEngine;
 
 public class Testing : MonoBehaviour
 {
+    [SerializeField] private UIMapManager map;
     public float TickWait { get; set; }
     public bool hold = false;
-    [SerializeField] private Texture2D soldierTexture;
 
     public int PlaySpeedIndex { get; private set; } = 3;
     private float[] PlaySpeedTable { get; } = new[] { 0.5f, 0.25f, 0.125f, 0.05f, 0f, };
@@ -22,15 +22,12 @@ public class Testing : MonoBehaviour
 
     void Start()
     {
-        FaceImageManager.Instance.ClearCache();
-        SoldierImageManager.Instance.Initialize(soldierTexture);
-
         var world = DefaultData.Create();
-        world.Map.AttachUI(UIMapManager.Instance);
+        world.Map.AttachUI(map);
         //world.Characters.FirstOrDefault(c => c.Name == "オーロラ").IsPlayer = true;
 
         UpdatePlaySpeed(PlaySpeedIndex);
-        core = new GameCore(world, UIMapManager.Instance, MainUI.Instance, this);
+        core = new GameCore(world, map, MainUI.Instance, this);
         core.DoMainLoop().Foreget();
     }
 
