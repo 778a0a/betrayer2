@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Newtonsoft.Json;
+using UnityEngine;
 using Random = UnityEngine.Random;
 
 /// <summary>
@@ -44,6 +45,7 @@ public class Soldier
         }
     }
 
+    [JsonIgnore]
     public Texture2D Image => Static.Instance.GetSoldierImage(Level);
 
     public override string ToString() => IsEmptySlot ? "Empty" : $"Lv{Level} HP{Hp}/{MaxHp} Exp:{Experience}";

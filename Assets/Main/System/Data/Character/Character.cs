@@ -128,6 +128,7 @@ public class Character
     /// <summary>
     /// 給料
     /// </summary>
+    [JsonIgnore]
     public int Salary
     {
         get
