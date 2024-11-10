@@ -234,6 +234,8 @@ public class AI
     /// </summary>
     public void Deploy(Castle castle)
     {
+        if (castle.DangerForcesExists) return;
+
         var boss = castle.Boss;
         var neighbors = castle.Neighbors.Where(c => c.Country != castle.Country).ToList();
 

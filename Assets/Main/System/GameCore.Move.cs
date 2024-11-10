@@ -150,6 +150,8 @@ partial class GameCore
                     // 後方から移動する（適当）
                     if (castle.Members.Count > 2 && castle.Neighbors.All(n => !castle.IsAttackable(n)))
                     {
+                        if (castle.DangerForcesExists) continue;
+
                         var cands = castle.Members
                             .Where(m => m != chara)
                             .Where(m => m.IsDefendable)
