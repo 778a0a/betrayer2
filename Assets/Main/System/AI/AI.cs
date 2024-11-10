@@ -159,9 +159,9 @@ public class AI
                     // 敵対国と敵対しているなら+
                     prob += probEnemyEnemy ? 0.1f : 0;
                     // 他に敵対国がなくて一番仲の悪い国とは行わない
-                    if (neighbors.Except(new[] { neighbor }).All(n => n.GetRelation(country) >= 50)) return;
+                    if (neighbors.Except(new[] { neighbor }).All(n => n.GetRelation(country) >= 50)) continue;
                     // 友好度45以上なら+
-                    if (rel < 45) return;
+                    if (rel < 45) continue;
                     // 友好度が高すぎるなら-
                     if (rel >= 90) prob *= 0.5f;
                     break;
@@ -171,9 +171,11 @@ public class AI
                     // 敵対国と敵対しているなら+
                     prob += probEnemyEnemy ? 0.2f : 0;
                     // 友好度40以上なら+
-                    if (rel < 40) return;
+                    if (rel < 40) continue;
                     // 友好度が高すぎるなら-
                     if (rel >= 90) prob *= 0.5f;
+                    // 隣接国なら+
+                    prob *= country.Neighbors.Contains(neighbor) ? 1 : 0.5f;
                     break;
                 case Personality.Pacifism:
                     // 自城が豊かなら+
@@ -185,19 +187,23 @@ public class AI
                     // 相手が強いほど+
                     prob += probTargetStrong ? 0.1f : 0;
                     // 友好度40以上なら+
-                    if (rel < 40) return;
+                    if (rel < 40) continue;
                     break;
                 case Personality.Merchant:
                     // 自城が豊かなら+
                     prob += probGold ? 0.2f : 0;
                     // 友好度40以上で友好度が低いほど+
-                    prob += Mathf.Lerp(0.3f, 0.0f, (rel - 40) / 60f);
+                    prob += Mathf.Lerp(0.4f, 0.0f, (rel - 40) / 60f);
+                    Debug.Log($"{Mathf.Lerp(0.4f, 0.0f, (rel - 40) / 60f)}, {rel}");
+                    if (rel < 55) prob += 0.2f;
                     // 敵対国と敵対しているなら+
                     prob += probEnemyEnemy ? 0.2f : 0;
                     // 友好度40以上なら+
-                    if (rel < 40) return;
+                    if (rel < 40) continue;
                     // 友好度が高すぎるなら-
-                    if (rel >= 90) prob *= 0.5f;
+                    if (rel >= 80) prob *= 0.4f;
+                    // 隣接国なら+
+                    prob *= country.Neighbors.Contains(neighbor) ? 1 : 0.5f;
                     break;
                 case Personality.Warrior:
                 case Personality.Pirate:
@@ -210,7 +216,7 @@ public class AI
                     // 自城が豊かなら+
                     prob += probGold ? 0.1f : 0;
                     // 友好度40以上なら+
-                    if (rel < 40) return;
+                    if (rel < 40) continue;
                     // 友好度が高すぎるなら-
                     if (rel >= 90) prob *= 0.5f;
                     break;

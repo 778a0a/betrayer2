@@ -310,9 +310,9 @@ public class TileInfoEditorWindow : EditorWindow
                 "", 150, style);
             EditorGUILayout.EndVertical();
             relation = (int)EditorGUILayout.Slider(relation, 0, 100);
-            world.Countries.SetRelation(country, other, relation);
             if (GUILayout.Button("-10", GUILayout.Width(50), GUILayout.Height(25))) relation -= 10;
             if (GUILayout.Button("+10", GUILayout.Width(50), GUILayout.Height(25))) relation += 10;
+            world.Countries.SetRelation(country, other, relation);
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.EndHorizontal();
             GUILayout.Space(5);
