@@ -109,10 +109,10 @@ partial class GameCore
                     {
                         await action.Do(args);
                         defPower += member.Power;
-                        cands.Remove(target);
                         Debug.LogWarning($"{member.Name}が{castle}へ援軍として出撃しました。");
                         dispatched = true;
                     }
+                    cands.Remove(target);
                 }
                 if (dispatched)
                 {
