@@ -116,6 +116,47 @@ partial class CastleActions
     }
 
     /// <summary>
+    /// 指定した場所へ援軍として進軍します。
+    /// </summary>
+    public MoveAsReinforcementAction MoveAsReinforcement { get; } = new();
+    public class MoveAsReinforcementAction : CastleActionBase
+    {
+        public override string Label => L["援軍"];
+        public override string Description => L["援軍として出撃します。"];
+
+        public ActionArgs Args(Character actor, Character attacker, Castle target) =>
+            new(actor, targetCharacter: attacker, targetCastle: target);
+
+        protected override bool CanDoCore(ActionArgs args)
+        {
+            var chara = args.targetCharacter;
+            if (chara.IsMoving || chara.IsIncapacitated)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public override ActionCost Cost(ActionArgs args) => ActionCost.Of(0, 1, 0);
+
+        public override ValueTask Do(ActionArgs args)
+        {
+            Assert.IsTrue(CanDo(args));
+
+            var force = new Force(World, args.targetCharacter, args.targetCharacter.Castle.Position, ForceMode.Reinforcement);
+
+            force.SetDestination(args.targetCastle);
+            World.Forces.Register(force);
+
+            Debug.Log($"{force} が援軍として出撃しました。");
+
+            PayCost(args);
+            return default;
+        }
+    }
+
+    /// <summary>
     /// 配下を雇います。
     /// </summary>
     public HireVassalAction HireVassal { get; } = new();

@@ -478,7 +478,7 @@ public class TileInfoEditorWindow : EditorWindow
         }
         if (f != null)
         {
-            Label($"所属: {f.Character.Castle}");
+            Label($"所属: {f.Character.Castle} mode: {f.Mode} ({f.ReinforcementWaitDays})");
             Label($"位置: {f.Position} 向き: {f.Direction} 残日数: {f.ETADays} ({f.TileMoveRemainingDays})");
             Label($"目的地: {f.Destination}");
             Label($"path: {string.Join("→", f.DestinationPath)}");

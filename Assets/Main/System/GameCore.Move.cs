@@ -85,7 +85,9 @@ partial class GameCore
                     .Where(n => n.Country == castle.Country)
                     .Where(n => !n.DangerForcesExists)
                     .Where(n => n.Members.Count(m => m.IsDefendable) > 1)
-                    .SelectMany(n => n.Members.Where(m => m.IsDefendable).Select(m => (n, m, World.Forces.ETADays(m, n.Position, castle))))
+                    .SelectMany(n => n.Members
+                        .Where(m => m.IsDefendable)
+                        .Select(m => (n, m, World.Forces.ETADays(m, n.Position, castle, ForceMode.Reinforcement))))
                     .ToList();
                 // 援軍候補がない場合は何もしない。
                 if (cands.Count == 0) continue;
@@ -103,7 +105,7 @@ partial class GameCore
                         cands.Remove((neighbor, member, eta));
                         continue;
                     }
-                    var action = CastleActions.Move;
+                    var action = CastleActions.MoveAsReinforcement;
                     var args = action.Args(castle.Country.Ruler, member, castle);
                     if (action.CanDo(args))
                     {
@@ -117,6 +119,11 @@ partial class GameCore
                 if (dispatched)
                 {
                     //Pause();
+                }
+                // まだ戦力が足りない場合は同盟国に援軍を要請する。
+                if (dangerPower > defPower)
+                {
+                    castle.Neighbors.Where(n => n.Country.IsAlly(castle));
                 }
             }
         }
@@ -220,7 +227,7 @@ partial class GameCore
         }
     }
 
-    private void Pause()
+    public void Pause()
     {
         test.hold = true;
     }

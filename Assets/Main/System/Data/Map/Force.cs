@@ -9,7 +9,7 @@ using UnityEngine.Tilemaps;
 
 public class Force : ICountryEntity, IMapEntity
 {
-    public Force(WorldData world, Character character, MapPosition position)
+    public Force(WorldData world, Character character, MapPosition position, ForceMode mode = ForceMode.Normal)
     {
         this.world = world;
         Character = character;
@@ -17,9 +17,12 @@ public class Force : ICountryEntity, IMapEntity
         Position = position;
         Destination = position;
         Direction = Direction.Right;
+        Mode = mode;
     }
 
     private WorldData world;
+
+    public ForceMode Mode { get; set; }
 
     /// <summary>
     /// 軍勢の所属国
@@ -55,6 +58,11 @@ public class Force : ICountryEntity, IMapEntity
     /// 隣のタイルに移動するのにかかる残り日数
     /// </summary>
     public float TileMoveRemainingDays { get; set; }
+
+    /// <summary>
+    /// 増援モード時の残り待機日数
+    /// </summary>
+    public int ReinforcementWaitDays { get; set; }
 
     /// <summary>
     /// 到着予想日数
@@ -101,6 +109,15 @@ public class Force : ICountryEntity, IMapEntity
         }
 
         ResetTileMoveProgress();
+
+        // 増援モードで目的地に到着した場合
+        if (Mode == ForceMode.Reinforcement && Destination.Position == Position)
+        {
+            // しばらくの間待機する。
+            ReinforcementWaitDays = 90;
+            Debug.LogError($"増援モード 待機を開始します。{this}");
+            GameCore.Instance.Pause();
+        }
 
         world.Forces.ShouldCheckDefenceStatus = true;
         RefreshUI();
@@ -287,8 +304,13 @@ public class Force : ICountryEntity, IMapEntity
         // キャラの攻撃能力に応じて移動コストを補正する。
         var martialAdj = Character.Attack;
 
+        // 援軍の場合は、攻撃と防衛の高い方を採用する。
+        if (Mode == ForceMode.Reinforcement)
+        {
+            martialAdj = Mathf.Max(Character.Attack, Character.Defense);
+        }
         // 自国領の場合は防衛能力で補正する。
-        if (Country.Has(current) || Country.Has(next))
+        else if (Country.Has(current) || Country.Has(next))
         {
             martialAdj = Character.Defense;
         }
@@ -377,4 +399,16 @@ public class Force : ICountryEntity, IMapEntity
             NeighborGold = neighborGold;
         }
     }
+}
+
+public enum ForceMode
+{
+    /// <summary>
+    /// 通常
+    /// </summary>
+    Normal,
+    /// <summary>
+    /// 援軍
+    /// </summary>
+    Reinforcement,
 }

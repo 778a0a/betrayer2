@@ -121,6 +121,26 @@ public class ForceManager : IReadOnlyList<Force>
         if (force.Destination.Position == force.Position)
         {
             Debug.Log($"軍勢更新処理 {force} 待機中...");
+            // 増援モードの待機日数を減らす。
+            if (force.ReinforcementWaitDays > 0)
+            {
+                // 対象の城が危険でなくなっていれば待機時間を減らす。
+                var castle = (Castle)force.Destination;
+                if (!castle.DangerForcesExists && force.ReinforcementWaitDays > 5)
+                {
+                    force.ReinforcementWaitDays = 5;
+                    Debug.LogWarning($"軍勢更新処理 城が危険でなくなったため待機時間を短縮しました。 {force}");
+                }
+
+                force.ReinforcementWaitDays--;
+                if (force.ReinforcementWaitDays == 0)
+                {
+                    force.Mode = ForceMode.Normal;
+                    Debug.LogError($"軍勢更新処理 {force} 待機終了");
+                    // 本拠地に帰還する。
+                    force.SetDestination(force.Character.Castle);
+                }
+            }
             return;
         }
 
@@ -163,7 +183,9 @@ public class ForceManager : IReadOnlyList<Force>
         }
 
         // 移動先が目的地で自国の城の場合は城に入る。
-        if (nextTile.Castle == force.Destination && force.IsSelf(nextTile))
+        if (nextTile.Castle == force.Destination && force.IsSelf(nextTile) &&
+            // 援軍の場合は入城しない。ただし自分の本拠地への帰還なら入場する。
+            (force.Mode != ForceMode.Reinforcement || nextTile.Castle.Members.Contains(force.Character)))
         {
             var oldCastle = force.Character.Castle;
             oldCastle.Members.Remove(force.Character);
@@ -446,9 +468,9 @@ public class ForceManager : IReadOnlyList<Force>
         castleTile.Refresh();
     }
 
-    public float ETADays(Character chara, MapPosition start, IMapEntity dest)
+    public float ETADays(Character chara, MapPosition start, IMapEntity dest, ForceMode mode)
     {
-        var force = new Force(world, chara, start);
+        var force = new Force(world, chara, start, mode);
         force.SetDestination(dest);
         return force.ETADays;
     }
