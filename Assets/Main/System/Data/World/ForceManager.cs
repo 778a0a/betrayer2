@@ -152,7 +152,7 @@ public class ForceManager : IReadOnlyList<Force>
             //Debug.Log($"軍勢更新処理 {force} 移動中...");
             return;
         }
-        Debug.Log($"軍勢更新処理 {force} タイル移動処理開始");
+        //Debug.Log($"軍勢更新処理 {force} タイル移動処理開始");
         var world = core.World;
 
         // 移動値が溜まったら隣のタイルに移動する。
@@ -193,14 +193,14 @@ public class ForceManager : IReadOnlyList<Force>
             castle.Members.Add(force.Character);
 
             Unregister(force);
-            Debug.Log($"軍勢更新処理 目的地の城に入城しました。");
+            Debug.Log($"軍勢更新処理 目的地の城に入城しました。{force}");
             return;
         }
 
         // 上記以外の場合はタイルを移動する。
         force.UpdatePosition(nextPos);
 
-        Debug.Log($"軍勢更新処理 隣のタイルに移動しました。{nextPos}");
+        //Debug.Log($"軍勢更新処理 隣のタイルに移動しました。{nextPos}");
     }
 
     /// <summary>
