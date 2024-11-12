@@ -423,11 +423,20 @@ public class ForceManager : IReadOnlyList<Force>
         else
         {
             var nearEnemyCastle = oldCountry.Castles
-                .OrderBy(c => c.Position.DirectionTo(force.Position))
+                .OrderBy(c => c.Position.DistanceTo(castle.Position))
                 .FirstOrDefault();
             foreach (var e in castle.Members)
             {
-                nearEnemyCastle.Members.Add(e);
+                // キャラが軍勢を率いているなら、軍勢から一番近い城に所属を移動する。
+                var ef = forces.FirstOrDefault(f => f.Character == e);
+                if (ef != null)
+                {
+                    var c = oldCountry.Castles
+                        .OrderBy(c => c.Position.DistanceTo(ef.Position))
+                        .FirstOrDefault();
+                    c.Members.Add(e);
+                }
+                else nearEnemyCastle.Members.Add(e);
             }
             castle.Members.Clear();
         }
