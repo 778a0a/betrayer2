@@ -135,13 +135,31 @@ public class ForceManager : IReadOnlyList<Force>
                 force.ReinforcementWaitDays--;
                 if (force.ReinforcementWaitDays == 0)
                 {
-                    force.Mode = ForceMode.Normal;
                     Debug.LogError($"軍勢更新処理 {force} 待機終了");
                     // 本拠地に帰還する。
                     force.SetDestination(force.Character.Castle);
                 }
             }
             return;
+        }
+
+        // 救援モードの場合
+        if (force.Mode == ForceMode.Reinforcement)
+        {
+            // 救援先が危険でなくなったら本拠地に戻る。
+            var castle = (Castle)force.Destination;
+            var home = force.Character.Castle;
+            if (!castle.DangerForcesExists && castle != home)
+            {
+                force.SetDestination(force.Character.Castle);
+                if (force.Position == home.Position)
+                {
+                    Unregister(force);
+                }
+                Debug.LogError($"軍勢更新処理 救援先が危険でなくなったため本拠地に帰還します。 {force}");
+                GameCore.Instance.Pause();
+                return;
+            }
         }
 
         // タイル移動進捗を進める。
@@ -454,13 +472,32 @@ public class ForceManager : IReadOnlyList<Force>
                     var home = otherForce.Character.Castle;
                     otherForce.SetDestination(home);
                     Debug.Log($"{otherForce} 城が他国に占領されたため帰還します。");
+                    if (otherForce.Position == home.Position)
+                    {
+                        Unregister(otherForce);
+                    }
                 }
             }
             else
             {
                 foreach (var otherForce in group)
                 {
-                    Debug.Log($"{otherForce} 城が他国に占領されましたが攻撃を続行します。");
+                    // ただし救援の場合は攻撃できないので帰還する。
+                    if (otherForce.Mode == ForceMode.Reinforcement)
+                    {
+                        var home = otherForce.Character.Castle;
+                        otherForce.SetDestination(home);
+                        Debug.LogError($"{otherForce} 城が他国に占領されたため帰還します。(救援)");
+                        if (otherForce.Position == home.Position)
+                        {
+                            Unregister(otherForce);
+                        }
+                        GameCore.Instance.Pause();
+                    }
+                    else
+                    {
+                        Debug.Log($"{otherForce} 城が他国に占領されましたが攻撃を続行します。");
+                    }
                 }
             }
         }
