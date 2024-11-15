@@ -216,6 +216,11 @@ partial class GameCore
                 }
 
                 var budget = Math.Min(chara.Gold, Math.Max(chara.Gold - chara.Salary, 0) + chara.Salary / 6);
+                if (action == CastleActions.HireSoldier)
+                {
+                    budget = chara.Gold;
+                }
+
                 do
                 {
                     if (!action.CanDo(args)) break;
