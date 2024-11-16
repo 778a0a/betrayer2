@@ -16,12 +16,17 @@ public class ForceManager : IReadOnlyList<Force>
 
     public ForceManager(IEnumerable<Force> initialForces)
     {
-        forces.AddRange(initialForces);
+        foreach (var force in initialForces)
+        {
+            forces.Add(force);
+            force.Character.Force = force;
+        }
     }
 
     public void Register(Force force)
     {
         forces.Add(force);
+        force.Character.Force = force;
 
         ShouldCheckDefenceStatus = true;
         force.RefreshUI();
@@ -31,7 +36,9 @@ public class ForceManager : IReadOnlyList<Force>
     {
         var oldTile = world.Map.GetTile(force.Position);
 
+        force.Character.Force = null;
         forces.Remove(force);
+
         // 削除対象を目的地にしている軍勢がいる場合は目的地をリセットする。
         foreach (var f in forces.Where(f => f.Destination == force))
         {

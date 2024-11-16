@@ -185,7 +185,9 @@ public class Character
 
     public bool CanPay(ActionCost cost) => cost.CanPay(this);
     [JsonIgnore]
-    public bool IsMoving => world.Forces.Any(f => f.Character == this);
+    public bool IsMoving => Force != null;
+    [JsonIgnore]
+    public Force Force { get; set; }
     [JsonIgnore]
     public bool CanDefend => !IsMoving && !IsIncapacitated;
     [JsonIgnore]
