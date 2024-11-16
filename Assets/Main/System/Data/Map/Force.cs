@@ -294,11 +294,32 @@ public class Force : ICountryEntity, IMapEntity
             TileMoveRemainingDays = 0;
             return;
         }
-        TileMoveRemainingDays = CalculateMoveCost(Position.To(Direction));
+        var tile = world.Map.GetTile(Position);
+        var nextPos = Position.To(Direction);
+        var nextTile = world.Map.TryGetTile(nextPos);
+        if (nextTile == null)
+        {
+            // 軍勢がマップの端の手前で野戦に負けた場合に起きることがある。
+            // すぐ後にSetDestinationを呼んで更新する場合もあるのでエラーにはしない。
+            Log.Warning($"軍勢の方向が不正です。{this}: {nextPos}");
+            TileMoveRemainingDays = 1;
+            return;
+        }
+        TileMoveRemainingDays = CalculateMoveCost(tile, nextTile);
     }
 
     public float CalculateMoveCost(MapPosition nextPos) => CalculateMoveCost(Position, nextPos);
-    public float CalculateMoveCost(MapPosition fromPos, MapPosition nextPos) => CalculateMoveCost(world.Map.GetTile(fromPos), world.Map.GetTile(nextPos));
+    public float CalculateMoveCost(MapPosition fromPos, MapPosition nextPos)
+    {
+        var t1 = world.Map.TryGetTile(fromPos);
+        var t2 = world.Map.TryGetTile(nextPos);
+        if (t1 == null || t2 == null)
+        {
+            Debug.Break();
+            throw new InvalidOperationException($"Invalid Position (from: {fromPos}, next: {nextPos})");
+        }
+        return CalculateMoveCost(t1, t2);
+    }
     public float CalculateMoveCost(GameMapTile current, GameMapTile next)
     {
         // キャラの攻撃能力に応じて移動コストを補正する。
