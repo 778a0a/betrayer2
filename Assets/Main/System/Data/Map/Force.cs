@@ -301,7 +301,7 @@ public class Force : ICountryEntity, IMapEntity
         {
             // 軍勢がマップの端の手前で野戦に負けた場合に起きることがある。
             // すぐ後にSetDestinationを呼んで更新する場合もあるのでエラーにはしない。
-            Log.Warning($"軍勢の方向が不正です。{this}: {nextPos}");
+            Debug.LogWarning($"軍勢の方向が不正です。{this}: {nextPos}");
             TileMoveRemainingDays = 1;
             return;
         }
