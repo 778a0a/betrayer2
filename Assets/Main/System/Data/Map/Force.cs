@@ -143,6 +143,11 @@ public class Force : ICountryEntity, IMapEntity
             DestinationPath = FindPath(destination, prohibiteds);
             Direction = Position.DirectionTo(DestinationPath.First());
         }
+        else
+        {
+            Debug.LogWarning($"{this} DestinationとPositionが一致しています。");
+            DestinationPath = new LinkedList<MapPosition>();
+        }
         // 目的地が変わった場合は移動日数をリセットする
         if (!isRestoring && (prevDestination.Position == Position || prevDirection != Direction))
         {

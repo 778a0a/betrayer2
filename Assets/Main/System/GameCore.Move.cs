@@ -101,6 +101,7 @@ partial class GameCore
                 {
                     Debug.LogError($"救援帰還中の{f.Name}が{castle}へ援軍として転向します。");
                     f.Force.SetDestination(castle);
+                    f.Force.ReinforcementWaitDays = 90;
                     defPower += f.Power;
                     Pause();
                 }

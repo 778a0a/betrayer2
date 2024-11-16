@@ -131,7 +131,7 @@ public class ForceManager : IReadOnlyList<Force>
         {
             Debug.Log($"軍勢更新処理 {force} 待機中...");
             // 増援モードの待機日数を減らす。
-            if (force.ReinforcementWaitDays > 0)
+            if (force.Mode == ForceMode.Reinforcement)
             {
                 // 対象の城が危険でなくなっていれば待機時間を減らす。
                 var castle = (Castle)force.Destination;
@@ -142,7 +142,7 @@ public class ForceManager : IReadOnlyList<Force>
                 }
 
                 force.ReinforcementWaitDays--;
-                if (force.ReinforcementWaitDays == 0)
+                if (force.ReinforcementWaitDays <= 0)
                 {
                     Debug.LogError($"軍勢更新処理 {force} 待機終了");
                     // 本拠地に帰還する。
