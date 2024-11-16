@@ -348,6 +348,9 @@ public class ForceManager : IReadOnlyList<Force>
             var battle = BattleManager.PrepareSiegeBattle(force, enemy);
             var result = await battle.Do();
             win = result == BattleResult.AttackerWin;
+            // 城の強度を減らす。
+            castle.Strength *= 0.95f;
+            //castle.Stability *= 0.98f; 
         }
         else
         {
@@ -373,6 +376,9 @@ public class ForceManager : IReadOnlyList<Force>
         }
 
         // 勝った場合
+
+        // 内政値を下げる。
+        //castle.Stability = Mathf.Min(30, castle.Stability * 0.5f);
 
         // 敵を行動不能状態にする。
         enemy?.SetIncapacitated();

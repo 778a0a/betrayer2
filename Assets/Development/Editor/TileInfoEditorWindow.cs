@@ -693,6 +693,7 @@ public class TileInfoEditorWindow : EditorWindow
             EditorGUILayout.EndHorizontal();
 
             castle.Strength = EditorGUILayout.FloatField("Strength", castle.Strength);
+            castle.Stability = EditorGUILayout.FloatField("Stability", castle.Stability);
 
             EditorGUILayout.BeginHorizontal();
             castle.Gold = EditorGUILayout.FloatField("Gold", castle.Gold);
