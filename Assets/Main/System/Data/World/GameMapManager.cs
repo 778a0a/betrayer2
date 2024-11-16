@@ -80,8 +80,7 @@ public class GameMapManager
         var tile = GetTile(castle);
         tile.Castle = castle;
 
-        country.Castles.Add(castle);
-        castle.Country = country;
+        castle.UpdateCountry(country);
         //Debug.Log($"城({castle.Id})を登録しました。");
     }
 
@@ -105,7 +104,7 @@ public class GameMapManager
 
         var tile = GetTile(castle);
         tile.Castle = null;
-        castle.Country.Castles.Remove(castle);
+        castle.UpdateCountry(null);
 
         var members = castle.Members.ToList();
         var otherCastle = castle.Country.Castles.FirstOrDefault();
@@ -114,7 +113,7 @@ public class GameMapManager
             Debug.LogWarning($"城が削除されたため、所属キャラを移動します。");
             foreach (var member in members)
             {
-                otherCastle.Members.Add(member);
+                member.ChangeCastle(otherCastle, false);
             }
         }
         Debug.Log($"城({castle.Id})が削除されました。");
@@ -138,13 +137,6 @@ public class GameMapManager
 
         town.Castle.Towns.Remove(town);
         Debug.Log($"町({town.Position}, 城ID:{town.Castle.Id})が削除されました。");
-    }
-
-    public void UpdateCastleCountry(Country country, Castle castle)
-    {
-        castle.Country?.Castles.Remove(castle);
-        country.Castles.Add(castle);
-        castle.Country = country;
     }
 }
 

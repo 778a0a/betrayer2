@@ -26,8 +26,7 @@ partial class GameCore
                 // ランダムに拠点を移動する。
                 var oldCastle = chara.Castle;
                 var newCastle = oldCastle.Neighbors.RandomPick();
-                oldCastle.Frees.Remove(chara);
-                newCastle.Frees.Add(chara);
+                chara.ChangeCastle(newCastle, true);
                 //Debug.Log($"{chara.Name}が{oldCastle}から{newCastle}に移動しました。");
             }
         }

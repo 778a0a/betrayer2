@@ -22,7 +22,8 @@ public class Country : ICountryEntity
     /// <summary>
     /// 拠点
     /// </summary>
-    public List<Castle> Castles { get; set; } = new();
+    public IReadOnlyList<Castle> Castles => CastlesRaw;
+    public List<Castle> CastlesRaw { get; set; } = new();
 
     public IEnumerable<Character> Members => Castles.SelectMany(c => c.Members);
     public IEnumerable<Character> Vassals => Members.Where(c => c != Ruler);

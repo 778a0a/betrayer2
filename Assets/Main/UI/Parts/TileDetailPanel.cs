@@ -45,7 +45,7 @@ public partial class TileDetailPanel
         CastleInfo.style.display = Util.Display(castle != null);
         if (castle != null)
         {
-            labelGovernor.text = castle.Members.FirstOrDefault()?.Name;
+            labelGovernor.text = castle.Boss?.Name;
             labelCastleStrength.text = castle.Strength.ToString("0");
             var foodRemainingMonths = castle.FoodRemainingMonths(GameCore.Instance.GameDate);
             var foodRemainingMonthsText = foodRemainingMonths >= 30 ?

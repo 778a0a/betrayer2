@@ -20,7 +20,19 @@ public class Castle : ICountryEntity, IMapEntity
     /// 所有国
     /// </summary>
     [JsonIgnore]
-    public Country Country { get; set; }
+    public Country Country { get; private set; }
+    public void UpdateCountry(Country newCountry)
+    {
+        Country?.CastlesRaw.Remove(this);
+        if (newCountry != null)
+        {
+            newCountry.CastlesRaw.Add(this);
+            Country = newCountry;
+        }
+
+        // 所属キャラの更新などは呼び出し元で行ってもらう。
+    }
+
 
     [JsonIgnore]
     public Character Boss => Members
@@ -31,7 +43,9 @@ public class Castle : ICountryEntity, IMapEntity
     /// 所属メンバー
     /// </summary>
     [JsonIgnore]
-    public List<Character> Members { get; } = new();
+    public IReadOnlyList<Character> Members => MembersRaw;
+    [JsonIgnore]
+    public List<Character> MembersRaw { get; } = new();
 
     [JsonIgnore]
     public float Power => Members
@@ -71,7 +85,8 @@ public class Castle : ICountryEntity, IMapEntity
     /// 未所属メンバー
     /// </summary>
     [JsonIgnore]
-    public List<Character> Frees { get; } = new();
+    public IReadOnlyList<Character> Frees => FreesRaw;
+    public List<Character> FreesRaw { get; } = new();
 
     /// <summary>
     /// 町

@@ -205,8 +205,7 @@ partial class CastleActions
             //}
 
             var targetCastle = target.Castle;
-            targetCastle.Frees.Remove(target);
-            targetCastle.Members.Add(target);
+            target.ChangeCastle(chara.Castle, false);
 
             Debug.Log($"{chara.Name}: {target.Name}を配下にしました。");
 

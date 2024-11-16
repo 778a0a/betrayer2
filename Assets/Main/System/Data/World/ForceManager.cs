@@ -214,10 +214,7 @@ public class ForceManager : IReadOnlyList<Force>
             // 援軍の場合は入城しない。ただし自分の本拠地への帰還なら入場する。
             (force.Mode != ForceMode.Reinforcement || nextTile.Castle.Members.Contains(force.Character)))
         {
-            var oldCastle = force.Character.Castle;
-            oldCastle.Members.Remove(force.Character);
-            var castle = nextTile.Castle;
-            castle.Members.Add(force.Character);
+            force.Character.ChangeCastle(nextTile.Castle, false);
 
             Unregister(force);
             Debug.Log($"軍勢更新処理 目的地の城に入城しました。{force}");
@@ -263,7 +260,7 @@ public class ForceManager : IReadOnlyList<Force>
         // 勝った場合
 
         // 敵が敵城タイルにいる場合は、敵軍勢を削除する。
-        if (nextTile.Castle?.Members.Contains(enemy.Character) ?? false)
+        if (nextTile.Castle != null && nextTile.Castle == enemy.Character.Castle)
         {
             // やっぱり行動不能にはしない。
             //enemy.Character.SetIncapacitated();
@@ -331,8 +328,7 @@ public class ForceManager : IReadOnlyList<Force>
         if (nextTile.Castle != null && force.IsSelf(nextTile.Castle) && force.Destination.Position == nextTile.Position)
         {
             var oldCastle = force.Character.Castle;
-            oldCastle.Members.Remove(force.Character);
-            nextTile.Castle.Members.Add(force.Character);
+            force.Character.ChangeCastle(nextTile.Castle, false);
             Unregister(force);
             Debug.Log($"軍勢更新処理 野戦(城)に勝利しました。目的地の城に入城しました。");
             return;
@@ -414,11 +410,13 @@ public class ForceManager : IReadOnlyList<Force>
         }
 
         // 城の所有国を変更する。
-        var oldCountry = castle.Country;
-        oldCountry.Castles.Remove(castle);
+        castle.UpdateCountry(force.Country);
+
         // 全ての城を失った場合は国を消滅させる。
+        var oldCountry = castle.Country;
         if (oldCountry.Castles.Count == 0)
         {
+            Debug.DebugBreak();
             world.Countries.Remove(oldCountry);
             var forcesToRemove = forces.Where(f => f.Country == oldCountry).ToArray();
             foreach (var f in forcesToRemove)
@@ -426,12 +424,11 @@ public class ForceManager : IReadOnlyList<Force>
                 Unregister(f);
             }
 
-            foreach (var m in castle.Members)
+            foreach (var m in castle.Members.ToList())
             {
-                castle.Frees.Add(m);
+                // TODO ランダムに散らす。
+                m.ChangeCastle(castle, true);
             }
-            // TODO ランダムに散らす。
-            castle.Members.Clear();
             // TODO 他に必要な処理が色々ありそう。
         }
         // まだ他の城がある場合は、一番近くの城に所属を移動する。
@@ -440,7 +437,7 @@ public class ForceManager : IReadOnlyList<Force>
             var nearEnemyCastle = oldCountry.Castles
                 .OrderBy(c => c.Position.DistanceTo(castle.Position))
                 .FirstOrDefault();
-            foreach (var e in castle.Members)
+            foreach (var e in castle.Members.ToList())
             {
                 // キャラが軍勢を率いているなら、軍勢から一番近い城に所属を移動する。
                 if (e.Force != null)
@@ -448,15 +445,11 @@ public class ForceManager : IReadOnlyList<Force>
                     var c = oldCountry.Castles
                         .OrderBy(c => c.Position.DistanceTo(e.Force.Position))
                         .FirstOrDefault();
-                    c.Members.Add(e);
+                    e.ChangeCastle(c, false);
                 }
-                else nearEnemyCastle.Members.Add(e);
+                else e.ChangeCastle(nearEnemyCastle, false);
             }
-            castle.Members.Clear();
         }
-        
-        // 城を攻撃者の国に追加する。
-        world.Map.UpdateCastleCountry(force.Country, castle);
 
         // 城の隣接タイルにいて、城が目的地で、進捗が半分以上のキャラは城に入る。
         var castleTile = world.Map.GetTile(castle);
@@ -468,9 +461,7 @@ public class ForceManager : IReadOnlyList<Force>
             .ToArray();
         foreach (var f in forcesToEnterCastle)
         {
-            var oldCastle = f.Character.Castle;
-            oldCastle.Members.Remove(f.Character);
-            castle.Members.Add(f.Character);
+            f.Character.ChangeCastle(castle, false);
             Unregister(f);
             Debug.Log($"{f} 城に入城しました。");
         }

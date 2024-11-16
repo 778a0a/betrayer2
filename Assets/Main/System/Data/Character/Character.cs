@@ -187,23 +187,43 @@ public class Character
     [JsonIgnore]
     public bool IsMoving => Force != null;
     [JsonIgnore]
-    public Force Force { get; set; }
+    public Force Force { get; set; } // メモ ForceManagerと二重管理
     [JsonIgnore]
     public bool CanDefend => !IsMoving && !IsIncapacitated;
     [JsonIgnore]
-    public Country Country => world.Countries.FirstOrDefault(c => c.Ruler == this || c.Vassals.Contains(this));
+    public Country Country { get; private set; } // メモ Castle.Countryと二重管理
     [JsonIgnore]
     public bool IsRuler => Country?.Ruler == this;
     [JsonIgnore]
-    public bool IsVassal => Country?.Vassals.Contains(this) ?? false;
+    public bool IsVassal => !IsFree && !IsRuler;
     [JsonIgnore]
     public bool IsFree => Country == null;
     [JsonIgnore]
     public bool IsRulerOrVassal => !IsFree;
     [JsonIgnore]
-    public Castle Castle =>
-        Country?.Castles.FirstOrDefault(c => c.Members.Contains(this)) ??
-        world.Castles.FirstOrDefault(c => c.Frees.Contains(this));
+    public Castle Castle { get; private set; } // メモ Castle.Memberと二重管理
+    public void ChangeCastle(Castle newCastle, bool asFree)
+    {
+        var oldCastle = Castle;
+        if (oldCastle != null)
+        {
+            oldCastle.FreesRaw.Remove(this);
+            oldCastle.MembersRaw.Remove(this);
+        }
+
+        Castle = newCastle;
+        if (asFree)
+        {
+            newCastle.FreesRaw.Add(this);
+            Country = null;
+        }
+        else
+        {
+            newCastle.MembersRaw.Add(this);
+            Country = newCastle.Country;
+            // TODO 城の国が変わった場合
+        }
+    }
 
     /// <summary>
     /// 地位

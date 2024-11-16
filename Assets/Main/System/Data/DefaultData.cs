@@ -75,21 +75,14 @@ public class DefaultData
             if (chara.CastleId != -1)
             {
                 var tile = map.GetTile(castles.Find(c => c.Data.Id == chara.CastleId).Data);
-                if (chara.IsFree)
-                {
-                    tile.Castle.Frees.Add(chara.Character);
-                }
-                else
-                {
-                    tile.Castle.Members.Add(chara.Character);
-                }
+                chara.Character.ChangeCastle(tile.Castle, chara.IsFree);
             }
             else
             {
                 Debug.Assert(chara.IsFree);
                 // ランダムに配置する。
                 var tile = map.GetTile(castles.RandomPick().Data);
-                tile.Castle.Frees.Add(chara.Character);
+                chara.Character.ChangeCastle(tile.Castle, true);
             }
         }
 

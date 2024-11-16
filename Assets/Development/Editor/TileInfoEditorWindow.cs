@@ -117,9 +117,7 @@ public class TileInfoEditorWindow : EditorWindow
                     else
                     {
                         var castle = tile.Castle;
-                        var oldCastle = characterForCharacterMove.Castle;
-                        oldCastle.Members.Remove(characterForCharacterMove);
-                        castle.Members.Add(characterForCharacterMove);
+                        characterForCharacterMove.ChangeCastle(castle, false);
 
                         Save();
                         LoadWorld();
@@ -520,7 +518,7 @@ public class TileInfoEditorWindow : EditorWindow
                 Soldiers = world.Characters[0].Soldiers,
             };
             world.Characters.Add(newChara);
-            castle.Members.Add(newChara);
+            newChara.ChangeCastle(castle, false);
             Save();
             LoadWorld();
         }

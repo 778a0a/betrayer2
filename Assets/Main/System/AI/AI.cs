@@ -330,8 +330,7 @@ public class AI
         if (castle.Members.Count <= 2)
         {
             var chara = castle.Frees.RandomPick();
-            castle.Members.Add(chara);
-            castle.Frees.Remove(chara);
+            chara.ChangeCastle(castle, false);
             Debug.Log($"{chara} が {castle} に採用されました。");
         }
 
