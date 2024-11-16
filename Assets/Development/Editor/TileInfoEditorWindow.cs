@@ -875,7 +875,7 @@ public class TileInfoEditorWindow : EditorWindow
             }
             var chara = world.Characters.First(c => c.Id == forceCreateCharacterId);
             // すでに軍勢を率いている場合はエラー
-            if (world.Forces.Any(f => f.Character == chara))
+            if (chara.IsMoving)
             {
                 Debug.LogError("すでに軍勢を率いています。");
                 return;

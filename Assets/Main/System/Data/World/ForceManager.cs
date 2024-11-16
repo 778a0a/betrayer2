@@ -76,8 +76,9 @@ public class ForceManager : IReadOnlyList<Force>
                 continue;
             }
             // まずは、1個でも危険軍勢がいれば出撃軍勢を戻すことにする。
-            var castleForces = forces
-                .Where(f => castle.Members.Contains(f.Character))
+            var castleForces = castle.Members
+                .Where(m => m.IsMoving)
+                .Select(m => m.Force)
                 .Where(f => f.Destination.Position != castle.Position)
                 .ShuffleAsArray();
             foreach (var myForce in castleForces)
@@ -115,7 +116,8 @@ public class ForceManager : IReadOnlyList<Force>
             var force = forcesCopy[i];
             if (!forces.Contains(force))
             {
-                Debug.LogWarning($"軍勢更新処理 対象の軍勢が存在しません。{force}");
+                // 戦闘などで軍勢が削除されている場合は何もしない。
+                //Debug.LogWarning($"軍勢更新処理 対象の軍勢が存在しません。{force}");
                 continue;
             }
             await OnForceMoveOne(core, force);
@@ -441,11 +443,10 @@ public class ForceManager : IReadOnlyList<Force>
             foreach (var e in castle.Members)
             {
                 // キャラが軍勢を率いているなら、軍勢から一番近い城に所属を移動する。
-                var ef = forces.FirstOrDefault(f => f.Character == e);
-                if (ef != null)
+                if (e.Force != null)
                 {
                     var c = oldCountry.Castles
-                        .OrderBy(c => c.Position.DistanceTo(ef.Position))
+                        .OrderBy(c => c.Position.DistanceTo(e.Force.Position))
                         .FirstOrDefault();
                     c.Members.Add(e);
                 }
