@@ -410,13 +410,13 @@ public class ForceManager : IReadOnlyList<Force>
         }
 
         // 城の所有国を変更する。
+        var oldCountry = castle.Country;
         castle.UpdateCountry(force.Country);
 
         // 全ての城を失った場合は国を消滅させる。
-        var oldCountry = castle.Country;
         if (oldCountry.Castles.Count == 0)
         {
-            Debug.DebugBreak();
+            Debug.LogWarning($"滅亡処理 {oldCountry}");
             world.Countries.Remove(oldCountry);
             var forcesToRemove = forces.Where(f => f.Country == oldCountry).ToArray();
             foreach (var f in forcesToRemove)
