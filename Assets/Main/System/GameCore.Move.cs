@@ -80,28 +80,55 @@ partial class GameCore
                 if (dangerPower < defPower) continue;
 
                 // 隣接する城が危険でなければ、援軍を送る。
+                // 救援出撃して戦闘せず帰還している軍勢があれば優先して向かわせる。
+                var candForces = castle.Neighbors
+                    .Where(n => n.Country == castle.Country)
+                    .Where(n => !n.DangerForcesExists)
+                    .SelectMany(n => n.Members)
+                    // 帰還中
+                    .Where(m =>
+                        m.IsMoving &&
+                        m.Force.Mode == ForceMode.Reinforcement &&
+                        m.Force.Destination.Position == m.Castle.Position)
+                    // 損耗が少ない
+                    .Where(m => m.Soldiers.AttritionRate < 0.5f)
+                    // 救援先の近くにいる。
+                    .Where(m =>
+                        World.Forces.ETADays(m, m.Force.Position, castle, ForceMode.Reinforcement) <
+                        World.Forces.ETADays(m, m.Castle.Position, castle, ForceMode.Reinforcement))
+                    .ToList();
+                foreach (var f in candForces)
+                {
+                    Debug.LogError($"救援帰還中の{f.Name}が{castle}へ援軍として転向します。");
+                    f.Force.SetDestination(castle);
+                    defPower += f.Power;
+                    Pause();
+                }
+                if (dangerPower < defPower) continue;
+
+                // 城内にいるキャラ
                 var cands = castle.Neighbors
                     .Where(n => n.Country == castle.Country)
                     .Where(n => !n.DangerForcesExists)
                     .Where(n => n.Members.Count(m => m.IsDefendable) > 1)
-                    .SelectMany(n => n.Members
-                        .Where(m => m.IsDefendable)
-                        .Select(m => (n, m, World.Forces.ETADays(m, n.Position, castle, ForceMode.Reinforcement))))
+                    .SelectMany(n => n.Members)
+                    .Where(m => m.IsDefendable)
+                    .Select(m => (chara: m, eta: World.Forces.ETADays(m, m.Castle.Position, castle, ForceMode.Reinforcement)))
                     .ToList();
                 // 援軍候補がない場合は何もしない。
                 if (cands.Count == 0) continue;
 
                 var dispatched = false;
-                var maxETA = cands.Select(x => x.Item3).Max();
+                var maxETA = cands.Select(x => x.eta).Max();
                 Debug.LogWarning($"cands:\n{string.Join("\n", cands)}");
                 while (dangerPower > defPower && cands.Count > 0)
                 {
-                    var target = cands.RandomPickWeighted(x => Mathf.Pow(10 + maxETA - x.Item3, 2), true);
-                    var (neighbor, member, eta) = target;
-                    var defendables = neighbor.Members.Count(m => m.IsDefendable);
+                    var target = cands.RandomPickWeighted(x => Mathf.Pow(10 + maxETA - x.eta, 2), true);
+                    var (member, eta) = target;
+                    var defendables = member.Castle.Members.Count(m => m.IsDefendable);
                     if (defendables <= 1)
                     {
-                        cands.Remove((neighbor, member, eta));
+                        cands.Remove(target);
                         continue;
                     }
                     var action = CastleActions.MoveAsReinforcement;

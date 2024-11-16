@@ -44,6 +44,8 @@ public class Soldiers : IReadOnlyList<Soldier>
 
     public int Power => (int)SoldierArray.Sum(s => s.IsEmptySlot ? 0 : s.Hp / 35f * (1 + 0.2f * (s.Level - 1)));
     public int SoldierCount => SoldierArray.Where(s => !s.IsEmptySlot).Sum(s => s.Hp);
+    public int SoldierCountMax => SoldierArray.Where(s => !s.IsEmptySlot).Sum(s => s.MaxHp);
+    public float AttritionRate => 1f - SoldierCount / SoldierCountMax;
 
     public override string ToString() => $"Power:{Power} ({string.Join(",", SoldierArray.Select(s => s.ToShortString()))})";
 }
