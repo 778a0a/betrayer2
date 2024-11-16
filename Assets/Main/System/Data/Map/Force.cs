@@ -116,7 +116,7 @@ public class Force : ICountryEntity, IMapEntity
             // しばらくの間待機する。
             ReinforcementWaitDays = 90;
             Debug.LogError($"増援モード 待機を開始します。{this}");
-            GameCore.Instance.Pause();
+            //GameCore.Instance.Pause();
         }
 
         world.Forces.ShouldCheckDefenceStatus = true;

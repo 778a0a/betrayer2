@@ -157,7 +157,7 @@ public class ForceManager : IReadOnlyList<Force>
                     Unregister(force);
                 }
                 Debug.LogError($"軍勢更新処理 救援先が危険でなくなったため本拠地に帰還します。 {force}");
-                GameCore.Instance.Pause();
+                //GameCore.Instance.Pause();
                 return;
             }
         }
@@ -507,7 +507,7 @@ public class ForceManager : IReadOnlyList<Force>
                         {
                             Unregister(otherForce);
                         }
-                        GameCore.Instance.Pause();
+                        //GameCore.Instance.Pause();
                     }
                     else
                     {
