@@ -86,6 +86,7 @@ public class Castle : ICountryEntity, IMapEntity
     /// </summary>
     [JsonIgnore]
     public IReadOnlyList<Character> Frees => FreesRaw;
+    [JsonIgnore]
     public List<Character> FreesRaw { get; } = new();
 
     /// <summary>
