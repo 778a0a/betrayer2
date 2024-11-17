@@ -79,78 +79,98 @@ partial class GameCore
                 // 防衛兵力が十分なら何もしない。
                 if (dangerPower < defPower) continue;
 
-                // 隣接する城が危険でなければ、援軍を送る。
-                // 救援出撃して戦闘せず帰還している軍勢があれば優先して向かわせる。
-                var candForces = castle.Neighbors
-                    .Where(n => n.Country == castle.Country)
-                    .Where(n => !n.DangerForcesExists)
-                    .SelectMany(n => n.Members)
-                    // 帰還中
-                    .Where(m =>
-                        m.IsMoving &&
-                        m.Force.Mode == ForceMode.Reinforcement &&
-                        m.Force.Destination.Position == m.Castle.Position)
-                    // 損耗が少ない
-                    .Where(m => m.Soldiers.AttritionRate < 0.5f)
-                    // 救援先の近くにいる。
-                    .Where(m =>
-                        World.Forces.ETADays(m, m.Force.Position, castle, ForceMode.Reinforcement) <
-                        World.Forces.ETADays(m, m.Castle.Position, castle, ForceMode.Reinforcement))
-                    .ToList();
-                foreach (var f in candForces)
+                void ProcessRainforcements(Country reinSourceCountry)
                 {
-                    Debug.LogError($"救援帰還中の{f.Name}が{castle}へ援軍として転向します。");
-                    f.Force.SetDestination(castle);
-                    f.Force.ReinforcementWaitDays = 90;
-                    defPower += f.Power;
-                    Pause();
-                }
-                if (dangerPower < defPower) continue;
-
-                // 城内にいるキャラ
-                var cands = castle.Neighbors
-                    .Where(n => n.Country == castle.Country)
-                    .Where(n => !n.DangerForcesExists)
-                    .Where(n => n.Members.Count(m => m.IsDefendable) > 1)
-                    .SelectMany(n => n.Members)
-                    .Where(m => m.IsDefendable)
-                    .Select(m => (chara: m, eta: World.Forces.ETADays(m, m.Castle.Position, castle, ForceMode.Reinforcement)))
-                    .ToList();
-                // 援軍候補がない場合は何もしない。
-                if (cands.Count == 0) continue;
-
-                var dispatched = false;
-                var maxETA = cands.Select(x => x.eta).Max();
-                Debug.LogWarning($"cands:\n{string.Join("\n", cands)}");
-                while (dangerPower > defPower && cands.Count > 0)
-                {
-                    var target = cands.RandomPickWeighted(x => Mathf.Pow(10 + maxETA - x.eta, 2), true);
-                    var (member, eta) = target;
-                    var defendables = member.Castle.Members.Count(m => m.IsDefendable);
-                    if (defendables <= 1)
+                    var isAlly = castle.Country != reinSourceCountry;
+                    // 隣接する城が危険でなければ、援軍を送る。
+                    // 救援出撃して戦闘せず帰還している軍勢があれば優先して向かわせる。
+                    var candForces = castle.Neighbors
+                        .Where(n => n.Country == reinSourceCountry)
+                        .Where(n => !n.DangerForcesExists)
+                        .SelectMany(n => n.Members)
+                        // 帰還中
+                        .Where(m =>
+                            m.IsMoving &&
+                            m.Force.Mode == ForceMode.Reinforcement &&
+                            m.Force.Destination.Position == m.Castle.Position)
+                        // 損耗が少ない
+                        .Where(m => m.Soldiers.AttritionRate < 0.5f)
+                        // 救援先の近くにいる。
+                        .Where(m =>
+                            World.Forces.ETADays(m, m.Force.Position, castle, ForceMode.Reinforcement) <
+                            World.Forces.ETADays(m, m.Castle.Position, castle, ForceMode.Reinforcement))
+                        .ToList();
+                    foreach (var f in candForces)
                     {
+                        Debug.LogError($"救援帰還中の{f.Name}が{castle}へ援軍として転向します。{(isAlly ? "(同盟国)" :"")}");
+                        f.Force.SetDestination(castle);
+                        f.Force.ReinforcementWaitDays = 90;
+                        defPower += f.Power;
+                    }
+                }
+
+                async Task ProcessDefendables(Country reinSourceCountry)
+                {
+                    var isAlly = castle.Country != reinSourceCountry;
+                    // 城内にいるキャラ
+                    var cands = castle.Neighbors
+                        .Where(n => n.Country == reinSourceCountry)
+                        .Where(n => !n.DangerForcesExists)
+                        .Where(n => n.Members.Count(m => m.IsDefendable) > 1)
+                        .SelectMany(n => n.Members)
+                        .Where(m => m.IsDefendable)
+                        .Select(m => (chara: m, eta: World.Forces.ETADays(m, m.Castle.Position, castle, ForceMode.Reinforcement)))
+                        .ToList();
+                    // 援軍候補がない場合は何もしない。
+                    if (cands.Count == 0) return;
+
+                    var maxETA = cands.Select(x => x.eta).Max();
+                    //Debug.LogWarning($"cands:\n{string.Join("\n", cands)}");
+                    while (dangerPower > defPower && cands.Count > 0)
+                    {
+                        var target = cands.RandomPickWeighted(x => Mathf.Pow(10 + maxETA - x.eta, 2), true);
+                        var (member, eta) = target;
+                        var defendables = member.Castle.Members.Count(m => m.IsDefendable);
+                        if (defendables <= 1)
+                        {
+                            cands.Remove(target);
+                            continue;
+                        }
+                        var action = CastleActions.MoveAsReinforcement;
+                        var args = action.Args(reinSourceCountry.Ruler, member, castle);
+                        if (action.CanDo(args))
+                        {
+                            await action.Do(args);
+                            defPower += member.Power;
+                            Debug.LogWarning($"{member.Name}が{castle}へ援軍として出撃しました。{(isAlly ? "(同盟国)" : "")}");
+                        }
                         cands.Remove(target);
-                        continue;
                     }
-                    var action = CastleActions.MoveAsReinforcement;
-                    var args = action.Args(castle.Country.Ruler, member, castle);
-                    if (action.CanDo(args))
-                    {
-                        await action.Do(args);
-                        defPower += member.Power;
-                        Debug.LogWarning($"{member.Name}が{castle}へ援軍として出撃しました。");
-                        dispatched = true;
-                    }
-                    cands.Remove(target);
                 }
-                if (dispatched)
+
+                // 救援から帰還中の軍勢
+                ProcessRainforcements(castle.Country);
+                if (dangerPower < defPower) continue;
+                // 駐在中のキャラ
+                await ProcessDefendables(castle.Country);
+                if (dangerPower < defPower) continue;
+                
+                // まだ足りない場合は同盟国から援軍を出す。
+                var allyCountries = castle.Country.Neighbors
+                    .Where(n => n.IsAlly(castle.Country))
+                    .Distinct()
+                    // ただし危険軍勢がすべて同盟国の同盟国なら出さない。
+                    .Where(n => !dangerForces.All(d => n.IsAlly(d.Country)))
+                    .ToList();
+                foreach (var ally in allyCountries)
                 {
-                    //Pause();
+                    if (dangerPower < defPower) break;
+                    ProcessRainforcements(ally);
                 }
-                // まだ戦力が足りない場合は同盟国に援軍を要請する。
-                if (dangerPower > defPower)
+                foreach (var ally in allyCountries)
                 {
-                    castle.Neighbors.Where(n => n.Country.IsAlly(castle));
+                    if (dangerPower < defPower) break;
+                    await ProcessDefendables(ally);
                 }
             }
         }
