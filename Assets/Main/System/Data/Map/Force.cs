@@ -184,6 +184,11 @@ public class Force : ICountryEntity, IMapEntity
                     {
                         cands = cands.Concat(castleTile.Neighbors.Where(tile => tile.Terrain == Terrain.River || tile.Terrain == Terrain.LargeRiver));
                     }
+                    // 普通のキャラの場合、候補が全て川・大河なら、他の陸地タイルも含める。
+                    else if (cands.All(tile => tile.Terrain == Terrain.River || tile.Terrain == Terrain.LargeRiver))
+                    {
+                        cands = castleTile.Neighbors;
+                    }
                     var target = cands
                         // 戦闘補正が+なものを優先する。
                         .OrderByDescending(tile =>
