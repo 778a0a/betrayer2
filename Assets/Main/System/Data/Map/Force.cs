@@ -184,10 +184,16 @@ public class Force : ICountryEntity, IMapEntity
                     {
                         cands = cands.Concat(castleTile.Neighbors.Where(tile => tile.Terrain == Terrain.River || tile.Terrain == Terrain.LargeRiver));
                     }
-                    var target = cands.OrderByDescending(tile =>
-                        Battle.TraitsAdjustment(tile, Character.Traits) +
-                        Battle.TerrainAdjustment(tile.Terrain) +
-                        (tile.Position == castlePrevTile.Position ? 0.001f : 0)).First();
+                    var target = cands
+                        // 戦闘補正が+なものを優先する。
+                        .OrderByDescending(tile =>
+                            Battle.TraitsAdjustment(tile, Character.Traits) +
+                            Battle.TerrainAdjustment(tile.Terrain))
+                        // 疑似距離が近いものを優先する。
+                        .ThenBy(tile => tile.DistanceTo(Position))
+                        // 元の選択を優先する。
+                        .ThenByDescending(tile => tile.Position == castlePrevTile.Position ? 0.001f : 0)
+                        .First();
                     if (target != castlePrevTile)
                     {
                         var path2 = FindPathCore(target.Position, prohibiteds: prohibiteds);
