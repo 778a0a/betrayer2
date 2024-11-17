@@ -68,38 +68,4 @@ public class GameMapTile : ICountryEntity, IMapEntity
     {
         return $"Tile{Position}";
     }
-
-
-    public static float TileFoodMax(GameMapTile tile) => Mathf.Max(0,
-        BaseFoodAdjustment(tile.Terrain) + tile.Neighbors.Sum(t => NeighborFoodAdjustment(t.Terrain)));
-    public static float TileGoldMax(GameMapTile tile) => Mathf.Max(0,
-        BaseGoldAdjustment(tile.Terrain) + tile.Neighbors.Sum(t => NeighborGoldAdjustment(t.Terrain)));
-
-    public static float BaseFoodAdjustment(Terrain terrain) => devAdjustments[terrain].BaseFood;
-    public static float NeighborFoodAdjustment(Terrain terrain) => devAdjustments[terrain].NeighborFood;
-    public static float BaseGoldAdjustment(Terrain terrain) => devAdjustments[terrain].BaseGold;
-    public static float NeighborGoldAdjustment(Terrain terrain) => devAdjustments[terrain].NeighborGold;
-    private static readonly Dictionary<Terrain, TerrainDevAdjustmentData> devAdjustments = new()
-    {
-        { Terrain.LargeRiver, new(-300, 050, -30, 020) },
-        { Terrain.River,      new(-300, 050, -30, 010) },
-        { Terrain.Plain,      new(0500, 100, 030, 000) },
-        { Terrain.Hill,       new(0350, 000, 040, 005) },
-        { Terrain.Forest,     new(0250, 000, 040, 010) },
-        { Terrain.Mountain,   new(0200, 000, 040, 005) },
-    };
-    private struct TerrainDevAdjustmentData
-    {
-        public float BaseFood;
-        public float NeighborFood;
-        public float BaseGold;
-        public float NeighborGold;
-        public TerrainDevAdjustmentData(float baseFood, float neighborFood, float baseGold, float neighborGold)
-        {
-            BaseFood = baseFood;
-            NeighborFood = neighborFood;
-            BaseGold = baseGold;
-            NeighborGold = neighborGold;
-        }
-    }
 }

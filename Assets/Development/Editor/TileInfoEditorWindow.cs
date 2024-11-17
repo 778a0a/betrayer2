@@ -206,6 +206,17 @@ public class TileInfoEditorWindow : EditorWindow
             {
                 isAutoUpdate = !isAutoUpdate;
             }
+
+            if (GUILayout.Button("test"))
+            {
+                foreach (var item in world.Castles.SelectMany(c => c.Towns))
+                {
+                    item.FoodIncome = item.FoodIncomeMax / 2;
+                    item.GoldIncome = item.GoldIncomeMax / 2;
+                }
+                Save();
+                LoadWorld();
+            }
         }
 
         if (targetTile == null)
@@ -216,7 +227,7 @@ public class TileInfoEditorWindow : EditorWindow
         using (HorizontalLayout())
         {
             Label($"座標: {targetTile.Position} 地形: {targetTile.Terrain}", 150);
-            Label($"Gmax: {GameMapTile.TileGoldMax(targetTile):000} Fmax:{GameMapTile.TileFoodMax(targetTile):0000}", 150);
+            Label($"Gmax: {Town.TileGoldMax(targetTile):000} Fmax:{Town.TileFoodMax(targetTile):0000}", 150);
         }
 
         // スクロール可能にする。
