@@ -107,18 +107,29 @@ public partial class GameCore
             {
                 OnIncome();
 
-                // 隣接する国の友好度を徐々に減らす。
+                // 友好度を更新する。
                 foreach (var country in World.Countries)
                 {
-                    foreach (var neighbor in country.Neighbors)
+                    var neighbors = country.Neighbors.ToArray();
+                    foreach (var other in World.Countries)
                     {
                         // 重複して減らさないようにする。
-                        if (country.Id > neighbor.Id) continue;
+                        if (country.Id > other.Id || country == other) continue;
 
-                        var rel = country.GetRelation(neighbor);
-                        // 同盟しているなら減らさない。
+                        var rel = country.GetRelation(other);
+                        // 同盟しているなら何もしない。
                         if (rel == Country.AllyRelation) continue;
-                        country.SetRelation(neighbor, rel - 1);
+
+                        // 隣接する国は友好度を徐々に減らす。
+                        if (neighbors.Contains(other))
+                        {
+                            if (rel > 30) country.SetRelation(other, rel - 1);
+                        }
+                        // 隣接していない国は、友好度が低いなら増やす。
+                        else
+                        {
+                            if (rel < 50) country.SetRelation(other, rel + 1);
+                        }
                     }
                 }
             }
