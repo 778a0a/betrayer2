@@ -186,8 +186,8 @@ public class ForceManager : IReadOnlyList<Force>
         var nextPos = force.Position.To(force.Direction);
         var nextTile = world.Map.GetTile(nextPos);
 
-        // 移動先に自国以外の軍勢がいる場合は野戦を行う。
-        var nextEnemies = nextTile.Forces.Where(f => f.IsAttackable(force)).ToArray();
+        // 移動先に通り抜け不可な軍勢がいる場合は野戦を行う。
+        var nextEnemies = nextTile.Forces.Where(f => !f.CanThrough(force)).ToArray();
         if (nextEnemies.Length > 0)
         {
             // 移動先が目的地でなく、移動先に友好的な軍勢しかいない場合は迂回するように進路を変更する。
@@ -284,7 +284,7 @@ public class ForceManager : IReadOnlyList<Force>
             var backTile = world.Map.TryGetTile(backPos);
             // 後退先に移動できないなら、軍勢を削除して行動不能にする。
             if (backTile == null ||
-                backTile.Forces.Any(f => f.IsAttackable(enemy)) ||
+                backTile.Forces.Any(f => !f.CanThrough(enemy)) ||
                 (backTile.Castle?.IsAttackable(enemy) ?? false))
             {
                 enemy.Character.SetIncapacitated();

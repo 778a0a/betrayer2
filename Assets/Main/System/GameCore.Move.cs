@@ -103,6 +103,7 @@ partial class GameCore
                     foreach (var f in candForces)
                     {
                         Debug.LogError($"救援帰還中の{f.Name}が{castle}へ援軍として転向します。{(isAlly ? "(同盟国)" :"")}");
+                        f.Force.ReinforcementOriginalTarget = castle;
                         f.Force.SetDestination(castle);
                         f.Force.ReinforcementWaitDays = 90;
                         defPower += f.Power;

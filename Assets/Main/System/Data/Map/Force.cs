@@ -83,6 +83,21 @@ public class Force : ICountryEntity, IMapEntity
         }
     }
 
+    public Castle ReinforcementOriginalTarget { get; set; }
+
+    /// <summary>
+    /// タイル移動時に、戦闘せずに同じタイルに移動できるならtrue
+    /// </summary>
+    public bool CanThrough(Force other)
+    {
+        // 自国・同盟国なら通過可能
+        if (!this.IsAttackable(other)) return true;
+        // 同じ救援先の救援軍なら通過可能
+        return Mode == ForceMode.Reinforcement &&
+            other.Mode == ForceMode.Reinforcement &&
+            ReinforcementOriginalTarget == other.ReinforcementOriginalTarget;
+    }
+
     public void UpdatePosition(MapPosition pos)
     {
         var oldTile = world.Map.GetTile(Position);
