@@ -427,7 +427,7 @@ public class TileInfoEditorWindow : EditorWindow
             using (HorizontalLayout())
             {
                 Label($"ID:{chara.Id}", 50);
-                Label($"{chara}");
+                Label($"{chara} ({chara.TraintsText})");
                 if (chara.IsMoving)
                 {
                     var style = new GUIStyle();
