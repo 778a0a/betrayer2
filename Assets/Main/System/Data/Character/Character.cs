@@ -11,9 +11,6 @@ using UnityEngine;
 /// </summary>
 public class Character
 {
-    public static int SalaryRatioMin = 0;
-    public static int SalaryRatioMax = 100;
-
     [JsonIgnore]
     private WorldData world;
     public void AttachWorld(WorldData world) => this.world = world;
@@ -137,12 +134,13 @@ public class Character
             //return 5 + (int)Math.Floor(Math.Sqrt(Contribution / 5));
             var sum = 0;
             var max = 100;
-            for (int i = 0; i < max; i++)
+            var i = 0;
+            for (; i < max; i++)
             {
                 sum += i * 10;
-                if (sum > Contribution) return i + 4;
+                if (sum > Contribution) break;
             }
-            return max + 4;
+            return i + 9;
         }
     }
     /// <summary>

@@ -706,12 +706,12 @@ public class TileInfoEditorWindow : EditorWindow
 
             EditorGUILayout.BeginHorizontal();
             castle.Gold = EditorGUILayout.FloatField("Gold", castle.Gold);
-            Label($"{castle.GoldIncome} / {castle.GoldIncomeMax} ({castle.GoldBalance:+0;-#})");
+            Label($"{castle.GoldIncome:0000} / {castle.GoldIncomeMax:0000} ({castle.GoldBalance:+0;-#})", 200);
             EditorGUILayout.EndHorizontal();
 
             EditorGUILayout.BeginHorizontal();
             castle.Food = EditorGUILayout.FloatField("Food", castle.Food);
-            Label($"{castle.FoodIncome} / {castle.FoodIncomeMax}");
+            Label($"{castle.FoodIncome:0000} / {castle.FoodIncomeMax:0000} ({castle.FoodBalance:+0;-#})", 200);
             EditorGUILayout.EndHorizontal();
 
             if (GUILayout.Button("城を削除"))
@@ -746,23 +746,21 @@ public class TileInfoEditorWindow : EditorWindow
             }
         }
 
-        // 町情報
-        if (targetTile.HasTown)
+        void DrawTown(Town town)
         {
-            var town = targetTile.Town;
             // ヘッダー
-            BoldLabel($"町情報 (所属城ID: {town.Castle.Id})");
-
-            Label($"城主: {town.Castle.Boss?.Name ?? ""}");
+            BoldLabel($"町情報 (所属城ID: {town.Castle.Id}) 城主: {town.Castle.Boss?.Name ?? ""} {town.Position}", 250);
 
             EditorGUILayout.BeginHorizontal();
-            town.GoldIncome = EditorGUILayout.FloatField("GoldIncome", town.GoldIncome, GUILayout.Width(250));
-            Label($"Max: {town.GoldIncomeMax} (Base: {town.GoldIncomeMaxBase})");
+            Label("金収入", 50);
+            town.GoldIncome = ParamField(town.GoldIncome, town.GoldIncomeMax, 150, Color.yellow);
+            Label($"Max: {town.GoldIncomeMax} (Base: {town.GoldIncomeMaxBase})", 200);
             EditorGUILayout.EndHorizontal();
 
             EditorGUILayout.BeginHorizontal();
-            town.FoodIncome = EditorGUILayout.FloatField("FoodIncome", town.FoodIncome, GUILayout.Width(250));
-            Label($"Max: {town.FoodIncomeMax} (Base: {town.FoodIncomeMaxBase})");
+            Label("食料収入", 50);
+            town.FoodIncome = ParamField(town.FoodIncome, town.FoodIncomeMax, 10000, Color.green);
+            Label($"Max: {town.FoodIncomeMax} (Base: {town.FoodIncomeMaxBase})", 200);
             EditorGUILayout.EndHorizontal();
 
             if (GUILayout.Button("町を削除"))
@@ -773,6 +771,42 @@ public class TileInfoEditorWindow : EditorWindow
                 Save();
                 LoadWorld();
             }
+
+            float ParamField(float value, float max, float maxmax, Color color)
+            {
+                GUILayout.BeginHorizontal();
+                value = EditorGUILayout.FloatField(value, GUILayout.Width(40));
+                var rect = GUILayoutUtility.GetRect(200, 20);
+                // 誤操作防止のためスライダーは無効にしておく。
+                //value = (int)GUI.HorizontalSlider(rect, value, 0, max);
+                EditorGUI.DrawRect(rect, Color.gray);
+                var rectMax = new Rect(rect.xMin, rect.yMin, rect.width * max / (float)maxmax, rect.height);
+                EditorGUI.DrawRect(rectMax, color * 0.6f);
+                var rectValue = new Rect(rect.xMin, rect.yMin, rect.width * value / (float)maxmax, rect.height);
+                EditorGUI.DrawRect(rectValue, color);
+
+                GUILayoutUtility.GetRect(1, 20);
+                GUILayout.EndHorizontal();
+                GUILayout.Space(5);
+                return value;
+            }
+        }
+
+        // 町情報
+        // 城がある場合は所属する町を全て表示する。
+        if (targetTile.HasCastle)
+        {
+            var castle = targetTile.Castle;
+            foreach (var town in castle.Towns)
+            {
+                DrawTown(town);
+            }
+        }
+        // 町がある場合は町情報を表示する。
+        else if (targetTile.HasTown)
+        {
+            var town = targetTile.Town;
+            DrawTown(town);
         }
         else
         {
@@ -793,7 +827,31 @@ public class TileInfoEditorWindow : EditorWindow
             }
         }
 
-        ForceLayout();
+        // メンバー消費情報
+        if (targetTile.HasCastle)
+        {
+            var castle = targetTile.Castle;
+            var members = targetTile.Castle.Members.OrderByDescending(m => m.Contribution);
+            EditorGUILayout.Space(10);
+            BoldLabel("メンバー情報");
+            Label($"ゴールド 備蓄: {castle.Gold} 収入: {castle.GoldIncome} 支出: {castle.GoldComsumption} 収支: {castle.GoldBalance} (残り: {castle.GoldRemainingQuarters()})");
+            Label($"食料 備蓄: {castle.Food} 収入: {castle.FoodIncome} 支出: {castle.FoodComsumption} 収支: {castle.FoodBalance} (残り: {castle.FoodRemainingQuarters()}四半期)");
+            foreach (var chara in members)
+            {
+                Label($"{chara}");
+                EditorGUILayout.BeginHorizontal();
+                CharaImage(chara, 50);
+                EditorGUILayout.BeginVertical();
+                chara.Contribution = EditorGUILayout.IntField("功績", chara.Contribution);
+                Label($"給料 {chara.Salary}");
+                Label($"兵士数 {chara.FoodConsumption}");
+                EditorGUILayout.EndVertical();
+                EditorGUILayout.EndHorizontal();
+                EditorGUILayout.Space(10);
+            }
+        }
+
+        //ForceLayout();
     }
 
     /// <summary>

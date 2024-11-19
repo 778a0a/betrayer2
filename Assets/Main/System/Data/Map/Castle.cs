@@ -125,7 +125,9 @@ public class Castle : ICountryEntity, IMapEntity
     [JsonIgnore]
     public float GoldIncomeMax => Towns.Sum(t => t.GoldIncomeMax);
     [JsonIgnore]
-    public float GoldBalance => GoldIncome - Members.Sum(m => m.Salary);
+    public float GoldBalance => GoldIncome - GoldComsumption;
+    [JsonIgnore]
+    public float GoldComsumption => Members.Sum(m => m.Salary);
     /// <summary>
     /// 食料
     /// </summary>
@@ -135,28 +137,70 @@ public class Castle : ICountryEntity, IMapEntity
     [JsonIgnore]
     public float FoodIncomeMax => Towns.Sum(t => t.FoodIncomeMax);
     [JsonIgnore]
-    public float FoodBalance => FoodIncome - 3 * Members.Sum(m => m.FoodConsumption);
+    public float FoodBalance => FoodIncome - FoodComsumption;
+    [JsonIgnore]
+    public float FoodComsumption => Members.Sum(m => m.FoodConsumption);
     /// <summary>
     /// 食料残り月数
     /// </summary>
     public float FoodRemainingMonths(GameDate current)
     {
         var remaining = Food;
-        var incomePerYear = FoodIncome;
-        var comsumptionPerMonth = Members.Sum(m => m.FoodConsumption);
+        var income = FoodIncome;
+        var comsumption = FoodComsumption;
         var months = 0;
         var date = current;
         while (true)
         {
             date = date.NextMonth();
-            remaining -= comsumptionPerMonth;
-            if (date.IsIncomeMonth) remaining += incomePerYear;
-            if (remaining <= 0) break;
+            if (date.IsIncomeMonth)
+            {
+                remaining -= comsumption;
+                remaining += income;
+                if (remaining <= 0) break;
+            }
             // 無限ループにならないように適当に打ち切る。
-            if (months > 30) return months;
+            if (months > 36) return months;
             months++;
         }
         return months;
+    }
+
+    /// <summary>
+    /// 四半期
+    /// </summary>
+    public int FoodRemainingQuarters()
+    {
+        var remaining = Food;
+        var income = FoodIncome;
+        var comsumption = FoodComsumption;
+        var quarters = 0;
+        while (true)
+        {
+            remaining -= comsumption;
+            remaining += income;
+            if (remaining <= 0) break;
+            if (quarters > 40) break;
+            quarters++;
+        }
+        return quarters;
+    }
+
+    public int GoldRemainingQuarters()
+    {
+        var remaining = Gold;
+        var income = GoldIncome;
+        var comsumption = GoldComsumption;
+        var quarters = 0;
+        while (true)
+        {
+            remaining -= comsumption;
+            remaining += income;
+            if (remaining <= 0) break;
+            if (quarters > 40) break;
+            quarters++;
+        }
+        return quarters;
     }
 
     [JsonIgnore]
