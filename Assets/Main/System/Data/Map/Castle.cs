@@ -121,7 +121,7 @@ public class Castle : ICountryEntity, IMapEntity
     /// </summary>
     public float Gold { get; set; }
     [JsonIgnore]
-    public float GoldIncome => Towns.Sum(t => t.GoldIncome);
+    public float GoldIncome => Towns.Sum(t => t.GoldIncome) * Stability / 100;
     [JsonIgnore]
     public float GoldIncomeMax => Towns.Sum(t => t.GoldIncomeMax);
     [JsonIgnore]
@@ -133,7 +133,7 @@ public class Castle : ICountryEntity, IMapEntity
     /// </summary>
     public float Food { get; set; }
     [JsonIgnore]
-    public float FoodIncome => Towns.Sum(t => t.FoodIncome);
+    public float FoodIncome => Towns.Sum(t => t.FoodIncome) * Stability / 100;
     [JsonIgnore]
     public float FoodIncomeMax => Towns.Sum(t => t.FoodIncomeMax);
     [JsonIgnore]
