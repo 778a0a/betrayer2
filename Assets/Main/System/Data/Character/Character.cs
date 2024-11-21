@@ -75,7 +75,7 @@ public class Character
     /// <summary>
     /// 功績
     /// </summary>
-    public int Contribution { get; set; }
+    public float Contribution { get; set; }
     /// <summary>
     /// 名声
     /// </summary>

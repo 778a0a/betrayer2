@@ -209,10 +209,11 @@ public class TileInfoEditorWindow : EditorWindow
 
             if (GUILayout.Button("test"))
             {
-                foreach (var item in world.Castles.SelectMany(c => c.Towns))
+                foreach (var town in world.Castles.SelectMany(c => c.Towns))
                 {
-                    item.FoodIncome = item.FoodIncomeMax / 2;
-                    item.GoldIncome = item.GoldIncomeMax / 2;
+                    var adj = town.Castle.Position == town.Position ? 1f / 2f : 1f / 4f;
+                    town.FoodIncome = town.FoodIncomeMax * adj;
+                    town.GoldIncome = town.GoldIncomeMax * adj;
                 }
                 Save();
                 LoadWorld();
@@ -454,10 +455,10 @@ public class TileInfoEditorWindow : EditorWindow
             }
 
             using var _____ = VerticalLayout();
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < 3; i++)
             {
                 using var ___ = HorizontalLayout();
-                for (int j = 0; j < 10; j++)
+                for (int j = 0; j < 5; j++)
                 {
                     var s = chara.Soldiers[i * 5 + j];
                     if (s.IsAlive)
@@ -466,7 +467,7 @@ public class TileInfoEditorWindow : EditorWindow
                         var r = GUILayoutUtility.GetRect(10, 20);
                         GUI.DrawTexture(r, s.Image);
                         GUILayout.BeginVertical();
-                        Label($"{s.Level:0}:{s.Hp:00}");
+                        Label($"{s.Level:0}:{s.Hp:00}/{s.MaxHp}");
                     }
                     else
                     {
@@ -474,7 +475,7 @@ public class TileInfoEditorWindow : EditorWindow
                         var r = GUILayoutUtility.GetRect(10, 20);
                         EditorGUI.DrawRect(r, Color.gray);
                         GUILayout.BeginVertical();
-                        Label("0:00");
+                        Label("0:00/00");
                     }
                     var rect = GUILayoutUtility.GetRect(1, 3);
                     EditorGUI.DrawRect(rect, Color.gray);
@@ -579,11 +580,11 @@ public class TileInfoEditorWindow : EditorWindow
             Label("");
         }
 
-        int ParamField(string label, int value, Color color, int max = 100)
+        float ParamField(string label, float value, Color color, float max = 100)
         {
             GUILayout.BeginHorizontal();
             Label(label, 15);
-            value = EditorGUILayout.IntField(value, GUILayout.Width(40));
+            value = EditorGUILayout.FloatField(value, GUILayout.Width(40));
             var rect = GUILayoutUtility.GetRect(1, 20);
             // 誤操作防止のためスライダーは無効にしておく。
             //value = (int)GUI.HorizontalSlider(rect, value, 0, max);
@@ -598,10 +599,10 @@ public class TileInfoEditorWindow : EditorWindow
         }
 
         // 能力値
-        chara.Attack = ParamField("A", chara.Attack, Color.red);
-        chara.Defense = ParamField("D", chara.Defense, Color.green);
-        chara.Intelligence = ParamField("I", chara.Intelligence, Color.cyan);
-        chara.Governing = ParamField("G", chara.Governing, new Color(1, 0.5f, 0));
+        chara.Attack = (int)ParamField("A", chara.Attack, Color.red);
+        chara.Defense = (int)ParamField("D", chara.Defense, Color.green);
+        chara.Intelligence = (int)ParamField("I", chara.Intelligence, Color.cyan);
+        chara.Governing = (int)ParamField("G", chara.Governing, new Color(1, 0.5f, 0));
         //chara.LoyaltyBase = ParamField("L", chara.LoyaltyBase, Color.yellow);
         chara.Contribution = ParamField("C", chara.Contribution, Color.black);
         //chara.Prestige = ParamField("P", chara.Prestige, Color.white);
@@ -753,7 +754,7 @@ public class TileInfoEditorWindow : EditorWindow
 
             EditorGUILayout.BeginHorizontal();
             Label("金収入", 50);
-            town.GoldIncome = ParamField(town.GoldIncome, town.GoldIncomeMax, 150, Color.yellow);
+            town.GoldIncome = ParamField(town.GoldIncome, town.GoldIncomeMax, 200, Color.yellow);
             Label($"Max: {town.GoldIncomeMax} (Base: {town.GoldIncomeMaxBase})", 200);
             EditorGUILayout.EndHorizontal();
 
@@ -842,7 +843,7 @@ public class TileInfoEditorWindow : EditorWindow
                 EditorGUILayout.BeginHorizontal();
                 CharaImage(chara, 50);
                 EditorGUILayout.BeginVertical();
-                chara.Contribution = EditorGUILayout.IntField("功績", chara.Contribution);
+                chara.Contribution = EditorGUILayout.FloatField("功績", chara.Contribution);
                 Label($"給料 {chara.Salary}");
                 Label($"兵士数 {chara.FoodConsumption}");
                 EditorGUILayout.EndVertical();

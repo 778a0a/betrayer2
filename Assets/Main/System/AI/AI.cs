@@ -326,15 +326,20 @@ public class AI
             return;
         }
 
-        // 人数が少ない場合
-        if (castle.Members.Count <= 2)
+        // 資金・食料が足りない場合は何もしない。
+        var balance = castle.GoldBalance + castle.FoodBalance / 50;
+        if (balance < 30)
         {
-            var chara = castle.Frees.RandomPick();
+            return;
+        }
+
+        // 十分に豊かな場合のみ採用する。
+        var chara = castle.Frees.RandomPick();
+        var newBalance = balance - chara.Salary - chara.FoodConsumption / 50;
+        if (newBalance > 30)
+        {
             chara.ChangeCastle(castle, false);
             Debug.Log($"{chara} が {castle} に採用されました。");
         }
-
-        // 人数が十分いる場合は、十分に豊かな場合のみ採用する。
-        // TODO
     }
 }

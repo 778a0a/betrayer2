@@ -256,17 +256,28 @@ partial class GameCore
                 {
                     args.targetCastle = chara.Castle;
                     args.targetTown = args.targetCastle?.Towns.RandomPick();
-                    action = vassalActions.Value.RandomPick();
+                    action = vassalActions.Value.Where(a => a.CanDo(args)).RandomPickDefault();
                 }
                 if (chara.Soldiers.HasEmptySlot)
                 {
-                    action = CastleActions.HireSoldier;
+                    // 危険軍勢がいるか、食料収支がプラスなら兵士を採用する。
+                    if (chara.Castle.DangerForcesExists || chara.Castle.FoodBalance > 200)
+                    {
+                        action = CastleActions.HireSoldier;
+                    }
                 }
 
                 var budget = Math.Min(chara.Gold, Math.Max(chara.Gold - chara.Salary, 0) + chara.Salary / 6);
                 if (action == CastleActions.HireSoldier)
                 {
                     budget = chara.Gold;
+                }
+
+                // できることがないなら何もしない。
+                if (action == null)
+                {
+                    Debug.LogWarning($"{chara.Name} は行動できません。");
+                    continue;
                 }
 
                 do
@@ -290,6 +301,7 @@ partial class GameCore
         Instance.TownActions.ImproveGoldIncome,
         Instance.TownActions.ImproveFoodIncome,
         Instance.CastleActions.ImproveCastleStrength,
+        Instance.CastleActions.ImproveStability,
         Instance.CastleActions.TrainSoldiers,
     });
 }

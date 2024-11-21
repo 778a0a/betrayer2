@@ -25,6 +25,7 @@ partial class TownActions
         public override string Description => L["ゴールド収入を改善します。"];
 
         public override ActionCost Cost(ActionArgs args) => 2;
+        protected override bool CanDoCore(ActionArgs args) => args.targetTown.GoldIncomeMax > args.targetTown.GoldIncome;
 
         public override ValueTask Do(ActionArgs args)
         {
@@ -32,9 +33,13 @@ partial class TownActions
             var chara = args.actor;
             var town = args.targetTown;
 
-            town.GoldIncome += 0.1f * chara.Governing / 100f;
+            // 能力値50なら3年で回収できる程度。100なら1.5倍の効果で、2年で回収できる程度。
+            var adj = 1 + (chara.Governing - 50) / 100f;
+            if (chara.Traits.HasFlag(Traits.Merchant)) adj += 0.1f;
+            town.GoldIncome = Mathf.Min(town.GoldIncomeMax, town.GoldIncome + adj / 6);
 
-            chara.Contribution += 1;
+            var contribAdj = town.Castle.Objective == CastleObjective.Commerce ? 1.5f : 1;
+            chara.Contribution += adj * contribAdj;
             PayCost(args);
 
             return default;
@@ -51,6 +56,7 @@ partial class TownActions
         public override string Description => L["食料収入を改善します。"];
 
         public override ActionCost Cost(ActionArgs args) => 2;
+        protected override bool CanDoCore(ActionArgs args) => args.targetTown.FoodIncomeMax > args.targetTown.FoodIncome;
 
         public override ValueTask Do(ActionArgs args)
         {
@@ -58,9 +64,12 @@ partial class TownActions
             var chara = args.actor;
             var town = args.targetTown;
 
-            town.FoodIncome += 10 * chara.Governing / 100f;
+            // 能力値50なら3年で回収できる程度。100なら1.5倍の効果で、2年で回収できる程度。
+            var adj = 1 + (chara.Governing - 50) / 100f;
+            town.FoodIncome = Mathf.Min(town.FoodIncomeMax, town.FoodIncome + adj * 50 / 6);
 
-            chara.Contribution += 1;
+            var contribAdj = town.Castle.Objective == CastleObjective.Agriculture ? 1.5f : 1;
+            chara.Contribution += adj * contribAdj;
             PayCost(args);
 
             return default;

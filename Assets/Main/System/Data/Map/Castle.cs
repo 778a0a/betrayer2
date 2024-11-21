@@ -115,13 +115,15 @@ public class Castle : ICountryEntity, IMapEntity
     /// 安定度
     /// </summary>
     public float Stability { get; set; }
+    [JsonIgnore]
+    public float StabilityMax => 100;
 
     /// <summary>
     /// 金
     /// </summary>
     public float Gold { get; set; }
     [JsonIgnore]
-    public float GoldIncome => Towns.Sum(t => t.GoldIncome) * Stability / 100;
+    public float GoldIncome => Towns.Sum(t => t.GoldIncome) * Stability / StabilityMax;
     [JsonIgnore]
     public float GoldIncomeMax => Towns.Sum(t => t.GoldIncomeMax);
     [JsonIgnore]
@@ -133,7 +135,7 @@ public class Castle : ICountryEntity, IMapEntity
     /// </summary>
     public float Food { get; set; }
     [JsonIgnore]
-    public float FoodIncome => Towns.Sum(t => t.FoodIncome) * Stability / 100;
+    public float FoodIncome => Towns.Sum(t => t.FoodIncome) * Stability / StabilityMax;
     [JsonIgnore]
     public float FoodIncomeMax => Towns.Sum(t => t.FoodIncomeMax);
     [JsonIgnore]
