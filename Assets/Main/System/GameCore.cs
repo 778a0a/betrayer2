@@ -80,9 +80,16 @@ public partial class GameCore
                 // 兵士を回復させる。
                 var rate = 0.01f;
                 if (chara.IsMoving) rate = 0.005f;
+                var starving = chara.Castle.Food < 0;
                 foreach (var s in chara.Soldiers)
                 {
                     if (s.IsEmptySlot) continue;
+                    if (starving)
+                    {
+                        s.HpFloat = s.HpFloat - s.MaxHp * rate;
+                        if (s.HpFloat <= 0) s.IsEmptySlot = true;
+                        continue;
+                    }
                     if (s.HpFloat >= s.MaxHp) continue;
                     var newHp = s.HpFloat + s.MaxHp * rate;
                     s.HpFloat = Mathf.Min(s.MaxHp, newHp);
