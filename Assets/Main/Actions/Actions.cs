@@ -95,27 +95,49 @@ public struct ActionArgs
 {
     public Character actor;
     public Castle targetCastle;
+    public Castle targetCastle2;
     public Town targetTown;
     public Country targetCountry;
     public Character targetCharacter;
+    public MapPosition? targetPosition;
+    public float gold;
+    public float food;
 
     public ActionArgs(
         Character actor,
         Castle targetCastle = null,
+        Castle targetCastle2 = null,
         Town targetTown = null,
         Country targetCountry = null,
-        Character targetCharacter = null)
+        Character targetCharacter = null,
+        MapPosition? targetPosition = null,
+        float gold = 0,
+        float food = 0)
     {
         this.actor = actor;
         this.targetCastle = targetCastle;
+        this.targetCastle2 = targetCastle2;
         this.targetTown = targetTown;
         this.targetCountry = targetCountry;
         this.targetCharacter = targetCharacter;
+        this.targetPosition = targetPosition;
+        this.gold = gold;
+        this.food = food;
     }
 
     public override readonly string ToString()
     {
-        return $"{actor.Name} -> {(object)targetCastle ?? (object)targetTown ?? targetCountry}";
+        var sb = new System.Text.StringBuilder();
+        sb.Append($"actor: {actor.Name}");
+        if (targetCastle != null) sb.Append($", targetCastle: {targetCastle.Position}");
+        if (targetCastle2 != null) sb.Append($", targetCastle2: {targetCastle2.Position}");
+        if (targetTown != null) sb.Append($", targetTown: {targetTown.Position}");
+        if (targetCountry != null) sb.Append($", targetCountry: {targetCountry.Ruler.Name}");
+        if (targetCharacter != null) sb.Append($", targetCharacter: {targetCharacter.Name}");
+        if (targetPosition != null) sb.Append($", targetPosition: {targetPosition}");
+        if (gold != 0) sb.Append($", gold: {gold}");
+        if (food != 0) sb.Append($", food: {food}");
+        return sb.ToString();
     }
 }
 

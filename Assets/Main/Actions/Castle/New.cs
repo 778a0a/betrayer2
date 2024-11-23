@@ -218,4 +218,290 @@ partial class CastleActions
         }
     }
 
+    /// <summary>
+    /// 町建設
+    /// </summary>
+    public BuildTownAction BuildTown { get; } = new();
+    public class BuildTownAction : CastleActionBase
+    {
+        public override string Label => L["町建設"];
+        public override string Description => L[""];
+
+        public ActionArgs Args(Character actor, Castle castle, MapPosition pos) => new(actor, targetCastle: castle, targetPosition: pos);
+
+        public override ActionCost Cost(ActionArgs args) => ActionCost.Of(0, 1, (int)(100 * Mathf.Pow(2, args.targetCastle.Towns.Count - 1)));
+
+        override protected bool CanDoCore(ActionArgs args)
+        {
+            var pos = args.targetPosition.Value;
+            var tile = World.Map.GetTile(pos);
+
+            // すでに町がある場合は不可
+            if (tile.Town != null)
+            {
+                return false;
+            }
+
+            // 既存の町に隣接していない場合は不可
+            var cands = args.targetCastle.Towns.SelectMany(t => World.Map.GetTile(t).Neighbors);
+            if (!cands.Contains(tile))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public override ValueTask Do(ActionArgs args)
+        {
+            Assert.IsTrue(CanDo(args));
+
+            Map.RegisterTown(args.targetCastle, new Town()
+            {
+                Position = args.targetPosition.Value,
+            });
+
+            PayCost(args);
+            Debug.Log($"{args.targetCastle} に新しい町が建設されました。（{args.targetPosition}）");
+            return default;
+        }
+    }
+
+    /// <summary>
+    /// 発展度アップ
+    /// </summary>
+    public DevelopAction Develop { get; } = new();
+    public class DevelopAction : CastleActionBase
+    {
+        public override string Label => L["発展度アップ"];
+        public override string Description => L[""];
+
+        public ActionArgs Args(Character actor, Castle castle) => new(actor, targetCastle: castle);
+
+        public override ActionCost Cost(ActionArgs args) => ActionCost.Of(0, 1, (int)(100 * Mathf.Pow(1.3f, args.targetCastle.DevelopmentLevel - 1)));
+        public override ValueTask Do(ActionArgs args)
+        {
+            Assert.IsTrue(CanDo(args));
+
+            args.targetCastle.DevelopmentLevel++;
+
+            PayCost(args);
+            Debug.Log($"{args.targetCastle} の発展度が上がりました。({args.targetCastle.DevelopmentLevel})");
+            return default;
+        }
+    }
+
+    /// <summary>
+    /// 城塞レベルアップ
+    /// </summary>
+    public ImproveCastleStrengthLevelAction ImproveCastleStrengthLevel { get; } = new();
+    public class ImproveCastleStrengthLevelAction : CastleActionBase
+    {
+        public override string Label => L["城塞レベルアップ"];
+        public override string Description => L[""];
+
+        public ActionArgs Args(Character actor, Castle castle) => new(actor, targetCastle: castle);
+
+        public override ActionCost Cost(ActionArgs args) => ActionCost.Of(0, 1, (int)(100 * Mathf.Pow(1.5f, args.targetCastle.FortressLevel - 1)));
+        public override ValueTask Do(ActionArgs args)
+        {
+            Assert.IsTrue(CanDo(args));
+
+            args.targetCastle.FortressLevel++;
+
+            PayCost(args);
+            Debug.Log($"{args.targetCastle} の城塞レベルが上がりました。({args.targetCastle.FortressLevel})");
+            return default;
+        }
+    }
+
+    /// <summary>
+    /// 引出
+    /// </summary>
+    public WithdrawCastleGoldAction WithdrawCastleGold { get; } = new();
+    public class WithdrawCastleGoldAction : CastleActionBase
+    {
+        public override string Label => L["引出"];
+        public override string Description => L["城の軍資金から所持金に資金を移動します。"];
+
+        public ActionArgs Args(Character actor, int gold) => new(actor, gold: gold);
+
+        public override ActionCost Cost(ActionArgs args) => ActionCost.Of(0, 1, 0);
+
+        override protected bool CanDoCore(ActionArgs args)
+        {
+            return args.actor.Castle.Gold >= args.gold;
+        }
+
+        public override ValueTask Do(ActionArgs args)
+        {
+            Assert.IsTrue(CanDo(args));
+
+            args.actor.Gold += args.gold;
+            args.actor.Castle.Gold -= args.gold;
+
+            PayCost(args);
+
+            Debug.Log($"{args.actor} が城から {args.gold}G 引き出しました。");
+            return default;
+        }
+    }
+
+    /// <summary>
+    /// 預け入れ
+    /// </summary>
+    public DepositCastleGoldAction DepositCastleGold { get; } = new();
+    public class DepositCastleGoldAction : CastleActionBase
+    {
+        public override string Label => L["預入"];
+        public override string Description => L["所持金から城の軍資金へ資金を移動します。"];
+
+        public ActionArgs Args(Character actor, int gold) => new(actor, gold: gold);
+
+        public override ActionCost Cost(ActionArgs args) => ActionCost.Of(0, 1, 0);
+
+        override protected bool CanDoCore(ActionArgs args)
+        {
+            return args.actor.Gold >= args.gold;
+        }
+
+        public override ValueTask Do(ActionArgs args)
+        {
+            Assert.IsTrue(CanDo(args));
+
+            args.actor.Gold -= args.gold;
+            args.actor.Castle.Gold += args.gold;
+
+            PayCost(args);
+            Debug.Log($"{args.actor} が城に {args.gold}G 預け入れました。");
+            return default;
+        }
+    }
+
+    /// <summary>
+    /// 別の城へ物資を輸送します。
+    /// </summary>
+    public TranspotAction Transpot { get; } = new();
+    public class TranspotAction : CastleActionBase
+    {
+        public override string Label => L["輸送"];
+        public override string Description => L["別の城へ物資を輸送します。"];
+
+        public ActionArgs Args(Character actor, Castle c, Castle c2, float gold, float food) =>
+            new(actor, targetCastle: c, targetCastle2: c2, gold: gold, food: food);
+
+        public override ActionCost Cost(ActionArgs args) => ActionCost.Of(0, 1, 0);
+
+        override protected bool CanDoCore(ActionArgs args)
+        {
+            return args.targetCastle.Gold >= args.gold && args.targetCastle.Food >= args.food;
+        }
+
+        public override ValueTask Do(ActionArgs args)
+        {
+            Assert.IsTrue(CanDo(args));
+
+            args.targetCastle.Gold -= args.gold;
+            args.targetCastle.Food -= args.food;
+            args.targetCastle2.Gold += args.gold;
+            args.targetCastle2.Food += args.food;
+
+            PayCost(args);
+            Debug.Log($"{args.actor} が {args.targetCastle} から {args.targetCastle2} へ {args.gold}G {args.food} 運びました。");
+            return default;
+        }
+    }
+
+    /// <summary>
+    /// 糧買
+    /// </summary>
+    public BuyFoodAction BuyFood { get; } = new();
+    public class BuyFoodAction : CastleActionBase
+    {
+        public override string Label => L["糧買"];
+        public override string Description => L["食料を購入します。"];
+
+        public ActionArgs Args(Character actor, Castle c, float gold) => new(actor, targetCastle: c, gold: gold);
+
+        public override ActionCost Cost(ActionArgs args) => ActionCost.Of(0, 1, 0);
+
+        protected override bool CanDoCore(ActionArgs args)
+        {
+            return args.targetCastle.Gold >= args.gold;
+        }
+
+        public override ValueTask Do(ActionArgs args)
+        {
+            Assert.IsTrue(CanDo(args));
+
+            var food = World.Economy.GetFoodAmount(args.gold);
+            args.targetCastle.Gold -= args.gold;
+            args.targetCastle.Food += food;
+
+            PayCost(args);
+            Debug.Log($"{args.actor} が {args.targetCastle} で {food} 食料を購入しました。");
+            return default;
+        }
+    }
+
+    /// <summary>
+    /// 糧売
+    /// </summary>
+    public SellFoodAction SellFood { get; } = new();
+    public class SellFoodAction : CastleActionBase
+    {
+        public override string Label => L["糧売"];
+        public override string Description => L["食料を売却します。"];
+
+        public ActionArgs Args(Character actor, Castle c, float food) => new(actor, targetCastle: c, food: food);
+
+        public override ActionCost Cost(ActionArgs args) => ActionCost.Of(0, 1, 0);
+
+        protected override bool CanDoCore(ActionArgs args)
+        {
+            return args.targetCastle.Food >= args.food;
+        }
+
+        public override ValueTask Do(ActionArgs args)
+        {
+            Assert.IsTrue(CanDo(args));
+
+            var gold = World.Economy.GetGoldAmount(args.food);
+            args.targetCastle.Food -= args.food;
+            args.targetCastle.Gold += gold;
+
+            PayCost(args);
+            Debug.Log($"{args.actor} が {args.targetCastle} で {gold}G で {args.food} 食料を売却しました。");
+            return default;
+        }
+    }
+
+    /// <summary>
+    /// 褒賞
+    /// </summary>
+    public BonusAction Bonus { get; } = new();
+    public class BonusAction : CastleActionBase
+    {
+        public override string Label => L["褒賞"];
+        public override string Description => L["臣下に褒賞を与えます。"];
+
+        public ActionArgs Args(Character actor, Character target) => new(actor, targetCharacter: target);
+
+        public override ActionCost Cost(ActionArgs args) => ActionCost.Of(0, 1, 20);
+        public override ValueTask Do(ActionArgs args)
+        {
+            Assert.IsTrue(CanDo(args));
+
+            var target = args.targetCharacter;
+
+            var oldLoyalty = target.Loyalty;
+            target.Gold += 20;
+            target.Loyalty = Mathf.Min(100, target.Loyalty + 10);
+            args.actor.Castle.Gold -= 20;
+
+            PayCost(args);
+            Debug.Log($"{args.actor} が {target} に褒賞を与えました。(忠誠 {oldLoyalty} -> {target.Loyalty})");
+            return default;
+        }
+    }
 }

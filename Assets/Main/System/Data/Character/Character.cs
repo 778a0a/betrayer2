@@ -71,7 +71,7 @@ public class Character
     /// <summary>
     /// 所持金
     /// </summary>
-    public int Gold { get; set; }
+    public float Gold { get; set; }
     /// <summary>
     /// 功績
     /// </summary>

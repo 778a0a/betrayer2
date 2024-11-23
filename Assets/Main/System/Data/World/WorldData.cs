@@ -11,6 +11,7 @@ public class WorldData
     public CountryManager Countries { get; set; }
     public ForceManager Forces { get; set; }
     public GameMapManager Map { get; set; }
+    public EconomyManager Economy { get; set; }
     public Character Player => Characters.FirstOrDefault(c => c.IsPlayer);
 
     public IEnumerable<Castle> Castles => Countries.SelectMany(c => c.Castles);

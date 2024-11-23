@@ -107,6 +107,7 @@ public class DefaultData
             Forces = new(savedForces.Select(f => f.Data)),
             Map = map,
         };
+        world.Economy = new(world);
         map.AttachWorld(world);
         foreach (var chara in world.Characters)
         {
