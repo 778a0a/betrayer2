@@ -258,7 +258,35 @@ partial class GameCore
                 {
                     args.targetCastle = chara.Castle;
                     args.targetTown = args.targetCastle?.Towns.RandomPick();
-                    action = vassalActions.Value.Where(a => a.CanDo(args)).RandomPickDefault();
+                    // 基本的には方針通りの行動を行う。
+                    if (0.75f.Chance())
+                    {
+                        switch (chara.Castle.Objective)
+                        {
+                            case CastleObjective.CastleStrength:
+                                action = CastleActions.ImproveCastleStrength;
+                                break;
+                            case CastleObjective.Stability:
+                                action = CastleActions.ImproveStability;
+                                break;
+                            case CastleObjective.Commerce:
+                                action = TownActions.ImproveGoldIncome;
+                                break;
+                            case CastleObjective.Agriculture:
+                                action = TownActions.ImproveFoodIncome;
+                                break;
+                            case CastleObjective.None:
+                            case CastleObjective.Attack:
+                            case CastleObjective.Train:
+                            default:
+                                break;
+                        }
+                    }
+                    // アクション未選択か、選択したアクションが実行不可ならランダムに行動する。
+                    if (!action?.CanDo(args) ?? true)
+                    {
+                        action ??= vassalActions.Value.Where(a => a.CanDo(args)).RandomPickDefault();
+                    }
                 }
                 if (chara.Soldiers.HasEmptySlot)
                 {
