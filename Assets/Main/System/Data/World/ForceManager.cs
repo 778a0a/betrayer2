@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class ForceManager : IReadOnlyList<Force>
 {
@@ -355,9 +356,6 @@ public class ForceManager : IReadOnlyList<Force>
             var battle = BattleManager.PrepareSiegeBattle(force, enemy);
             var result = await battle.Do();
             win = result == BattleResult.AttackerWin;
-            // 城の強度を減らす。
-            castle.Strength *= 0.95f;
-            //castle.Stability *= 0.98f; 
         }
         else
         {
@@ -383,9 +381,6 @@ public class ForceManager : IReadOnlyList<Force>
         }
 
         // 勝った場合
-
-        // 内政値を下げる。
-        //castle.Stability = Mathf.Min(30, castle.Stability * 0.5f);
 
         // 敵を行動不能状態にする。
         enemy?.SetIncapacitated();
@@ -517,6 +512,19 @@ public class ForceManager : IReadOnlyList<Force>
                 }
             }
         }
+
+        // 内政値を下げる。
+        castle.Stability = (castle.Stability * 0.5f).MaxWith(30);
+        castle.Strength *= Random.Range(0.6f, 0.9f);
+        foreach (var town in castle.Towns)
+        {
+            town.FoodIncome *= Random.Range(0.5f, 0.9f);
+            town.GoldIncome *= Random.Range(0.5f, 0.9f);
+        }
+
+        // 物資を減らす。マイナスだった場合は0にする。
+        castle.Gold = (castle.Gold * Random.Range(0.5f, 0.9f)).MinWith(0);
+        castle.Food = (castle.Food * Random.Range(0.5f, 0.9f)).MinWith(0);
 
         castleTile.Refresh();
     }

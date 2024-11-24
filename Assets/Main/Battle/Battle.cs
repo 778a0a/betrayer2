@@ -149,6 +149,27 @@ public class Battle
         winner.Character.Prestige += loserPrestigeLoss;
         winner.Character.Prestige += 1;
 
+        // 攻城戦の場合は城の耐久力を減らす。
+        var castle = Atk.Tile.Castle ?? Def.Tile.Castle;
+        if (castle != null && Type == BattleType.Siege)
+        {
+            castle.Strength *= Random.Range(0.95f, 0.99f);
+            castle.Stability = (castle.Stability - Random.Range(0f, 5f)).Clamp(0, 100);
+        }
+        // 戦闘が起きた町の内政値を減らす。
+        if (Atk.Tile.Town != null) DamegeTown(Atk.Tile.Town, Type);
+        if (Def.Tile.Town != null) DamegeTown(Def.Tile.Town, Type);
+        static void DamegeTown(Town town, BattleType type)
+        {
+            var hasCastle = town.Position == town.Castle.Position;
+            // 城外戦の場合は城の中はダメージを受けない。
+            if (hasCastle && type == BattleType.Field) return;
+
+            var damageRange = hasCastle ? (0.97f, 0.99f) : (0.90f, 0.95f);
+            town.FoodIncome *= Random.Range(damageRange.Item1, damageRange.Item2);
+            town.GoldIncome *= Random.Range(damageRange.Item1, damageRange.Item2);
+        }
+
         return result;
     }
 
