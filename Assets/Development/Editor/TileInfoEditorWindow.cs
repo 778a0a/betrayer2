@@ -45,11 +45,30 @@ public class TileInfoEditorWindow : EditorWindow
         LoadWorld();
         SceneView.duringSceneGui += DuringSceneGUI;
         EditorApplication.update += Update;
+        EditorApplication.playModeStateChanged += EditorApplication_playModeStateChanged;
     }
 
+    private void EditorApplication_playModeStateChanged(PlayModeStateChange obj)
+    {
+        switch (obj)
+        {
+            case PlayModeStateChange.EnteredPlayMode:
+                LoadWorld();
+                break;
+            case PlayModeStateChange.EnteredEditMode:
+            case PlayModeStateChange.ExitingEditMode:
+            case PlayModeStateChange.ExitingPlayMode:
+            default:
+                break;
+        }
+    }
+
+    private int autoUpdateRate = 10;
+    private int autoUpdateCount = 0;
     private void Update()
     {
-        if (isAutoUpdate)
+        autoUpdateCount++;
+        if (Application.isPlaying && isAutoUpdate && autoUpdateCount % autoUpdateRate == 0)
         {
             Repaint();
         }
@@ -76,6 +95,8 @@ public class TileInfoEditorWindow : EditorWindow
 
     void OnDisable()
     {
+        EditorApplication.playModeStateChanged -= EditorApplication_playModeStateChanged;
+        EditorApplication.update -= Update;
         SceneView.duringSceneGui -= DuringSceneGUI;
         uimap.CellMouseOver -= Uimap_CellMouseOver;
     }
@@ -885,7 +906,7 @@ public class TileInfoEditorWindow : EditorWindow
 
             using (VerticalLayout(GUILayout.Width(100)))
             {
-                Label($"将数: {castle.Members.Count}");
+                Label($"将数: {castle.Members.Count} 方針: {castle.Objective}");
 
                 var i = 0;
                 foreach (var chara in castle.Members.Where(m => m != castle.Boss))
