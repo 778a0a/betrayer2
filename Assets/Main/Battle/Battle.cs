@@ -165,7 +165,7 @@ public class Battle
             // 城外戦の場合は城の中はダメージを受けない。
             if (hasCastle && type == BattleType.Field) return;
 
-            var damageRange = hasCastle ? (0.97f, 0.99f) : (0.90f, 0.95f);
+            var damageRange = hasCastle ? (0.98f, 0.999f) : (0.95f, 0.98f);
             town.FoodIncome *= Random.Range(damageRange.Item1, damageRange.Item2);
             town.GoldIncome *= Random.Range(damageRange.Item1, damageRange.Item2);
         }
