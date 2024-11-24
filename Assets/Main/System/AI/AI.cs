@@ -245,7 +245,7 @@ public class AI
             0.05f;
         if (!shouldAttack.Chance())
         {
-            Debug.Log($"出撃判定 {castle} shouldAttack == false");
+            //Debug.Log($"出撃判定 {castle} shouldAttack == false");
             return;
         }
 
