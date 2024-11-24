@@ -342,7 +342,7 @@ partial class CastleActions
 
             PayCost(args);
 
-            Debug.Log($"{args.actor} が城から {args.gold}G 引き出しました。");
+            Debug.Log($"{args.actor.Name} が城から {args.gold}G 引き出しました。");
             return default;
         }
     }
@@ -373,7 +373,7 @@ partial class CastleActions
             args.actor.Castle.Gold += args.gold;
 
             PayCost(args);
-            Debug.Log($"{args.actor} が城に {args.gold}G 預け入れました。");
+            Debug.Log($"{args.actor.Name} が城に {args.gold}G 預け入れました。");
             return default;
         }
     }
@@ -407,7 +407,7 @@ partial class CastleActions
             args.targetCastle2.Food += args.food;
 
             PayCost(args);
-            Debug.Log($"{args.actor} が {args.targetCastle} から {args.targetCastle2} へ {args.gold}G {args.food} 運びました。");
+            Debug.Log($"{args.actor.Name} が {args.targetCastle} から {args.targetCastle2} へ {args.gold}G {args.food} 運びました。");
             return default;
         }
     }
@@ -422,6 +422,13 @@ partial class CastleActions
         public override string Description => L["食料を購入します。"];
 
         public ActionArgs Args(Character actor, Castle c, float gold) => new(actor, targetCastle: c, gold: gold);
+        
+        /// <summary>
+        /// 1回のアクションで購入可能な最大金額
+        /// </summary>
+        public float InputGoldMax(ActionArgs args) => args.targetCastle.GoldIncome / 2;
+        public float OutputFood(ActionArgs args) => World.Economy.GetFoodAmount(args.gold);
+        public float InverseGold(ActionArgs args, float food) => World.Economy.GetGoldAmount(food);
 
         public override ActionCost Cost(ActionArgs args) => ActionCost.Of(0, 1, 0);
 
@@ -434,12 +441,12 @@ partial class CastleActions
         {
             Assert.IsTrue(CanDo(args));
 
-            var food = World.Economy.GetFoodAmount(args.gold);
+            var food = OutputFood(args);
             args.targetCastle.Gold -= args.gold;
             args.targetCastle.Food += food;
 
             PayCost(args);
-            Debug.Log($"{args.actor} が {args.targetCastle} で {food} 食料を購入しました。");
+            Debug.Log($"{args.actor.Name} が {args.targetCastle} で {food} 食料を購入しました。");
             return default;
         }
     }
@@ -454,6 +461,10 @@ partial class CastleActions
         public override string Description => L["食料を売却します。"];
 
         public ActionArgs Args(Character actor, Castle c, float food) => new(actor, targetCastle: c, food: food);
+
+        public float InputFoodMax(ActionArgs args) => args.targetCastle.FoodIncome / 2;
+        public float OutputGold(ActionArgs args) => World.Economy.GetGoldAmount(args.food);
+        public float InverseFood(ActionArgs args, float gold) => World.Economy.GetFoodAmount(gold);
 
         public override ActionCost Cost(ActionArgs args) => ActionCost.Of(0, 1, 0);
 
@@ -471,7 +482,7 @@ partial class CastleActions
             args.targetCastle.Gold += gold;
 
             PayCost(args);
-            Debug.Log($"{args.actor} が {args.targetCastle} で {gold}G で {args.food} 食料を売却しました。");
+            Debug.Log($"{args.actor.Name} が {args.targetCastle} で {gold}G で {args.food} 食料を売却しました。");
             return default;
         }
     }
@@ -500,7 +511,7 @@ partial class CastleActions
             args.actor.Castle.Gold -= 20;
 
             PayCost(args);
-            Debug.Log($"{args.actor} が {target} に褒賞を与えました。(忠誠 {oldLoyalty} -> {target.Loyalty})");
+            Debug.Log($"{args.actor.Name} が {target} に褒賞を与えました。(忠誠 {oldLoyalty} -> {target.Loyalty})");
             return default;
         }
     }

@@ -194,7 +194,9 @@ partial class GameCore
                     // TODO 経済の仕組みを更新してから実装する
                     // 追放を行うか判定する。
                     // 町建設・城増築・投資を行うか判定する。
-                    // 売買を行うか判定する。
+
+                    // 食糧不足・借金の解消を行う。
+                    AI.TradeNeeds(castle);
 
                     // 採用を行うか判定する。
                     AI.HireVassal(castle);

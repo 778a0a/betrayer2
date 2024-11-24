@@ -342,4 +342,79 @@ public class AI
             Debug.Log($"{chara} が {castle} に採用されました。");
         }
     }
+
+    /// <summary>
+    /// 必要量の購入処理
+    /// </summary>
+    public void TradeNeeds(Castle castle)
+    {
+        // 食料がマイナスの場合、ゴールドがあれば食料を購入する。
+        var buyCount = 0;
+        while (castle.Food < 0 && castle.Gold > 0)
+        {
+            Debug.LogError($"[Trade] {castle} 食料購入");
+            // 購入量を計算する。
+            var act = core.CastleActions.BuyFood;
+            var args = act.Args(castle.Boss, castle, 0);
+            var inputGoldMax = act.InputGoldMax(args);
+            var needGold = act.InverseGold(args, -castle.Food);
+            var inputGold = castle.Gold.MaxWith(needGold).MaxWith(inputGoldMax);
+            // 所持金が少なすぎる場合はあまり意味がないので行動しない。
+            if (inputGold < 0.1 && inputGold != needGold)
+            {
+                Debug.LogError($"[Trade] {castle} 食料購入 所持金不足 ({inputGold})");
+                break;
+            }
+
+            args = act.Args(castle.Boss, castle, inputGold);
+
+            if (act.CanDo(args))
+            {
+                act.Do(args);
+                buyCount++;
+            }
+            else
+            {
+                break;
+            }
+        }
+        if (buyCount > 0)
+        {
+            Debug.LogError($"[Trade] {castle} 食料購入 {buyCount} 回");
+        }
+
+        // ゴールドがマイナスの場合、食料があれば売却する。
+        var sellCount = 0;
+        while (castle.Gold < 0 && castle.Food > 0)
+        {
+            Debug.LogError($"[Trade] {castle} 借金返済");
+            // 売却量を計算する。
+            var act = core.CastleActions.SellFood;
+            var args = act.Args(castle.Boss, castle, 0);
+            var inputFoodMax = act.InputFoodMax(args);
+            var needFood = act.InverseFood(args, -castle.Gold);
+            var inputFood = castle.Food.MaxWith(needFood).MaxWith(inputFoodMax);
+            // 食料が少なすぎる場合はあまり意味がないので行動しない。
+            if (inputFood < 5 && inputFood != needFood)
+            {
+                Debug.LogError($"[Trade] {castle} 借金返済 食料不足 ({needFood})");
+                break;
+            }
+
+            args = act.Args(castle.Boss, castle, inputFood);
+            if (act.CanDo(args))
+            {
+                act.Do(args);
+                sellCount++;
+            }
+            else
+            {
+                break;
+            }
+        }
+        if (sellCount > 0)
+        {
+            Debug.LogError($"[Trade] {castle} 借金返済 {sellCount} 回");
+        }
+    }
 }
