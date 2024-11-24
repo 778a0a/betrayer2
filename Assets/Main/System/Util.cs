@@ -20,6 +20,8 @@ public static class Util
     public static int MaxWith(this int value, int max) => Mathf.Min(value, max);
     public static int MinWith(this int value, int min) => Mathf.Max(value, min);
     public static int Clamp(this int value, int min, int max) => Mathf.Clamp(value, min, max);
+    public static float RandomRange(this float min, float max) => Random.Range(min, max);
+    public static int RandomRange(this int min, int max) => Random.Range(min, max);
 
     public static bool Chance(this float probability) => Random.value < probability;
     public static bool Chance(this double probability) => Random.value < (float)probability;

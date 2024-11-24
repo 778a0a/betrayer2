@@ -25,7 +25,7 @@ partial class CastleActions
         public override string Description => L["城の安定度を改善します。"];
 
         public override ActionCost Cost(ActionArgs args) => 2;
-        protected override bool CanDoCore(ActionArgs args) => args.targetCastle.StabilityMax > args.targetCastle.Stability;
+        protected override bool CanDoCore(ActionArgs args) => args.targetCastle.Stability < args.targetCastle.StabilityMax;
 
         public override ValueTask Do(ActionArgs args)
         {
@@ -54,8 +54,14 @@ partial class CastleActions
         public override string Label => L["城壁強化"];
         public override string Description => L["城の強度を改善します。"];
 
-        public override ActionCost Cost(ActionArgs args) => 2;
-        protected override bool CanDoCore(ActionArgs args) => args.targetCastle.StrengthMax > args.targetCastle.Strength;
+        public override ActionCost Cost(ActionArgs args) => (args.targetCastle.Strength / args.targetCastle.StrengthMax) switch
+        {
+            < 0.5f => 2,
+            < 0.75f => 3,
+            _ => 4,
+        };
+
+        protected override bool CanDoCore(ActionArgs args) => args.targetCastle.Strength < args.targetCastle.StrengthMax;
 
         public override ValueTask Do(ActionArgs args)
         {
