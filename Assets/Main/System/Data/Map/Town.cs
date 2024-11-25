@@ -66,23 +66,23 @@ public class Town : ICountryEntity, IMapEntity
     }
 
     public static float TileFoodMax(GameMapTile tile) => Mathf.Max(0,
-        BaseFoodAdjustment(tile.Terrain) + tile.Neighbors.Sum(t => NeighborFoodAdjustment(t.Terrain)));
+        BaseFoodAdj(tile.Terrain) + tile.Neighbors.Sum(t => NeighborFoodAdj(t.Terrain)));
     public static float TileGoldMax(GameMapTile tile) => Mathf.Max(0,
-        BaseGoldAdjustment(tile.Terrain) + tile.Neighbors.Sum(t => NeighborGoldAdjustment(t.Terrain)));
+        BaseGoldAdj(tile.Terrain) + tile.Neighbors.Sum(t => NeighborGoldAdj(t.Terrain)));
 
-    public static float BaseFoodAdjustment(Terrain terrain) => devAdjustments[terrain].BaseFood;
-    public static float NeighborFoodAdjustment(Terrain terrain) => devAdjustments[terrain].NeighborFood;
-    public static float BaseGoldAdjustment(Terrain terrain) => devAdjustments[terrain].BaseGold;
-    public static float NeighborGoldAdjustment(Terrain terrain) => devAdjustments[terrain].NeighborGold;
-    private static readonly Dictionary<Terrain, TerrainDevAdjustmentData> devAdjustments = new()
+    private static float BaseFoodAdj(Terrain terrain) => devAdj[terrain].BaseFood + devAdj[terrain].NeighborFood;
+    private static float NeighborFoodAdj(Terrain terrain) => devAdj[terrain].NeighborFood;
+    private static float BaseGoldAdj(Terrain terrain) => devAdj[terrain].BaseGold + devAdj[terrain].NeighborGold;
+    private static float NeighborGoldAdj(Terrain terrain) => devAdj[terrain].NeighborGold;
+    private static readonly Dictionary<Terrain, TerrainDevAdjustmentData> devAdj = new()
     {
         // Terrain                Food  F+   Gold G+
-        { Terrain.LargeRiver, new(0000, 050, 000, 003) },
-        { Terrain.River,      new(0000, 050, 000, 002) },
-        { Terrain.Plain,      new(1100, 100, 020, 000) },
-        { Terrain.Hill,       new(1020, 020, 021, 001) },
-        { Terrain.Forest,     new(1030, 030, 022, 002) },
-        { Terrain.Mountain,   new(1000, 000, 022, 002) },
+        { Terrain.LargeRiver, new(0000, 000, 000, 001.5f) },
+        { Terrain.River,      new(0000, 025, 000, 001) },
+        { Terrain.Plain,      new(0500, 050, 010, 000) },
+        { Terrain.Hill,       new(0500, 025, 010, 000.5f) },
+        { Terrain.Forest,     new(0500, 000, 010, 001) },
+        { Terrain.Mountain,   new(0500, 000, 010, 001) },
         //{ Terrain.LargeRiver, new(-300, 050, -30, 020) },
         //{ Terrain.River,      new(-300, 050, -30, 010) },
         //{ Terrain.Plain,      new(0500, 100, 030, 000) },
