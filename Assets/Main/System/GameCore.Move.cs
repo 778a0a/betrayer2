@@ -42,11 +42,12 @@ partial class GameCore
                 // 収入月の場合
                 if (GameDate.IsIncomeMonth)
                 {
-                    // 各城の方針を設定する。
                     foreach (var castle in country.Castles)
                     {
+                        // 各城の方針を設定する。
                         var prevObjective = castle.Objective;
                         castle.Objective = AI.SelectCastleObjective(chara, castle);
+                        // TODO 攻撃の場合は目標城を設定する。
                         if (prevObjective != castle.Objective)
                         {
                             //Debug.Log($"方針: 更新 {castle.Objective} <- {prevObjective} at {castle}");
@@ -55,6 +56,53 @@ partial class GameCore
                         {
                             //Debug.Log($"方針継続: {castle.Objective} at {castle}");
                         }
+
+                        // 物資が不足しているなら余っている城から補給する。
+                    }
+                    foreach (var castle in country.Castles)
+                    {
+                        // 物資が余っているなら開発度の強化を行う。
+                        if (castle.GoldIncomeProgress > 0.75f && castle.FoodIncomeProgress > 0.75f)
+                        {
+                            var goldSurplus = castle.GoldSurplus;
+                            var foodSurplus = castle.FoodSurplus;
+                            if (goldSurplus > 0 && foodSurplus > 0)
+                            {
+                                var act = default(ActionBase);
+                                // 開発
+                                var act1 = CastleActions.Develop;
+                                act = act1;
+                                var args = act1.Args(chara, castle);
+                                // 町建設
+                                var cands = castle.NewTownCandidates(World).ToList();
+                                if (cands.Count > 0)
+                                {
+                                    var act2 = CastleActions.BuildTown;
+                                    var goodCand = cands.OrderByDescending(c =>
+                                        World.Economy.GetGoldAmount(Town.TileFoodMax(c)) +
+                                        Town.TileGoldMax(c))
+                                        .First();
+                                    var args2 = act2.Args(chara, castle, goodCand.Position);
+                                    
+                                    var cost1 = act1.Cost(args);
+                                    var cost2 = act2.Cost(args2);
+                                    if (cost1.castleGold > cost2.castleGold)
+                                    {
+                                        act = act2;
+                                        args = args2;
+                                    }
+                                }
+
+                                if (act.CanDo(args))
+                                {
+                                    await act.Do(args);
+                                    Debug.LogError($"{castle}の開発を行いました。({act})");
+                                    Pause();
+                                }
+                            }
+                        }
+
+                        // 城塞レベルの強化を行う。
                     }
                 }
 

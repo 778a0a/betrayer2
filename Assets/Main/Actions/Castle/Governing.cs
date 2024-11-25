@@ -12,7 +12,6 @@ partial class CastleActions
     {
         ImproveStability,
         ImproveCastleStrength,
-        BuildNewTown,
     };
 
     /// <summary>
@@ -75,27 +74,6 @@ partial class CastleActions
 
             var contribAdj = castle.Objective == CastleObjective.CastleStrength ? 1.5f : 1;
             chara.Contribution += adj * contribAdj;
-            PayCost(args);
-
-            return default;
-        }
-    }
-
-    /// <summary>
-    /// 新しい町を建設します。
-    /// </summary>
-    public BuildNewTownAction BuildNewTown { get; } = new();
-    public class BuildNewTownAction : CastleActionBase
-    {
-        public override string Label => L["町建設"];
-        public override string Description => L["新しい町を建設します。"];
-
-        public override ActionCost Cost(ActionArgs args) => 40;
-
-        public override ValueTask Do(ActionArgs args)
-        {
-            Assert.IsTrue(CanDo(args));
-
             PayCost(args);
 
             return default;

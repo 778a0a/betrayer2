@@ -94,6 +94,12 @@ public class Castle : ICountryEntity, IMapEntity
     /// </summary>
     [JsonIgnore]
     public List<Town> Towns { get; } = new();
+    public IEnumerable<GameMapTile> NewTownCandidates(WorldData w) => Towns
+        // 既存の町に隣接している
+        .SelectMany(t => w.Map.GetTile(t).Neighbors)
+        // 未開拓
+        .Where(t => !t.HasTown)
+        .Distinct();
 
     /// <summary>
     /// 開発レベル
@@ -127,9 +133,13 @@ public class Castle : ICountryEntity, IMapEntity
     [JsonIgnore]
     public float GoldIncomeMax => Towns.Sum(t => t.GoldIncomeMax);
     [JsonIgnore]
+    public float GoldIncomeProgress => GoldIncome / GoldIncomeMax;
+    [JsonIgnore]
     public float GoldBalance => GoldIncome - GoldComsumption;
     [JsonIgnore]
     public float GoldComsumption => Members.Sum(m => m.Salary);
+    [JsonIgnore]
+    public float GoldSurplus => (Gold + (GoldIncome - GoldComsumption).MaxWith(0) * 4).MinWith(0);
     /// <summary>
     /// 食料
     /// </summary>
@@ -139,9 +149,14 @@ public class Castle : ICountryEntity, IMapEntity
     [JsonIgnore]
     public float FoodIncomeMax => Towns.Sum(t => t.FoodIncomeMax);
     [JsonIgnore]
+    public float FoodIncomeProgress => FoodIncome / FoodIncomeMax;
+    [JsonIgnore]
     public float FoodBalance => FoodIncome - FoodComsumption;
     [JsonIgnore]
     public float FoodComsumption => Members.Sum(m => m.FoodConsumption);
+    [JsonIgnore]
+    public float FoodSurplus => (Food + (FoodIncome - FoodComsumption).MaxWith(0) * 4).MinWith(0);
+
     /// <summary>
     /// 食料残り月数
     /// </summary>

@@ -771,18 +771,18 @@ public class TileInfoEditorWindow : EditorWindow
         void DrawTown(Town town)
         {
             // ヘッダー
-            BoldLabel($"町情報 (所属城ID: {town.Castle.Id}) 城主: {town.Castle.Boss?.Name ?? ""} {town.Position}", 250);
+            BoldLabel($"町情報 (所属城ID: {town.Castle.Id}) 城主: {town.Castle.Boss?.Name ?? ""} {town.Position}", 300);
 
             EditorGUILayout.BeginHorizontal();
             Label("金収入", 50);
             town.GoldIncome = ParamField(town.GoldIncome, town.GoldIncomeMax, 200, Color.yellow);
-            Label($"Max: {town.GoldIncomeMax} (Base: {town.GoldIncomeMaxBase})", 200);
+            Label($"Max: {town.GoldIncomeMax} (Base: {town.GoldIncomeMaxBase}, Cost: {town.GoldImproveCost()})", 200);
             EditorGUILayout.EndHorizontal();
 
             EditorGUILayout.BeginHorizontal();
             Label("食料収入", 50);
             town.FoodIncome = ParamField(town.FoodIncome, town.FoodIncomeMax, 10000, Color.green);
-            Label($"Max: {town.FoodIncomeMax} (Base: {town.FoodIncomeMaxBase})", 200);
+            Label($"Max: {town.FoodIncomeMax} (Base: {town.FoodIncomeMaxBase}, Cost: {town.FoodImproveCost()})", 200);
             EditorGUILayout.EndHorizontal();
 
             if (GUILayout.Button("町を削除"))

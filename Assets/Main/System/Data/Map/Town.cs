@@ -31,6 +31,8 @@ public class Town : ICountryEntity, IMapEntity
     public float FoodIncomeMaxBase { get; set; }
     [JsonIgnore]
     public float FoodIncomeMax => CalculateMax(FoodIncomeMaxBase, Castle.DevelopmentLevel);
+    [JsonIgnore]
+    public float FoodIncomeProgress => FoodIncome / FoodIncomeMax;
 
     /// <summary>
     /// 商業
@@ -40,10 +42,27 @@ public class Town : ICountryEntity, IMapEntity
     public float GoldIncomeMaxBase { get; set; }
     [JsonIgnore]
     public float GoldIncomeMax => CalculateMax(GoldIncomeMaxBase, Castle.DevelopmentLevel);
-    
+    [JsonIgnore]
+    public float GoldIncomeProgress => GoldIncome / GoldIncomeMax;
+
     private static float CalculateMax(float baseVal, int level)
     {
         return baseVal + baseVal * 0.5f * level;
+    }
+    
+    public float FoodImproveCost()
+    {
+        if (FoodIncomeProgress < 0.5f) return 3;
+
+        var rem = FoodIncome - FoodIncomeMaxBase;
+        return (int)(rem / (FoodIncomeMaxBase * 0.5f) + 1).MinWith(3);
+    }
+    public float GoldImproveCost()
+    {
+        if (GoldIncomeProgress < 0.4f) return 3;
+
+        var rem = GoldIncome - GoldIncomeMaxBase;
+        return (int)(rem / (GoldIncomeMaxBase * 0.5f) + 1).MinWith(3);
     }
 
     public static float TileFoodMax(GameMapTile tile) => Mathf.Max(0,

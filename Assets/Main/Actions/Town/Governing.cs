@@ -24,12 +24,7 @@ partial class TownActions
         public override string Label => L["商業"];
         public override string Description => L["ゴールド収入を改善します。"];
 
-        public override ActionCost Cost(ActionArgs args) => (args.targetTown.GoldIncome / args.targetTown.GoldIncomeMax) switch
-        {
-            < 0.5f => 2,
-            < 0.75f => 3,
-            _ => 4,
-        };
+        public override ActionCost Cost(ActionArgs args) => (ActionCost)args.targetTown.GoldImproveCost();
 
         protected override bool CanDoCore(ActionArgs args) => args.targetTown.GoldIncome < args.targetTown.GoldIncomeMax;
 
@@ -40,9 +35,9 @@ partial class TownActions
             var town = args.targetTown;
 
             // コスト2で能力値50なら3年で回収できる程度。100なら1.5倍の効果で、2年で回収できる程度。
-            var adj = 1 + (chara.Governing - 50) / 100f;
+            var adj = 1 + (chara.Governing - 75) / 100f;
             if (chara.Traits.HasFlag(Traits.Merchant)) adj += 0.1f;
-            town.GoldIncome = Mathf.Min(town.GoldIncomeMax, town.GoldIncome + adj / 6);
+            town.GoldIncome = Mathf.Min(town.GoldIncomeMax, town.GoldIncome + adj / 8);
 
             var contribAdj = town.Castle.Objective == CastleObjective.Commerce ? 1.5f : 1;
             chara.Contribution += adj * contribAdj;
@@ -61,12 +56,7 @@ partial class TownActions
         public override string Label => L["開墾"];
         public override string Description => L["食料収入を改善します。"];
 
-        public override ActionCost Cost(ActionArgs args) => (args.targetTown.FoodIncome / args.targetTown.FoodIncomeMax) switch
-        {
-            < 0.5f => 2,
-            < 0.75f => 3,
-            _ => 4,
-        };
+        public override ActionCost Cost(ActionArgs args) => (ActionCost)args.targetTown.FoodImproveCost();
 
         protected override bool CanDoCore(ActionArgs args) => args.targetTown.FoodIncome < args.targetTown.FoodIncomeMax;
 
@@ -77,8 +67,9 @@ partial class TownActions
             var town = args.targetTown;
 
             // コスト2で能力値50なら3年で回収できる程度。100なら1.5倍の効果で、2年で回収できる程度。
-            var adj = 1 + (chara.Governing - 50) / 100f;
-            town.FoodIncome = Mathf.Min(town.FoodIncomeMax, town.FoodIncome + adj * 50 / 6);
+            var adj = 1 + (chara.Governing - 75) / 100f;
+            if (chara.Traits.HasFlag(Traits.Merchant)) adj += 0.1f;
+            town.FoodIncome = Mathf.Min(town.FoodIncomeMax, town.FoodIncome + adj * 50 / 8);
 
             var contribAdj = town.Castle.Objective == CastleObjective.Agriculture ? 1.5f : 1;
             chara.Contribution += adj * contribAdj;
