@@ -339,6 +339,7 @@ public class AI
         var newBalance = balance - chara.Salary - chara.FoodConsumption / 50;
         if (newBalance > 30)
         {
+            chara.Contribution /= 2;
             chara.ChangeCastle(castle, false);
             Debug.Log($"{chara} が {castle} に採用されました。");
         }
