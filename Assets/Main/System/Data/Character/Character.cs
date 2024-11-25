@@ -137,10 +137,10 @@ public class Character
             var i = 0;
             for (; i < max; i++)
             {
-                sum += i * 10;
+                sum += i * 5;
                 if (sum > Contribution) break;
             }
-            return i + 9;
+            return i + 4;
         }
     }
     /// <summary>
