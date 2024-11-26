@@ -102,10 +102,6 @@ public class Castle : ICountryEntity, IMapEntity
         .Distinct();
 
     /// <summary>
-    /// 開発レベル
-    /// </summary>
-    public int DevelopmentLevel { get; set; } = 1;
-    /// <summary>
     /// 城塞レベル
     /// </summary>
     public int FortressLevel { get; set; } = 1;
@@ -137,6 +133,8 @@ public class Castle : ICountryEntity, IMapEntity
     [JsonIgnore]
     public float GoldBalance => GoldIncome - GoldComsumption;
     [JsonIgnore]
+    public float GoldBalanceMax => Towns.Sum(t => t.GoldIncome) - GoldComsumption;
+    [JsonIgnore]
     public float GoldComsumption => Members.Sum(m => m.Salary);
     [JsonIgnore]
     public float GoldSurplus => (Gold + (GoldIncome - GoldComsumption).MaxWith(0) * 4).MinWith(0);
@@ -152,6 +150,8 @@ public class Castle : ICountryEntity, IMapEntity
     public float FoodIncomeProgress => FoodIncome / FoodIncomeMax;
     [JsonIgnore]
     public float FoodBalance => FoodIncome - FoodComsumption;
+    [JsonIgnore]
+    public float FoodBalanceMax => Towns.Sum(t => t.FoodIncome) - FoodComsumption;
     [JsonIgnore]
     public float FoodComsumption => Members.Sum(m => m.FoodConsumption);
     [JsonIgnore]

@@ -62,6 +62,7 @@ partial class GameCore
                     foreach (var castle in country.Castles)
                     {
                         // 物資が余っているなら開発度の強化を行う。
+                        // TODO
                         if (castle.GoldIncomeProgress > 0.75f && castle.FoodIncomeProgress > 0.75f)
                         {
                             var goldSurplus = castle.GoldSurplus;
@@ -72,7 +73,7 @@ partial class GameCore
                                 // 開発
                                 var act1 = CastleActions.Develop;
                                 act = act1;
-                                var args = act1.Args(chara, castle);
+                                var args = act1.Args(chara, castle.Towns[0]); // TODO
                                 // 町建設
                                 var cands = castle.NewTownCandidates(World).ToList();
                                 if (cands.Count > 0)

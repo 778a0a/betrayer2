@@ -277,17 +277,17 @@ partial class CastleActions
         public override string Label => L["発展度アップ"];
         public override string Description => L[""];
 
-        public ActionArgs Args(Character actor, Castle castle) => new(actor, targetCastle: castle);
+        public ActionArgs Args(Character actor, Town town) => new(actor, targetTown: town);
 
-        public override ActionCost Cost(ActionArgs args) => ActionCost.Of(0, 1, (int)(100 * Mathf.Pow(1.75f, args.targetCastle.DevelopmentLevel - 1)));
+        public override ActionCost Cost(ActionArgs args) => ActionCost.Of(0, 1, (int)(100 * Mathf.Pow(1.75f, args.targetTown.DevelopmentLevel - 1)));
         public override ValueTask Do(ActionArgs args)
         {
             Assert.IsTrue(CanDo(args));
 
-            args.targetCastle.DevelopmentLevel++;
+            args.targetTown.DevelopmentLevel++;
 
             PayCost(args);
-            Debug.Log($"{args.targetCastle} の発展度が上がりました。({args.targetCastle.DevelopmentLevel})");
+            Debug.Log($"{args.targetTown} の発展度が上がりました。({args.targetTown.DevelopmentLevel})");
             return default;
         }
     }

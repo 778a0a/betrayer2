@@ -232,6 +232,8 @@ public class TileInfoEditorWindow : EditorWindow
             {
                 foreach (var town in world.Castles.SelectMany(c => c.Towns))
                 {
+                    if (town.Position != town.Castle.Position) town.DevelopmentLevel = 1;
+
                     var adj = town.Castle.Position == town.Position ? 1f / 2f : 1f / 4f;
                     town.FoodIncome = town.FoodIncomeMax * adj;
                     town.GoldIncome = town.GoldIncomeMax * adj;
@@ -717,13 +719,11 @@ public class TileInfoEditorWindow : EditorWindow
             EditorGUILayout.EndHorizontal();
 
             EditorGUILayout.BeginHorizontal();
-            Label("発展度");
-            castle.DevelopmentLevel = EditorGUILayout.IntField(castle.DevelopmentLevel);
+            castle.Strength = EditorGUILayout.FloatField("Strength", castle.Strength);
             Label("城塞レベル");
             castle.FortressLevel = EditorGUILayout.IntField(castle.FortressLevel);
             EditorGUILayout.EndHorizontal();
 
-            castle.Strength = EditorGUILayout.FloatField("Strength", castle.Strength);
             castle.Stability = EditorGUILayout.FloatField("Stability", castle.Stability);
 
             EditorGUILayout.BeginHorizontal();
@@ -771,7 +771,11 @@ public class TileInfoEditorWindow : EditorWindow
         void DrawTown(Town town)
         {
             // ヘッダー
+            EditorGUILayout.BeginHorizontal();
             BoldLabel($"町情報 (所属城ID: {town.Castle.Id}) 城主: {town.Castle.Boss?.Name ?? ""} {town.Position}", 300);
+            Label("発展度");
+            town.DevelopmentLevel = EditorGUILayout.IntField(town.DevelopmentLevel);
+            EditorGUILayout.EndHorizontal();
 
             EditorGUILayout.BeginHorizontal();
             Label("金収入", 50);
@@ -856,8 +860,8 @@ public class TileInfoEditorWindow : EditorWindow
             var members = targetTile.Castle.Members.OrderByDescending(m => m.Contribution);
             EditorGUILayout.Space(10);
             BoldLabel("メンバー情報");
-            Label($"ゴールド 備蓄: {castle.Gold} 収入: {castle.GoldIncome} 支出: {castle.GoldComsumption} 収支: {castle.GoldBalance} (残り: {castle.GoldRemainingQuarters()})");
-            Label($"食料 備蓄: {castle.Food} 収入: {castle.FoodIncome} 支出: {castle.FoodComsumption} 収支: {castle.FoodBalance} (残り: {castle.FoodRemainingQuarters()}四半期)");
+            Label($"ゴールド 備蓄: {castle.Gold} 収入: {castle.GoldIncome} 支出: {castle.GoldComsumption} 収支: {castle.GoldBalance}|{castle.GoldBalanceMax} (残り: {castle.GoldRemainingQuarters()}Q)");
+            Label($"食料 備蓄: {castle.Food} 収入: {castle.FoodIncome} 支出: {castle.FoodComsumption} 収支: {castle.FoodBalance}|{castle.FoodBalanceMax} (残り: {castle.FoodRemainingQuarters()}Q)");
             foreach (var chara in members)
             {
                 Label($"{chara}");

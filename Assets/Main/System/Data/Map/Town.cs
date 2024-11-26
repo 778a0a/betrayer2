@@ -24,30 +24,37 @@ public class Town : ICountryEntity, IMapEntity
     public Country Country => Castle.Country;
 
     /// <summary>
+    /// 開発レベル
+    /// </summary>
+    [JsonProperty("D")]
+    public int DevelopmentLevel { get; set; } = 0;
+    /// <summary>
     /// 食料生産
     /// </summary>
+    [JsonProperty("F")]
     public float FoodIncome { get; set; }
     [JsonIgnore]
     public float FoodIncomeMaxBase { get; set; }
     [JsonIgnore]
-    public float FoodIncomeMax => CalculateMax(FoodIncomeMaxBase, Castle.DevelopmentLevel);
+    public float FoodIncomeMax => CalculateMax(FoodIncomeMaxBase, DevelopmentLevel);
     [JsonIgnore]
     public float FoodIncomeProgress => FoodIncome / FoodIncomeMax;
 
     /// <summary>
     /// 商業
     /// </summary>
+    [JsonProperty("G")]
     public float GoldIncome { get; set; }
     [JsonIgnore]
     public float GoldIncomeMaxBase { get; set; }
     [JsonIgnore]
-    public float GoldIncomeMax => CalculateMax(GoldIncomeMaxBase, Castle.DevelopmentLevel);
+    public float GoldIncomeMax => CalculateMax(GoldIncomeMaxBase, DevelopmentLevel);
     [JsonIgnore]
     public float GoldIncomeProgress => GoldIncome / GoldIncomeMax;
 
     private static float CalculateMax(float baseVal, int level)
     {
-        return baseVal + baseVal * 0.5f * level;
+        return baseVal + baseVal * level;
     }
     
     public float FoodImproveCost()
