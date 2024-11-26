@@ -47,7 +47,8 @@ partial class CastleActions
 
         public ActionArgs Args(Character actor, Country target) => new(actor, targetCountry: target);
 
-        public override ActionCost Cost(ActionArgs args) => ActionCost.Of(0, 1, 10);
+        public override ActionCost Cost(ActionArgs args) =>
+            ActionCost.Of(0, 1, args.actor.Country.Castles.Count.MinWith(args.targetCountry.Castles.Count) * 10);
 
         public override ValueTask Do(ActionArgs args)
         {
@@ -56,6 +57,8 @@ partial class CastleActions
             PayCost(args);
 
             var target = args.targetCountry;
+            target.Ruler.Castle.Gold += Cost(args).castleGold / 2;
+
             // TODO 思考処理
             if (args.actor.Country.IsAlly(target))
             {
