@@ -334,15 +334,24 @@ public class AI
             return;
         }
 
-        // 十分に豊かな場合のみ採用する。
+        // 採用後の収支が心もとないなら何もしない。
         var chara = castle.Frees.RandomPick();
         var newBalance = balance - chara.Salary - chara.FoodConsumption / 50;
-        if (newBalance > 30)
+        if (newBalance < 20)
         {
-            chara.Contribution /= 2;
-            chara.ChangeCastle(castle, false);
-            Debug.Log($"{chara} が {castle} に採用されました。");
+            return;
         }
+
+        // 国全体の収支が心もとないなら何もしない。
+        var countryBalance = castle.Country.GoldBalance + castle.Country.FoodBalance / 50;
+        if (countryBalance < 30)
+        {
+            return;
+        }
+
+        chara.Contribution /= 2;
+        chara.ChangeCastle(castle, false);
+        Debug.Log($"{chara} が {castle} に採用されました。");
     }
 
     /// <summary>
