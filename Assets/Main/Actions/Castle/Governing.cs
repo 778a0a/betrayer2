@@ -32,9 +32,9 @@ partial class CastleActions
             var chara = args.actor;
             var castle = args.targetCastle;
 
-            var cap = Math.Max(chara.Attack, chara.Defense);
+            var cap = chara.Attack.MinWith(chara.Defense);
             var adj = 1 + (cap - 50) / 100f;
-            castle.Stability = Mathf.Min(castle.StabilityMax, castle.Stability + 1 * adj);
+            castle.Stability = (castle.Stability + 1 * adj).MaxWith(castle.StabilityMax);
 
             var contribAdj = castle.Objective == CastleObjective.Stability ? 1.5f : 1;
             chara.Contribution += adj * contribAdj;
@@ -53,12 +53,7 @@ partial class CastleActions
         public override string Label => L["城壁強化"];
         public override string Description => L["城の強度を改善します。"];
 
-        public override ActionCost Cost(ActionArgs args) => (args.targetCastle.Strength / args.targetCastle.StrengthMax) switch
-        {
-            < 0.5f => 2,
-            < 0.75f => 3,
-            _ => 4,
-        };
+        public override ActionCost Cost(ActionArgs args) => 2;
 
         protected override bool CanDoCore(ActionArgs args) => args.targetCastle.Strength < args.targetCastle.StrengthMax;
 
@@ -68,9 +63,10 @@ partial class CastleActions
             var chara = args.actor;
             var castle = args.targetCastle;
 
-            var cap = Math.Max(Math.Max(chara.Intelligence, chara.Attack), chara.Defense);
+            var cap = chara.Intelligence.MinWith(chara.Attack).MinWith(chara.Defense);
             var adj = 1 + (cap - 50) / 100f;
-            castle.Strength = Mathf.Min(castle.StrengthMax, castle.Strength + 5 * adj);
+            var adjDim = Town.Diminish(castle.Strength, castle.StrengthMax, 100);
+            castle.Strength = (castle.Strength + 5 * adj * adjDim).MaxWith(castle.StrengthMax);
 
             var contribAdj = castle.Objective == CastleObjective.CastleStrength ? 1.5f : 1;
             chara.Contribution += adj * contribAdj;

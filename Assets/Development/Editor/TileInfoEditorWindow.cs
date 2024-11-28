@@ -780,13 +780,13 @@ public class TileInfoEditorWindow : EditorWindow
             EditorGUILayout.BeginHorizontal();
             Label("金収入", 50);
             town.GoldIncome = ParamField(town.GoldIncome, town.GoldIncomeMax, 200, Color.yellow);
-            Label($"Max: {town.GoldIncomeMax} (Base: {town.GoldIncomeMaxBase}, Cost: {town.GoldImproveCost()})", 200);
+            Label($"Max: {town.GoldIncomeMax} (Base: {town.GoldIncomeMaxBase}, Adj: {town.GoldImproveAdj})", 200);
             EditorGUILayout.EndHorizontal();
 
             EditorGUILayout.BeginHorizontal();
             Label("食料収入", 50);
             town.FoodIncome = ParamField(town.FoodIncome, town.FoodIncomeMax, 10000, Color.green);
-            Label($"Max: {town.FoodIncomeMax} (Base: {town.FoodIncomeMaxBase}, Cost: {town.FoodImproveCost()})", 200);
+            Label($"Max: {town.FoodIncomeMax} (Base: {town.FoodIncomeMaxBase}, Adj: {town.FoodImproveAdj})", 200);
             EditorGUILayout.EndHorizontal();
 
             if (GUILayout.Button("町を削除"))

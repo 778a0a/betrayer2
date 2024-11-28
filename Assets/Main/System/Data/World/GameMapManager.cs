@@ -126,8 +126,8 @@ public class GameMapManager
 
         town.Castle = castle;
         castle.Towns.Add(town);
-        town.FoodIncomeMaxBase = Town.TileFoodMax(tile);
-        town.GoldIncomeMaxBase = Town.TileGoldMax(tile);
+        town.FoodIncomeMaxBase = Town.TileFoodMax(tile, castle.Towns.Count);
+        town.GoldIncomeMaxBase = Town.TileGoldMax(tile, castle.Towns.Count);
     }
 
     public void UnregisterTown(Town town)

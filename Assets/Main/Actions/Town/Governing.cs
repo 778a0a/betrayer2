@@ -24,7 +24,7 @@ partial class TownActions
         public override string Label => L["商業"];
         public override string Description => L["ゴールド収入を改善します。"];
 
-        public override ActionCost Cost(ActionArgs args) => (ActionCost)args.targetTown.GoldImproveCost();
+        public override ActionCost Cost(ActionArgs args) => 2;
 
         protected override bool CanDoCore(ActionArgs args) => args.targetTown.GoldIncome < args.targetTown.GoldIncomeMax;
 
@@ -34,10 +34,11 @@ partial class TownActions
             var chara = args.actor;
             var town = args.targetTown;
 
-            // コスト2で能力値50なら3年で回収できる程度。100なら1.5倍の効果で、2年で回収できる程度。
+            // 能力値75なら2年で回収できる程度。
             var adj = 1 + (chara.Governing - 75) / 100f;
             if (chara.Traits.HasFlag(Traits.Merchant)) adj += 0.1f;
-            town.GoldIncome = Mathf.Min(town.GoldIncomeMax, town.GoldIncome + adj / 8);
+            var adjDim = town.GoldImproveAdj;
+            town.GoldIncome = Mathf.Min(town.GoldIncomeMax, town.GoldIncome + adj * adjDim / 8);
 
             var contribAdj = town.Castle.Objective == CastleObjective.Commerce ? 1.5f : 1;
             chara.Contribution += adj * contribAdj;
@@ -56,7 +57,7 @@ partial class TownActions
         public override string Label => L["開墾"];
         public override string Description => L["食料収入を改善します。"];
 
-        public override ActionCost Cost(ActionArgs args) => (ActionCost)args.targetTown.FoodImproveCost();
+        public override ActionCost Cost(ActionArgs args) => 2;
 
         protected override bool CanDoCore(ActionArgs args) => args.targetTown.FoodIncome < args.targetTown.FoodIncomeMax;
 
@@ -66,10 +67,11 @@ partial class TownActions
             var chara = args.actor;
             var town = args.targetTown;
 
-            // コスト2で能力値50なら3年で回収できる程度。100なら1.5倍の効果で、2年で回収できる程度。
+            // 能力値75なら2年で回収できる程度。
             var adj = 1 + (chara.Governing - 75) / 100f;
             if (chara.Traits.HasFlag(Traits.Merchant)) adj += 0.1f;
-            town.FoodIncome = Mathf.Min(town.FoodIncomeMax, town.FoodIncome + adj * 50 / 8);
+            var adjDim = town.FoodImproveAdj;
+            town.FoodIncome = Mathf.Min(town.FoodIncomeMax, town.FoodIncome + adj * adjDim * 50 / 8);
 
             var contribAdj = town.Castle.Objective == CastleObjective.Agriculture ? 1.5f : 1;
             chara.Contribution += adj * contribAdj;

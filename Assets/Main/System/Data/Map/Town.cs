@@ -39,6 +39,8 @@ public class Town : ICountryEntity, IMapEntity
     public float FoodIncomeMax => CalculateMax(FoodIncomeMaxBase, DevelopmentLevel);
     [JsonIgnore]
     public float FoodIncomeProgress => FoodIncome / FoodIncomeMax;
+    [JsonIgnore]
+    public float FoodImproveAdj => Diminish(FoodIncome, FoodIncomeMax, FoodIncomeMaxBase);
 
     /// <summary>
     /// 商業
@@ -51,32 +53,38 @@ public class Town : ICountryEntity, IMapEntity
     public float GoldIncomeMax => CalculateMax(GoldIncomeMaxBase, DevelopmentLevel);
     [JsonIgnore]
     public float GoldIncomeProgress => GoldIncome / GoldIncomeMax;
+    [JsonIgnore]
+    public float GoldImproveAdj => Diminish(GoldIncome, GoldIncomeMax, GoldIncomeMaxBase);
 
     private static float CalculateMax(float baseVal, int level)
     {
         return baseVal + baseVal * level;
     }
     
-    public float FoodImproveCost()
+    public static float Diminish(float current, float max, float maxBase)
     {
-        if (FoodIncomeProgress < 0.5f) return 3;
-
-        var rem = FoodIncome - FoodIncomeMaxBase;
-        return (int)(rem / (FoodIncomeMaxBase * 0.5f) + 1).MinWith(3);
-    }
-    public float GoldImproveCost()
-    {
-        if (GoldIncomeProgress < 0.4f) return 3;
-
-        var rem = GoldIncome - GoldIncomeMaxBase;
-        return (int)(rem / (GoldIncomeMaxBase * 0.5f) + 1).MinWith(3);
+        var progress = current / max;
+        return progress switch
+        {
+            < 0.25f => 2.0f,
+            < 0.5f => 1.5f,
+            _ => (1.5f - progress) * (3f / (1 + current / maxBase)).MaxWith(1), // lv4なら0.6、lv5なら0.5、lv6なら0.43
+        };
     }
 
-    public static float TileFoodMax(GameMapTile tile) => Mathf.Max(0,
-        BaseFoodAdj(tile.Terrain) + tile.Neighbors.Sum(t => NeighborFoodAdj(t.Terrain)));
-    public static float TileGoldMax(GameMapTile tile) => Mathf.Max(0,
-        BaseGoldAdj(tile.Terrain) + tile.Neighbors.Sum(t => NeighborGoldAdj(t.Terrain)));
 
+    public static float TileFoodMax(GameMapTile tile, int townCount = 1)
+    {
+        var val = BaseFoodAdj(tile.Terrain) + tile.Neighbors.Sum(t => NeighborFoodAdj(t.Terrain));
+        return val * TownCountAdj(townCount);
+    }
+    public static float TileGoldMax(GameMapTile tile, int townCount = 1)
+    {
+        var val = BaseGoldAdj(tile.Terrain) + tile.Neighbors.Sum(t => NeighborGoldAdj(t.Terrain));
+        return val * TownCountAdj(townCount);
+    }
+
+    private static float TownCountAdj(int townCount) => Mathf.Pow(0.8f, townCount - 1);
     private static float BaseFoodAdj(Terrain terrain) => devAdj[terrain].BaseFood + devAdj[terrain].NeighborFood;
     private static float NeighborFoodAdj(Terrain terrain) => devAdj[terrain].NeighborFood;
     private static float BaseGoldAdj(Terrain terrain) => devAdj[terrain].BaseGold + devAdj[terrain].NeighborGold;
