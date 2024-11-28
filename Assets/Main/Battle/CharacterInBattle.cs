@@ -89,7 +89,7 @@ public record CharacterInBattle(
     {
         if (chara == null) return;
 
-        var tiredAdj = Mathf.Pow(0.8f, chara.ConsecutiveBattleCount);
+        var tiredAdj = Mathf.Pow(0.8f, chara.ConsecutiveBattleCount + 1);
         var intelliAdj = Mathf.Max(0, (chara.Intelligence - 80) / 100f / 2) * (win ? 1 : 0.5f);
         var winAdj = win ? winRate : loseRate;
         var adj = (winAdj + intelliAdj) * tiredAdj;
