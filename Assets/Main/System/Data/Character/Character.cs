@@ -137,7 +137,7 @@ public class Character
             var i = 0;
             for (; i < max; i++)
             {
-                sum += i * 5;
+                sum += i * (5 + i / 3);
                 if (sum > Contribution) break;
             }
             return i + 4;
