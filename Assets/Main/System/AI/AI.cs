@@ -459,6 +459,12 @@ public class AI
 
     public async ValueTask Develop(Castle castle)
     {
+        // 収入月前でなければ何もしない。
+        if (!core.GameDate.IsEndMonth)
+        {
+            return;
+        }
+
         // 十分発展していないなら何もしない。
         if (castle.GoldIncomeProgress < 0.75f || castle.FoodIncomeProgress < 0.75f)
         {
@@ -473,14 +479,14 @@ public class AI
             return;
         }
 
-        var ruler = castle.Country.Ruler;
+        var actor = castle.Boss;
         var candActions = new List<(ActionBase act, ActionArgs args, ActionCost cost)>();
 
         // 町の開発度向上
         foreach (var town in castle.Towns)
         {
             var act = core.CastleActions.Develop;
-            var args = act.Args(ruler, town);
+            var args = act.Args(actor, town);
             if (act.CanDo(args))
             {
                 candActions.Add((act, args, act.Cost(args)));
@@ -496,7 +502,7 @@ public class AI
                 var bestTile = candTiles.OrderByDescending(t =>
                     world.Economy.GetGoldAmount(Town.TileFoodMax(t, castle)) + Town.TileGoldMax(t, castle))
                     .First();
-                var args = act.Args(ruler, castle, bestTile.Position);
+                var args = act.Args(actor, castle, bestTile.Position);
                 if (act.CanDo(args))
                 {
                     candActions.Add((act, args, act.Cost(args)));
@@ -507,7 +513,7 @@ public class AI
         // 城壁強化
         {
             var act = core.CastleActions.ImproveCastleStrengthLevel;
-            var args = act.Args(ruler, castle);
+            var args = act.Args(actor, castle);
             if (act.CanDo(args))
             {
                 candActions.Add((act, args, act.Cost(args)));

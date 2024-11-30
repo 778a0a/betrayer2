@@ -59,10 +59,6 @@ partial class GameCore
 
                         // 物資が不足しているなら余っている城から補給する。
                     }
-                    foreach (var castle in country.Castles)
-                    {
-                        await AI.Develop(castle);
-                    }
                 }
 
                 // 外交を行う。
@@ -210,6 +206,9 @@ partial class GameCore
 
                     // 進軍を行うか判定する。
                     AI.Deploy(castle);
+
+                    // 開発を行うか判定する。
+                    await AI.Develop(castle);
 
                     // 後方から移動する（適当）
                     if (castle.Members.Count > 2 && castle.Neighbors.All(n => !castle.IsAttackable(n)))
