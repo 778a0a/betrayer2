@@ -380,7 +380,7 @@ public class AI
             // 所持金が少なすぎる場合はあまり意味がないので行動しない。
             if (inputGold < 0.1 && inputGold != needGold)
             {
-                Debug.LogError($"[Trade] {castle} 食料購入 所持金不足 ({inputGold})");
+                Debug.Log($"[Trade] {castle} 食料購入 所持金不足 ({inputGold})");
                 break;
             }
 
@@ -398,7 +398,7 @@ public class AI
         }
         if (buyCount > 0)
         {
-            Debug.LogError($"[Trade] {castle} 食料購入 {buyCount} 回");
+            Debug.Log($"[Trade] {castle} 食料購入 {buyCount} 回");
         }
 
         // ゴールドがマイナスの場合、食料があれば売却する。
@@ -414,7 +414,7 @@ public class AI
             // 食料が少なすぎる場合はあまり意味がないので行動しない。
             if (inputFood < 5 && inputFood != needFood)
             {
-                Debug.LogError($"[Trade] {castle} 借金返済 食料不足 ({needFood})");
+                Debug.Log($"[Trade] {castle} 借金返済 食料不足 ({needFood})");
                 break;
             }
 
@@ -431,7 +431,7 @@ public class AI
         }
         if (sellCount > 0)
         {
-            Debug.LogError($"[Trade] {castle} 借金返済 {sellCount} 回");
+            Debug.Log($"[Trade] {castle} 借金返済 {sellCount} 回");
         }
 
         // 食料は余っていても仕方ないので、余剰の一定量を売却する。
@@ -453,7 +453,7 @@ public class AI
                 if (act.CanDo(args))
                 {
                     act.Do(args);
-                    Debug.LogError($"[Trade] {castle} 余剰食料売却 (-{inputFood})");
+                    Debug.Log($"[Trade] {castle} 余剰食料売却 (-{inputFood})");
                 }
             }
         }

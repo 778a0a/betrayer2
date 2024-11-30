@@ -139,13 +139,13 @@ public class ForceManager : IReadOnlyList<Force>
                 if (!castle.DangerForcesExists && force.ReinforcementWaitDays > 5)
                 {
                     force.ReinforcementWaitDays = 5;
-                    Debug.LogWarning($"軍勢更新処理 城が危険でなくなったため待機時間を短縮しました。 {force}");
+                    Debug.Log($"軍勢更新処理 城が危険でなくなったため待機時間を短縮しました。 {force}");
                 }
 
                 force.ReinforcementWaitDays--;
                 if (force.ReinforcementWaitDays <= 0)
                 {
-                    Debug.LogError($"軍勢更新処理 {force} 待機終了");
+                    Debug.Log($"軍勢更新処理 {force} 待機終了");
                     // 本拠地に帰還する。
                     force.SetDestination(force.Character.Castle);
                 }
@@ -166,7 +166,7 @@ public class ForceManager : IReadOnlyList<Force>
                 {
                     Unregister(force);
                 }
-                Debug.LogError($"軍勢更新処理 救援先が危険でなくなったため本拠地に帰還します。 {force}");
+                Debug.Log($"軍勢更新処理 救援先が危険でなくなったため本拠地に帰還します。 {force}");
                 //GameCore.Instance.Pause();
                 return;
             }
@@ -500,7 +500,7 @@ public class ForceManager : IReadOnlyList<Force>
                     {
                         var home = otherForce.Character.Castle;
                         otherForce.SetDestination(home);
-                        Debug.LogError($"{otherForce} 城が他国に占領されたため帰還します。(救援)");
+                        Debug.Log($"{otherForce} 城が他国に占領されたため帰還します。(救援)");
                         if (otherForce.Position == home.Position)
                         {
                             Unregister(otherForce);
