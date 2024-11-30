@@ -410,6 +410,15 @@ public class ForceManager : IReadOnlyList<Force>
         var oldCountry = castle.Country;
         castle.UpdateCountry(force.Country);
 
+        var nearEnemyCastle = oldCountry.Castles
+            .OrderBy(c => c.Position.DistanceTo(castle.Position))
+            .FirstOrDefault();
+        var enemyCastleIntelligenceMax = castle.Members
+            .Where(m => !m.IsMoving)
+            .Select(m => m.Intelligence)
+            .DefaultIfEmpty(0)
+            .Max();
+
         // 全ての城を失った場合は国を消滅させる。
         if (oldCountry.Castles.Count == 0)
         {
@@ -433,9 +442,6 @@ public class ForceManager : IReadOnlyList<Force>
         // まだ他の城がある場合は、一番近くの城に所属を移動する。
         else
         {
-            var nearEnemyCastle = oldCountry.Castles
-                .OrderBy(c => c.Position.DistanceTo(castle.Position))
-                .FirstOrDefault();
             foreach (var e in castle.Members.ToList())
             {
                 // キャラが軍勢を率いているなら、軍勢から一番近い城に所属を移動する。
@@ -524,9 +530,16 @@ public class ForceManager : IReadOnlyList<Force>
             town.GoldIncome *= Random.Range(0.5f, 0.9f);
         }
 
-        // 物資を減らす。マイナスだった場合は0にする。
-        castle.Gold = (castle.Gold * Random.Range(0.5f, 0.9f)).MinWith(0);
-        castle.Food = (castle.Food * Random.Range(0.5f, 0.9f)).MinWith(0);
+        // 残っている物資について。
+        var withdrawRatio = nearEnemyCastle != null ? enemyCastleIntelligenceMax / 100 : 0;
+        if (nearEnemyCastle != null)
+        {
+            // 守将の智謀に応じて撤退先へ退避する。
+            if (castle.Gold > 0) nearEnemyCastle.Gold += castle.Gold * withdrawRatio;
+            if (castle.Food > 0) nearEnemyCastle.Food += castle.Food * withdrawRatio;
+        }
+        castle.Gold = (castle.Gold * (1 - withdrawRatio) * Random.Range(0.5f, 0.95f)).MinWith(0);
+        castle.Food = (castle.Food * (1 - withdrawRatio) * Random.Range(0.5f, 0.95f)).MinWith(0);
 
         castleTile.Refresh();
     }
