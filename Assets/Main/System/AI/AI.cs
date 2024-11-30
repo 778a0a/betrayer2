@@ -284,6 +284,7 @@ public class AI
             targetCands = targetCandsEnemy;
         }
 
+        var minRel = neighbors.Min(n => n.Country.GetRelation(castle.Country));
         var target = targetCands.RandomPickWeighted(neighbor =>
         {
             var val = 100f;
@@ -292,9 +293,8 @@ public class AI
             var powerAdj = Mathf.Lerp(0, 200, (castle.Power / (neighbor.Power + 0.01f)) - 1);
             var powerAdj2 = Mathf.Lerp(0, 200, (castle.Power / (neighbor.DefencePower + 0.01f)) - 1);
             val = Mathf.Max(val, hateAdj + powerAdj + powerAdj2);
-            var memberAdj = castle.Members.Count > 2;
-            val *= memberAdj ? 1 : 0.1f;
-            return Mathf.Lerp(0, 100, (50 - rel) / 50f);
+            if (rel == minRel) val *= 3f;
+            return val;
         });
 
         Debug.Log($"出撃判定 {castle} 出撃します。 目標: {target}");
