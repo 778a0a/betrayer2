@@ -124,6 +124,7 @@ public class Castle : ICountryEntity, IMapEntity
     [JsonIgnore] public float WealthBalance => GoldBalance + FoodBalance / 50;
     [JsonIgnore] public float WealthBalanceConservative => GoldBalance + FoodBalanceConservative / 50;
     [JsonIgnore] public float WealthBalanceMax => GoldBalanceMax + FoodBalanceMax / 50;
+    [JsonIgnore] public float WealthSurplus => GoldSurplus + FoodSurplus / 50;
 
     /// <summary>
     /// 金
@@ -142,7 +143,7 @@ public class Castle : ICountryEntity, IMapEntity
     [JsonIgnore]
     public float GoldComsumption => Members.Sum(m => m.Salary);
     [JsonIgnore]
-    public float GoldSurplus => (Gold + (GoldIncome - GoldComsumption).MaxWith(0) * 4).MinWith(0);
+    public float GoldSurplus => Gold + (GoldIncome - GoldComsumption).MaxWith(0) * 4;
     /// <summary>
     /// 食料
     /// </summary>
@@ -165,7 +166,7 @@ public class Castle : ICountryEntity, IMapEntity
     [JsonIgnore]
     public float FoodComsumptionMax => Members.Sum(m => m.FoodConsumptionMax);
     [JsonIgnore]
-    public float FoodSurplus => (Food + (FoodIncome - FoodComsumptionMax).MaxWith(0) * 4).MinWith(0);
+    public float FoodSurplus => Food + (FoodIncome - FoodComsumptionMax).MaxWith(0) * 4;
 
     /// <summary>
     /// 食料残り月数

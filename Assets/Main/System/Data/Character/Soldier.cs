@@ -26,7 +26,7 @@ public class Soldier
 
     public float HpFloat { get; set; }
 
-    public int MaxHp => Level * 5 + 30;
+    public int MaxHp => IsEmptySlot ? 0 : (Level * 5 + 30);
 
     public bool IsEmptySlot { get; set; }
     public bool IsAlive => !IsEmptySlot && HpFloat > 0;

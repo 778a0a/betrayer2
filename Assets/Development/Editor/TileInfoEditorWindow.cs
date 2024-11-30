@@ -911,8 +911,8 @@ public class TileInfoEditorWindow : EditorWindow
             using (VerticalLayout(GUILayout.Width(100)))
             {
                 GUILayout.BeginHorizontal();
-                Label($"将:{castle.Members.Count} 浪:{castle.Frees.Count} 方針: {castle.Objective}", 200);
-                Label($"W:{castle.Country.WealthBalance:0} G:{castle.Country.GoldBalance:0.0} F:{castle.Country.FoodBalance:0}");
+                Label($"将:{castle.Members.Count} 浪:{castle.Frees.Count} 方針: {castle.Objective}", 150);
+                Label($"W:{castle.Country.WealthBalance:0} G:{castle.Country.GoldBalance:0.0} F:{castle.Country.FoodBalance:0} S:{castle.Country.WealthSurplus:0}");
                 GUILayout.EndHorizontal();
 
                 var i = 0;
