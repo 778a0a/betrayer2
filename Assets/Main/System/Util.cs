@@ -15,6 +15,9 @@ using Random = UnityEngine.Random;
 public static class Util
 {
     public static float MaxWith(this float value, float max) => Mathf.Min(value, max);
+    public static float MaxWith(this float value, float max, float max2) => Mathf.Min(value, Mathf.Min(max, max2));
+    public static float MaxWith(this float value, float max, float max2, float max3) => Mathf.Min(value, Mathf.Min(max, Mathf.Min(max2, max3)));
+
     public static float MinWith(this float value, float min) => Mathf.Max(value, min);
     public static float Clamp(this float value, float min, float max) => Mathf.Clamp(value, min, max);
     public static int MaxWith(this int value, int max) => Mathf.Min(value, max);

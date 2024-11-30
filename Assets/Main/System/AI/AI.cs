@@ -369,14 +369,15 @@ public class AI
     {
         // 食料がマイナスの場合、ゴールドがあれば食料を購入する。
         var buyCount = 0;
-        while (castle.Food < 0 && castle.Gold > 0)
+        while (castle.Food < 0 && castle.Gold > castle.GoldDebtMax)
         {
             // 購入量を計算する。
             var act = core.CastleActions.BuyFood;
             var args = act.Args(castle.Boss, castle, 0);
             var inputGoldMax = act.InputGoldMax(args);
             var needGold = act.InverseGold(args, -castle.Food);
-            var inputGold = castle.Gold.MaxWith(needGold).MaxWith(inputGoldMax);
+            var remainDebtLimit = castle.Gold - castle.GoldDebtMax;
+            var inputGold = remainDebtLimit.MaxWith(needGold, inputGoldMax);
             // 所持金が少なすぎる場合はあまり意味がないので行動しない。
             if (inputGold < 0.1 && inputGold != needGold)
             {

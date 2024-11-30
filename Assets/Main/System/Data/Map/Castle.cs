@@ -144,6 +144,8 @@ public class Castle : ICountryEntity, IMapEntity
     public float GoldComsumption => Members.Sum(m => m.Salary);
     [JsonIgnore]
     public float GoldSurplus => Gold + (GoldIncome - GoldComsumption).MaxWith(0) * 4;
+    [JsonIgnore] public float GoldDebtMax => -GoldIncome * 4;
+    [JsonIgnore] public float GoldDebtSalaryStopLine => GoldDebtMax / 2;
     /// <summary>
     /// 食料
     /// </summary>

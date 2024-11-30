@@ -80,6 +80,7 @@ public partial class GameCore
                 // 兵士を回復させる。
                 var rate = 0.01f;
                 if (chara.IsMoving) rate = 0.005f;
+                rate *= Mathf.Pow(0.95f, chara.ConsecutiveBattleCount);
                 var starving = chara.Castle.Food < 0;
                 foreach (var s in chara.Soldiers)
                 {
@@ -158,6 +159,29 @@ public partial class GameCore
                     }
                 }
             }
+
+            // 収入月の前の場合
+            if (GameDate.IsEndMonth)
+            {
+                foreach (var country in World.Countries)
+                {
+                    if (country.WealthBalance > -30) continue;
+                    if (country.WealthSurplus > 0) continue;
+
+                    // 赤字で物資も乏しい場合は序列の低いメンバーを解雇する。
+                    var target = country.Members
+                        .Where(m => !m.IsMoving)
+                        .Where(m => !m.IsImportant)
+                        .OrderByDescending(m => m.OrderIndex)
+                        .FirstOrDefault();
+                    if (target != null)
+                    {
+                        // TODO 解雇アクションを使う。
+                        target.ChangeCastle(target.Castle, true);
+                        Debug.LogError($"{country} 赤字のため、{target}を解雇しました。");
+                    }
+                }
+            }
         }
 
         World.Forces.OnCheckDefenceStatus(this);
@@ -177,21 +201,42 @@ public partial class GameCore
     /// </summary>
     private void OnIncome()
     {
-        Debug.Log("収支計算");
         foreach (var castle in World.Countries.SelectMany(c => c.Castles))
         {
-            // 町の収入
-            foreach (var town in castle.Towns)
-            {
-                castle.Gold += town.GoldIncome;
-                castle.Food += town.FoodIncome;
-            }
+            // 収入
+            castle.Gold += castle.GoldIncome;
+            castle.Food += castle.FoodIncome;
+
             // キャラ・軍隊への支払い
-            foreach (var chara in castle.Members)
+            foreach (var chara in castle.Members.OrderBy(m => m.OrderIndex))
             {
                 // 給料支出
-                castle.Gold -= chara.Salary;
-                chara.Gold += chara.Salary;
+                // 無借金の場合
+                if (castle.Gold > 0)
+                {
+                    castle.Gold -= chara.Salary;
+                    chara.Gold += chara.Salary;
+                }
+                // 少額の借金がある場合は支払いを減らす
+                else if (castle.Gold > castle.GoldDebtSalaryStopLine)
+                {
+                    castle.Gold -= chara.Salary / 2;
+                    chara.Gold += chara.Salary / 2;
+                    if (!chara.IsImportant)
+                    {
+                        chara.Loyalty = (chara.Loyalty - 1).MinWith(0);
+                    }
+                    Debug.LogError($"{castle} 借金があるため、{chara.Name}の給料をカットします。");
+                }
+                // 借金が多い場合は完全に支払わない。
+                else
+                {
+                    Debug.LogError($"{castle} 借金過多のため、{chara.Name}に給料を支払えませんでした。");
+                    if (!chara.IsImportant)
+                    {
+                        chara.Loyalty = (chara.Loyalty - 4).MinWith(0);
+                    }
+                }
                 // 食料消費
                 castle.Food -= chara.FoodConsumption;
                 // TODO ゴールド・食料が足りない場合
