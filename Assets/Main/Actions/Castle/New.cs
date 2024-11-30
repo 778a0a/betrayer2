@@ -430,7 +430,7 @@ partial class CastleActions
         /// <summary>
         /// 1回のアクションで購入可能な最大金額
         /// </summary>
-        public float InputGoldMax(ActionArgs args) => args.targetCastle.GoldIncome / 2;
+        public float InputGoldMax(ActionArgs args) => args.targetCastle.GoldIncome * 2;
         public float OutputFood(ActionArgs args) => World.Economy.GetFoodAmount(args.gold);
         public float InverseGold(ActionArgs args, float food) => World.Economy.GetGoldAmount(food);
 
@@ -466,7 +466,7 @@ partial class CastleActions
 
         public ActionArgs Args(Character actor, Castle c, float food) => new(actor, targetCastle: c, food: food);
 
-        public float InputFoodMax(ActionArgs args) => args.targetCastle.FoodIncome / 2;
+        public float InputFoodMax(ActionArgs args) => args.targetCastle.FoodIncome * 2;
         public float OutputGold(ActionArgs args) => World.Economy.GetGoldAmount(args.food);
         public float InverseFood(ActionArgs args, float gold) => World.Economy.GetFoodAmount(gold);
 

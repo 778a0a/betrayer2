@@ -61,7 +61,7 @@ partial class GameCore
                     }
                     foreach (var castle in country.Castles)
                     {
-                        AI.Develop(castle);
+                        await AI.Develop(castle);
                     }
                 }
 
@@ -298,7 +298,7 @@ partial class GameCore
                 if (chara.Soldiers.HasEmptySlot)
                 {
                     // 危険軍勢がいるか、食料収支がプラスなら兵士を採用する。
-                    if (chara.Castle.DangerForcesExists || chara.Castle.FoodBalance > 200)
+                    if (chara.Castle.DangerForcesExists || chara.Castle.FoodBalanceConservative > 200)
                     {
                         action = CastleActions.HireSoldier;
                     }

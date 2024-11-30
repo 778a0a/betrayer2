@@ -81,7 +81,7 @@ public class AI
                 case CastleObjective.Agriculture:
                     if (castle.Stability < 90) return 0;
                     if (castle.FoodIncome == castle.FoodIncomeMax) return 0;
-                    if (castle.FoodBalance < 0) return 1000;
+                    if (castle.FoodBalanceMax < 0) return 1000;
                     return 100;
 
                 case CastleObjective.Commerce:
@@ -327,24 +327,30 @@ public class AI
             return;
         }
 
+        var requirements = 30;
+        // メンバーが少ないなら採用条件を下げる。
+        if (castle.Members.Count < 2)
+        {
+            requirements = 15;
+        }
+
         // 資金・食料が足りない場合は何もしない。
-        var balance = castle.GoldBalance + castle.FoodBalance / 50;
-        if (balance < 30)
+        var balance = castle.WealthBalanceConservative;
+        if (balance < requirements)
         {
             return;
         }
 
         // 採用後の収支が心もとないなら何もしない。
         var chara = castle.Frees.RandomPick();
-        var newBalance = balance - chara.Salary - chara.FoodConsumption / 50;
-        if (newBalance < 20)
+        var newBalance = balance - chara.Salary - chara.FoodConsumptionMax / 50;
+        if (newBalance < requirements - 10)
         {
             return;
         }
 
         // 国全体の収支が心もとないなら何もしない。
-        var countryBalance = castle.Country.GoldBalance + castle.Country.FoodBalance / 50;
-        if (countryBalance < 30)
+        if (castle.Country.WealthBalance < castle.Country.Castles.Count * 20)
         {
             return;
         }
@@ -363,7 +369,6 @@ public class AI
         var buyCount = 0;
         while (castle.Food < 0 && castle.Gold > 0)
         {
-            Debug.LogError($"[Trade] {castle} 食料購入");
             // 購入量を計算する。
             var act = core.CastleActions.BuyFood;
             var args = act.Args(castle.Boss, castle, 0);
@@ -398,7 +403,6 @@ public class AI
         var sellCount = 0;
         while (castle.Gold < 0 && castle.Food > 0)
         {
-            Debug.LogError($"[Trade] {castle} 借金返済");
             // 売却量を計算する。
             var act = core.CastleActions.SellFood;
             var args = act.Args(castle.Boss, castle, 0);
@@ -426,6 +430,30 @@ public class AI
         if (sellCount > 0)
         {
             Debug.LogError($"[Trade] {castle} 借金返済 {sellCount} 回");
+        }
+
+        // 食料は余っていても仕方ないので、余剰の一定量を売却する。
+        if (core.GameDate.IsEndMonth)
+        {
+            if (castle.FoodBalance > 500 && castle.Food > 3000)
+            {
+                var act = core.CastleActions.SellFood;
+                var args = act.Args(castle.Boss, castle, 0);
+                var inputFoodMax = act.InputFoodMax(args);
+                //var inputFood = (castle.Food - 3000).MaxWith(inputFoodMax);
+                var inputFood = (castle.FoodIncome / 2).MaxWith(castle.Food - 3000).MaxWith(inputFoodMax);
+                // 食料が少なすぎる場合はあまり意味がないので行動しない。
+                if (inputFood < 100)
+                {
+                    return;
+                }
+                args = act.Args(castle.Boss, castle, inputFood);
+                if (act.CanDo(args))
+                {
+                    act.Do(args);
+                    Debug.LogError($"[Trade] {castle} 余剰食料売却 (-{inputFood})");
+                }
+            }
         }
     }
 
@@ -493,12 +521,15 @@ public class AI
 
         // 一番コストの低い行動を選択する。
         var best = candActions.OrderBy(a => a.cost.castleGold).FirstOrDefault();
-        if (best.act.CanDo(best.args))
+        // 手元物資が心もとないなら何もしない。
+        if (castle.Wealth < best.cost.castleGold / 10)
         {
-            await best.act.Do(best.args);
-            Debug.LogError($"{castle}の開発を行いました。({best})");
-            core.Pause();
+            return;
         }
+
+        await best.act.Do(best.args);
+        Debug.LogError($"{castle}の開発を行いました。({best})");
+        //core.Pause();
 
     }
 }

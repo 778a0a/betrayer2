@@ -33,6 +33,8 @@ public struct GameDate
     /// 1月、4月、7月、10月は収入月
     /// </summary>
     public readonly bool IsIncomeMonth => Month % 3 == 1;
+    public readonly bool IsMidMonth => Month % 3 == 2;
+    public readonly bool IsEndMonth => Month % 3 == 0;
 
     public override readonly string ToString()
     {

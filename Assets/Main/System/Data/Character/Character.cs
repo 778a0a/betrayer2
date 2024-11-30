@@ -148,6 +148,8 @@ public class Character
     /// </summary>
     [JsonIgnore]
     public int FoodConsumption => Soldiers.Sum(s => s.Hp);
+    [JsonIgnore]
+    public int FoodConsumptionMax => Soldiers.Sum(s => s.MaxHp);
 
     /// <summary>
     /// 行動力

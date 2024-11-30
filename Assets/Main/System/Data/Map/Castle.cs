@@ -120,6 +120,11 @@ public class Castle : ICountryEntity, IMapEntity
     [JsonIgnore]
     public float StabilityMax => 100;
 
+    [JsonIgnore] public float Wealth => Gold + Food / 50;
+    [JsonIgnore] public float WealthBalance => GoldBalance + FoodBalance / 50;
+    [JsonIgnore] public float WealthBalanceConservative => GoldBalance + FoodBalanceConservative / 50;
+    [JsonIgnore] public float WealthBalanceMax => GoldBalanceMax + FoodBalanceMax / 50;
+
     /// <summary>
     /// 金
     /// </summary>
@@ -150,12 +155,17 @@ public class Castle : ICountryEntity, IMapEntity
     public float FoodIncomeProgress => FoodIncome / FoodIncomeMax;
     [JsonIgnore]
     public float FoodBalance => FoodIncome - FoodComsumption;
+    // 一時的に兵が減って収支が改善した場合に判断を間違えないように、最大消費量を加味した収支も計算する。
     [JsonIgnore]
-    public float FoodBalanceMax => Towns.Sum(t => t.FoodIncome) - FoodComsumption;
+    public float FoodBalanceConservative => FoodIncome - FoodComsumptionMax;
+    [JsonIgnore]
+    public float FoodBalanceMax => Towns.Sum(t => t.FoodIncome) - FoodComsumptionMax;
     [JsonIgnore]
     public float FoodComsumption => Members.Sum(m => m.FoodConsumption);
     [JsonIgnore]
-    public float FoodSurplus => (Food + (FoodIncome - FoodComsumption).MaxWith(0) * 4).MinWith(0);
+    public float FoodComsumptionMax => Members.Sum(m => m.FoodConsumptionMax);
+    [JsonIgnore]
+    public float FoodSurplus => (Food + (FoodIncome - FoodComsumptionMax).MaxWith(0) * 4).MinWith(0);
 
     /// <summary>
     /// 食料残り月数

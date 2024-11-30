@@ -910,7 +910,10 @@ public class TileInfoEditorWindow : EditorWindow
 
             using (VerticalLayout(GUILayout.Width(100)))
             {
-                Label($"将数: {castle.Members.Count} 方針: {castle.Objective}");
+                GUILayout.BeginHorizontal();
+                Label($"将:{castle.Members.Count} 浪:{castle.Frees.Count} 方針: {castle.Objective}", 200);
+                Label($"W:{castle.Country.WealthBalance:0} G:{castle.Country.GoldBalance:0.0} F:{castle.Country.FoodBalance:0}");
+                GUILayout.EndHorizontal();
 
                 var i = 0;
                 foreach (var chara in castle.Members.Where(m => m != castle.Boss))

@@ -34,8 +34,9 @@ public class Country : ICountryEntity
         .Distinct()
         .Where(c => c != this);
 
+    public float WealthBalance => Castles.Sum(c => c.WealthBalanceConservative);
     public float GoldBalance => Castles.Sum(c => c.GoldBalance);
-    public float FoodBalance => Castles.Sum(c => c.FoodBalance);
+    public float FoodBalance => Castles.Sum(c => c.FoodBalanceConservative);
 
     public IEnumerable<Country> DiplomacyTargets => Ruler.Personality switch
     {
