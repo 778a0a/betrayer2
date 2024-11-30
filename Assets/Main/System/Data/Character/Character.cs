@@ -263,5 +263,5 @@ public class Character
     public string csvDebugData { get; set; } = "";
     public string csvDebugMemo { get; set; } = "";
 
-    public override string ToString() => $"{Name} O:{OrderIndex}{(IsImportant ? "!" : "")} G:{Gold} P:{Power}";
+    public override string ToString() => $"{Name} O:{OrderIndex}{(IsImportant ? "!" : "")} G:{Gold} P:{Power} T:{ConsecutiveBattleCount}";
 }

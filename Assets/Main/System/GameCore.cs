@@ -97,13 +97,24 @@ public partial class GameCore
             }
         }
 
-        if (GameDate.Day % 10 == 0)
+        if (GameDate.Day == 1)
         {
-            // 出撃中でないキャラの連戦回数を減らす。
             foreach (var chara in World.Characters)
             {
                 var count = chara.ConsecutiveBattleCount;
-                if (!chara.IsMoving) chara.ConsecutiveBattleCount = Mathf.Max(0, count - 1);
+                if (chara.IsMoving)
+                {
+                    // 根拠地から離れている場合は連戦回数を増やす。
+                    if (chara.Force.Position.DistanceTo(chara.Castle) > 5)
+                    {
+                        chara.ConsecutiveBattleCount++;
+                    }
+                }
+                // 出撃中でないキャラは連戦回数を減らす。
+                else
+                {
+                    chara.ConsecutiveBattleCount = Mathf.Max(0, count - 1);
+                }
             }
         }
 
