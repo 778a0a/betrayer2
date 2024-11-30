@@ -162,7 +162,7 @@ public class Character
     public bool IsIncapacitated => IncapacitatedDaysRemaining > 0;
     
     [JsonIgnore]
-    public bool IsDefendable => !IsIncapacitated && !IsMoving;
+    public bool IsDefendable => !IsIncapacitated && !IsMoving && !Soldiers.IsAllDead;
 
     /// <summary>
     /// 行動不能状態にします。
@@ -186,8 +186,6 @@ public class Character
     public bool IsMoving => Force != null;
     [JsonIgnore]
     public Force Force { get; set; } // メモ ForceManagerと二重管理
-    [JsonIgnore]
-    public bool CanDefend => !IsMoving && !IsIncapacitated;
     [JsonIgnore]
     public Country Country { get; private set; } // メモ Castle.Countryと二重管理
     [JsonIgnore]

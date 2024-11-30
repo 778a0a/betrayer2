@@ -316,7 +316,7 @@ public class ForceManager : IReadOnlyList<Force>
         if (nextTile.Castle != null && force.IsAttackable(nextTile.Castle))
         {
             // 防衛可能な敵が残っている場合は、移動進捗を半分リセットする。
-            if (nextTile.Castle.Members.Any(e => e.CanDefend))
+            if (nextTile.Castle.Members.Any(e => e.IsDefendable))
             {
                 force.ResetTileMoveProgress();
                 force.TileMoveRemainingDays /= 2;
@@ -348,7 +348,7 @@ public class ForceManager : IReadOnlyList<Force>
     private async ValueTask OnSiege(WorldData world, Force force, GameMapTile nextTile)
     {
         var castle = nextTile.Castle;
-        var enemy = castle.Members.Where(e => e.CanDefend).RandomPickDefault();
+        var enemy = castle.Members.Where(e => e.IsDefendable).RandomPickDefault();
         force.Country.SetEnemy(castle.Country);
         var win = true;
         if (enemy != null)
@@ -386,7 +386,7 @@ public class ForceManager : IReadOnlyList<Force>
         enemy?.SetIncapacitated();
 
         // 防衛可能な敵が残っている場合は、移動進捗を半分リセットする。
-        if (castle.Members.Any(e => e.CanDefend))
+        if (castle.Members.Any(e => e.IsDefendable))
         {
             force.ResetTileMoveProgress();
             force.TileMoveRemainingDays /= 2;
