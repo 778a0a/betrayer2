@@ -306,7 +306,7 @@ partial class CastleActions
 
         public ActionArgs Args(Character actor, Castle castle) => new(actor, targetCastle: castle);
 
-        public override ActionCost Cost(ActionArgs args) => ActionCost.Of(0, 1, (int)(100 * Mathf.Pow(1.75f, args.targetCastle.FortressLevel - 1)));
+        public override ActionCost Cost(ActionArgs args) => ActionCost.Of(0, 1, (int)(100 * Mathf.Pow(1.75f, args.targetCastle.FortressLevel)));
         public override ValueTask Do(ActionArgs args)
         {
             Assert.IsTrue(CanDo(args));

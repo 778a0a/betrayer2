@@ -428,4 +428,77 @@ public class AI
             Debug.LogError($"[Trade] {castle} 借金返済 {sellCount} 回");
         }
     }
+
+    public async ValueTask Develop(Castle castle)
+    {
+        // 十分発展していないなら何もしない。
+        if (castle.GoldIncomeProgress < 0.75f || castle.FoodIncomeProgress < 0.75f)
+        {
+            return;
+        }
+
+        var goldSurplus = castle.GoldSurplus;
+        var foodSurplus = castle.FoodSurplus;
+        // 物資が余っていないなら何もしない。
+        if (goldSurplus < 0 && foodSurplus < 0)
+        {
+            return;
+        }
+
+        var ruler = castle.Country.Ruler;
+        var candActions = new List<(ActionBase act, ActionArgs args, ActionCost cost)>();
+
+        // 町の開発度向上
+        foreach (var town in castle.Towns)
+        {
+            var act = core.CastleActions.Develop;
+            var args = act.Args(ruler, town);
+            if (act.CanDo(args))
+            {
+                candActions.Add((act, args, act.Cost(args)));
+            }
+        }
+
+        // 町建設
+        {
+            var candTiles = castle.NewTownCandidates(world).ToList();
+            if (candTiles.Count > 0)
+            {
+                var act = core.CastleActions.BuildTown;
+                var bestTile = candTiles.OrderByDescending(t =>
+                    world.Economy.GetGoldAmount(Town.TileFoodMax(t, castle)) + Town.TileGoldMax(t, castle))
+                    .First();
+                var args = act.Args(ruler, castle, bestTile.Position);
+                if (act.CanDo(args))
+                {
+                    candActions.Add((act, args, act.Cost(args)));
+                }
+            }
+        }
+
+        // 城壁強化
+        {
+            var act = core.CastleActions.ImproveCastleStrengthLevel;
+            var args = act.Args(ruler, castle);
+            if (act.CanDo(args))
+            {
+                candActions.Add((act, args, act.Cost(args)));
+            }
+        }
+
+        if (candActions.Count == 0)
+        {
+            return;
+        }
+
+        // 一番コストの低い行動を選択する。
+        var best = candActions.OrderBy(a => a.cost.castleGold).FirstOrDefault();
+        if (best.act.CanDo(best.args))
+        {
+            await best.act.Do(best.args);
+            Debug.LogError($"{castle}の開発を行いました。({best})");
+            core.Pause();
+        }
+
+    }
 }

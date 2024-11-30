@@ -73,18 +73,31 @@ public class Town : ICountryEntity, IMapEntity
     }
 
 
-    public static float TileFoodMax(GameMapTile tile, int townCount = 1)
+    public static float TileFoodMax(GameMapTile tile, Castle castle = null)
     {
         var val = BaseFoodAdj(tile.Terrain) + tile.Neighbors.Sum(t => NeighborFoodAdj(t.Terrain));
-        return val * TownCountAdj(townCount);
+        return val * TileMaxAdj(tile, castle);
     }
-    public static float TileGoldMax(GameMapTile tile, int townCount = 1)
+    public static float TileGoldMax(GameMapTile tile, Castle castle = null)
     {
         var val = BaseGoldAdj(tile.Terrain) + tile.Neighbors.Sum(t => NeighborGoldAdj(t.Terrain));
-        return val * TownCountAdj(townCount);
+        return val * TileMaxAdj(tile, castle);
+    }
+    private static float TileMaxAdj(GameMapTile tile, Castle castle = null)
+    {
+        var adj = 1.0f;
+        if (castle != null)
+        {
+            adj *= Mathf.Pow(0.8f, castle.Towns.Count - 1);
+           var distance = castle.Position.DistanceTo(tile.Position);
+            if (distance > 1)
+            {
+                adj *= Mathf.Pow(0.8f, distance - 1);
+            }
+        }
+        return adj;
     }
 
-    private static float TownCountAdj(int townCount) => Mathf.Pow(0.8f, townCount - 1);
     private static float BaseFoodAdj(Terrain terrain) => devAdj[terrain].BaseFood + devAdj[terrain].NeighborFood;
     private static float NeighborFoodAdj(Terrain terrain) => devAdj[terrain].NeighborFood;
     private static float BaseGoldAdj(Terrain terrain) => devAdj[terrain].BaseGold + devAdj[terrain].NeighborGold;

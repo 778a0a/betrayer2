@@ -61,49 +61,7 @@ partial class GameCore
                     }
                     foreach (var castle in country.Castles)
                     {
-                        // 物資が余っているなら開発度の強化を行う。
-                        // TODO
-                        if (castle.GoldIncomeProgress > 0.75f && castle.FoodIncomeProgress > 0.75f)
-                        {
-                            var goldSurplus = castle.GoldSurplus;
-                            var foodSurplus = castle.FoodSurplus;
-                            if (goldSurplus > 0 && foodSurplus > 0)
-                            {
-                                var act = default(ActionBase);
-                                // 開発
-                                var act1 = CastleActions.Develop;
-                                act = act1;
-                                var args = act1.Args(chara, castle.Towns[0]); // TODO
-                                // 町建設
-                                var cands = castle.NewTownCandidates(World).ToList();
-                                if (cands.Count > 0)
-                                {
-                                    var act2 = CastleActions.BuildTown;
-                                    var goodCand = cands.OrderByDescending(c =>
-                                        World.Economy.GetGoldAmount(Town.TileFoodMax(c)) +
-                                        Town.TileGoldMax(c))
-                                        .First();
-                                    var args2 = act2.Args(chara, castle, goodCand.Position);
-                                    
-                                    var cost1 = act1.Cost(args);
-                                    var cost2 = act2.Cost(args2);
-                                    if (cost1.castleGold > cost2.castleGold)
-                                    {
-                                        act = act2;
-                                        args = args2;
-                                    }
-                                }
-
-                                if (act.CanDo(args))
-                                {
-                                    await act.Do(args);
-                                    Debug.LogError($"{castle}の開発を行いました。({act})");
-                                    Pause();
-                                }
-                            }
-                        }
-
-                        // 城塞レベルの強化を行う。
+                        AI.Develop(castle);
                     }
                 }
 

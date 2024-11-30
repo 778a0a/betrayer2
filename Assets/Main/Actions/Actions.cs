@@ -66,6 +66,8 @@ public class ActionBase
             args.actor.Castle.Gold -= cost.castleGold;
         }
     }
+
+    public override string ToString() => GetType().Name;
 }
 
 public struct ActionCost
@@ -88,7 +90,7 @@ public struct ActionCost
 
     public static implicit operator ActionCost(int gold) => new() { actorGold = gold };
 
-    public override string ToString() => $"{actorGold},{actionPoints},{castleGold}";
+    public override string ToString() => $"Cost({actorGold},{actionPoints},{castleGold})";
 }
 
 public struct ActionArgs
