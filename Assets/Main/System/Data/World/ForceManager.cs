@@ -425,6 +425,8 @@ public class ForceManager : IReadOnlyList<Force>
             {
                 // TODO ランダムに散らす。
                 m.ChangeCastle(castle, true);
+                m.IsImportant = false;
+                m.OrderIndex = -1;
             }
             // TODO 他に必要な処理が色々ありそう。
         }

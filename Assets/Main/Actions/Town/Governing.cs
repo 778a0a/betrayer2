@@ -38,7 +38,9 @@ partial class TownActions
             var adj = 1 + (chara.Governing - 75) / 100f;
             if (chara.Traits.HasFlag(Traits.Merchant)) adj += 0.1f;
             var adjDim = town.GoldImproveAdj;
-            town.GoldIncome = Mathf.Min(town.GoldIncomeMax, town.GoldIncome + adj * adjDim / 8);
+            var adjImp = chara.IsImportant ? 1 : 0.5f;
+            var adjCount = Mathf.Pow(0.9f, (chara.Castle.Members.Count - 3).MinWith(0));
+            town.GoldIncome = (town.GoldIncome + adj * adjDim * adjImp * adjCount / 8).MaxWith(town.GoldIncomeMax);
 
             var contribAdj = town.Castle.Objective == CastleObjective.Commerce ? 1.5f : 1;
             chara.Contribution += adj * contribAdj;
@@ -71,7 +73,9 @@ partial class TownActions
             var adj = 1 + (chara.Governing - 75) / 100f;
             if (chara.Traits.HasFlag(Traits.Merchant)) adj += 0.1f;
             var adjDim = town.FoodImproveAdj;
-            town.FoodIncome = Mathf.Min(town.FoodIncomeMax, town.FoodIncome + adj * adjDim * 50 / 8);
+            var adjImp = chara.IsImportant ? 1 : 0.5f;
+            var adjCount = Mathf.Pow(0.9f, (chara.Castle.Members.Count - 3).MinWith(0));
+            town.FoodIncome = (town.FoodIncome + adj * adjDim * adjImp * adjCount * 50 / 8).MaxWith(town.FoodIncomeMax);
 
             var contribAdj = town.Castle.Objective == CastleObjective.Agriculture ? 1.5f : 1;
             chara.Contribution += adj * contribAdj;

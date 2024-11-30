@@ -109,6 +109,13 @@ public partial class GameCore
 
         if (GameDate.Day == 1)
         {
+            // 年初の処理
+            if (GameDate.Month == 1)
+            {
+                // 序列を更新する。
+                World.Countries.UpdateRanking();
+            }
+
             // 収入月の場合
             if (GameDate.IsIncomeMonth)
             {

@@ -356,6 +356,8 @@ public class AI
         }
 
         chara.Contribution /= 2;
+        chara.IsImportant = false;
+        chara.OrderIndex = castle.Country.Members.Max(m => m.OrderIndex) + 1;
         chara.ChangeCastle(castle, false);
         Debug.Log($"{chara} が {castle} に採用されました。");
     }
@@ -441,7 +443,7 @@ public class AI
                 var args = act.Args(castle.Boss, castle, 0);
                 var inputFoodMax = act.InputFoodMax(args);
                 //var inputFood = (castle.Food - 3000).MaxWith(inputFoodMax);
-                var inputFood = (castle.FoodIncome / 2).MaxWith(castle.Food - 3000).MaxWith(inputFoodMax);
+                var inputFood = (castle.FoodBalance / 2).MaxWith(castle.Food - 3000).MaxWith(inputFoodMax);
                 // 食料が少なすぎる場合はあまり意味がないので行動しない。
                 if (inputFood < 100)
                 {

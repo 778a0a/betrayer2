@@ -66,7 +66,9 @@ partial class CastleActions
             var cap = chara.Intelligence.MinWith(chara.Attack).MinWith(chara.Defense);
             var adj = 1 + (cap - 50) / 100f;
             var adjDim = Town.Diminish(castle.Strength, castle.StrengthMax, 100);
-            castle.Strength = (castle.Strength + 5 * adj * adjDim).MaxWith(castle.StrengthMax);
+            var adjImp = chara.IsImportant ? 1 : 0.5f;
+            var adjCount = Mathf.Pow(0.9f, (chara.Castle.Members.Count - 3).MinWith(0));
+            castle.Strength = (castle.Strength + 5 * adj * adjDim * adjImp * adjCount).MaxWith(castle.StrengthMax);
 
             var contribAdj = castle.Objective == CastleObjective.CastleStrength ? 1.5f : 1;
             chara.Contribution += adj * contribAdj;

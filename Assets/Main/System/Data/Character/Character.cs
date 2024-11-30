@@ -16,6 +16,10 @@ public class Character
     public void AttachWorld(WorldData world) => this.world = world;
 
     /// <summary>
+    /// 勢力内序列
+    /// </summary>
+    [JsonIgnore] public int OrderIndex { get; set; }
+    /// <summary>
     /// ID
     /// </summary>
     public int Id { get; set; }
@@ -106,21 +110,15 @@ public class Character
     public bool IsPlayer { get; set; }
 
     /// <summary>
+    /// 重臣ならtrue
+    /// </summary>
+    public bool IsImportant { get; set; }
+
+    /// <summary>
     /// （内部データ）強さ
     /// </summary>
     [JsonIgnore]
     public int Power => (Attack + Defense + Intelligence) / 3 * Soldiers.Power;
-
-    //public string GetLoyaltyText(WorldData world) => world.IsRuler(this) ? "--" : Loyalty.ToString();
-
-    /// <summary>
-    /// 恨み
-    /// </summary>
-    public int Urami { get; set; } = 0;
-    public void AddUrami(int value)
-    {
-        Urami = Mathf.Clamp(Urami + value, 0, 100);
-    }
 
     /// <summary>
     /// 給料
@@ -243,7 +241,7 @@ public class Character
         else if (IsVassal)
         {
             var country = Country;
-            var order = country.Vassals.OrderBy(c => c.Contribution).ToList().IndexOf(this);
+            var order = country.Vassals.OrderBy(c => c.OrderIndex).ToList().IndexOf(this);
             return L[new[]
             {
                 "従士",
@@ -265,5 +263,5 @@ public class Character
     public string csvDebugData { get; set; } = "";
     public string csvDebugMemo { get; set; } = "";
 
-    public override string ToString() => $"{Name} G:{Gold} P:{Power} (A:{Attack} D:{Defense} I:{Intelligence})";
+    public override string ToString() => $"{Name} O:{OrderIndex}{(IsImportant ? "!" : "")} G:{Gold} P:{Power}";
 }

@@ -27,6 +27,7 @@ public class Country : ICountryEntity
 
     public IEnumerable<Character> Members => Castles.SelectMany(c => c.Members);
     public IEnumerable<Character> Vassals => Members.Where(c => c != Ruler);
+    public int MaxImportantMemberCount => 4 + Castles.Count / 3;
 
     public IEnumerable<Country> Neighbors => Castles
         .SelectMany(c => c.Neighbors)

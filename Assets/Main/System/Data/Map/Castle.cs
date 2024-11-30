@@ -36,7 +36,7 @@ public class Castle : ICountryEntity, IMapEntity
 
     [JsonIgnore]
     public Character Boss => Members
-        .OrderByDescending(m => m == Country.Ruler ? int.MaxValue : m.Contribution)
+        .OrderBy(m => m.OrderIndex)
         .FirstOrDefault();
 
     /// <summary>

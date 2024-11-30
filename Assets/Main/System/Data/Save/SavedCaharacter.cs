@@ -29,8 +29,7 @@ public static class SavedCharacters
             var country = character.Country;
             var memberIndex =
                 country == null ? -1 :
-                country.Ruler == character ? 0 :
-                country.Vassals.OrderByDescending(m => m.Contribution).ToList().IndexOf(character) + 1;
+                character.OrderIndex;
             var chara = new SavedCharacter
             {
                 Character = character,
@@ -129,6 +128,7 @@ public static class SavedCharacters
                 CastleId = int.Parse(values[2]),
             };
             var character = new Character();
+            character.OrderIndex = chara.MemberOrderIndex;
             var characterType = character.GetType();
             for (int j = 3; j < header.Length; j++)
             {

@@ -857,7 +857,7 @@ public class TileInfoEditorWindow : EditorWindow
         if (targetTile.HasCastle)
         {
             var castle = targetTile.Castle;
-            var members = targetTile.Castle.Members.OrderByDescending(m => m.Contribution);
+            var members = targetTile.Castle.Members.OrderBy(m => m.OrderIndex);
             EditorGUILayout.Space(10);
             BoldLabel("メンバー情報");
             Label($"ゴールド 備蓄: {castle.Gold} 収入: {castle.GoldIncome} 支出: {castle.GoldComsumption} 収支: {castle.GoldBalance}|{castle.GoldBalanceMax} (残り: {castle.GoldRemainingQuarters()}Q)");
@@ -916,7 +916,7 @@ public class TileInfoEditorWindow : EditorWindow
                 GUILayout.EndHorizontal();
 
                 var i = 0;
-                foreach (var chara in castle.Members.Where(m => m != castle.Boss))
+                foreach (var chara in castle.Members.Where(m => m != castle.Boss).OrderBy(m => m.OrderIndex))
                 {
                     if (i % 6 == 0)
                     {

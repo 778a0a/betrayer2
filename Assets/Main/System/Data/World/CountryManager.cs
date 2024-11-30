@@ -61,4 +61,23 @@ public class CountryManager : IReadOnlyList<Country>
 
         relations[(a, b)] = Mathf.Clamp(value, 0, 100);
     }
+
+    /// <summary>
+    /// 勢力の序列を更新します。
+    /// </summary>
+    public void UpdateRanking()
+    {
+        foreach (var country in countries)
+        {
+            var members = country.Members.OrderByDescending(m => m.Contribution).ToList();
+            members.Remove(country.Ruler);
+            country.Ruler.OrderIndex = 0;
+            country.Ruler.IsImportant = true;
+            for (int i = 0; i < members.Count; i++)
+            {
+                members[i].OrderIndex = i + 1;
+                members[i].IsImportant = i + 1 < country.MaxImportantMemberCount;
+            }
+        }
+    }
 }
