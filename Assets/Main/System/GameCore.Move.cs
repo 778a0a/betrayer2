@@ -265,7 +265,7 @@ partial class GameCore
                     args.targetCastle = chara.Castle;
                     args.targetTown = args.targetCastle?.Towns.RandomPick();
                     // 基本的には方針通りの行動を行う。
-                    if (0.75f.Chance())
+                    if ((chara.Fealty.MinWith(chara.Ambition) / 10f - 0.1f).Chance())
                     {
                         switch (chara.Castle.Objective)
                         {
