@@ -398,7 +398,7 @@ partial class CastleActions
 
         override protected bool CanDoCore(ActionArgs args)
         {
-            return args.targetCastle.Gold >= args.gold && args.targetCastle.Food >= args.food;
+            return (args.gold == 0 || args.gold <= args.targetCastle.Gold) && (args.food == 0 || args.food <= args.targetCastle.Food);
         }
 
         public override ValueTask Do(ActionArgs args)

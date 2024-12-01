@@ -550,4 +550,58 @@ public class AI
         //core.Pause();
 
     }
+
+    public async ValueTask Transport(Country country)
+    {
+        var ruler = country.Ruler;
+        // 収支が黒字の城から君主の城へ物資を輸送する。
+        foreach (var castle in country.Castles)
+        {
+            if (castle.Boss == null || castle.Boss.IsRuler) continue;
+
+            var gold = (castle.GoldBalance / 2).Clamp(0, castle.Gold);
+            if (castle.GoldSurplus < 0) gold = 0;
+            var food = (castle.FoodBalance / 2).Clamp(0, castle.Food);
+            if (castle.FoodSurplus < 0) food = 0;
+            if (gold > 0 || food > 0)
+            {
+                var act = core.CastleActions.Transpot;
+                var args = act.Args(castle.Boss, castle, ruler.Castle, gold, food);
+                await act.Do(args);
+                Debug.LogError($"[輸送 - 上納] {castle.Boss.Name}が{ruler.Castle}へ{gold}G, {food}Fを輸送しました。");
+            }
+        }
+
+        // 物資が不足している城へ豊かな城から輸送する。
+        foreach (var castle in country.Castles)
+        {
+            // 誰もいない場合は対象外
+            if (castle.Boss == null) continue;
+            // 物資が足りている城は対象外
+            if (castle.Gold > 0 && castle.Food > 0) continue;
+
+            var wealthyCastles = country.Castles
+                .Where(c => c != castle && c.Boss != null)
+                .Where(c => c.Gold > 0 || c.Food > 0)
+                .OrderByDescending(c => c.Wealth);
+
+            var act = core.CastleActions.Transpot;
+            var argss = new List<ActionArgs>();
+            foreach (var wealthy in wealthyCastles)
+            {
+                var needGold = -castle.Gold;
+                var needFood = -castle.Food;
+                if (needGold <= 0 && needFood <= 0) break;
+
+                var gold = needGold.Clamp(0, wealthy.Gold);
+                var food = needFood.Clamp(0, wealthy.Food);
+                if (gold > 0 || food > 0)
+                {
+                    var args = act.Args(wealthy.Boss, wealthy, castle, gold, food);
+                    await act.Do(args);
+                    Debug.LogError($"[輸送 - 補充] {wealthy.Boss.Name}が{castle}へ{gold}G, {food}Fを輸送しました。");
+                }
+            }
+        }
+    }
 }

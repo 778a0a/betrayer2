@@ -31,9 +31,9 @@ partial class GameCore
             }
         }
 
-        // 君主の月毎アクションを行う。
         if (GameDate.Day == 1)
         {
+            // 君主の月毎アクションを行う。
             foreach (var country in World.Countries)
             {
                 var chara = country.Ruler;
@@ -42,6 +42,8 @@ partial class GameCore
                 // 収入月の場合
                 if (GameDate.IsIncomeMonth)
                 {
+                    await AI.Transport(country);
+
                     foreach (var castle in country.Castles)
                     {
                         // 各城の方針を設定する。
@@ -56,8 +58,6 @@ partial class GameCore
                         {
                             //Debug.Log($"方針継続: {castle.Objective} at {castle}");
                         }
-
-                        // 物資が不足しているなら余っている城から補給する。
                     }
                 }
 

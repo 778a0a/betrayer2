@@ -230,12 +230,12 @@ public partial class GameCore
                     castle.Gold -= chara.Salary / 2;
                     chara.Gold += chara.Salary / 2;
                     chara.Loyalty = (chara.Loyalty - chara.LoyaltyDecreaseBase).MinWith(0);
-                    Debug.LogError($"{castle} 借金があるため、{chara.Name}の給料をカットします。");
+                    Debug.LogWarning($"{castle} 借金があるため、{chara.Name}の給料をカットします。");
                 }
                 // 借金が多い場合は完全に支払わない。
                 else
                 {
-                    Debug.LogError($"{castle} 借金過多のため、{chara.Name}に給料を支払えませんでした。");
+                    Debug.LogWarning($"{castle} 借金過多のため、{chara.Name}に給料を支払えませんでした。");
                     if (!chara.IsImportant)
                     {
                         chara.Loyalty = (chara.Loyalty - 2 * chara.LoyaltyDecreaseBase).MinWith(0);
