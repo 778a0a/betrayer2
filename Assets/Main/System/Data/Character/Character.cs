@@ -71,6 +71,14 @@ public class Character
     /// 忠誠基本値
     /// </summary>
     public int LoyaltyBase { get; set; }
+    /// <summary>
+    /// 忠実さ
+    /// </summary>
+    public int Fealty { get; set; }
+    /// <summary>
+    /// 野心
+    /// </summary>
+    public int Ambition { get; set; }
 
     /// <summary>
     /// 所持金
@@ -87,12 +95,7 @@ public class Character
     /// <summary>
     /// 忠誠
     /// </summary>
-    [JsonIgnore] // 計算で求めるので保存不要
     public int Loyalty { get; set; }
-    /// <summary>
-    /// 給料配分
-    /// </summary>
-    public int SalaryRatio { get; set; }
 
     /// <summary>
     /// 軍勢
@@ -261,5 +264,5 @@ public class Character
     public string csvDebugData { get; set; } = "";
     public string csvDebugMemo { get; set; } = "";
 
-    public override string ToString() => $"{Name} O:{OrderIndex}{(IsImportant ? "!" : "")} G:{Gold} P:{Power} T:{ConsecutiveBattleCount}";
+    public override string ToString() => $"{Name} O:{OrderIndex}{(IsImportant ? "!" : "")} G:{Gold} P:{Power} T:{ConsecutiveBattleCount} L:{Loyalty}";
 }

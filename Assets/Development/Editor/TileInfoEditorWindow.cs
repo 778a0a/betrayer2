@@ -603,14 +603,13 @@ public class TileInfoEditorWindow : EditorWindow
             Label("");
         }
 
-        float ParamField(string label, float value, Color color, float max = 100)
+        float ParamField(string label, float value, Color color, float max = 100, bool slider = false)
         {
             GUILayout.BeginHorizontal();
             Label(label, 15);
             value = EditorGUILayout.FloatField(value, GUILayout.Width(40));
             var rect = GUILayoutUtility.GetRect(1, 20);
-            // 誤操作防止のためスライダーは無効にしておく。
-            //value = (int)GUI.HorizontalSlider(rect, value, 0, max);
+            if (slider) value = (int)GUI.HorizontalSlider(rect, value, 0, max);
             EditorGUI.DrawRect(rect, Color.gray);
             var rect2 = new Rect(rect.xMin, rect.yMin, rect.width * value / (float)max, rect.height);
             EditorGUI.DrawRect(rect2, color);
@@ -626,8 +625,10 @@ public class TileInfoEditorWindow : EditorWindow
         chara.Defense = (int)ParamField("D", chara.Defense, Color.green);
         chara.Intelligence = (int)ParamField("I", chara.Intelligence, Color.cyan);
         chara.Governing = (int)ParamField("G", chara.Governing, new Color(1, 0.5f, 0));
-        //chara.LoyaltyBase = ParamField("L", chara.LoyaltyBase, Color.yellow);
-        chara.Contribution = ParamField("C", chara.Contribution, Color.black);
+        chara.LoyaltyBase = (int)ParamField("L", chara.LoyaltyBase, Color.yellow);
+        chara.Fealty = (int)ParamField("f", chara.Fealty, Color.black, 10, true);
+        chara.Ambition = (int)ParamField("a", chara.Ambition, Color.magenta, 10, true);
+        //chara.Contribution = ParamField("C", chara.Contribution, Color.black);
         //chara.Prestige = ParamField("P", chara.Prestige, Color.white);
         Label($"合計: {chara.Attack + chara.Defense + chara.Intelligence + chara.Governing}");
 
