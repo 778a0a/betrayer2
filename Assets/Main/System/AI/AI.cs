@@ -68,7 +68,7 @@ public class AI
 
                 case CastleObjective.CastleStrength:
                     if (castle.Strength == castle.StrengthMax) return 0;
-                    if (castle.DangerForcesExists) return 500;
+                    //if (castle.DangerForcesExists) return 500;
                     if (minRel <= 20) return 50;
                     if (castle.Strength / castle.StrengthMax < 0.5f) return 20;
                     return 10;
