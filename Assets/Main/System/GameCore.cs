@@ -126,6 +126,12 @@ public partial class GameCore
             {
                 // 序列を更新する。
                 World.Countries.UpdateRanking();
+            }
+
+            // 収入月の場合
+            if (GameDate.IsIncomeMonth)
+            {
+                OnIncome();
 
                 // 忠誠を更新する。
                 foreach (var chara in World.Characters)
@@ -133,12 +139,6 @@ public partial class GameCore
                     if (!chara.IsVassal) continue;
                     chara.Loyalty = (chara.Loyalty - chara.LoyaltyDecreaseBase).MinWith(0);
                 }
-            }
-
-            // 収入月の場合
-            if (GameDate.IsIncomeMonth)
-            {
-                OnIncome();
 
                 // 友好度を更新する。
                 foreach (var country in World.Countries)
