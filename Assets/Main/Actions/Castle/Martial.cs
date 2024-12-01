@@ -59,8 +59,8 @@ partial class CastleActions
         {
             var chara = args.actor;
 
-            var averageLevel = chara.Soldiers.Average(s => s.Level);
-            return Mathf.Max(1, (int)averageLevel);
+            var averageLevel = (float)chara.Soldiers.Average(s => s.Level);
+            return (int)(1 + averageLevel / 2);
         }
 
         public override ValueTask Do(ActionArgs args)
@@ -73,7 +73,7 @@ partial class CastleActions
             foreach (var soldier in chara.Soldiers)
             {
                 if (soldier.IsEmptySlot) continue;
-                soldier.AddExperience(chara, drillMasterExists, isObjective);
+                soldier.AddExperience(chara, true, drillMasterExists, isObjective);
             }
 
             PayCost(args);

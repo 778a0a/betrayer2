@@ -31,11 +31,16 @@ public class Soldier
     public bool IsEmptySlot { get; set; }
     public bool IsAlive => !IsEmptySlot && HpFloat > 0;
 
-    public void AddExperience(Character owner, bool drillMasterExists = false, bool isObjective = false)
+    public void AddExperience(Character owner, bool isTraining = false, bool drillMasterExists = false, bool isObjective = false)
     {
         if (IsEmptySlot) return;
         
-        Experience += 10 + Random.Range(0, 4) + (drillMasterExists ? 3 : 0);
+        var exp = 10 + Random.Range(0, 4) + (drillMasterExists ? 3 : 0);
+        if (isTraining)
+        {
+            exp = (int)(exp * Mathf.Max(owner.Attack, owner.Defense) / 100f);
+        }
+
         // 十分経験値が貯まればレベルアップする。
         if (Experience >= Level * 100 + Mathf.Pow(1.5f, Level) * 10)
         {
