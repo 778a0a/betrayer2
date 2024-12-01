@@ -358,8 +358,17 @@ public class AI
         chara.Contribution /= 2;
         chara.IsImportant = false;
         chara.OrderIndex = castle.Country.Members.Max(m => m.OrderIndex) + 1;
+        chara.Loyalty = 80 + chara.Fealty * 2;
         chara.ChangeCastle(castle, false);
         Debug.Log($"{chara} が {castle} に採用されました。");
+
+        // 実行可能なら褒賞を与えて忠誠を上げる。
+        var act = core.CastleActions.Bonus;
+        var args = act.Args(castle.Boss, chara);
+        if (act.CanDo(args))
+        {
+            act.Do(args);
+        }
     }
 
     /// <summary>

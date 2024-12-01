@@ -510,8 +510,8 @@ partial class CastleActions
             var target = args.targetCharacter;
 
             var oldLoyalty = target.Loyalty;
-            target.Gold += 20;
-            target.Loyalty = Mathf.Min(100, target.Loyalty + 10);
+            target.Gold += 10;
+            target.Loyalty = (target.Loyalty + 10).MaxWith(110);
             args.actor.Castle.Gold -= 20;
 
             PayCost(args);
