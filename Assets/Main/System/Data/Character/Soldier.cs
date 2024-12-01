@@ -38,8 +38,9 @@ public class Soldier
         var exp = 10 + Random.Range(0, 4) + (drillMasterExists ? 3 : 0);
         if (isTraining)
         {
-            exp = (int)(exp * Mathf.Max(owner.Attack, owner.Defense) / 100f);
+            exp = (int)(exp * owner.Attack.MinWith(owner.Defense, owner.Intelligence) / 100f);
         }
+        Experience += exp;
 
         // 十分経験値が貯まればレベルアップする。
         if (Experience >= Level * 100 + Mathf.Pow(1.5f, Level) * 10)
