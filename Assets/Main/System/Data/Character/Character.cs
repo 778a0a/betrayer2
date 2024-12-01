@@ -80,6 +80,9 @@ public class Character
     /// </summary>
     public int Ambition { get; set; }
 
+    [JsonIgnore] public bool FealtyOverAmbition => Fealty >= Ambition;
+    [JsonIgnore] public bool IsLoyal => this == Country.Ruler || Loyalty >= 100 || (IsImportant && Loyalty > 90 && FealtyOverAmbition);
+
     /// <summary>
     /// 所持金
     /// </summary>
