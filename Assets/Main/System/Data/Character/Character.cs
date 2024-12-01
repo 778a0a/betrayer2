@@ -95,7 +95,13 @@ public class Character
     /// <summary>
     /// 忠誠
     /// </summary>
-    public int Loyalty { get; set; }
+    public float Loyalty { get; set; }
+
+    /// <summary>
+    /// 忠誠減少基本値
+    /// 忠実さが5なら-1、6なら-0.8、重臣なら半分
+    /// </summary>
+    [JsonIgnore] public float LoyaltyDecreaseBase => (10 - Fealty) / 5f / (IsImportant ? 2 : 1);
 
     /// <summary>
     /// 軍勢
@@ -264,5 +270,5 @@ public class Character
     public string csvDebugData { get; set; } = "";
     public string csvDebugMemo { get; set; } = "";
 
-    public override string ToString() => $"{Name} O:{OrderIndex}{(IsImportant ? "!" : "")} G:{Gold} P:{Power} T:{ConsecutiveBattleCount} L:{Loyalty}";
+    public override string ToString() => $"{Name} O:{OrderIndex}{(IsImportant ? "!" : "")} G:{Gold} P:{Power} T:{ConsecutiveBattleCount} L:{Loyalty:0.0}";
 }
