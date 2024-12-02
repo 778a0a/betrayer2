@@ -157,19 +157,20 @@ public class Battle
         var castle = Atk.Tile.Castle ?? Def.Tile.Castle;
         if (castle != null && Type == BattleType.Siege)
         {
-            castle.Strength *= Random.Range(0.95f, 0.99f);
-            castle.Stability = (castle.Stability - Random.Range(0f, 5f)).Clamp(0, 100);
+            castle.Strength *= ((100 - TickCount / 2f * Random.Range(0.5f, 1f)) / 100f).MaxWith(0.99f);
+            castle.Stability = (castle.Stability - TickCount / 4f * Random.Range(0.5f, 1f)).Clamp(0, 100);
+            Debug.LogError($"{TickCount}");
         }
         // 戦闘が起きた町の内政値を減らす。
-        if (Atk.Tile.Town != null) DamegeTown(Atk.Tile.Town, Type);
-        if (Def.Tile.Town != null) DamegeTown(Def.Tile.Town, Type);
-        static void DamegeTown(Town town, BattleType type)
+        if (Atk.Tile.Town != null) DamegeTown(Atk.Tile.Town, Type, Atk);
+        if (Def.Tile.Town != null) DamegeTown(Def.Tile.Town, Type, Def);
+        static void DamegeTown(Town town, BattleType type, Character chara)
         {
             var hasCastle = town.Position == town.Castle.Position;
             // 城外戦の場合は城の中はダメージを受けない。
             if (hasCastle && type == BattleType.Field) return;
 
-            var damageRange = hasCastle ? (0.98f, 0.999f) : (0.95f, 0.98f);
+            var damageRange = town.Country == chara.Country ? (0.98f, 0.999f) : (0.95f, 0.98f);
             town.FoodIncome *= Random.Range(damageRange.Item1, damageRange.Item2);
             town.GoldIncome *= Random.Range(damageRange.Item1, damageRange.Item2);
         }

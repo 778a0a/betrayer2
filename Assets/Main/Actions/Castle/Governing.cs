@@ -34,7 +34,8 @@ partial class CastleActions
 
             var cap = chara.Attack.MinWith(chara.Defense);
             var adj = 1 + (cap - 50) / 100f;
-            castle.Stability = (castle.Stability + 1 * adj).MaxWith(castle.StabilityMax);
+            var adjDev = 4 / (float)castle.Towns.Sum(t => t.DevelopmentLevel);
+            castle.Stability = (castle.Stability + 1 * adj * adjDev).MaxWith(castle.StabilityMax);
 
             var contribAdj = castle.Objective == CastleObjective.Stability ? 1.5f : 1;
             chara.Contribution += adj * contribAdj;

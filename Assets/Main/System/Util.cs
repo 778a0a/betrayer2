@@ -17,11 +17,18 @@ public static class Util
     public static float MaxWith(this float value, float max) => Mathf.Min(value, max);
     public static float MaxWith(this float value, float max, float max2) => Mathf.Min(value, Mathf.Min(max, max2));
     public static float MaxWith(this float value, float max, float max2, float max3) => Mathf.Min(value, Mathf.Min(max, Mathf.Min(max2, max3)));
+    public static int MaxWith(this int value, int max) => Mathf.Min(value, max);
+    public static int MaxWith(this int value, int max, int max2) => Mathf.Min(value, Mathf.Min(max, max2));
+    public static int MaxWith(this int value, int max, int max2, int max3) => Mathf.Min(value, Mathf.Min(max, Mathf.Min(max2, max3)));
 
     public static float MinWith(this float value, float min) => Mathf.Max(value, min);
-    public static float Clamp(this float value, float min, float max) => Mathf.Clamp(value, min, max);
-    public static int MaxWith(this int value, int max) => Mathf.Min(value, max);
+    public static float MinWith(this float value, float min, float min2) => Mathf.Max(value, Mathf.Max(min, min2));
+    public static float MinWith(this float value, float min, float min2, float min3) => Mathf.Max(value, Mathf.Max(min, Mathf.Max(min2, min3)));
     public static int MinWith(this int value, int min) => Mathf.Max(value, min);
+    public static int MinWith(this int value, int min, int min2) => Mathf.Max(value, Mathf.Max(min, min2));
+    public static int MinWith(this int value, int min, int min2, int min3) => Mathf.Max(value, Mathf.Max(min, Mathf.Max(min2, min3)));
+
+    public static float Clamp(this float value, float min, float max) => Mathf.Clamp(value, min, max);
     public static int Clamp(this int value, int min, int max) => Mathf.Clamp(value, min, max);
     public static float RandomRange(this float min, float max) => Random.Range(min, max);
     public static int RandomRange(this int min, int max) => Random.Range(min, max);
