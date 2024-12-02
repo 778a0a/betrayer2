@@ -332,6 +332,7 @@ public class AI
 
     public void HireVassal(Castle castle)
     {
+        var country = castle.Country;
         // 未所属キャラがいないなら何もしない。
         if (castle.Frees.Count == 0)
         {
@@ -355,20 +356,20 @@ public class AI
         // 採用後の収支が心もとないなら何もしない。
         var chara = castle.Frees.RandomPick();
         var newBalance = balance - chara.Salary - chara.FoodConsumptionMax / 50;
-        if (newBalance < requirements - 10)
+        if (newBalance < requirements - 10 && castle.WealthSurplus < 150)
         {
             return;
         }
 
         // 国全体の収支が心もとないなら何もしない。
-        if (castle.Country.WealthBalance < castle.Country.Castles.Count * 20)
+        if (country.WealthBalance < country.Castles.Count * 15 && country.WealthSurplus / country.Castles.Count < 150)
         {
             return;
         }
 
         chara.Contribution /= 2;
         chara.IsImportant = false;
-        chara.OrderIndex = castle.Country.Members.Max(m => m.OrderIndex) + 1;
+        chara.OrderIndex = country.Members.Max(m => m.OrderIndex) + 1;
         chara.Loyalty = 80 + chara.Fealty * 2;
         chara.ChangeCastle(castle, false);
         Debug.Log($"{chara} が {castle} に採用されました。");
@@ -579,7 +580,7 @@ public class AI
                 var act = core.CastleActions.Transpot;
                 var args = act.Args(castle.Boss, castle, ruler.Castle, gold, food);
                 await act.Do(args);
-                Debug.LogError($"[輸送 - 上納] {castle.Boss.Name}が{ruler.Castle}へ{gold}G, {food}Fを輸送しました。");
+                Debug.LogWarning($"[輸送 - 上納] {castle.Boss.Name}が{ruler.Castle}へ{gold}G, {food}Fを輸送しました。");
             }
         }
 
