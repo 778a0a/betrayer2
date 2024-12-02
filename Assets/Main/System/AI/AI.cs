@@ -300,7 +300,18 @@ public class AI
         Debug.Log($"出撃判定 {castle} 出撃します。 目標: {target}");
 
         // 城に残す人数
-        var leaveCount = Random.Range(1, 3);
+        var leaveCount = 0;
+        switch (boss.Personality)
+        {
+            case Personality.Warrior:
+            case Personality.Pirate:
+            case Personality.Chaos:
+                leaveCount = Random.Range(0, 3);
+                break;
+            default:
+                leaveCount = Random.Range(1, 3);
+                break;
+        }
         while (castle.Members.Count(m => m.IsDefendable) > leaveCount)
         {
             var attacker = castle.Members.Where(m => m.IsDefendable).RandomPick();
