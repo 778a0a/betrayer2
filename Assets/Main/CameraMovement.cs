@@ -63,9 +63,8 @@ public class CameraMovement : MonoBehaviour
             pos += new Vector3(mouseDelta.x, mouseDelta.y, 0) / 100;
             lastMousePosition = mousePosition;
         }
-        
+
         // 画面端でのカメラ移動処理
-        if (false)
         {
             if (mousePosition.y >= topPanBorder)
             {
@@ -136,7 +135,26 @@ public class CameraMovement : MonoBehaviour
 
         // ズーム処理
         var scroll = Mouse.current.scroll.ReadValue();
-        var zoom = camera.orthographicSize - scroll.y / 2;
-        camera.orthographicSize = Mathf.Clamp(zoom, zoomMin, zoomMax);
+        if (scroll.y != 0)
+        {
+            // マウスのワールド座標を取得
+            Vector3 mouseWorldPos = camera.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+            
+            // 新しいズームレベルを計算
+            var newZoom = Mathf.Clamp(camera.orthographicSize - scroll.y / 2, zoomMin, zoomMax);
+            var zoomDelta = newZoom / camera.orthographicSize;
+            
+            // カメラの新しい位置を計算
+            var newPos = transform.position;
+            newPos = mouseWorldPos + (newPos - mouseWorldPos) * zoomDelta;
+            
+            // 適用
+            camera.orthographicSize = newZoom;
+            transform.position = new Vector3(
+                Mathf.Clamp(newPos.x, panLimitUpLeft.x, panLimitDownRight.x),
+                Mathf.Clamp(newPos.y, panLimitDownRight.y, panLimitUpLeft.y),
+                newPos.z
+            );
+        }
     }
 }

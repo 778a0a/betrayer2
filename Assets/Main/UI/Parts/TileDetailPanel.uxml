@@ -9,27 +9,44 @@
         </engine:VisualElement>
         <engine:VisualElement style="background-color: rgb(136, 136, 136); border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); padding-top: 2px; padding-right: 2px; padding-bottom: 2px; padding-left: 2px;">
             <engine:VisualElement style="flex-grow: 1; flex-direction: row; align-items: center; margin-left: 2px; margin-top: 2px; margin-right: 2px; margin-bottom: 2px;">
-                <engine:VisualElement name="imageTileCountryColor" style="width: 20px; height: 20px; background-color: rgb(255, 255, 255); margin-left: 0; margin-top: -2px; margin-right: 4px; margin-bottom: -2px;" />
-                <engine:Label text="フレデリック大公領" name="labelTileOwner" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;" />
+                <engine:Label text="座標:" name="Label" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;" />
+                <engine:Label text="3, 0" name="labelCoordinate" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 3px;" />
+                <engine:Label text="地形:" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 5px; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;" />
+                <engine:Label text="Plain" name="labelTerrain" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 3px;" />
             </engine:VisualElement>
-            <engine:VisualElement style="flex-direction: row;">
-                <engine:VisualElement name="labelTileTerrainParent" style="flex-direction: row; margin-top: 2px; margin-right: 10px; margin-bottom: 2px; margin-left: 2px;">
-                    <engine:Label text="地形:" style="margin-top: 0; margin-right: 4px; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; font-size: 15px;" />
-                    <engine:Label text="丘陵" name="labelTileTerrain" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; font-size: 15px;" />
+            <engine:VisualElement style="flex-grow: 1; flex-direction: row; margin-left: 2px; margin-top: 2px; margin-right: 2px; margin-bottom: 2px; font-size: 10px;">
+                <engine:VisualElement style="flex-grow: 0; margin-right: 3px;">
+                    <engine:Label text="君主" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;" />
+                    <engine:VisualElement name="imageRuler" style="width: 50px; height: 50px; background-color: rgb(255, 255, 255); margin-left: 0; margin-top: 0; margin-right: 0; margin-bottom: 0;" />
                 </engine:VisualElement>
+                <engine:VisualElement style="flex-grow: 0; margin-right: 3px;">
+                    <engine:Label text="城主" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;" />
+                    <engine:VisualElement name="imageBoss" style="width: 50px; height: 50px; background-color: rgb(255, 255, 255); margin-left: 0; margin-top: 0; margin-right: 0; margin-bottom: 0;" />
+                </engine:VisualElement>
+                <engine:VisualElement style="flex-grow: 1;">
+                    <engine:Label text="将: 8  浪: 5  商: ◯" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;" />
+                    <engine:VisualElement style="flex-grow: 1; flex-direction: row;">
+                        <engine:VisualElement style="width: 24px; height: 24px; background-color: rgb(255, 255, 255); margin-left: 0; margin-top: 0; margin-right: 1px; margin-bottom: 1px;" />
+                        <engine:VisualElement style="width: 24px; height: 24px; background-color: rgb(255, 255, 255); margin-left: 0; margin-top: 0; margin-right: 1px; margin-bottom: 1px;" />
+                        <engine:VisualElement style="width: 24px; height: 24px; background-color: rgb(255, 255, 255); margin-left: 0; margin-top: 0; margin-right: 1px; margin-bottom: 1px;" />
+                        <engine:VisualElement style="width: 24px; height: 24px; background-color: rgb(255, 255, 255); margin-left: 0; margin-top: 0; margin-right: 1px; margin-bottom: 1px;" />
+                    </engine:VisualElement>
+                    <engine:VisualElement style="flex-grow: 1; flex-direction: row;">
+                        <engine:VisualElement style="width: 24px; height: 24px; background-color: rgb(255, 255, 255); margin-left: 0; margin-top: 0; margin-right: 1px; margin-bottom: 1px;" />
+                        <engine:VisualElement style="width: 24px; height: 24px; background-color: rgb(255, 255, 255); margin-left: 0; margin-top: 0; margin-right: 1px; margin-bottom: 1px;" />
+                        <engine:VisualElement style="width: 24px; height: 24px; background-color: rgb(255, 255, 255); margin-left: 0; margin-top: 0; margin-right: 1px; margin-bottom: 1px;" />
+                        <engine:VisualElement style="width: 24px; height: 24px; background-color: rgb(255, 255, 255); margin-left: 0; margin-top: 0; margin-right: 1px; margin-bottom: 1px;" />
+                    </engine:VisualElement>
+                </engine:VisualElement>
+            </engine:VisualElement>
+            <engine:VisualElement style="flex-grow: 1; flex-direction: row;">
+                <engine:Button text="人物一覧" name="buttonCastleMembers" />
+                <engine:Button text="内政" name="buttonCastleGoverning" />
+                <engine:Button text="軍事" name="buttonCastleMartial" />
+                <engine:Button text="戦略" name="buttonCastleStrategy" />
             </engine:VisualElement>
             <engine:Foldout text="城" name="CastleInfo">
                 <engine:VisualElement style="flex-grow: 1; margin-left: -30px;">
-                    <engine:VisualElement style="flex-grow: 1; flex-direction: row;">
-                        <engine:Button text="人物一覧" name="buttonCastleMembers" />
-                        <engine:Button text="内政" name="buttonCastleGoverning" />
-                        <engine:Button text="軍事" name="buttonCastleMartial" />
-                        <engine:Button text="戦略" name="buttonCastleStrategy" />
-                    </engine:VisualElement>
-                    <engine:VisualElement style="flex-direction: row;">
-                        <engine:Label text="城主" />
-                        <engine:Label text="ハイペリオン" name="labelGovernor" />
-                    </engine:VisualElement>
                     <engine:VisualElement style="flex-direction: row;">
                         <engine:Label text="城強度" class="InfoCaption" />
                         <engine:Label text="999 / 999" name="labelCastleStrength" class="InfoValue" />

@@ -1,5 +1,4 @@
-Button
-{
+Button {
     margin: 1px 2px 1px 2px;
     padding: 5px 6px 5px 6px;
 }
@@ -35,42 +34,75 @@ Button
     border-bottom-left-radius: 5px;
 }
 
-.attacker-lose .attacker-info,
-.defender-lose .defender-info,
-.attacker-lose #AttackerSoldiers,
+.attacker-lose .attacker-info {
+    opacity: 0.4;
+}
+
+.defender-lose .defender-info {
+    opacity: 0.4;
+}
+
+.attacker-lose #AttackerSoldiers {
+    opacity: 0.4;
+}
+
 .defender-lose #DefenderSoldiers {
     opacity: 0.4;
 }
 
-#imageAttacker,
+#imageAttacker {
+    background-color: rgba(28, 255, 229, 0.33);
+}
+
 #imageDefender {
     background-color: rgba(28, 255, 229, 0.33);
 }
 
-.attacker-lose #imageAttacker,
+.attacker-lose #imageAttacker {
+    background-color: default;
+}
+
 .defender-lose #imageDefender {
     background-color: default;
 }
 
-
-
 .TileInfoOverlayRoot * {
-	font-size: 18px;
+    font-size: 18px;
 }
 
 .TileDetailPanelRoot .InfoCaption {
-    width: 95px;
+    width: 80px;
 }
 
-.TileDetailPanelRoot .InfoCaption,
-.TileDetailPanelRoot .InfoValue,
-{
-    font-size: 16px;
-    padding: 2px 0px 2px 0px;
+.TileDetailPanelRoot .InfoCaption {
+    font-size: 12px;
+    padding: 0px 3px 0px 3px;
+    margin: 0 0 -1px -1px;
+    border-top-width: 0.5px;
+    border-right-width: 0.5px;
+    border-bottom-width: 0.5px;
+    border-left-width: 0.5px;
+    border-left-color: rgb(0, 0, 0);
+    border-right-color: rgb(0, 0, 0);
+    border-top-color: rgb(0, 0, 0);
+    border-bottom-color: rgb(0, 0, 0);
 }
 
-.TileDetailPanelRoot .InfoValue
-{
+.TileDetailPanelRoot .InfoValue {
+    font-size: 12px;
+    padding: 0px 3px 0px 3px;
+    margin: 0 0 -1px -1px;
+    border-top-width: 0.5px;
+    border-right-width: 0.5px;
+    border-bottom-width: 0.5px;
+    border-left-width: 0.5px;
+    border-left-color: rgb(0, 0, 0);
+    border-right-color: rgb(0, 0, 0);
+    border-top-color: rgb(0, 0, 0);
+    border-bottom-color: rgb(0, 0, 0);
+}
+
+.TileDetailPanelRoot .InfoValue {
     width: 120px;
 }
 
@@ -78,17 +110,22 @@ Button
     font-size: 17px;
 }
 
-
-.CharacterPanel-StatCell-Caption,
-.CharacterPanel-StatCell-Value
-{
+.CharacterPanel-StatCell-Caption {
     margin: 0;
     font-size: 14px;
     align-self: center;
 }
 
-.CharacterPanel-StatCell-Caption,
-.CharacterPanel-StatCell-Value
-{
+.CharacterPanel-StatCell-Value {
+    margin: 0;
+    font-size: 14px;
+    align-self: center;
+}
+
+.CharacterPanel-StatCell-Caption {
+    font-size: 14px;
+}
+
+.CharacterPanel-StatCell-Value {
     font-size: 14px;
 }
