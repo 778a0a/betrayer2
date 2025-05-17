@@ -198,9 +198,6 @@ partial class GameCore
                     // 追放を行うか判定する。
                     // 町建設・城増築・投資を行うか判定する。
 
-                    // 食糧不足・借金の解消を行う。
-                    AI.TradeNeeds(castle);
-
                     // 採用を行うか判定する。
                     AI.HireVassal(castle);
 
@@ -278,9 +275,6 @@ partial class GameCore
                             case CastleObjective.Commerce:
                                 action = TownActions.ImproveGoldIncome;
                                 break;
-                            case CastleObjective.Agriculture:
-                                action = TownActions.ImproveFoodIncome;
-                                break;
                             case CastleObjective.None:
                             case CastleObjective.Attack:
                             case CastleObjective.Train:
@@ -296,8 +290,8 @@ partial class GameCore
                 }
                 if (chara.Soldiers.HasEmptySlot)
                 {
-                    // 危険軍勢がいるか、食料収支がプラスなら兵士を採用する。
-                    if (chara.Castle.DangerForcesExists || chara.Castle.FoodBalanceConservative > 200)
+                    // 危険軍勢がいるなら兵士を採用する。
+                    if (chara.Castle.DangerForcesExists)
                     {
                         action = CastleActions.HireSoldier;
                     }
@@ -335,7 +329,6 @@ partial class GameCore
     private readonly Lazy<ActionBase[]> vassalActions = new(() => new ActionBase[]
     {
         Instance.TownActions.ImproveGoldIncome,
-        Instance.TownActions.ImproveFoodIncome,
         Instance.CastleActions.ImproveCastleStrength,
         Instance.CastleActions.ImproveStability,
         Instance.CastleActions.TrainSoldiers,

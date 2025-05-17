@@ -235,7 +235,6 @@ public class TileInfoEditorWindow : EditorWindow
                     if (town.Position != town.Castle.Position) town.DevelopmentLevel = 1;
 
                     var adj = town.Castle.Position == town.Position ? 1f / 2f : 1f / 4f;
-                    town.FoodIncome = town.FoodIncomeMax * adj;
                     town.GoldIncome = town.GoldIncomeMax * adj;
                 }
                 Save();
@@ -251,7 +250,7 @@ public class TileInfoEditorWindow : EditorWindow
         using (HorizontalLayout())
         {
             Label($"座標: {targetTile.Position} 地形: {targetTile.Terrain}", 150);
-            Label($"Gmax: {Town.TileGoldMax(targetTile):000} Fmax:{Town.TileFoodMax(targetTile):0000}", 150);
+            Label($"Gmax: {Town.TileGoldMax(targetTile):000}", 150);
         }
 
         // スクロール可能にする。
@@ -732,11 +731,6 @@ public class TileInfoEditorWindow : EditorWindow
             Label($"{castle.GoldIncome:0000} / {castle.GoldIncomeMax:0000} ({castle.GoldBalance:+0;-#})", 200);
             EditorGUILayout.EndHorizontal();
 
-            EditorGUILayout.BeginHorizontal();
-            castle.Food = EditorGUILayout.FloatField("Food", castle.Food);
-            Label($"{castle.FoodIncome:0000} / {castle.FoodIncomeMax:0000} ({castle.FoodBalance:+0;-#})", 200);
-            EditorGUILayout.EndHorizontal();
-
             if (GUILayout.Button("城を削除"))
             {
                 // 確認ダイアログ
@@ -761,7 +755,6 @@ public class TileInfoEditorWindow : EditorWindow
                     Position = targetTile.Position,
                     Strength = 0,
                     Gold = 0,
-                    Food = 0,
                 };
                 world.Map.RegisterCastle(country, newCastle);
                 Save();
@@ -782,12 +775,6 @@ public class TileInfoEditorWindow : EditorWindow
             Label("金収入", 50);
             town.GoldIncome = ParamField(town.GoldIncome, town.GoldIncomeMax, 200, Color.yellow);
             Label($"Max: {town.GoldIncomeMax} (Base: {town.GoldIncomeMaxBase}, Adj: {town.GoldImproveAdj})", 200);
-            EditorGUILayout.EndHorizontal();
-
-            EditorGUILayout.BeginHorizontal();
-            Label("食料収入", 50);
-            town.FoodIncome = ParamField(town.FoodIncome, town.FoodIncomeMax, 10000, Color.green);
-            Label($"Max: {town.FoodIncomeMax} (Base: {town.FoodIncomeMaxBase}, Adj: {town.FoodImproveAdj})", 200);
             EditorGUILayout.EndHorizontal();
 
             if (GUILayout.Button("町を削除"))
@@ -846,7 +833,6 @@ public class TileInfoEditorWindow : EditorWindow
                 {
                     Position = targetTile.Position,
                     GoldIncome = 0,
-                    FoodIncome = 0,
                 };
                 world.Map.RegisterTown(targetCastle, newTown);
                 Save();
@@ -862,7 +848,6 @@ public class TileInfoEditorWindow : EditorWindow
             EditorGUILayout.Space(10);
             BoldLabel("メンバー情報");
             Label($"ゴールド 備蓄: {castle.Gold} 収入: {castle.GoldIncome} 支出: {castle.GoldComsumption} 収支: {castle.GoldBalance}|{castle.GoldBalanceMax} (残り: {castle.GoldRemainingQuarters()}Q)");
-            Label($"食料 備蓄: {castle.Food} 収入: {castle.FoodIncome} 支出: {castle.FoodComsumption} 収支: {castle.FoodBalance}|{castle.FoodBalanceMax} (残り: {castle.FoodRemainingQuarters()}Q)");
             foreach (var chara in members)
             {
                 Label($"{chara}");
@@ -913,7 +898,7 @@ public class TileInfoEditorWindow : EditorWindow
             {
                 GUILayout.BeginHorizontal();
                 Label($"将:{castle.Members.Count} 浪:{castle.Frees.Count} 方針: {castle.Objective}", 150);
-                Label($"W:{castle.Country.WealthBalance:0} G:{castle.Country.GoldBalance:0.0} F:{castle.Country.FoodBalance:0} S:{castle.Country.WealthSurplus:0}");
+                Label($"G:{castle.Country.GoldBalance:0.0} S:{castle.Country.GoldSurplus:0}");
                 GUILayout.EndHorizontal();
 
                 var i = 0;

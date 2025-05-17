@@ -28,19 +28,6 @@ public class Town : ICountryEntity, IMapEntity
     /// </summary>
     [JsonProperty("D")]
     public int DevelopmentLevel { get; set; } = 0;
-    /// <summary>
-    /// 食料生産
-    /// </summary>
-    [JsonProperty("F")]
-    public float FoodIncome { get; set; }
-    [JsonIgnore]
-    public float FoodIncomeMaxBase { get; set; }
-    [JsonIgnore]
-    public float FoodIncomeMax => CalculateMax(FoodIncomeMaxBase, DevelopmentLevel);
-    [JsonIgnore]
-    public float FoodIncomeProgress => FoodIncome / FoodIncomeMax;
-    [JsonIgnore]
-    public float FoodImproveAdj => Diminish(FoodIncome, FoodIncomeMax, FoodIncomeMaxBase);
 
     /// <summary>
     /// 商業
@@ -73,11 +60,6 @@ public class Town : ICountryEntity, IMapEntity
     }
 
 
-    public static float TileFoodMax(GameMapTile tile, Castle castle = null)
-    {
-        var val = BaseFoodAdj(tile.Terrain) + tile.Neighbors.Sum(t => NeighborFoodAdj(t.Terrain));
-        return val * TileMaxAdj(tile, castle);
-    }
     public static float TileGoldMax(GameMapTile tile, Castle castle = null)
     {
         var val = BaseGoldAdj(tile.Terrain) + tile.Neighbors.Sum(t => NeighborGoldAdj(t.Terrain));
@@ -98,36 +80,24 @@ public class Town : ICountryEntity, IMapEntity
         return adj;
     }
 
-    private static float BaseFoodAdj(Terrain terrain) => devAdj[terrain].BaseFood + devAdj[terrain].NeighborFood;
-    private static float NeighborFoodAdj(Terrain terrain) => devAdj[terrain].NeighborFood;
     private static float BaseGoldAdj(Terrain terrain) => devAdj[terrain].BaseGold + devAdj[terrain].NeighborGold;
     private static float NeighborGoldAdj(Terrain terrain) => devAdj[terrain].NeighborGold;
     private static readonly Dictionary<Terrain, TerrainDevAdjustmentData> devAdj = new()
     {
-        // Terrain                Food  F+   Gold G+
-        { Terrain.LargeRiver, new(0000, 000, 000, 001.5f) },
-        { Terrain.River,      new(0000, 025, 000, 001) },
-        { Terrain.Plain,      new(0500, 050, 010, 000) },
-        { Terrain.Hill,       new(0500, 025, 010, 000.5f) },
-        { Terrain.Forest,     new(0500, 000, 010, 001) },
-        { Terrain.Mountain,   new(0500, 000, 010, 001) },
-        //{ Terrain.LargeRiver, new(-300, 050, -30, 020) },
-        //{ Terrain.River,      new(-300, 050, -30, 010) },
-        //{ Terrain.Plain,      new(0500, 100, 030, 000) },
-        //{ Terrain.Hill,       new(0350, 000, 040, 005) },
-        //{ Terrain.Forest,     new(0250, 000, 040, 010) },
-        //{ Terrain.Mountain,   new(0200, 000, 040, 005) },
+        // Terrain                Gold G+
+        { Terrain.LargeRiver, new(000, 001.5f) },
+        { Terrain.River,      new(000, 001) },
+        { Terrain.Plain,      new(010, 000) },
+        { Terrain.Hill,       new(010, 000.5f) },
+        { Terrain.Forest,     new(010, 001) },
+        { Terrain.Mountain,   new(010, 001) },
     };
     private struct TerrainDevAdjustmentData
     {
-        public float BaseFood;
-        public float NeighborFood;
         public float BaseGold;
         public float NeighborGold;
-        public TerrainDevAdjustmentData(float baseFood, float neighborFood, float baseGold, float neighborGold)
+        public TerrainDevAdjustmentData(float baseGold, float neighborGold)
         {
-            BaseFood = baseFood;
-            NeighborFood = neighborFood;
             BaseGold = baseGold;
             NeighborGold = neighborGold;
         }

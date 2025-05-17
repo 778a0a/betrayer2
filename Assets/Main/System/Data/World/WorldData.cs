@@ -11,12 +11,9 @@ public class WorldData
     public CountryManager Countries { get; set; }
     public ForceManager Forces { get; set; }
     public GameMapManager Map { get; set; }
-    public EconomyManager Economy { get; set; }
     public Character Player => Characters.FirstOrDefault(c => c.IsPlayer);
 
     public IEnumerable<Castle> Castles => Countries.SelectMany(c => c.Castles);
-
-    public Country CountryOf(Castle castle) => Countries.FirstOrDefault(c => c.Castles.Contains(castle));
 
     public override string ToString() => $"WorldData {Characters.Count} characters, {Countries.Count} countries";
 }

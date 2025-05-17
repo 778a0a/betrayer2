@@ -78,12 +78,6 @@ public class AI
                     if (castle.Stability < 100) return 100;
                     return 0;
 
-                case CastleObjective.Agriculture:
-                    if (castle.Stability < 90) return 0;
-                    if (castle.FoodIncome == castle.FoodIncomeMax) return 0;
-                    if (castle.FoodBalanceMax < 0) return 1000;
-                    return 100;
-
                 case CastleObjective.Commerce:
                     if (castle.Stability < 90) return 0;
                     if (castle.GoldIncome == castle.GoldIncomeMax) return 0;
@@ -346,8 +340,8 @@ public class AI
             requirements = 15;
         }
 
-        // 資金・食料が足りない場合は何もしない。
-        var balance = castle.WealthBalanceConservative;
+        // 収支が低い場合は何もしない。
+        var balance = castle.GoldBalance;
         if (balance < requirements)
         {
             return;
@@ -356,13 +350,13 @@ public class AI
         // 採用後の収支が心もとないなら何もしない。
         var chara = castle.Frees.RandomPick();
         var newBalance = balance - chara.Salary - chara.FoodConsumptionMax / 50;
-        if (newBalance < requirements - 10 && castle.WealthSurplus < 150)
+        if (newBalance < requirements - 10 && castle.GoldSurplus < 150)
         {
             return;
         }
 
         // 国全体の収支が心もとないなら何もしない。
-        if (country.WealthBalance < country.Castles.Count * 15 && country.WealthSurplus / country.Castles.Count < 150)
+        if (country.GoldBalance < country.Castles.Count * 15 && country.GoldSurplus / country.Castles.Count < 150)
         {
             return;
         }
@@ -383,104 +377,6 @@ public class AI
         }
     }
 
-    /// <summary>
-    /// 必要量の購入処理
-    /// </summary>
-    public void TradeNeeds(Castle castle)
-    {
-        // 食料がマイナスの場合、ゴールドがあれば食料を購入する。
-        var buyCount = 0;
-        while (castle.Food < 0 && castle.Gold > castle.GoldDebtMax)
-        {
-            // 購入量を計算する。
-            var act = core.CastleActions.BuyFood;
-            var args = act.Args(castle.Boss, castle, 0);
-            var inputGoldMax = act.InputGoldMax(args);
-            var needGold = act.InverseGold(args, -castle.Food);
-            var remainDebtLimit = castle.Gold - castle.GoldDebtMax;
-            var inputGold = remainDebtLimit.MaxWith(needGold, inputGoldMax);
-            // 所持金が少なすぎる場合はあまり意味がないので行動しない。
-            if (inputGold < 0.1 && inputGold != needGold)
-            {
-                Debug.Log($"[Trade] {castle} 食料購入 所持金不足 ({inputGold})");
-                break;
-            }
-
-            args = act.Args(castle.Boss, castle, inputGold);
-
-            if (act.CanDo(args))
-            {
-                act.Do(args);
-                buyCount++;
-            }
-            else
-            {
-                break;
-            }
-        }
-        if (buyCount > 0)
-        {
-            Debug.Log($"[Trade] {castle} 食料購入 {buyCount} 回");
-        }
-
-        // ゴールドがマイナスの場合、食料があれば売却する。
-        var sellCount = 0;
-        while (castle.Gold < 0 && castle.Food > 0)
-        {
-            // 売却量を計算する。
-            var act = core.CastleActions.SellFood;
-            var args = act.Args(castle.Boss, castle, 0);
-            var inputFoodMax = act.InputFoodMax(args);
-            var needFood = act.InverseFood(args, -castle.Gold);
-            var inputFood = castle.Food.MaxWith(needFood).MaxWith(inputFoodMax);
-            // 食料が少なすぎる場合はあまり意味がないので行動しない。
-            if (inputFood < 5 && inputFood != needFood)
-            {
-                Debug.Log($"[Trade] {castle} 借金返済 食料不足 ({needFood})");
-                break;
-            }
-
-            args = act.Args(castle.Boss, castle, inputFood);
-            if (act.CanDo(args))
-            {
-                act.Do(args);
-                sellCount++;
-            }
-            else
-            {
-                break;
-            }
-        }
-        if (sellCount > 0)
-        {
-            Debug.Log($"[Trade] {castle} 借金返済 {sellCount} 回");
-        }
-
-        // 食料は余っていても仕方ないので、余剰の一定量を売却する。
-        if (core.GameDate.IsEndMonth)
-        {
-            if (castle.FoodBalance > 500 && castle.Food > 3000)
-            {
-                var act = core.CastleActions.SellFood;
-                var args = act.Args(castle.Boss, castle, 0);
-                var inputFoodMax = act.InputFoodMax(args);
-                //var inputFood = (castle.Food - 3000).MaxWith(inputFoodMax);
-                var inputFood = (castle.FoodBalance / 2).MaxWith(castle.Food - 3000).MaxWith(inputFoodMax);
-                // 食料が少なすぎる場合はあまり意味がないので行動しない。
-                if (inputFood < 100)
-                {
-                    return;
-                }
-                args = act.Args(castle.Boss, castle, inputFood);
-                if (act.CanDo(args))
-                {
-                    act.Do(args);
-                    Debug.Log($"[Trade] {castle} 余剰食料売却 (-{inputFood})");
-                }
-            }
-        }
-    }
-
     public async ValueTask Develop(Castle castle)
     {
         // 収入月前でなければ何もしない。
@@ -490,15 +386,13 @@ public class AI
         }
 
         // 十分発展していないなら何もしない。
-        if (castle.GoldIncomeProgress < 0.75f || castle.FoodIncomeProgress < 0.75f)
+        if (castle.GoldIncomeProgress < 0.75f)
         {
             return;
         }
 
-        var goldSurplus = castle.GoldSurplus;
-        var foodSurplus = castle.FoodSurplus;
         // 物資が余っていないなら何もしない。
-        if (goldSurplus < 0 && foodSurplus < 0)
+        if (castle.GoldSurplus < 0)
         {
             return;
         }
@@ -523,9 +417,7 @@ public class AI
             if (candTiles.Count > 0)
             {
                 var act = core.CastleActions.BuildTown;
-                var bestTile = candTiles.OrderByDescending(t =>
-                    world.Economy.GetGoldAmount(Town.TileFoodMax(t, castle)) + Town.TileGoldMax(t, castle))
-                    .First();
+                var bestTile = candTiles.OrderByDescending(t =>Town.TileGoldMax(t, castle)).First();
                 var args = act.Args(actor, castle, bestTile.Position);
                 if (act.CanDo(args))
                 {
@@ -552,7 +444,7 @@ public class AI
         // 一番コストの低い行動を選択する。
         var best = candActions.OrderBy(a => a.cost.castleGold).FirstOrDefault();
         // 手元物資が心もとないなら何もしない。
-        if (castle.Wealth < best.cost.castleGold / 10)
+        if (castle.Gold < best.cost.castleGold / 10)
         {
             return;
         }
@@ -573,14 +465,12 @@ public class AI
 
             var gold = (castle.GoldBalance / 2).Clamp(0, castle.Gold);
             if (castle.GoldSurplus < 0) gold = 0;
-            var food = (castle.FoodBalance / 2).Clamp(0, castle.Food);
-            if (castle.FoodSurplus < 0) food = 0;
-            if (gold > 0 || food > 0)
+            if (gold > 0)
             {
                 var act = core.CastleActions.Transpot;
-                var args = act.Args(castle.Boss, castle, ruler.Castle, gold, food);
+                var args = act.Args(castle.Boss, castle, ruler.Castle, gold);
                 await act.Do(args);
-                Debug.LogWarning($"[輸送 - 上納] {castle.Boss.Name}が{ruler.Castle}へ{gold}G, {food}Fを輸送しました。");
+                Debug.LogWarning($"[輸送 - 上納] {castle.Boss.Name}が{ruler.Castle}へ{gold}G を輸送しました。");
             }
         }
 
@@ -590,28 +480,26 @@ public class AI
             // 誰もいない場合は対象外
             if (castle.Boss == null) continue;
             // 物資が足りている城は対象外
-            if (castle.Gold > 0 && castle.Food > 0) continue;
+            if (castle.Gold > 0) continue;
 
             var wealthyCastles = country.Castles
                 .Where(c => c != castle && c.Boss != null)
-                .Where(c => c.Gold > 0 || c.Food > 0)
-                .OrderByDescending(c => c.Wealth);
+                .Where(c => c.Gold > 0)
+                .OrderByDescending(c => c.Gold);
 
             var act = core.CastleActions.Transpot;
             var argss = new List<ActionArgs>();
             foreach (var wealthy in wealthyCastles)
             {
                 var needGold = -castle.Gold;
-                var needFood = -castle.Food;
-                if (needGold <= 0 && needFood <= 0) break;
+                if (needGold <= 0) break;
 
                 var gold = needGold.Clamp(0, wealthy.Gold);
-                var food = needFood.Clamp(0, wealthy.Food);
-                if (gold > 0 || food > 0)
+                if (gold > 0)
                 {
-                    var args = act.Args(wealthy.Boss, wealthy, castle, gold, food);
+                    var args = act.Args(wealthy.Boss, wealthy, castle, gold);
                     await act.Do(args);
-                    Debug.LogError($"[輸送 - 補充] {wealthy.Boss.Name}が{castle}へ{gold}G, {food}Fを輸送しました。");
+                    Debug.LogError($"[輸送 - 補充] {wealthy.Boss.Name}が{castle}へ{gold}G を輸送しました。");
                 }
             }
         }

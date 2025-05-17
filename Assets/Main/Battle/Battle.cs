@@ -171,7 +171,6 @@ public class Battle
             if (hasCastle && type == BattleType.Field) return;
 
             var damageRange = town.Country == chara.Country ? (0.98f, 0.999f) : (0.95f, 0.98f);
-            town.FoodIncome *= Random.Range(damageRange.Item1, damageRange.Item2);
             town.GoldIncome *= Random.Range(damageRange.Item1, damageRange.Item2);
         }
 

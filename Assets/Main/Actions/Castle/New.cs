@@ -391,14 +391,14 @@ partial class CastleActions
         public override string Label => L["輸送"];
         public override string Description => L["別の城へ物資を輸送します。"];
 
-        public ActionArgs Args(Character actor, Castle c, Castle c2, float gold, float food) =>
-            new(actor, targetCastle: c, targetCastle2: c2, gold: gold, food: food);
+        public ActionArgs Args(Character actor, Castle c, Castle c2, float gold) =>
+            new(actor, targetCastle: c, targetCastle2: c2, gold: gold);
 
         public override ActionCost Cost(ActionArgs args) => ActionCost.Of(0, 1, 0);
 
         override protected bool CanDoCore(ActionArgs args)
         {
-            return (args.gold == 0 || args.gold <= args.targetCastle.Gold) && (args.food == 0 || args.food <= args.targetCastle.Food);
+            return (args.gold == 0 || args.gold <= args.targetCastle.Gold);
         }
 
         public override ValueTask Do(ActionArgs args)
@@ -406,87 +406,10 @@ partial class CastleActions
             Assert.IsTrue(CanDo(args));
 
             args.targetCastle.Gold -= args.gold;
-            args.targetCastle.Food -= args.food;
             args.targetCastle2.Gold += args.gold;
-            args.targetCastle2.Food += args.food;
 
             PayCost(args);
-            Debug.Log($"{args.actor.Name} が {args.targetCastle} から {args.targetCastle2} へ {args.gold}G {args.food} 運びました。");
-            return default;
-        }
-    }
-
-    /// <summary>
-    /// 糧買
-    /// </summary>
-    public BuyFoodAction BuyFood { get; } = new();
-    public class BuyFoodAction : CastleActionBase
-    {
-        public override string Label => L["糧買"];
-        public override string Description => L["食料を購入します。"];
-
-        public ActionArgs Args(Character actor, Castle c, float gold) => new(actor, targetCastle: c, gold: gold);
-        
-        /// <summary>
-        /// 1回のアクションで購入可能な最大金額
-        /// </summary>
-        public float InputGoldMax(ActionArgs args) => args.targetCastle.GoldIncome * 2;
-        public float OutputFood(ActionArgs args) => World.Economy.GetFoodAmount(args.gold);
-        public float InverseGold(ActionArgs args, float food) => World.Economy.GetGoldAmount(food);
-
-        public override ActionCost Cost(ActionArgs args) => ActionCost.Of(0, 1, 0);
-
-        protected override bool CanDoCore(ActionArgs args)
-        {
-            return args.targetCastle.Gold - args.targetCastle.GoldDebtMax >= args.gold;
-        }
-
-        public override ValueTask Do(ActionArgs args)
-        {
-            Assert.IsTrue(CanDo(args));
-
-            var food = OutputFood(args);
-            args.targetCastle.Gold -= args.gold;
-            args.targetCastle.Food += food;
-
-            PayCost(args);
-            Debug.Log($"{args.actor.Name} が {args.targetCastle} で {food} 食料を購入しました。");
-            return default;
-        }
-    }
-
-    /// <summary>
-    /// 糧売
-    /// </summary>
-    public SellFoodAction SellFood { get; } = new();
-    public class SellFoodAction : CastleActionBase
-    {
-        public override string Label => L["糧売"];
-        public override string Description => L["食料を売却します。"];
-
-        public ActionArgs Args(Character actor, Castle c, float food) => new(actor, targetCastle: c, food: food);
-
-        public float InputFoodMax(ActionArgs args) => args.targetCastle.FoodIncome * 2;
-        public float OutputGold(ActionArgs args) => World.Economy.GetGoldAmount(args.food);
-        public float InverseFood(ActionArgs args, float gold) => World.Economy.GetFoodAmount(gold);
-
-        public override ActionCost Cost(ActionArgs args) => ActionCost.Of(0, 1, 0);
-
-        protected override bool CanDoCore(ActionArgs args)
-        {
-            return args.targetCastle.Food >= args.food;
-        }
-
-        public override ValueTask Do(ActionArgs args)
-        {
-            Assert.IsTrue(CanDo(args));
-
-            var gold = World.Economy.GetGoldAmount(args.food);
-            args.targetCastle.Food -= args.food;
-            args.targetCastle.Gold += gold;
-
-            PayCost(args);
-            Debug.Log($"{args.actor.Name} が {args.targetCastle} で {gold}G で {args.food} 食料を売却しました。");
+            Debug.Log($"{args.actor.Name} が {args.targetCastle} から {args.targetCastle2} へ {args.gold}G 運びました。");
             return default;
         }
     }

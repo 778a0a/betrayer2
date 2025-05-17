@@ -103,7 +103,6 @@ public struct ActionArgs
     public Character targetCharacter;
     public MapPosition? targetPosition;
     public float gold;
-    public float food;
 
     public ActionArgs(
         Character actor,
@@ -113,8 +112,7 @@ public struct ActionArgs
         Country targetCountry = null,
         Character targetCharacter = null,
         MapPosition? targetPosition = null,
-        float gold = 0,
-        float food = 0)
+        float gold = 0)
     {
         this.actor = actor;
         this.targetCastle = targetCastle;
@@ -124,7 +122,6 @@ public struct ActionArgs
         this.targetCharacter = targetCharacter;
         this.targetPosition = targetPosition;
         this.gold = gold;
-        this.food = food;
     }
 
     public override readonly string ToString()
@@ -138,7 +135,6 @@ public struct ActionArgs
         if (targetCharacter != null) sb.Append($", targetCharacter: {targetCharacter.Name}");
         if (targetPosition != null) sb.Append($", targetPosition: {targetPosition}");
         if (gold != 0) sb.Append($", gold: {gold}");
-        if (food != 0) sb.Append($", food: {food}");
         return sb.ToString();
     }
 }

@@ -79,18 +79,13 @@ public partial class GameCore
             {
                 // 兵士を回復させる。
                 var rate = 0.01f;
-                if (chara.IsMoving) rate = 0.005f;
+                if (chara.IsMoving) rate = 0.003f;
                 rate *= Mathf.Pow(0.95f, chara.ConsecutiveBattleCount);
-                var starving = chara.Castle.Food < 0;
+                var starving = false; // TODO chara.Castle.Food < 0;
+                if (starving) rate *= 0.1f;
                 foreach (var s in chara.Soldiers)
                 {
                     if (s.IsEmptySlot) continue;
-                    if (starving)
-                    {
-                        s.HpFloat = s.HpFloat - s.MaxHp * rate;
-                        if (s.HpFloat <= 0) s.IsEmptySlot = true;
-                        continue;
-                    }
                     if (s.HpFloat >= s.MaxHp) continue;
                     var newHp = s.HpFloat + s.MaxHp * rate;
                     s.HpFloat = Mathf.Min(s.MaxHp, newHp);
@@ -172,8 +167,8 @@ public partial class GameCore
             {
                 foreach (var country in World.Countries)
                 {
-                    if (country.WealthBalance > -30) continue;
-                    if (country.WealthSurplus > 0) continue;
+                    if (country.GoldBalance > -30) continue;
+                    if (country.GoldSurplus > 0) continue;
 
                     // 赤字で物資も乏しい場合は序列の低いメンバーを解雇する。
                     var target = country.Members
@@ -212,7 +207,6 @@ public partial class GameCore
         {
             // 収入
             castle.Gold += castle.GoldIncome;
-            castle.Food += castle.FoodIncome;
 
             // キャラ・軍隊への支払い
             foreach (var chara in castle.Members.OrderBy(m => m.OrderIndex))
@@ -241,9 +235,7 @@ public partial class GameCore
                         chara.Loyalty = (chara.Loyalty - 2 * chara.LoyaltyDecreaseBase).MinWith(0);
                     }
                 }
-                // 食料消費
-                castle.Food -= chara.FoodConsumption;
-                // TODO ゴールド・食料が足りない場合
+                // TODO ゴールドが足りない場合
             }
         }
         // 未所属のキャラはランダムに収入を得る。

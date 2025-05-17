@@ -47,11 +47,6 @@ public partial class TileDetailPanel
         {
             labelGovernor.text = castle.Boss?.Name;
             labelCastleStrength.text = castle.Strength.ToString("0");
-            var foodRemainingMonths = castle.FoodRemainingMonths(GameCore.Instance.GameDate);
-            var foodRemainingMonthsText = foodRemainingMonths >= 30 ?
-                "" :
-                $"(残り{foodRemainingMonths}ヶ月)";
-            labelCastleFood.text = $"{castle.Food:0} {foodRemainingMonthsText}";
             labelCastleGold.text = $"{castle.Gold:0} ({castle.GoldBalance:+0;-0})";
         }
 
@@ -59,7 +54,6 @@ public partial class TileDetailPanel
         TownInfo.style.display = Util.Display(town != null);
         if (town != null)
         {
-            labelTownFoodIncome.text = $"{town.FoodIncome:0} / {town.FoodIncomeMax:0}";
             labelTownGoldIncome.text = $"{town.GoldIncome:0} / {town.GoldIncomeMax:0}";
         }
     }

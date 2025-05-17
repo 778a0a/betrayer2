@@ -526,7 +526,6 @@ public class ForceManager : IReadOnlyList<Force>
         castle.Strength *= Random.Range(0.6f, 0.9f);
         foreach (var town in castle.Towns)
         {
-            town.FoodIncome *= Random.Range(0.5f, 0.9f);
             town.GoldIncome *= Random.Range(0.5f, 0.9f);
         }
 
@@ -536,10 +535,8 @@ public class ForceManager : IReadOnlyList<Force>
         {
             // 守将の智謀に応じて撤退先へ退避する。
             if (castle.Gold > 0) nearEnemyCastle.Gold += castle.Gold * withdrawRatio;
-            if (castle.Food > 0) nearEnemyCastle.Food += castle.Food * withdrawRatio;
         }
         castle.Gold = (castle.Gold * (1 - withdrawRatio) * Random.Range(0.5f, 0.95f)).MinWith(0);
-        castle.Food = (castle.Food * (1 - withdrawRatio) * Random.Range(0.5f, 0.95f)).MinWith(0);
 
         castleTile.Refresh();
     }
