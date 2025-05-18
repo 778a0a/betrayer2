@@ -65,6 +65,7 @@ public class CameraMovement : MonoBehaviour
         }
 
         // 画面端でのカメラ移動処理
+        if (false)
         {
             if (mousePosition.y >= topPanBorder)
             {

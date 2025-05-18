@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using NUnit.Framework.Internal;
 using System.Linq;
+using System.Buffers;
 
 partial class GameCore
 {
@@ -15,57 +16,284 @@ partial class GameCore
     /// <returns></returns>
     private async ValueTask OnCharacterMove(Character player)
     {
-        // 収入月の場合は未所属キャラを移動させる。
-        if (GameDate.IsIncomeMonth && GameDate.Day == 1)
+        // 戦略フェイズの処理を行う。
+        foreach (var castle in World.Castles.Shuffle())
         {
-            foreach (var chara in World.Characters)
-            {
-                if (chara == player) continue;
-                if (!chara.IsFree) continue;
+            var boss = castle.Boss;
+            if (boss == null) continue;
+            if (boss.StrategyActionGauge < 100) continue;
+            boss.StrategyActionGauge = 0;
+            await DoStrategyAction(boss);
+        }
 
-                // ランダムに拠点を移動する。
+        // 個人フェイズの処理を行う。
+        foreach (var chara in World.Characters.Shuffle())
+        {
+            if (chara.PersonalActionGauge < 100) continue;
+            chara.PersonalActionGauge = 0;
+            await DoPersonalAction(chara);
+        }
+    }
+
+    /// <summary>
+    /// 戦略行動を行う。
+    /// </summary>
+    private async ValueTask DoStrategyAction(Character chara)
+    {
+        // TODO プレーヤーの場合
+        var country = chara.Country;
+        var castle = chara.Castle;
+
+        // 君主の場合
+        if (chara.IsRuler)
+        {
+            // 収入月の場合
+            if (GameDate.IsIncomeMonth)
+            {
+                foreach (var rulingCastle in country.Castles)
+                {
+                    // 各城の方針を設定する。
+                    var prevObjective = rulingCastle.Objective;
+                    rulingCastle.Objective = AI.SelectCastleObjective(chara, rulingCastle);
+                    // TODO 攻撃の場合は目標城を設定する。
+                    if (prevObjective != rulingCastle.Objective)
+                    {
+                        Debug.Log($"方針: 更新 {rulingCastle.Objective} <- {prevObjective} at {rulingCastle}");
+                    }
+                    else
+                    {
+                        Debug.Log($"方針継続: {rulingCastle.Objective} at {rulingCastle}");
+                    }
+                }
+            }
+
+            // 赤字で物資も乏しい場合は序列の低いメンバーを解雇する。
+            if (country.GoldBalance < -30 && country.GoldSurplus < 0)
+            {
+                var target = country.Members
+                    .Where(m => !m.IsMoving)
+                    .Where(m => !m.IsImportant)
+                    .OrderByDescending(m => m.OrderIndex)
+                    .FirstOrDefault();
+                if (target != null)
+                {
+                    // TODO 解雇アクションを使う。
+                    target.ChangeCastle(target.Castle, true);
+                    Debug.LogError($"{country} 赤字のため、{target}を解雇しました。");
+                }
+            }
+
+            // 外交を行う。
+            await AI.Diplomacy(country);
+
+            // TODO 人員の移動
+        }
+
+        if (true)
+        {
+            // 物資を輸送する。
+            await AI.Transport(country);
+        }
+
+        // 防衛
+        if (castle.DangerForcesExists)
+        {
+            var dangers = castle.DangerForces(World.Forces).ToArray();
+            var dangerPower = dangers.Sum(f => f.Character.Power);
+            var defPower = castle.DefenceAndReinforcementPower(World.Forces);
+            if (dangerPower > defPower)
+            {
+                // 出撃中の軍勢について
+                var castleForces = castle.Members
+                    .Where(m => m.IsMoving)
+                    .Select(m => m.Force)
+                    .Where(f => f.Destination.Position != castle.Position)
+                    .ShuffleAsArray();
+                foreach (var myForce in castleForces)
+                {
+                    if (dangerPower < defPower)
+                    {
+                        Debug.Log($"防衛戦力が十分なため退却しません。{myForce}");
+                        continue;
+                    }
+                    if (myForce.Position == castle.Position)
+                    {
+                        World.Forces.Unregister(myForce);
+                        // TODO 帰還アクションを使う。
+                    }
+                    else
+                    {
+                        myForce.SetDestination(myForce.Character.Castle);
+                        Debug.LogWarning($"危険軍勢がいるため退却します。{myForce}");
+                        // TODO 帰還アクションを使う。
+                    }
+                    defPower += myForce.Character.Power;
+                }
+            }
+        }
+
+        // 採用を行うか判定する。
+        AI.HireVassal(castle);
+
+        // 進軍を行うか判定する。
+        AI.Deploy(castle);
+
+        // 開発を行うか判定する。
+        await AI.Develop(castle);
+    }
+
+    private async ValueTask DoPersonalAction(Character chara)
+    {
+        // TODO プレーヤーの場合
+
+        // 未所属の場合
+        if (chara.IsFree)
+        {
+            // ランダムに拠点を移動する。
+            if (0.2f.Chance())
+            {
                 var oldCastle = chara.Castle;
                 var newCastle = oldCastle.Neighbors.RandomPick();
                 chara.ChangeCastle(newCastle, true);
                 //Debug.Log($"{chara.Name}が{oldCastle}から{newCastle}に移動しました。");
+                // TODO 移動アクションを使う。
+            }
+
+            // TODO 奪取を行う。
+            // TODO 仕官を行う。
+
+            // 所持金が無くなるまで雇兵・訓練を行う。
+            var args = new ActionArgs() { actor = chara };
+            while (true)
+            {
+                var action = (ActionBase)(chara.Soldiers.HasEmptySlot ?
+                    CastleActions.HireSoldier :
+                    CastleActions.TrainSoldiers);
+                if (!action.CanDo(args)) break;
+                await action.Do(args);
             }
         }
-
-        if (GameDate.Day == 1)
+        // 所属ありの場合
+        else
         {
-            // 君主の月毎アクションを行う。
-            foreach (var country in World.Countries)
+            // TODO 反乱を起こすか判定する。
+            // TODO 出撃中の場合
+            if (chara.IsMoving)
             {
-                var chara = country.Ruler;
-                if (chara == player) continue;
+                var force = chara.Force;
 
-                // 収入月の場合
-                if (GameDate.IsIncomeMonth)
+                // 救援モードの場合
+                if (force.Mode == ForceMode.Reinforcement)
                 {
-                    await AI.Transport(country);
-
-                    foreach (var castle in country.Castles)
+                    // 救援が完了した場合は帰還する。
+                    if (force.Destination.Position == force.Position &&
+                        force.ReinforcementWaitDays <= 0)
                     {
-                        // 各城の方針を設定する。
-                        var prevObjective = castle.Objective;
-                        castle.Objective = AI.SelectCastleObjective(chara, castle);
-                        // TODO 攻撃の場合は目標城を設定する。
-                        if (prevObjective != castle.Objective)
+                        // TODO 帰還アクションを使う。
+                        force.SetDestination(force.Character.Castle);
+                        Debug.Log($"軍勢 救援が完了したため帰還します。 {force}");
+                        return;
+                    }
+
+                    // 救援先が危険でなくなったら本拠地に戻る。
+                    var home = chara.Castle;
+                    var targetCastle = (Castle)force.Destination;
+                    if (!targetCastle.DangerForcesExists && targetCastle != home)
+                    {
+                        // TODO 帰還アクションを使う。
+                        force.SetDestination(home);
+                        if (force.Position == home.Position)
                         {
-                            //Debug.Log($"方針: 更新 {castle.Objective} <- {prevObjective} at {castle}");
+                            World.Forces.Unregister(force);
                         }
-                        else
-                        {
-                            //Debug.Log($"方針継続: {castle.Objective} at {castle}");
-                        }
+                        Debug.Log($"軍勢 救援先が危険でなくなったため帰還します。 {force}");
+                        return;
                     }
                 }
 
-                // 外交を行う。
-                await AI.Diplomacy(country);
+                return;
+            }
+
+            // 後方から移動する（適当）TODO
+            var castle = chara.Castle;
+            var isSafe = castle.Neighbors.All(n => !castle.IsAttackable(n)) && !castle.DangerForcesExists;
+            if (isSafe && castle.Members.Count > 2)
+            {
+                var cands = castle.Members
+                    .Where(m => m != chara)
+                    .Where(m => m.IsDefendable)
+                    .ToList();
+                var moveTarget = cands.RandomPickDefault();
+                var moveCastle = castle.Neighbors.Where(n => castle.IsSelf(n)).RandomPickDefault();
+                if (moveTarget != null && moveCastle != null && 0.5f.Chance())
+                {
+                    var move = CastleActions.Move;
+                    var moveArgs = move.Args(chara, moveTarget, moveCastle);
+                    await move.Do(moveArgs);
+                }
+            }
+
+            // 所持金の半分までを予算とする。
+            var budget = chara.Gold / 2;
+
+            var args = new ActionArgs();
+            args.actor = chara;
+            args.targetCastle = chara.Castle;
+            // TODO 発展していない町を優先する。
+            args.targetTown = args.targetCastle?.Towns.RandomPick();
+
+            var action = default(ActionBase);
+            // 空きスロットがあれば雇兵する。
+            if (chara.Soldiers.HasEmptySlot)
+            {
+                action = CastleActions.HireSoldier;
+                budget = chara.Gold;
+            }
+            // 基本的には方針通りの行動を行う。
+            else if ((chara.Fealty.MinWith(chara.Ambition) / 10f - 0.1f).Chance())
+            {
+                switch (chara.Castle.Objective)
+                {
+                    case CastleObjective.CastleStrength:
+                        action = CastleActions.ImproveCastleStrength;
+                        break;
+                    case CastleObjective.Stability:
+                        action = CastleActions.ImproveStability;
+                        break;
+                    case CastleObjective.Commerce:
+                        action = TownActions.ImproveGoldIncome;
+                        break;
+                    case CastleObjective.None:
+                    case CastleObjective.Attack:
+                    case CastleObjective.Train:
+                    default:
+                        break;
+                }
+            }
+            // アクション未選択か、選択したアクションが実行不可ならランダムに行動する。
+            if (!action?.CanDo(args) ?? true)
+            {
+                action ??= vassalActions.Value.Where(a => a.CanDo(args)).RandomPickDefault();
+            }
+            // できることがないなら何もしない。
+            if (action == null)
+            {
+                //Debug.LogWarning($"{chara.Name} はできることがありません。");
+                return;
+            }
+
+            // 予算到達までアクションを実行する。
+            while (budget > 0)
+            {
+                if (!action.CanDo(args)) break;
+                budget -= action.Cost(args).actorGold;
+                await action.Do(args);
             }
         }
+    }
 
+    private async ValueTask Old()
+    {
         // 危険軍勢の対処を行う。
         if (GameDate.Day % 5 == 0)
         {
@@ -105,7 +333,7 @@ partial class GameCore
                         .ToList();
                     foreach (var f in candForces)
                     {
-                        Debug.LogError($"救援帰還中の{f.Name}が{castle}へ援軍として転向します。{(isAlly ? "(同盟国)" :"")}");
+                        Debug.LogError($"救援帰還中の{f.Name}が{castle}へ援軍として転向します。{(isAlly ? "(同盟国)" : "")}");
                         f.Force.ReinforcementOriginalTarget = castle;
                         f.Force.SetDestination(castle);
                         f.Force.ReinforcementWaitDays = 90;
@@ -158,7 +386,7 @@ partial class GameCore
                 // 駐在中のキャラ
                 await ProcessDefendables(castle.Country);
                 if (dangerPower < defPower) continue;
-                
+
                 // まだ足りない場合は同盟国から援軍を出す。
                 var allyCountries = castle.Country.Neighbors
                     .Where(n => n.IsAlly(castle.Country))
@@ -176,147 +404,6 @@ partial class GameCore
                     if (dangerPower < defPower) break;
                     await ProcessDefendables(ally);
                 }
-            }
-        }
-
-        // 各キャラの月毎アクションを行う。
-        // プレーヤー君主の行動を反映させるため、2日目に行う。
-        if (GameDate.Day == 2)
-        {
-            foreach (var chara in World.Characters)
-            {
-                if (chara == player) continue;
-                if (chara.IsFree) continue;
-
-                // 所属ありの場合
-                var castle = chara.Castle;
-
-                // 城主の場合（君主も含む）
-                if (castle.Boss == chara)
-                {
-                    // TODO 経済の仕組みを更新してから実装する
-                    // 追放を行うか判定する。
-                    // 町建設・城増築・投資を行うか判定する。
-
-                    // 採用を行うか判定する。
-                    AI.HireVassal(castle);
-
-                    // 進軍を行うか判定する。
-                    AI.Deploy(castle);
-
-                    // 開発を行うか判定する。
-                    await AI.Develop(castle);
-
-                    // 後方から移動する（適当）
-                    if (castle.Members.Count > 2 && castle.Neighbors.All(n => !castle.IsAttackable(n)))
-                    {
-                        if (castle.DangerForcesExists) continue;
-
-                        var cands = castle.Members
-                            .Where(m => m != chara)
-                            .Where(m => m.IsDefendable)
-                            .ToList();
-                        var moveTarget = cands.RandomPickDefault();
-                        var moveCastle = castle.Neighbors.Where(n => castle.IsSelf(n)).RandomPickDefault();
-                        if (moveTarget != null && moveCastle != null && 0.5f.Chance())
-                        {
-                            var action = CastleActions.Move;
-                            var args = action.Args(chara, moveTarget, moveCastle);
-                            await action.Do(args);
-                        }
-                    }
-
-                    // 挑発を行うか判定する。
-
-                    // 君主でない場合反乱を起こすか判定する。
-                }
-                // 配下の場合
-                else
-                {
-                    // 反乱を起こすか判定する。
-                }
-            }
-        }
-
-        // 15日毎に行動を行う。
-        if (GameDate.Day == 15 || GameDate.Day == 30)
-        {
-            // 収入の1/6分、農業・商業・築城・訓練をランダムに行う。
-            var args = new ActionArgs();
-            foreach (var chara in World.Characters)
-            {
-                if (chara == player) continue;
-                if (chara.IsMoving || chara.IsIncapacitated) continue;
-
-                args.actor = chara;
-
-                var action = default(ActionBase);
-                if (chara.IsFree)
-                {
-                    args.targetCastle = null;
-                    args.targetTown = null;
-                    action = CastleActions.TrainSoldiers;
-                }
-                else
-                {
-                    args.targetCastle = chara.Castle;
-                    args.targetTown = args.targetCastle?.Towns.RandomPick();
-                    // 基本的には方針通りの行動を行う。
-                    if ((chara.Fealty.MinWith(chara.Ambition) / 10f - 0.1f).Chance())
-                    {
-                        switch (chara.Castle.Objective)
-                        {
-                            case CastleObjective.CastleStrength:
-                                action = CastleActions.ImproveCastleStrength;
-                                break;
-                            case CastleObjective.Stability:
-                                action = CastleActions.ImproveStability;
-                                break;
-                            case CastleObjective.Commerce:
-                                action = TownActions.ImproveGoldIncome;
-                                break;
-                            case CastleObjective.None:
-                            case CastleObjective.Attack:
-                            case CastleObjective.Train:
-                            default:
-                                break;
-                        }
-                    }
-                    // アクション未選択か、選択したアクションが実行不可ならランダムに行動する。
-                    if (!action?.CanDo(args) ?? true)
-                    {
-                        action ??= vassalActions.Value.Where(a => a.CanDo(args)).RandomPickDefault();
-                    }
-                }
-                if (chara.Soldiers.HasEmptySlot)
-                {
-                    // 危険軍勢がいるなら兵士を採用する。
-                    if (chara.Castle.DangerForcesExists)
-                    {
-                        action = CastleActions.HireSoldier;
-                    }
-                }
-
-                var budget = Math.Min(chara.Gold, Math.Max(chara.Gold - chara.Salary, 0) + chara.Salary / 6);
-                if (action == CastleActions.HireSoldier)
-                {
-                    budget = chara.Gold;
-                }
-
-                // できることがないなら何もしない。
-                if (action == null)
-                {
-                    Debug.LogWarning($"{chara.Name} は行動できません。");
-                    continue;
-                }
-
-                do
-                {
-                    if (!action.CanDo(args)) break;
-                    budget -= action.Cost(args).actorGold;
-                    await action.Do(args);
-                }
-                while (budget > 0);
             }
         }
     }

@@ -110,7 +110,7 @@ public class Character
     /// 個人行動ゲージ
     /// </summary>
     public float PersonalActionGauge { get; set; } = 0f;
-    public float PersonalActionGaugeAdjustment
+    public float PersonalActionGaugeStep
     {
         get
         {
@@ -129,7 +129,7 @@ public class Character
     /// 戦略行動ゲージ
     /// </summary>
     public float StrategyActionGauge { get; set; } = 0f;
-    public float StrategyActionGaugeAdjustment
+    public float StrategyActionGaugeStep
     {
         get
         {

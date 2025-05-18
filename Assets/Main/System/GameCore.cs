@@ -81,6 +81,7 @@ public partial class GameCore
             // 収入月の場合
             if (GameDate.IsIncomeMonth)
             {
+                // 収入処理を行う。
                 OnIncome();
 
                 // 忠誠を更新する。
@@ -113,29 +114,6 @@ public partial class GameCore
                         {
                             if (rel < 50) country.SetRelation(other, rel + 1);
                         }
-                    }
-                }
-            }
-
-            // 収入月の前の場合
-            if (GameDate.IsEndMonth)
-            {
-                foreach (var country in World.Countries)
-                {
-                    if (country.GoldBalance > -30) continue;
-                    if (country.GoldSurplus > 0) continue;
-
-                    // 赤字で物資も乏しい場合は序列の低いメンバーを解雇する。
-                    var target = country.Members
-                        .Where(m => !m.IsMoving)
-                        .Where(m => !m.IsImportant)
-                        .OrderByDescending(m => m.OrderIndex)
-                        .FirstOrDefault();
-                    if (target != null)
-                    {
-                        // TODO 解雇アクションを使う。
-                        target.ChangeCastle(target.Castle, true);
-                        Debug.LogError($"{country} 赤字のため、{target}を解雇しました。");
                     }
                 }
             }
@@ -184,12 +162,12 @@ public partial class GameCore
             }
 
             // 行動ゲージを貯める。
-            chara.PersonalActionGauge += chara.PersonalActionGauge;
-            chara.StrategyActionGauge += chara.StrategyActionGauge;
+            chara.PersonalActionGauge += chara.PersonalActionGaugeStep;
+            chara.StrategyActionGauge += chara.StrategyActionGaugeStep;
         }
 
         // 軍勢関連の処理を行う。
-        World.Forces.OnCheckDefenceStatus_TODO削除(this);
+        World.Forces.UpdateDefenceStatus(this);
         await World.Forces.OnForceMove(this);
 
         // キャラの行動を行う。

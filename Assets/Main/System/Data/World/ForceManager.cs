@@ -55,10 +55,8 @@ public class ForceManager : IReadOnlyList<Force>
     /// <summary>
     /// 各城の防衛状況を確認します。
     /// </summary>
-    public void OnCheckDefenceStatus_TODO削除(GameCore core)
+    public void UpdateDefenceStatus(GameCore core)
     {
-        TODO削除;
-
         if (!ShouldCheckDefenceStatus) return;
         ShouldCheckDefenceStatus = false;
         var prev = prevCheck;
@@ -70,40 +68,7 @@ public class ForceManager : IReadOnlyList<Force>
             castle.DangerForcesExists = dangers.Length > 0;
             world.Map.GetTile(castle).UI.ShowDebugText(castle.DangerForcesExists ? "!" : "");
             if (!castle.DangerForcesExists) continue;
-
-            var dangerPower = dangers.Sum(f => f.Character.Power);
-            var defPower = castle.DefenceAndReinforcementPower(this);
-            if (dangerPower < defPower)
-            {
-                //Debug.LogWarning($"危険軍勢が存在しますが、守兵の兵力が十分なため何もしません。{castle}");
-                continue;
-            }
-            // まずは、1個でも危険軍勢がいれば出撃軍勢を戻すことにする。
-            var castleForces = castle.Members
-                .Where(m => m.IsMoving)
-                .Select(m => m.Force)
-                .Where(f => f.Destination.Position != castle.Position)
-                .ShuffleAsArray();
-            foreach (var myForce in castleForces)
-            {
-                if (dangerPower < defPower)
-                {
-                    Debug.Log($"防衛戦力が十分なため退却しません。{myForce}");
-                    continue;
-                }
-                if (myForce.Position == castle.Position)
-                {
-                    Unregister(myForce);
-                }
-                else
-                {
-                    myForce.SetDestination(myForce.Character.Castle);
-                    Debug.LogWarning($"危険軍勢がいるため退却します。{myForce}");
-                }
-                defPower += myForce.Character.Power;
-            }
         }
-
     }
 
     /// <summary>
@@ -132,10 +97,9 @@ public class ForceManager : IReadOnlyList<Force>
         // 移動の必要がないなら何もしない。
         if (force.Destination.Position == force.Position)
         {
-            TODO削除;
             Debug.Log($"軍勢更新処理 {force} 待機中...");
             // 増援モードの待機日数を減らす。
-            if (force.Mode == ForceMode.Reinforcement)
+            if (force.Mode == ForceMode.Reinforcement && force.ReinforcementWaitDays > 0)
             {
                 // 対象の城が危険でなくなっていれば待機時間を減らす。
                 var castle = (Castle)force.Destination;
@@ -148,32 +112,11 @@ public class ForceManager : IReadOnlyList<Force>
                 force.ReinforcementWaitDays--;
                 if (force.ReinforcementWaitDays <= 0)
                 {
+                    // 本拠地への帰還は個人フェイズで行う。
                     Debug.Log($"軍勢更新処理 {force} 待機終了");
-                    // 本拠地に帰還する。
-                    force.SetDestination(force.Character.Castle);
                 }
             }
             return;
-        }
-
-        // 救援モードの場合
-        if (force.Mode == ForceMode.Reinforcement)
-        {
-            TODO削除;
-            // 救援先が危険でなくなったら本拠地に戻る。
-            var castle = (Castle)force.Destination;
-            var home = force.Character.Castle;
-            if (!castle.DangerForcesExists && castle != home)
-            {
-                force.SetDestination(force.Character.Castle);
-                if (force.Position == home.Position)
-                {
-                    Unregister(force);
-                }
-                Debug.Log($"軍勢更新処理 救援先が危険でなくなったため本拠地に帰還します。 {force}");
-                //GameCore.Instance.Pause();
-                return;
-            }
         }
 
         // タイル移動進捗を進める。
