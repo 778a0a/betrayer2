@@ -107,6 +107,41 @@ public class Character
     [JsonIgnore] public float LoyaltyDecreaseBase => (10 - Fealty) / 4 / (IsImportant ? 2 : 1);
 
     /// <summary>
+    /// 個人行動ゲージ
+    /// </summary>
+    public float PersonalActionGauge { get; set; } = 0f;
+    public float PersonalActionGaugeAdjustment
+    {
+        get
+        {
+            // 通常は25日で1回行動できる。
+            var x = 100f / 25;
+            var cap = IsMoving ?
+                Math.Max(Attack, Defense) * 0.5f + Intelligence * 0.3f + Governing * 0.2f :
+                Math.Max(Attack, Defense) * 0.3f + Intelligence * 0.4f + Governing * 0.3f;
+            // 能力が100なら2倍速、75なら1倍速、50なら0.5倍速。
+            var capAdj = 1 + (cap - 75) / 25f;
+            return x * capAdj;
+        }
+    }
+
+    /// <summary>
+    /// 戦略行動ゲージ
+    /// </summary>
+    public float StrategyActionGauge { get; set; } = 0f;
+    public float StrategyActionGaugeAdjustment
+    {
+        get
+        {
+            // 通常は25日で1回行動できる。
+            var x = 100f / 25;
+            var cap = Math.Max(Attack, Defense) * 0.2f + Intelligence * 0.4f + Governing * 0.4f;
+            var capAdj = 1 + (cap - 75) / 25f;
+            return x * capAdj;
+        }
+    }
+
+    /// <summary>
     /// 軍勢
     /// </summary>
     public Soldiers Soldiers { get; set; }
@@ -125,6 +160,11 @@ public class Character
     /// 重臣ならtrue
     /// </summary>
     public bool IsImportant { get; set; }
+
+    /// <summary>
+    /// 供給不足ならtrue
+    /// </summary>
+    public bool IsStarving { get; set; } = false;
 
     /// <summary>
     /// （内部データ）強さ

@@ -55,8 +55,10 @@ public class ForceManager : IReadOnlyList<Force>
     /// <summary>
     /// 各城の防衛状況を確認します。
     /// </summary>
-    public void OnCheckDefenceStatus(GameCore core)
+    public void OnCheckDefenceStatus_TODO削除(GameCore core)
     {
+        TODO削除;
+
         if (!ShouldCheckDefenceStatus) return;
         ShouldCheckDefenceStatus = false;
         var prev = prevCheck;
@@ -130,6 +132,7 @@ public class ForceManager : IReadOnlyList<Force>
         // 移動の必要がないなら何もしない。
         if (force.Destination.Position == force.Position)
         {
+            TODO削除;
             Debug.Log($"軍勢更新処理 {force} 待機中...");
             // 増援モードの待機日数を減らす。
             if (force.Mode == ForceMode.Reinforcement)
@@ -156,6 +159,7 @@ public class ForceManager : IReadOnlyList<Force>
         // 救援モードの場合
         if (force.Mode == ForceMode.Reinforcement)
         {
+            TODO削除;
             // 救援先が危険でなくなったら本拠地に戻る。
             var castle = (Castle)force.Destination;
             var home = force.Character.Castle;
