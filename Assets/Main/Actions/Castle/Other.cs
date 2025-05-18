@@ -21,7 +21,7 @@ partial class CastleActions
 
         public override ValueTask Do(ActionArgs args)
         {
-            Assert.IsTrue(CanDo(args));
+            Util.IsTrue(CanDo(args));
 
             PayCost(args);
 

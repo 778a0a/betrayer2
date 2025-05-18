@@ -29,7 +29,7 @@ partial class TownActions
 
         public override ValueTask Do(ActionArgs args)
         {
-            Assert.IsTrue(CanDo(args));
+            Util.IsTrue(CanDo(args));
             var chara = args.actor;
             var town = args.targetTown;
 
@@ -62,7 +62,7 @@ partial class TownActions
 
         public override ValueTask Do(ActionArgs args)
         {
-            Assert.IsTrue(CanDo(args));
+            Util.IsTrue(CanDo(args));
 
             PayCost(args);
 

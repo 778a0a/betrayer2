@@ -23,7 +23,7 @@ partial class CastleActions
 
         public override ValueTask Do(ActionArgs args)
         {
-            Assert.IsTrue(CanDo(args));
+            Util.IsTrue(CanDo(args));
 
             PayCost(args);
 
@@ -52,7 +52,7 @@ partial class CastleActions
 
         public override ValueTask Do(ActionArgs args)
         {
-            Assert.IsTrue(CanDo(args));
+            Util.IsTrue(CanDo(args));
 
             PayCost(args);
 
@@ -104,7 +104,7 @@ partial class CastleActions
 
         public override ValueTask Do(ActionArgs args)
         {
-            Assert.IsTrue(CanDo(args));
+            Util.IsTrue(CanDo(args));
 
             var force = new Force(World, args.targetCharacter, args.targetCharacter.Castle.Position);
 
@@ -145,7 +145,7 @@ partial class CastleActions
 
         public override ValueTask Do(ActionArgs args)
         {
-            Assert.IsTrue(CanDo(args));
+            Util.IsTrue(CanDo(args));
 
             var force = new Force(World, args.targetCharacter, args.targetCharacter.Castle.Position, ForceMode.Reinforcement);
             force.ReinforcementOriginalTarget = args.targetCastle;
@@ -175,7 +175,7 @@ partial class CastleActions
 
         public override ValueTask Do(ActionArgs args)
         {
-            Assert.IsTrue(CanDo(args));
+            Util.IsTrue(CanDo(args));
 
             PayCost(args);
 
@@ -257,7 +257,7 @@ partial class CastleActions
 
         public override ValueTask Do(ActionArgs args)
         {
-            Assert.IsTrue(CanDo(args));
+            Util.IsTrue(CanDo(args));
 
             Map.RegisterTown(args.targetCastle, new Town()
             {
@@ -285,7 +285,7 @@ partial class CastleActions
         public override ActionCost Cost(ActionArgs args) => ActionCost.Of(0, 1, (int)(100 * Mathf.Pow(1.75f, args.targetTown.DevelopmentLevel - 1)));
         public override ValueTask Do(ActionArgs args)
         {
-            Assert.IsTrue(CanDo(args));
+            Util.IsTrue(CanDo(args));
 
             args.targetTown.DevelopmentLevel++;
 
@@ -309,7 +309,7 @@ partial class CastleActions
         public override ActionCost Cost(ActionArgs args) => ActionCost.Of(0, 1, (int)(100 * Mathf.Pow(1.75f, args.targetCastle.FortressLevel)));
         public override ValueTask Do(ActionArgs args)
         {
-            Assert.IsTrue(CanDo(args));
+            Util.IsTrue(CanDo(args));
 
             args.targetCastle.FortressLevel++;
 
@@ -339,7 +339,7 @@ partial class CastleActions
 
         public override ValueTask Do(ActionArgs args)
         {
-            Assert.IsTrue(CanDo(args));
+            Util.IsTrue(CanDo(args));
 
             args.actor.Gold += args.gold;
             args.actor.Castle.Gold -= args.gold;
@@ -371,7 +371,7 @@ partial class CastleActions
 
         public override ValueTask Do(ActionArgs args)
         {
-            Assert.IsTrue(CanDo(args));
+            Util.IsTrue(CanDo(args));
 
             args.actor.Gold -= args.gold;
             args.actor.Castle.Gold += args.gold;
@@ -403,7 +403,7 @@ partial class CastleActions
 
         public override ValueTask Do(ActionArgs args)
         {
-            Assert.IsTrue(CanDo(args));
+            Util.IsTrue(CanDo(args));
 
             args.targetCastle.Gold -= args.gold;
             args.targetCastle2.Gold += args.gold;
@@ -428,7 +428,7 @@ partial class CastleActions
         public override ActionCost Cost(ActionArgs args) => ActionCost.Of(0, 1, 20);
         public override ValueTask Do(ActionArgs args)
         {
-            Assert.IsTrue(CanDo(args));
+            Util.IsTrue(CanDo(args));
 
             var target = args.targetCharacter;
 

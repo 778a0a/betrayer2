@@ -28,7 +28,7 @@ partial class CastleActions
 
         public override ValueTask Do(ActionArgs args)
         {
-            Assert.IsTrue(CanDo(args));
+            Util.IsTrue(CanDo(args));
             var chara = args.actor;
             var castle = args.targetCastle;
 
@@ -60,7 +60,7 @@ partial class CastleActions
 
         public override ValueTask Do(ActionArgs args)
         {
-            Assert.IsTrue(CanDo(args));
+            Util.IsTrue(CanDo(args));
             var chara = args.actor;
             var castle = args.targetCastle;
 

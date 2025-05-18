@@ -178,6 +178,23 @@ public static class Util
 
     public static bool IsMarine(Traits t) => t.HasFlag(Traits.Admiral) || t.HasFlag(Traits.Pirate);
     public static bool IsMarine(Terrain t) => t == Terrain.River || t == Terrain.LargeRiver;
+
+    [System.Diagnostics.Conditional("UNITY_EDITOR")]
+    public static void IsTrue(bool condition, string message = "")
+    {
+        if (!condition)
+        {
+            Debug.LogError($"アサーションエラー {message}");
+#if UNITY_EDITOR
+            if (Application.isPlaying)
+            {
+                System.Diagnostics.Debugger.Break();
+                Debug.Break();
+            }
+#endif
+            // throw new System.Exception("Assert failed: " + message);
+        }
+    }
 }
 
 public class Defer : IDisposable

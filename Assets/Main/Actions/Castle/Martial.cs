@@ -30,7 +30,7 @@ partial class CastleActions
 
         public override ValueTask Do(ActionArgs args)
         {
-            Assert.IsTrue(CanDo(args));
+            Util.IsTrue(CanDo(args));
             var chara = args.actor;
 
             var targetSlot = chara.Soldiers.First(s => s.IsEmptySlot);
@@ -65,7 +65,7 @@ partial class CastleActions
 
         public override ValueTask Do(ActionArgs args)
         {
-            Assert.IsTrue(CanDo(args));
+            Util.IsTrue(CanDo(args));
             var chara = args.actor;
 
             var drillMasterExists = chara.Castle.Members.Any(m => m.Traits.HasFlag(Traits.Drillmaster));
@@ -95,7 +95,7 @@ partial class CastleActions
 
         public override ValueTask Do(ActionArgs args)
         {
-            Assert.IsTrue(CanDo(args));
+            Util.IsTrue(CanDo(args));
 
             PayCost(args);
 
@@ -116,7 +116,7 @@ partial class CastleActions
 
         public override ValueTask Do(ActionArgs args)
         {
-            Assert.IsTrue(CanDo(args));
+            Util.IsTrue(CanDo(args));
 
             PayCost(args);
 
