@@ -398,7 +398,7 @@ partial class CastleActions
 
         override protected bool CanDoCore(ActionArgs args)
         {
-            return (args.gold == 0 || args.gold <= args.targetCastle.Gold);
+            return args.gold <= args.targetCastle.Gold;
         }
 
         public override ValueTask Do(ActionArgs args)
@@ -407,6 +407,10 @@ partial class CastleActions
 
             args.targetCastle.Gold -= args.gold;
             args.targetCastle2.Gold += args.gold;
+            if (!args.actor.IsRuler)
+            {
+                args.actor.Contribution += args.gold / 10f;
+            }
 
             PayCost(args);
             Debug.Log($"{args.actor.Name} が {args.targetCastle} から {args.targetCastle2} へ {args.gold}G 運びました。");

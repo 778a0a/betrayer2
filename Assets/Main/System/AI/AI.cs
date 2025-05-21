@@ -455,25 +455,38 @@ public class AI
 
     }
 
-    public async ValueTask Transport(Country country)
+    /// <summary>
+    /// 輸送（上納）
+    /// </summary>
+    /// <param name="castle"></param>
+    /// <param name="boss"></param>
+    /// <returns></returns>
+    public async ValueTask TransportAsTribute(Castle castle, Character boss)
     {
-        var ruler = country.Ruler;
-        // 収支が黒字の城から君主の城へ物資を輸送する。
-        foreach (var castle in country.Castles)
-        {
-            if (castle.Boss == null || castle.Boss.IsRuler) continue;
+        var ruler = castle.Country.Ruler;
+        Util.IsTrue(boss != ruler, "君主は上納できません。");
 
-            var gold = (castle.GoldBalance / 2).Clamp(0, castle.Gold);
-            if (castle.GoldSurplus < 0) gold = 0;
-            if (gold > 0)
+        // 余剰物資を君主の城に輸送する。
+        var gold = (castle.GoldBalance / 2).Clamp(0, castle.Gold);
+        if (castle.GoldSurplus < 0) gold = 0;
+        if (gold > 0)
+        {
+            var act = core.CastleActions.Transpot;
+            var args = act.Args(castle.Boss, castle, ruler.Castle, gold);
+            if (act.CanDo(args))
             {
-                var act = core.CastleActions.Transpot;
-                var args = act.Args(castle.Boss, castle, ruler.Castle, gold);
                 await act.Do(args);
                 Debug.LogWarning($"[輸送 - 上納] {castle.Boss.Name}が{ruler.Castle}へ{gold}G を輸送しました。");
             }
         }
 
+    }
+
+    /// <summary>
+    /// 輸送（君主用）
+    /// </summary>
+    public async ValueTask TransportAsDistribution(Country country)
+    {
         // 物資が不足している城へ豊かな城から輸送する。
         foreach (var castle in country.Castles)
         {
@@ -488,7 +501,6 @@ public class AI
                 .OrderByDescending(c => c.Gold);
 
             var act = core.CastleActions.Transpot;
-            var argss = new List<ActionArgs>();
             foreach (var wealthy in wealthyCastles)
             {
                 var needGold = -castle.Gold;
@@ -497,9 +509,12 @@ public class AI
                 var gold = needGold.Clamp(0, wealthy.Gold);
                 if (gold > 0)
                 {
-                    var args = act.Args(wealthy.Boss, wealthy, castle, gold);
-                    await act.Do(args);
-                    Debug.LogError($"[輸送 - 補充] {wealthy.Boss.Name}が{castle}へ{gold}G を輸送しました。");
+                    var args = act.Args(country.Ruler, wealthy, castle, gold);
+                    if (act.CanDo(args))
+                    {
+                        await act.Do(args);
+                        Debug.LogError($"[輸送 - 補充] {wealthy.Boss.Name}が{castle}へ{gold}G を輸送しました。");
+                    }
                 }
             }
         }

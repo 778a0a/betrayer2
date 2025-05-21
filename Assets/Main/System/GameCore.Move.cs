@@ -89,10 +89,17 @@ partial class GameCore
             // TODO 人員の移動
         }
 
-        if (true)
+        if (GameDate.IsIncomeMonth)
         {
             // 物資を輸送する。
-            await AI.Transport(country);
+            if (chara.IsRuler)
+            {
+                await AI.TransportAsDistribution(chara.Country);
+            }
+            else
+            {
+                await AI.TransportAsTribute(castle, chara);
+            }
         }
 
         // 防衛
