@@ -469,11 +469,10 @@ public class ForceManager : IReadOnlyList<Force>
         }
 
         // 内政値を下げる。
-        castle.Strength *= Random.Range(0.6f, 0.9f);
-        foreach (var town in castle.Towns)
-        {
-            town.GoldIncome *= Random.Range(0.5f, 0.9f);
-        }
+        var damageAdj = castle.Strength / 100f;
+        var damage = 1 - Random.Range(0.1f, 0.3f) * damageAdj;
+        castle.Strength *= Random.Range(0.90f, 0.99f);
+        castleTile.Town.GoldIncome *= damage;
 
         // 残っている物資について。
         var withdrawRatio = nearEnemyCastle != null ? enemyCastleIntelligenceMax / 100 : 0;

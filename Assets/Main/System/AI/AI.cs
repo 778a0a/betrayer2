@@ -70,7 +70,6 @@ public class AI
                     if (castle.Strength == castle.StrengthMax) return 0;
                     //if (castle.DangerForcesExists) return 500;
                     if (minRel <= 20) return 50;
-                    if (castle.Strength / castle.StrengthMax < 0.5f) return 20;
                     return 10;
 
                 case CastleObjective.Commerce:
@@ -428,16 +427,6 @@ public class AI
                 {
                     candActions.Add((act, args, act.Cost(args)));
                 }
-            }
-        }
-
-        // 城壁強化
-        {
-            var act = core.CastleActions.ImproveCastleStrengthLevel;
-            var args = act.Args(actor, castle);
-            if (act.CanDo(args))
-            {
-                candActions.Add((act, args, act.Cost(args)));
             }
         }
 

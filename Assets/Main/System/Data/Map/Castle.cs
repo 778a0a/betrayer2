@@ -115,16 +115,11 @@ public class Castle : ICountryEntity, IMapEntity
         .Distinct();
 
     /// <summary>
-    /// 城塞レベル
-    /// </summary>
-    public int FortressLevel { get; set; } = 1;
-
-    /// <summary>
     /// 砦強度
     /// </summary>
     public float Strength { get; set; }
     [JsonIgnore]
-    public float StrengthMax => FortressLevel * 100;
+    public float StrengthMax => 100;
 
     /// <summary>
     /// 金

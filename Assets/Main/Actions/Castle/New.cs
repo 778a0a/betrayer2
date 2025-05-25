@@ -296,30 +296,6 @@ partial class CastleActions
     }
 
     /// <summary>
-    /// 城塞レベルアップ
-    /// </summary>
-    public ImproveCastleStrengthLevelAction ImproveCastleStrengthLevel { get; } = new();
-    public class ImproveCastleStrengthLevelAction : CastleActionBase
-    {
-        public override string Label => L["城塞レベルアップ"];
-        public override string Description => L[""];
-
-        public ActionArgs Args(Character actor, Castle castle) => new(actor, targetCastle: castle);
-
-        public override ActionCost Cost(ActionArgs args) => ActionCost.Of(0, 1, (int)(100 * Mathf.Pow(1.75f, args.targetCastle.FortressLevel)));
-        public override ValueTask Do(ActionArgs args)
-        {
-            Util.IsTrue(CanDo(args));
-
-            args.targetCastle.FortressLevel++;
-
-            PayCost(args);
-            Debug.Log($"{args.targetCastle} の城塞レベルが上がりました。({args.targetCastle.FortressLevel})");
-            return default;
-        }
-    }
-
-    /// <summary>
     /// 引出
     /// </summary>
     public WithdrawCastleGoldAction WithdrawCastleGold { get; } = new();

@@ -719,9 +719,7 @@ public class TileInfoEditorWindow : EditorWindow
             EditorGUILayout.EndHorizontal();
 
             EditorGUILayout.BeginHorizontal();
-            castle.Strength = EditorGUILayout.FloatField("Strength", castle.Strength);
-            Label("城塞レベル");
-            castle.FortressLevel = EditorGUILayout.IntField(castle.FortressLevel);
+            castle.Strength = EditorGUILayout.FloatField("城塞レベル", castle.Strength);
             EditorGUILayout.EndHorizontal();
 
             EditorGUILayout.BeginHorizontal();
