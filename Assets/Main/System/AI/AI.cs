@@ -355,7 +355,8 @@ public class AI
         {
             // 採用後の収支が心もとないなら何もしない。
             var newBalance = castle.GoldBalance - salaryEstimate;
-            if (newBalance < 0 && castle.GoldSurplus < -newBalance * 8)
+            var expenceEstimate = Mathf.Max(-newBalance, salaryEstimate) * 12;
+            if (newBalance < 10 && castle.GoldSurplus < expenceEstimate)
             {
                 return;
             }
@@ -363,7 +364,8 @@ public class AI
 
         // 国全体の収支が心もとないなら何もしない。
         var newCountryBalance = country.GoldBalance - salaryEstimate;
-        if (newCountryBalance < 0 && country.GoldSurplus < -newCountryBalance * 8)
+        var countryExpenceEstimate = Mathf.Max(-newCountryBalance, salaryEstimate) * 12;
+        if (newCountryBalance < 10 && (country.GoldSurplus < countryExpenceEstimate))
         {
             return;
         }
