@@ -17,19 +17,19 @@ partial class GameCore
     private async ValueTask OnCharacterMove(Character player)
     {
         // 戦略フェイズの処理を行う。
-        foreach (var castle in World.Castles.Shuffle())
+        var bosses = World.Castles
+            .Select(c => c.Boss)
+            .Where(b => b != null && b.StrategyActionGauge >= 100)
+            .Shuffle();
+        foreach (var boss in bosses)
         {
-            var boss = castle.Boss;
-            if (boss == null) continue;
-            if (boss.StrategyActionGauge < 100) continue;
             boss.StrategyActionGauge = 0;
             await DoStrategyAction(boss);
         }
 
         // 個人フェイズの処理を行う。
-        foreach (var chara in World.Characters.Shuffle())
+        foreach (var chara in World.Characters.Where(c => c.PersonalActionGauge >= 100).Shuffle())
         {
-            if (chara.PersonalActionGauge < 100) continue;
             chara.PersonalActionGauge = 0;
             await DoPersonalAction(chara);
         }
@@ -47,9 +47,11 @@ partial class GameCore
         // 君主の場合
         if (chara.IsRuler)
         {
-            // 収入月の場合
-            if (GameDate.IsIncomeMonth)
+            // 四半期ごとの行動がまだなら行う。
+            if (!country.QuarterActionDone)
             {
+                country.QuarterActionDone = true;
+
                 foreach (var rulingCastle in country.Castles)
                 {
                     // 各城の方針を設定する。
@@ -86,11 +88,19 @@ partial class GameCore
             // 外交を行う。
             await AI.Diplomacy(country);
 
+            await AI.BonusFromRuler(country);
+
             // TODO 人員の移動
         }
 
-        if (GameDate.IsIncomeMonth)
+        // 四半期ごとの行動がまだなら行う。
+        if (!castle.QuarterActionDone)
         {
+            castle.QuarterActionDone = true;
+
+            // 褒賞を与える。
+            await AI.Bonus(castle);
+
             // 物資を輸送する。
             if (chara.IsRuler)
             {
@@ -108,6 +118,7 @@ partial class GameCore
             var dangers = castle.DangerForces(World.Forces).ToArray();
             var dangerPower = dangers.Sum(f => f.Character.Power);
             var defPower = castle.DefenceAndReinforcementPower(World.Forces);
+            // 防衛兵力が少ないなら退却させる。
             if (dangerPower > defPower)
             {
                 // 出撃中の軍勢について

@@ -66,8 +66,21 @@ public class Castle : ICountryEntity, IMapEntity
         .Where(f => f.Country != Country && f.Country.GetRelation(Country) < 60)
         // 5マス以内にいる
         .Where(f => f.Position.DistanceTo(Position) <= 5)
-        // 目的地が自城または、プレーヤーが操作する軍勢で城の周囲2マス以内に移動経路が含まれている(TODO)。
-        .Where(f => f.Destination.Position == Position);
+        .Where(f =>
+        {
+            // 目的地が自城
+            if (f.Destination.Position == Position) return true;
+            // プレーヤーが操作する軍勢で城の周囲2マス以内に移動経路が含まれている。
+            if (f.Character.IsPlayer || f.Character.Castle.Boss.IsPlayer || f.Character.Country.Ruler.IsPlayer)
+            {
+                foreach (var pos in f.DestinationPath)
+                {
+                    if (pos.DistanceTo(Position) <= 2) return true;
+                }
+            }
+
+            return false;
+        });
 
     public float DefenceAndReinforcementPower(ForceManager forces)
     {
@@ -136,8 +149,11 @@ public class Castle : ICountryEntity, IMapEntity
     public float GoldBalanceMax => Towns.Sum(t => t.GoldIncome) - GoldComsumption;
     [JsonIgnore]
     public float GoldComsumption => Members.Sum(m => m.Salary);
+    /// <summary>
+    /// 金の余剰。所持金をベースに、赤字の場合は今後1年分の赤字額を引いたもの。
+    /// </summary>
     [JsonIgnore]
-    public float GoldSurplus => Gold + (GoldIncome - GoldComsumption).MaxWith(0) * 4;
+    public float GoldSurplus => Gold + GoldBalance.MaxWith(0) * 4;
     [JsonIgnore] public float GoldDebtMax => -GoldIncome * 4;
     [JsonIgnore] public float GoldDebtSalaryStopLine => GoldDebtMax / 2;
 
@@ -165,9 +181,20 @@ public class Castle : ICountryEntity, IMapEntity
     public const int NeighborDistanceMax = 5;
 
     /// <summary>
+    /// 前線ならtrue
+    /// </summary>
+    [JsonIgnore]
+    public bool IsFrontline => Neighbors.Any(this.IsAttackable);
+
+    /// <summary>
     /// 方針
     /// </summary>
     public CastleObjective Objective { get; set; }
+
+    /// <summary>
+    /// 四半期の戦略アクションを行っていればtrue
+    /// </summary>
+    public bool QuarterActionDone { get; set; } = false;
 
     public override string ToString()
     {

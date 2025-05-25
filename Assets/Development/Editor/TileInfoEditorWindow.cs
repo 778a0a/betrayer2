@@ -847,7 +847,7 @@ public class TileInfoEditorWindow : EditorWindow
             var members = targetTile.Castle.Members.OrderBy(m => m.OrderIndex);
             EditorGUILayout.Space(10);
             BoldLabel("メンバー情報");
-            Label($"ゴールド 備蓄: {castle.Gold} 収入: {castle.GoldIncome} 支出: {castle.GoldComsumption} 収支: {castle.GoldBalance}|{castle.GoldBalanceMax} (残り: {castle.GoldRemainingQuarters()}Q)");
+            Label($"ゴールド {castle.Gold:0.0}({castle.GoldBalance:0.0}|{castle.GoldBalanceMax:0..}) 収入: {castle.GoldIncome} 支出: {castle.GoldComsumption} (残り: {castle.GoldRemainingQuarters()}Q)");
             foreach (var chara in members)
             {
                 Label($"{chara}");
@@ -856,7 +856,7 @@ public class TileInfoEditorWindow : EditorWindow
                 EditorGUILayout.BeginVertical();
                 chara.Contribution = EditorGUILayout.FloatField("功績", chara.Contribution);
                 Label($"給料 {chara.Salary}");
-                Label($"兵士数 {chara.FoodConsumption}");
+                Label($"兵士数 {chara.Soldiers.SoldierCount}");
                 EditorGUILayout.EndVertical();
                 EditorGUILayout.EndHorizontal();
                 EditorGUILayout.Space(10);

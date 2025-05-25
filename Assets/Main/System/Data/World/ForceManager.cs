@@ -55,7 +55,7 @@ public class ForceManager : IReadOnlyList<Force>
     /// <summary>
     /// 各城の防衛状況を確認します。
     /// </summary>
-    public void UpdateDefenceStatus(GameCore core)
+    public void UpdateDangerStatus(GameCore core)
     {
         if (!ShouldCheckDefenceStatus) return;
         ShouldCheckDefenceStatus = false;

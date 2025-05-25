@@ -82,6 +82,11 @@ public class Country : ICountryEntity
         _ => CountryRank.Chiefdom,
     };
 
+    /// <summary>
+    /// 四半期の戦略アクションを行っていればtrue
+    /// </summary>
+    public bool QuarterActionDone { get; set; } = false;
+
     public override string ToString()
     {
         return $"国({Ruler.Name} 城数: {Castles.Count}, 将数: {Members.Count()})";

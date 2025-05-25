@@ -291,6 +291,17 @@ public class AI
             return val;
         });
 
+        if (castle.Country.Ruler.Personality != Personality.Chaos)
+        {
+            // すでに他に敵対国がある場合は、敵対国でない国を攻撃しないようにする。
+            if (!target.Country.IsEnemy(castle) && castle.Country.Neighbors.Any(castle.Country.IsEnemy))
+            {
+                Debug.LogError($"出撃判定 {castle} 目標 {target} は敵対国ではないため出撃しません。");
+                return;
+            }
+        }
+
+
         Debug.Log($"出撃判定 {castle} 出撃します。 目標: {target}");
 
         // 城に残す人数
@@ -326,55 +337,55 @@ public class AI
 
     public void HireVassal(Castle castle)
     {
-        var country = castle.Country;
         // 未所属キャラがいないなら何もしない。
         if (castle.Frees.Count == 0)
         {
             return;
         }
+        
+        var country = castle.Country;
 
-        var requirements = 30;
-        // メンバーが少ないなら採用条件を下げる。
-        if (castle.Members.Count < 2)
-        {
-            requirements = 15;
-        }
-
-        // 収支が低い場合は何もしない。
-        var balance = castle.GoldBalance;
-        if (balance < requirements)
+        // 国の城の数*5を採用上限にする。
+        if (country.Castles.Count * 5 <= country.Members.Count())
         {
             return;
         }
 
-        // 採用後の収支が心もとないなら何もしない。
-        var chara = castle.Frees.RandomPick();
-        var newBalance = balance - chara.Salary - chara.FoodConsumptionMax / 50;
-        if (newBalance < requirements - 10 && castle.GoldSurplus < 150)
+        // 採用対象のキャラを決める。
+        var target = castle.Frees.RandomPickWeighted(c => c.Power);
+        var salaryEstimate = target.Salary;
+
+        // 前線でないなら採用確率を下げる。
+        var prob = castle.IsFrontline ? 0.8f : 0.1f;
+
+        if (!castle.IsFrontline)
         {
-            return;
+            // 採用後の収支が心もとないなら何もしない。
+            var newBalance = castle.GoldBalance - salaryEstimate;
+            if (newBalance < 0 && castle.GoldSurplus < -newBalance * 8)
+            {
+                return;
+            }
         }
 
         // 国全体の収支が心もとないなら何もしない。
-        if (country.GoldBalance < country.Castles.Count * 15 && country.GoldSurplus / country.Castles.Count < 150)
+        var newCountryBalance = country.GoldBalance - salaryEstimate;
+        if (newCountryBalance < 0 && country.GoldSurplus < -newCountryBalance * 8)
         {
             return;
         }
 
-        chara.Contribution /= 2;
-        chara.IsImportant = false;
-        chara.OrderIndex = country.Members.Max(m => m.OrderIndex) + 1;
-        chara.Loyalty = 80 + chara.Fealty * 2;
-        chara.ChangeCastle(castle, false);
-        Debug.Log($"{chara} が {castle} に採用されました。");
-
-        // 実行可能なら褒賞を与えて忠誠を上げる。
-        var act = core.CastleActions.Bonus;
-        var args = act.Args(castle.Boss, chara);
-        if (act.CanDo(args))
+        if (!prob.Chance())
         {
-            act.Do(args);
+            return;
         }
+
+        target.Contribution /= 2;
+        target.IsImportant = false;
+        target.OrderIndex = country.Members.Max(m => m.OrderIndex) + 1;
+        target.Loyalty = 80 + target.Fealty * 2;
+        target.ChangeCastle(castle, false);
+        Debug.Log($"{target} が {castle} に採用されました。");
     }
 
     public async ValueTask Develop(Castle castle)
@@ -518,5 +529,30 @@ public class AI
                 }
             }
         }
+    }
+
+    /// <summary>
+    /// 忠誠の低いメンバーに褒賞を与える。
+    /// </summary>
+    /// <param name="castle"></param>
+    public async ValueTask Bonus(Castle castle)
+    {
+        // TODO
+        //// 実行可能なら褒賞を与えて忠誠を上げる。
+        //var act = core.CastleActions.Bonus;
+        //var args = act.Args(castle.Boss, target);
+        //if (act.CanDo(args))
+        //{
+        //    await act.Do(args);
+        //}
+    }
+
+    /// <summary>
+    /// 君主用 忠誠の低いメンバーに褒賞を与える。
+    /// </summary>
+    public async ValueTask BonusFromRuler(Country country)
+    {
+        // TODO
+        //throw new NotImplementedException();
     }
 }

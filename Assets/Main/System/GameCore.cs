@@ -81,6 +81,13 @@ public partial class GameCore
             // 収入月の場合
             if (GameDate.IsIncomeMonth)
             {
+                // 四半期の戦略行動済フラグをリセットする。
+                foreach (var country in World.Countries)
+                {
+                    country.QuarterActionDone = false;
+                }
+
+
                 // 収入処理を行う。
                 OnIncome();
 
@@ -167,7 +174,7 @@ public partial class GameCore
         }
 
         // 軍勢関連の処理を行う。
-        World.Forces.UpdateDefenceStatus(this);
+        World.Forces.UpdateDangerStatus(this);
         await World.Forces.OnForceMove(this);
 
         // キャラの行動を行う。
