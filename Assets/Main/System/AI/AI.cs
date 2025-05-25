@@ -404,16 +404,16 @@ public class AI
         var actor = castle.Boss;
         var candActions = new List<(ActionBase act, ActionArgs args, ActionCost cost)>();
 
-        // 町の開発度向上
-        foreach (var town in castle.Towns)
-        {
-            var act = core.CastleActions.Develop;
-            var args = act.Args(actor, town);
-            if (act.CanDo(args))
-            {
-                candActions.Add((act, args, act.Cost(args)));
-            }
-        }
+        //// 町の開発度向上
+        //foreach (var town in castle.Towns)
+        //{
+        //    var act = core.CastleActions.Develop;
+        //    var args = act.Args(actor, town);
+        //    if (act.CanDo(args))
+        //    {
+        //        candActions.Add((act, args, act.Cost(args)));
+        //    }
+        //}
 
         // 町建設
         {
@@ -421,7 +421,7 @@ public class AI
             if (candTiles.Count > 0)
             {
                 var act = core.CastleActions.BuildTown;
-                var bestTile = candTiles.OrderByDescending(t =>Town.TileGoldMax(t, castle)).First();
+                var bestTile = candTiles.First(); // TODO
                 var args = act.Args(actor, castle, bestTile.Position);
                 if (act.CanDo(args))
                 {

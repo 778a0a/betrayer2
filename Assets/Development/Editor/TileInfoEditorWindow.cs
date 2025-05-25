@@ -230,15 +230,6 @@ public class TileInfoEditorWindow : EditorWindow
 
             if (GUILayout.Button("test"))
             {
-                foreach (var town in world.Castles.SelectMany(c => c.Towns))
-                {
-                    if (town.Position != town.Castle.Position) town.DevelopmentLevel = 1;
-
-                    var adj = town.Castle.Position == town.Position ? 1f / 2f : 1f / 4f;
-                    town.GoldIncome = town.GoldIncomeMax * adj;
-                }
-                Save();
-                LoadWorld();
             }
         }
 
@@ -250,7 +241,6 @@ public class TileInfoEditorWindow : EditorWindow
         using (HorizontalLayout())
         {
             Label($"座標: {targetTile.Position} 地形: {targetTile.Terrain}", 150);
-            Label($"Gmax: {Town.TileGoldMax(targetTile):000}", 150);
         }
 
         // スクロール可能にする。
@@ -719,13 +709,18 @@ public class TileInfoEditorWindow : EditorWindow
             EditorGUILayout.EndHorizontal();
 
             EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.FloatField($"領地レベル (総投資額: {castle.TotalInvestment})", castle.DevLevel);
+            EditorGUILayout.EndHorizontal();
+
+
+            EditorGUILayout.BeginHorizontal();
             castle.Strength = EditorGUILayout.FloatField("城塞レベル", castle.Strength);
             EditorGUILayout.EndHorizontal();
 
             EditorGUILayout.BeginHorizontal();
             castle.Gold = EditorGUILayout.FloatField("Gold", castle.Gold);
-            Label($"{castle.GoldIncome:0000} / {castle.GoldIncomeMax:0000} ({castle.GoldBalance:+0;-#})", 200);
             EditorGUILayout.EndHorizontal();
+            Label($"ゴールド {castle.Gold:0.0}({castle.GoldBalance:+0.0;-#.#}) 収入: {castle.GoldIncome:0.0} 支出: {castle.GoldComsumption:0.0} 収入最大: {castle.GoldIncomeMax:0.0} (残り: {castle.GoldRemainingQuarters()}Q)");
 
             if (GUILayout.Button("城を削除"))
             {
@@ -763,14 +758,15 @@ public class TileInfoEditorWindow : EditorWindow
             // ヘッダー
             EditorGUILayout.BeginHorizontal();
             BoldLabel($"町情報 (所属城ID: {town.Castle.Id}) 城主: {town.Castle.Boss?.Name ?? ""} {town.Position}", 300);
-            Label("発展度");
-            town.DevelopmentLevel = EditorGUILayout.IntField(town.DevelopmentLevel);
             EditorGUILayout.EndHorizontal();
 
             EditorGUILayout.BeginHorizontal();
-            Label("金収入", 50);
-            town.GoldIncome = ParamField(town.GoldIncome, town.GoldIncomeMax, 200, Color.yellow);
-            Label($"Max: {town.GoldIncomeMax} (Base: {town.GoldIncomeMaxBase}, Adj: {town.GoldImproveAdj})", 200);
+            Label("金収入", 40);
+            town.GoldIncome = ParamField(town.GoldIncome, town.GoldIncomeMax, 200, Color.yellow, 20);
+            Label($"最大: {town.GoldIncomeMax:0}");
+            Label($"投資額");
+            town.TotalInvestment = EditorGUILayout.FloatField(town.TotalInvestment);
+            Label($"(効率: {town.GoldImproveAdj * 100:0}%)");
             EditorGUILayout.EndHorizontal();
 
             if (GUILayout.Button("町を削除"))
@@ -782,10 +778,10 @@ public class TileInfoEditorWindow : EditorWindow
                 LoadWorld();
             }
 
-            float ParamField(float value, float max, float maxmax, Color color)
+            float ParamField(float value, float max, float maxmax, Color color, float width = 40)
             {
                 GUILayout.BeginHorizontal();
-                value = EditorGUILayout.FloatField(value, GUILayout.Width(40));
+                value = EditorGUILayout.FloatField(value, GUILayout.Width(width));
                 var rect = GUILayoutUtility.GetRect(200, 20);
                 // 誤操作防止のためスライダーは無効にしておく。
                 //value = (int)GUI.HorizontalSlider(rect, value, 0, max);
@@ -843,7 +839,6 @@ public class TileInfoEditorWindow : EditorWindow
             var members = targetTile.Castle.Members.OrderBy(m => m.OrderIndex);
             EditorGUILayout.Space(10);
             BoldLabel("メンバー情報");
-            Label($"ゴールド {castle.Gold:0.0}({castle.GoldBalance:0.0}|{castle.GoldBalanceMax:0..}) 収入: {castle.GoldIncome} 支出: {castle.GoldComsumption} (残り: {castle.GoldRemainingQuarters()}Q)");
             foreach (var chara in members)
             {
                 Label($"{chara}");

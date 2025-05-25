@@ -115,11 +115,20 @@ public class Castle : ICountryEntity, IMapEntity
         .Distinct();
 
     /// <summary>
-    /// 砦強度
+    /// 城塞レベル
     /// </summary>
     public float Strength { get; set; }
     [JsonIgnore]
     public float StrengthMax => 100;
+
+    /// <summary>
+    /// 総投資額
+    /// </summary>
+    public float TotalInvestment => Towns.Sum(t => t.TotalInvestment);
+    /// <summary>
+    /// 発展度
+    /// </summary>
+    public int DevLevel => (int)(TotalInvestment / 100f);
 
     /// <summary>
     /// 金
@@ -133,8 +142,6 @@ public class Castle : ICountryEntity, IMapEntity
     public float GoldIncomeProgress => GoldIncome / GoldIncomeMax;
     [JsonIgnore]
     public float GoldBalance => GoldIncome - GoldComsumption;
-    [JsonIgnore]
-    public float GoldBalanceMax => Towns.Sum(t => t.GoldIncome) - GoldComsumption;
     [JsonIgnore]
     public float GoldComsumption => Members.Sum(m => m.Salary);
     /// <summary>
