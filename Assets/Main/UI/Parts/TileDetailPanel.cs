@@ -23,6 +23,7 @@ public partial class TileDetailPanel
     public GameMapTile CurrentData { get; private set; }
     public void SetData(GameMapTile tile)
     {
+        return;
         CurrentData = tile;
         if (tile == null)
         {
