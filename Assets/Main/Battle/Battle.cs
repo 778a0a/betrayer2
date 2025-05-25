@@ -158,7 +158,6 @@ public class Battle
         if (castle != null && Type == BattleType.Siege)
         {
             castle.Strength *= ((100 - TickCount / 2f * Random.Range(0.5f, 1f)) / 100f).MaxWith(0.99f);
-            castle.Stability = (castle.Stability - TickCount / 4f * Random.Range(0.5f, 1f)).Clamp(0, 100);
             //Debug.LogError($"{TickCount}");
         }
         // 戦闘が起きた町の内政値を減らす。

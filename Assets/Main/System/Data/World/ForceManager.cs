@@ -469,7 +469,6 @@ public class ForceManager : IReadOnlyList<Force>
         }
 
         // 内政値を下げる。
-        castle.Stability = (castle.Stability * 0.5f).MaxWith(30);
         castle.Strength *= Random.Range(0.6f, 0.9f);
         foreach (var town in castle.Towns)
         {

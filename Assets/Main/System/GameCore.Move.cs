@@ -275,9 +275,6 @@ partial class GameCore
                     case CastleObjective.CastleStrength:
                         action = CastleActions.ImproveCastleStrength;
                         break;
-                    case CastleObjective.Stability:
-                        action = CastleActions.ImproveStability;
-                        break;
                     case CastleObjective.Commerce:
                         action = TownActions.ImproveGoldIncome;
                         break;
@@ -435,7 +432,6 @@ partial class GameCore
     {
         Instance.TownActions.ImproveGoldIncome,
         Instance.CastleActions.ImproveCastleStrength,
-        Instance.CastleActions.ImproveStability,
         Instance.CastleActions.TrainSoldiers,
     });
 }

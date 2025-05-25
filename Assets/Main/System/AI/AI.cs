@@ -73,13 +73,7 @@ public class AI
                     if (castle.Strength / castle.StrengthMax < 0.5f) return 20;
                     return 10;
 
-                case CastleObjective.Stability:
-                    if (castle.Stability < 90) return 10000;
-                    if (castle.Stability < 100) return 100;
-                    return 0;
-
                 case CastleObjective.Commerce:
-                    if (castle.Stability < 90) return 0;
                     if (castle.GoldIncome == castle.GoldIncomeMax) return 0;
                     if (castle.GoldBalance < 0) return 1000;
                     return 100;

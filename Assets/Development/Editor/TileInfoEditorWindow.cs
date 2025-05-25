@@ -724,8 +724,6 @@ public class TileInfoEditorWindow : EditorWindow
             castle.FortressLevel = EditorGUILayout.IntField(castle.FortressLevel);
             EditorGUILayout.EndHorizontal();
 
-            castle.Stability = EditorGUILayout.FloatField("Stability", castle.Stability);
-
             EditorGUILayout.BeginHorizontal();
             castle.Gold = EditorGUILayout.FloatField("Gold", castle.Gold);
             Label($"{castle.GoldIncome:0000} / {castle.GoldIncomeMax:0000} ({castle.GoldBalance:+0;-#})", 200);

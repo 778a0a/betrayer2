@@ -127,18 +127,11 @@ public class Castle : ICountryEntity, IMapEntity
     public float StrengthMax => FortressLevel * 100;
 
     /// <summary>
-    /// 安定度
-    /// </summary>
-    public float Stability { get; set; }
-    [JsonIgnore]
-    public float StabilityMax => 100;
-
-    /// <summary>
     /// 金
     /// </summary>
     public float Gold { get; set; }
     [JsonIgnore]
-    public float GoldIncome => Towns.Sum(t => t.GoldIncome) * Stability / StabilityMax;
+    public float GoldIncome => Towns.Sum(t => t.GoldIncome);
     [JsonIgnore]
     public float GoldIncomeMax => Towns.Sum(t => t.GoldIncomeMax);
     [JsonIgnore]
@@ -208,6 +201,5 @@ public enum CastleObjective
     Attack,
     Train,
     CastleStrength,
-    Stability,
     Commerce,
 }
