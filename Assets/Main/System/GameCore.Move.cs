@@ -185,8 +185,8 @@ partial class GameCore
             while (true)
             {
                 var action = (ActionBase)(chara.Soldiers.HasEmptySlot ?
-                    CastleActions.HireSoldier :
-                    CastleActions.TrainSoldiers);
+                    PersonalActions.HireSoldier :
+                    PersonalActions.TrainSoldiers);
                 if (!action.CanDo(args)) break;
                 await action.Do(args);
             }
@@ -245,7 +245,7 @@ partial class GameCore
                 var moveCastle = castle.Neighbors.Where(n => castle.IsSelf(n)).RandomPickDefault();
                 if (moveTarget != null && moveCastle != null && 0.5f.Chance())
                 {
-                    var move = CastleActions.Move;
+                    var move = StrategyActions.Deploy;
                     var moveArgs = move.Args(chara, moveTarget, moveCastle);
                     await move.Do(moveArgs);
                 }
@@ -264,7 +264,7 @@ partial class GameCore
             // 空きスロットがあれば雇兵する。
             if (chara.Soldiers.HasEmptySlot)
             {
-                action = CastleActions.HireSoldier;
+                action = PersonalActions.HireSoldier;
                 budget = chara.Gold;
             }
             // 基本的には方針通りの行動を行う。
@@ -273,10 +273,10 @@ partial class GameCore
                 switch (chara.Castle.Objective)
                 {
                     case CastleObjective.CastleStrength:
-                        action = CastleActions.ImproveCastleStrength;
+                        action = PersonalActions.Fortify;
                         break;
                     case CastleObjective.Commerce:
-                        action = TownActions.ImproveGoldIncome;
+                        action = PersonalActions.Develop;
                         break;
                     case CastleObjective.None:
                     case CastleObjective.Attack:
@@ -383,7 +383,7 @@ partial class GameCore
                             cands.Remove(target);
                             continue;
                         }
-                        var action = CastleActions.MoveAsReinforcement;
+                        var action = StrategyActions.DeployAsReinforcement;
                         var args = action.Args(reinSourceCountry.Ruler, member, castle);
                         if (action.CanDo(args))
                         {
@@ -430,8 +430,8 @@ partial class GameCore
 
     private readonly Lazy<ActionBase[]> vassalActions = new(() => new ActionBase[]
     {
-        Instance.TownActions.ImproveGoldIncome,
-        Instance.CastleActions.ImproveCastleStrength,
-        Instance.CastleActions.TrainSoldiers,
+        Instance.PersonalActions.Develop,
+        Instance.PersonalActions.Fortify,
+        Instance.PersonalActions.TrainSoldiers,
     });
 }

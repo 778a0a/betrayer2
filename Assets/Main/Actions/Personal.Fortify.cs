@@ -6,18 +6,13 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-partial class CastleActions
+partial class PersonalActions
 {
-    public CastleActionBase[] Governings => new CastleActionBase[]
-    {
-        ImproveCastleStrength,
-    };
-
     /// <summary>
     /// 城の強度を改善します。
     /// </summary>
-    public ImproveCastleStrengthAction ImproveCastleStrength { get; } = new();
-    public class ImproveCastleStrengthAction : CastleActionBase
+    public FortifyAction Fortify { get; } = new();
+    public class FortifyAction : PersonalActionBase
     {
         public override string Label => L["城壁強化"];
         public override string Description => L["城の強度を改善します。"];

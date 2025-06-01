@@ -6,19 +6,13 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-partial class TownActions
+partial class PersonalActions
 {
-    public TownActionBase[] Governings => new TownActionBase[]
-    {
-        ImproveGoldIncome,
-        DestroyTown,
-    };
-
     /// <summary>
     /// ゴールド収入を改善します。
     /// </summary>
-    public ImproveGoldIncomeAction ImproveGoldIncome { get; } = new();
-    public class ImproveGoldIncomeAction : TownActionBase
+    public DevelopAction Develop { get; } = new();
+    public class DevelopAction : PersonalActionBase
     {
         public override string Label => L["商業"];
         public override string Description => L["ゴールド収入を改善します。"];
@@ -43,27 +37,6 @@ partial class TownActions
 
             var contribAdj = town.Castle.Objective == CastleObjective.Commerce ? 1.5f : 1;
             chara.Contribution += adj * contribAdj;
-            PayCost(args);
-
-            return default;
-        }
-    }
-
-    /// <summary>
-    /// 町を破棄します。
-    /// </summary>
-    public DestroyTownAction DestroyTown { get; } = new();
-    public class DestroyTownAction : TownActionBase
-    {
-        public override string Label => L["破棄"];
-        public override string Description => L["町を破棄します。"];
-
-        public override ActionCost Cost(ActionArgs args) => 40;
-
-        public override ValueTask Do(ActionArgs args)
-        {
-            Util.IsTrue(CanDo(args));
-
             PayCost(args);
 
             return default;

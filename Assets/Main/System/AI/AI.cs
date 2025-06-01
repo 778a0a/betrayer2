@@ -100,7 +100,7 @@ public class AI
             if ((prob / 12).Chance())
             {
                 // 同盟を申し込む。
-                var act = core.CastleActions.Ally;
+                var act = core.StrategyActions.Ally;
                 var args = act.Args(country.Ruler, neighbor);
                 if (act.CanDo(args))
                 {
@@ -118,7 +118,7 @@ public class AI
         {
             void Do()
             {
-                var action = core.CastleActions.Goodwill;
+                var action = core.StrategyActions.Goodwill;
                 var args = action.Args(country.Ruler, neighbor);
                 if (action.CanDo(args))
                 {
@@ -313,7 +313,7 @@ public class AI
         while (castle.Members.Count(m => m.IsDefendable) > leaveCount)
         {
             var attacker = castle.Members.Where(m => m.IsDefendable).RandomPick();
-            var act = core.CastleActions.Move;
+            var act = core.StrategyActions.Deploy;
             var args = act.Args(boss, attacker, target);
 
             Debug.Log($"出撃候補 {attacker}");
@@ -422,7 +422,7 @@ public class AI
             var candTiles = castle.NewTownCandidates(world).ToList();
             if (candTiles.Count > 0)
             {
-                var act = core.CastleActions.BuildTown;
+                var act = core.StrategyActions.BuildTown;
                 var bestTile = candTiles.First(); // TODO
                 var args = act.Args(actor, castle, bestTile.Position);
                 if (act.CanDo(args))
@@ -467,7 +467,7 @@ public class AI
         if (castle.GoldSurplus < 0) gold = 0;
         if (gold > 0)
         {
-            var act = core.CastleActions.Transpot;
+            var act = core.StrategyActions.Transpot;
             var args = act.Args(castle.Boss, castle, ruler.Castle, gold);
             if (act.CanDo(args))
             {
@@ -496,7 +496,7 @@ public class AI
                 .Where(c => c.Gold > 0)
                 .OrderByDescending(c => c.Gold);
 
-            var act = core.CastleActions.Transpot;
+            var act = core.StrategyActions.Transpot;
             foreach (var wealthy in wealthyCastles)
             {
                 var needGold = -castle.Gold;

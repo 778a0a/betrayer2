@@ -6,16 +6,16 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-partial class CastleActions
+partial class StrategyActions
 {
     /// <summary>
-    /// 人物一覧を表示します。
+    /// 配下を解雇します。
     /// </summary>
-    public ShowMembersAction ShowMembers { get; } = new();
-    public class ShowMembersAction : CastleActionBase
+    public FireVassalAction FireVassal { get; } = new();
+    public class FireVassalAction : StrategyActionBase
     {
-        public override string Label => L["人物一覧"];
-        public override string Description => L["人物一覧を表示します。"];
+        public override string Label => L["追放"];
+        public override string Description => L["配下を解雇します。"];
 
         public override ActionCost Cost(ActionArgs args) => 5;
 
@@ -28,4 +28,5 @@ partial class CastleActions
             return default;
         }
     }
+
 }

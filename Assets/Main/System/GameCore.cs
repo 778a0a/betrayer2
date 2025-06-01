@@ -16,8 +16,8 @@ public partial class GameCore
     public Testing test { get; }
     public AI AI { get; }
 
-    public CastleActions CastleActions { get; }
-    public TownActions TownActions { get; }
+    public PersonalActions PersonalActions { get; }
+    public StrategyActions StrategyActions { get; }
 
     public GameDate GameDate { get; set; }
 
@@ -31,8 +31,8 @@ public partial class GameCore
         GameDate = new GameDate(0);
 
         AI = new AI(this);
-        CastleActions = new CastleActions(this);
-        TownActions = new TownActions(this);
+        PersonalActions = new PersonalActions(this);
+        StrategyActions = new StrategyActions(this);
 
         MainUI.OnGameCoreAttached();
     }

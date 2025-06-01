@@ -69,11 +69,11 @@ public partial class TileDetailPanel
     private void InitializeActionButtons()
     {
         var core = GameCore.Instance;
-        castleGoverningActions = core.CastleActions.Governings.Select(a => new ActionButton(this, a)).ToArray();
-        castleMartialActions = core.CastleActions.Martials.Select(a => new ActionButton(this, a)).ToArray();
-        castleStrategyActions = core.CastleActions.Strategies.Select(a => new ActionButton(this, a)).ToArray();
-        //castleDiplomaciesActions = core.CastleActions.Diplomacies.Select(a => new ActionButton(this, a)).ToArray();
-        townGoverningActions = core.TownActions.Governings.Select(a => new ActionButton(this, a)).ToArray();
+        //castleGoverningActions = core.PersonalActions.Governings.Select(a => new ActionButton(this, a)).ToArray();
+        //castleMartialActions = core.PersonalActions.Martials.Select(a => new ActionButton(this, a)).ToArray();
+        //castleStrategyActions = core.PersonalActions.Strategies.Select(a => new ActionButton(this, a)).ToArray();
+        ////castleDiplomaciesActions = core.CastleActions.Diplomacies.Select(a => new ActionButton(this, a)).ToArray();
+        //townGoverningActions = core.StrategyActions.Governings.Select(a => new ActionButton(this, a)).ToArray();
 
         var mmm = new[]
         {

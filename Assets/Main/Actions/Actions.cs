@@ -140,22 +140,22 @@ public struct ActionArgs
 }
 
 
-public partial class CastleActions : ActionsBase<CastleActionBase>
+public partial class PersonalActions : ActionsBase<PersonalActionBase>
 {
-    public CastleActions(GameCore core) : base(core)
+    public PersonalActions(GameCore core) : base(core)
     {
     }
 }
-public class CastleActionBase : ActionBase
+public class PersonalActionBase : ActionBase
 {
 }
 
-public partial class TownActions : ActionsBase<TownActionBase>
+public partial class StrategyActions : ActionsBase<StrategyActionBase>
 {
-    public TownActions(GameCore core) : base(core)
+    public StrategyActions(GameCore core) : base(core)
     {
     }
 }
-public class TownActionBase : ActionBase
+public class StrategyActionBase : ActionBase
 {
 }
