@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using NUnit.Framework.Internal;
 using System.Linq;
+using Mono.Cecil.Cil;
 
 public partial class GameCore
 {
@@ -86,7 +87,10 @@ public partial class GameCore
                 {
                     country.QuarterActionDone = false;
                 }
-
+                foreach (var castle in World.Castles)
+                {
+                    castle.QuarterActionDone = false;
+                }
 
                 // 収入処理を行う。
                 OnIncome();
@@ -199,6 +203,8 @@ public partial class GameCore
             castle.Gold += castle.GoldIncome;
 
             // キャラ・軍隊への支払い
+            var reduceds = "";
+            var notPaids = "";
             foreach (var chara in castle.Members.OrderBy(m => m.OrderIndex))
             {
                 // 給料支出
@@ -216,18 +222,22 @@ public partial class GameCore
                     chara.Gold += chara.Salary / 2;
                     chara.IsStarving = true;
                     chara.Loyalty = (chara.Loyalty - chara.LoyaltyDecreaseBase).MinWith(0);
-                    Debug.LogWarning($"{castle} 借金があるため、{chara.Name}の給料をカットします。");
+                    reduceds += $"{chara.Name}, ";
                 }
                 // 借金が多い場合は完全に支払わない。
                 else
                 {
                     chara.IsStarving = true;
-                    Debug.LogWarning($"{castle} 借金過多のため、{chara.Name}に給料を支払えませんでした。");
                     if (!chara.IsImportant)
                     {
                         chara.Loyalty = (chara.Loyalty - 2 * chara.LoyaltyDecreaseBase).MinWith(0);
                     }
+                    notPaids += $"{chara.Name}, ";
                 }
+            }
+            if (reduceds.Length > 0 || notPaids.Length > 0)
+            {
+                //Debug.LogWarning($"{castle} 給料カット: [{reduceds}] 未払: [{notPaids}]");
             }
         }
         // 未所属のキャラはランダムに収入を得る。

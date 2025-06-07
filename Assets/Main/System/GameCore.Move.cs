@@ -60,11 +60,11 @@ partial class GameCore
                     // TODO 攻撃の場合は目標城を設定する。
                     if (prevObjective != rulingCastle.Objective)
                     {
-                        Debug.Log($"方針: 更新 {rulingCastle.Objective} <- {prevObjective} at {rulingCastle}");
+                        //Debug.Log($"方針: 更新 {rulingCastle.Objective} <- {prevObjective} at {rulingCastle}");
                     }
                     else
                     {
-                        Debug.Log($"方針継続: {rulingCastle.Objective} at {rulingCastle}");
+                        //Debug.Log($"方針継続: {rulingCastle.Objective} at {rulingCastle}");
                     }
                 }
             }
@@ -110,6 +110,12 @@ partial class GameCore
             {
                 await AI.TransportAsTribute(castle, chara);
             }
+
+            // 採用を行う。
+            AI.HireVassal(castle);
+
+            // 投資を行う。
+            await AI.Invest(castle);
         }
 
         // 防衛
@@ -150,14 +156,8 @@ partial class GameCore
             }
         }
 
-        // 採用を行うか判定する。
-        AI.HireVassal(castle);
-
         // 進軍を行うか判定する。
         AI.Deploy(castle);
-
-        // 開発を行うか判定する。
-        await AI.Develop(castle);
     }
 
     private async ValueTask DoPersonalAction(Character chara)

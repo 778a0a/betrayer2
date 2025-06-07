@@ -35,7 +35,7 @@ public class Battle
 
     public async ValueTask<BattleResult> Do()
     {
-        Debug.Log($"[戦闘処理] {Atk}) -> {Def} ({Type}) 攻撃側地形: {Atk.Terrain} 防御側地形: {Def.Terrain}");
+        //Debug.Log($"[戦闘処理] {Atk}) -> {Def} ({Type}) 攻撃側地形: {Atk.Terrain} 防御側地形: {Def.Terrain}");
 
         if (NeedWatchBattle || NeedInteraction || DebugWatch)
         {
@@ -92,7 +92,7 @@ public class Battle
                 BattleResult.DefenderWin :
                 BattleResult.AttackerWin;
         }
-        Debug.Log($"[戦闘処理] 結果: {result}");
+        //Debug.Log($"[戦闘処理] {Atk}) -> {Def} ({Type}) 攻撃側地形: {Atk.Terrain} 防御側地形: {Def.Terrain} 結果: {result}");
 
         // 画面を更新する。
         if (NeedWatchBattle || NeedInteraction || DebugWatch)
@@ -277,8 +277,8 @@ public class Battle
                 return v;
             }
         }
-        Debug.Log($"[戦闘処理] 基本調整値: atk:{baseAdjustment[Attacker].Item1:0.00} def:{baseAdjustment[Defender].Item1:0.00}"
-            + $"\n{baseAdjustment[Attacker].Item2}\n{baseAdjustment[Defender].Item2}");
+        //Debug.Log($"[戦闘処理] 基本調整値: atk:{baseAdjustment[Attacker].Item1:0.00} def:{baseAdjustment[Defender].Item1:0.00}"
+        //    + $"\n{baseAdjustment[Attacker].Item2}\n{baseAdjustment[Defender].Item2}");
 
         var attackerTotalDamage = 0f;
         var defenderTotalDamage = 0f;

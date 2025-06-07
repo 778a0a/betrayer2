@@ -42,7 +42,7 @@ partial class StrategyActions
             force.SetDestination(args.targetCastle);
             World.Forces.Register(force);
 
-            Debug.Log($"{force} が出撃しました。");
+            //Debug.Log($"{force} が出撃しました。");
 
             PayCost(args);
             return default;

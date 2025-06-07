@@ -39,7 +39,7 @@ partial class StrategyActions
             }
 
             PayCost(args);
-            Debug.Log($"{args.actor.Name} が {args.targetCastle} から {args.targetCastle2} へ {args.gold}G 運びました。");
+            //Debug.Log($"{args.actor.Name} が {args.targetCastle} から {args.targetCastle2} へ {args.gold}G 運びました。");
             return default;
         }
     }

@@ -116,6 +116,12 @@ public class ForceManager : IReadOnlyList<Force>
                     Debug.Log($"軍勢更新処理 {force} 待機終了");
                 }
             }
+            // なぜかずっと待機になることがあったので対応する。 
+            if (force.Mode == ForceMode.Normal && force.Character.Castle.Position == force.Position)
+            {
+                Debug.LogError($"待機エラーのため帰還します。{force}");
+                Unregister(force);
+            }
             return;
         }
 
@@ -167,7 +173,7 @@ public class ForceManager : IReadOnlyList<Force>
             force.Character.ChangeCastle(nextTile.Castle, false);
 
             Unregister(force);
-            Debug.Log($"軍勢更新処理 目的地の城に入城しました。{force}");
+            //Debug.Log($"軍勢更新処理 目的地の城に入城しました。{force}");
             return;
         }
 
@@ -196,14 +202,14 @@ public class ForceManager : IReadOnlyList<Force>
             {
                 force.Character.SetIncapacitated();
                 Unregister(force);
-                Debug.Log($"軍勢更新処理 野戦に敗北し、全滅しました。");
+                //Debug.Log($"軍勢更新処理 野戦に敗北し、全滅しました。");
                 return;
             }
 
             var home = force.Character.Castle;
             force.ResetTileMoveProgress();
             force.SetDestination(home);
-            Debug.Log($"軍勢更新処理 野戦に敗北しました。撤退します。({force.TileMoveRemainingDays})");
+            //Debug.Log($"軍勢更新処理 野戦に敗北しました。撤退します。({force.TileMoveRemainingDays})");
             return;
         }
 
@@ -215,14 +221,14 @@ public class ForceManager : IReadOnlyList<Force>
             // やっぱり行動不能にはしない。
             //enemy.Character.SetIncapacitated();
             Unregister(enemy);
-            Debug.Log($"{enemy} 野戦(城)に敗北したため城に退却します。");
+            //Debug.Log($"{enemy} 野戦(城)に敗北したため城に退却します。");
         }
         // 全滅した場合
         else if (enemy.Character.Soldiers.IsAllDead)
         {
             enemy.Character.SetIncapacitated();
             Unregister(enemy);
-            Debug.Log($"{enemy} 野戦に敗北し、全滅しました。");
+            //Debug.Log($"{enemy} 野戦に敗北し、全滅しました。");
         }
         else
         {
@@ -246,7 +252,7 @@ public class ForceManager : IReadOnlyList<Force>
                 enemy.UpdatePosition(backPos);
                 // 本拠地へ撤退させる。
                 enemy.SetDestination(enemyHome);
-                Debug.Log($"{enemy} 野戦に敗北したため後退しました。");
+                //Debug.Log($"{enemy} 野戦に敗北したため後退しました。");
             }
         }
 
@@ -255,7 +261,7 @@ public class ForceManager : IReadOnlyList<Force>
         {
             force.ResetTileMoveProgress();
             force.TileMoveRemainingDays /= 4;
-            Debug.Log($"軍勢更新処理 野戦に勝利しました。({force.TileMoveRemainingDays})");
+            //Debug.Log($"軍勢更新処理 野戦に勝利しました。({force.TileMoveRemainingDays})");
             return;
         }
 
@@ -267,7 +273,7 @@ public class ForceManager : IReadOnlyList<Force>
             {
                 force.ResetTileMoveProgress();
                 force.TileMoveRemainingDays /= 2;
-                Debug.Log($"軍勢更新処理 野戦(城)に勝利しました。({force.TileMoveRemainingDays})");
+                //Debug.Log($"軍勢更新処理 野戦(城)に勝利しました。({force.TileMoveRemainingDays})");
                 return;
             }
             // 防衛可能な敵が残っていない場合は城を占領する。
@@ -286,7 +292,7 @@ public class ForceManager : IReadOnlyList<Force>
 
         // 敵がいなくなった場合はタイルを移動する。
         force.UpdatePosition(nextTile.Position);
-        Debug.Log($"軍勢更新処理 野戦に勝利しました。隣のタイルに移動しました。({force.TileMoveRemainingDays})");
+        //Debug.Log($"軍勢更新処理 野戦に勝利しました。隣のタイルに移動しました。({force.TileMoveRemainingDays})");
     }
 
     /// <summary>
@@ -318,12 +324,12 @@ public class ForceManager : IReadOnlyList<Force>
             {
                 force.Character.SetIncapacitated();
                 Unregister(force);
-                Debug.Log($"軍勢更新処理 攻城戦に敗北し、全滅しました。");
+                //Debug.Log($"軍勢更新処理 攻城戦に敗北し、全滅しました。");
                 return;
             }
             var home = force.Character.Castle;
             force.SetDestination(home);
-            Debug.Log($"軍勢更新処理 攻城戦に敗北しました。撤退します。({force.TileMoveRemainingDays})");
+            //Debug.Log($"軍勢更新処理 攻城戦に敗北しました。撤退します。({force.TileMoveRemainingDays})");
             return;
         }
 
@@ -337,7 +343,7 @@ public class ForceManager : IReadOnlyList<Force>
         {
             force.ResetTileMoveProgress();
             force.TileMoveRemainingDays /= 2;
-            Debug.Log($"軍勢更新処理 攻城戦に勝利しました。({force.TileMoveRemainingDays})");
+            //Debug.Log($"軍勢更新処理 攻城戦に勝利しました。({force}, {force.TileMoveRemainingDays})");
             return;
         }
 
@@ -415,7 +421,7 @@ public class ForceManager : IReadOnlyList<Force>
         {
             f.Character.ChangeCastle(castle, false);
             Unregister(f);
-            Debug.Log($"{f} 城に入城しました。");
+            //Debug.Log($"{f} 城に入城しました。");
         }
 
         // 城を目的地にしている他の国の軍勢について

@@ -218,11 +218,11 @@ public class Character
         IncapacitatedDaysRemaining = 90;
         if (old == 0)
         {
-            Debug.Log($"{Name}は行動不能になりました。");
+            //Debug.Log($"{Name}は行動不能になりました。");
         }
         else
         {
-            Debug.Log($"{Name}は行動不能状態が延長されました。(prev: {old})");
+            //Debug.Log($"{Name}は行動不能状態が延長されました。(prev: {old})");
         }
     }
 

@@ -182,7 +182,7 @@ public class AI
                     prob += probGold ? 0.2f : 0;
                     // 友好度40以上で友好度が低いほど+
                     prob += Mathf.Lerp(0.4f, 0.0f, (rel - 40) / 60f);
-                    Debug.Log($"{Mathf.Lerp(0.4f, 0.0f, (rel - 40) / 60f)}, {rel}");
+                    //Debug.Log($"{Mathf.Lerp(0.4f, 0.0f, (rel - 40) / 60f)}, {rel}");
                     if (rel < 55) prob += 0.2f;
                     // 敵対国と敵対しているなら+
                     prob += probEnemyEnemy ? 0.2f : 0;
@@ -240,7 +240,7 @@ public class AI
         // 防衛可能なメンバーが少ないなら何もしない。
         if (castle.Members.Count(m => m.IsDefendable) < 2)
         {
-            Debug.Log($"出撃判定 {castle} 防衛メンバー過少");
+            //Debug.Log($"出撃判定 {castle} 防衛メンバー過少");
             return;
         }
 
@@ -260,7 +260,7 @@ public class AI
 
         if (targetCands.Count == 0)
         {
-            Debug.Log($"出撃判定 {castle} 目標なし");
+            //Debug.Log($"出撃判定 {castle} 目標なし");
             return;
         }
 
@@ -295,7 +295,7 @@ public class AI
         }
 
 
-        Debug.Log($"出撃判定 {castle} 出撃します。 目標: {target}");
+        //Debug.Log($"出撃判定 {castle} 出撃します。 目標: {target}");
 
         // 城に残す人数
         var leaveCount = 0;
@@ -316,7 +316,7 @@ public class AI
             var act = core.StrategyActions.Deploy;
             var args = act.Args(boss, attacker, target);
 
-            Debug.Log($"出撃候補 {attacker}");
+            //Debug.Log($"出撃候補 {attacker}");
             if (act.CanDo(args))
             {
                 act.Do(args);
@@ -383,72 +383,30 @@ public class AI
         Debug.Log($"{target} が {castle} に採用されました。");
     }
 
-    public async ValueTask Develop(Castle castle)
+    public async ValueTask Invest(Castle castle)
     {
-        // 収入月前でなければ何もしない。
-        if (!core.GameDate.IsEndMonth)
-        {
-            return;
-        }
-
-        // 十分発展していないなら何もしない。
-        if (castle.GoldIncomeProgress < 0.75f)
-        {
-            return;
-        }
-
         // 物資が余っていないなら何もしない。
         if (castle.GoldSurplus < 0)
         {
             return;
         }
-
         var actor = castle.Boss;
-        var candActions = new List<(ActionBase act, ActionArgs args, ActionCost cost)>();
+        var args = core.StrategyActions.Invest.Args(actor);
+        var act = core.StrategyActions.Invest;
 
-        //// 町の開発度向上
-        //foreach (var town in castle.Towns)
-        //{
-        //    var act = core.CastleActions.Develop;
-        //    var args = act.Args(actor, town);
-        //    if (act.CanDo(args))
-        //    {
-        //        candActions.Add((act, args, act.Cost(args)));
-        //    }
-        //}
-
-        // 町建設
+        var budget = (castle.GoldIncome * 0.5f).Clamp(0, castle.Gold);
+        var count = 0;
+        var cost = act.Cost(args).castleGold;
+        while (budget > cost)
         {
-            var candTiles = castle.NewTownCandidates(world).ToList();
-            if (candTiles.Count > 0)
+            await act.Do(args);
+            budget -= cost;
+            count++;
+            if (count > 10)
             {
-                var act = core.StrategyActions.BuildTown;
-                var bestTile = candTiles.First(); // TODO
-                var args = act.Args(actor, castle, bestTile.Position);
-                if (act.CanDo(args))
-                {
-                    candActions.Add((act, args, act.Cost(args)));
-                }
+                break;
             }
         }
-
-        if (candActions.Count == 0)
-        {
-            return;
-        }
-
-        // 一番コストの低い行動を選択する。
-        var best = candActions.OrderBy(a => a.cost.castleGold).FirstOrDefault();
-        // 手元物資が心もとないなら何もしない。
-        if (castle.Gold < best.cost.castleGold / 10)
-        {
-            return;
-        }
-
-        await best.act.Do(best.args);
-        Debug.LogError($"{castle}の開発を行いました。({best})");
-        //core.Pause();
-
     }
 
     /// <summary>
@@ -462,10 +420,15 @@ public class AI
         var ruler = castle.Country.Ruler;
         Util.IsTrue(boss != ruler, "君主は上納できません。");
 
-        // 余剰物資を君主の城に輸送する。
-        var gold = (castle.GoldBalance / 2).Clamp(0, castle.Gold);
-        if (castle.GoldSurplus < 0) gold = 0;
-        if (gold > 0)
+        // 赤字の場合は何もしない。
+        if (castle.GoldBalance <= 0)
+        {
+            return;
+        }
+
+        // 黒字の場合は、現在の金残高の半分を上納する。
+        var gold = castle.Gold / 2;
+        if (gold > 1)
         {
             var act = core.StrategyActions.Transpot;
             var args = act.Args(castle.Boss, castle, ruler.Castle, gold);

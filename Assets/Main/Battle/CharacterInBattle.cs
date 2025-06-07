@@ -101,7 +101,7 @@ public record CharacterInBattle(
             newHp = Mathf.Min(maxRecoveryCounts[i], newHp);
             s.HpFloat = Mathf.Min(s.MaxHp, newHp);
         }
-        Debug.Log($"{chara.Name} adj:{adj} win:{winAdj} intelli:{intelliAdj} tired: {tiredAdj} ({chara.ConsecutiveBattleCount})");
+        //Debug.Log($"{chara.Name} adj:{adj} win:{winAdj} intelli:{intelliAdj} tired: {tiredAdj} ({chara.ConsecutiveBattleCount})");
     }
 
     public override string ToString() => $"{Character?.Name}({Character?.Power})";
