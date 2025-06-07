@@ -45,7 +45,7 @@ public class AI
                         var relThresh = country.Ruler.Personality switch
                         {
                             Personality.Merchant => 15,
-                            Personality.Pacifism => 15,
+                            Personality.Pacifist => 15,
                             _ => 40,
                         };
                         if (rel <= relThresh)
@@ -165,7 +165,7 @@ public class AI
                     // 隣接国なら+
                     prob *= country.Neighbors.Contains(neighbor) ? 1 : 0.5f;
                     break;
-                case Personality.Pacifism:
+                case Personality.Pacifist:
                     // 自城が豊かなら+
                     prob += probGold ? 0.1f : 0;
                     // 友好度30以上で友好度が高いほど+
@@ -248,7 +248,7 @@ public class AI
         var relThresh = castle.Country.Ruler.Personality switch
         {
             Personality.Merchant => 15,
-            Personality.Pacifism => 15,
+            Personality.Pacifist => 15,
             _ => 45,
         };
         foreach (var neighbor in neighbors)

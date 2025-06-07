@@ -11,7 +11,7 @@ public enum Personality
     Leader,
     Knight,
     Warrior,
-    Pacifism,
+    Pacifist,
     Merchant,
     Pirate,
     Chaos,
