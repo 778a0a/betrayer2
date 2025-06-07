@@ -479,6 +479,7 @@ public class ForceManager : IReadOnlyList<Force>
         var damage = 1 - Random.Range(0.1f, 0.3f) * damageAdj;
         castle.Strength *= Random.Range(0.90f, 0.99f);
         castleTile.Town.GoldIncome *= damage;
+        castleTile.Town.TotalInvestment *= damage * 0.1f;
 
         // 残っている物資について。
         var withdrawRatio = nearEnemyCastle != null ? enemyCastleIntelligenceMax / 100 : 0;

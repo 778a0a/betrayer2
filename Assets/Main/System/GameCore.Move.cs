@@ -276,7 +276,8 @@ partial class GameCore
                         action = PersonalActions.Fortify;
                         break;
                     case CastleObjective.Commerce:
-                        action = PersonalActions.Develop;
+                        var investChance = Mathf.Pow(chara.Castle.GoldIncomeProgress, 2);
+                        action = investChance.Chance() ? PersonalActions.Invest : PersonalActions.Develop;
                         break;
                     case CastleObjective.None:
                     case CastleObjective.Attack:
@@ -433,5 +434,6 @@ partial class GameCore
         Instance.PersonalActions.Develop,
         Instance.PersonalActions.Fortify,
         Instance.PersonalActions.TrainSoldiers,
+        Instance.PersonalActions.Invest,
     });
 }
