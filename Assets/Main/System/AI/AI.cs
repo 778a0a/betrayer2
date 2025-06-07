@@ -45,7 +45,7 @@ public class AI
                         var relThresh = country.Ruler.Personality switch
                         {
                             Personality.Merchant => 15,
-                            Personality.Pacifist => 15,
+                            Personality.Pacifist => 31,
                             _ => 40,
                         };
                         if (rel <= relThresh)
@@ -248,7 +248,7 @@ public class AI
         var relThresh = castle.Country.Ruler.Personality switch
         {
             Personality.Merchant => 15,
-            Personality.Pacifist => 15,
+            Personality.Pacifist => 31,
             _ => 45,
         };
         foreach (var neighbor in neighbors)
