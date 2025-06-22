@@ -4,8 +4,24 @@
     <engine:Template name="TileInfoOverlay" src="project://database/Assets/Main/UI/Parts/TileInfoOverlay.uxml?fileID=9197481963319205126&amp;guid=2b37f7adc97016d47b8da379dfe22abb&amp;type=3#TileInfoOverlay" />
     <engine:Template name="TileDetailPanel" src="project://database/Assets/Main/UI/Parts/TileDetailPanel.uxml?fileID=9197481963319205126&amp;guid=6721c8d9e4b30cd40a3a9f0b6dae0b3d&amp;type=3#TileDetailPanel" />
     <engine:Template name="CharacterInfoPanel" src="project://database/Assets/Main/UI/Parts/CharacterInfoPanel.uxml?fileID=9197481963319205126&amp;guid=b7ea96c71d2b83a4f89965ba35577404&amp;type=3#CharacterPanel" />
+    <engine:Template name="PersonalPhasePanel" src="project://database/Assets/Main/UI/Panels/PersonalPhasePanel.uxml" />
     <Style src="project://database/Assets/Main/UI/MainUI.uss?fileID=7433441132597879392&amp;guid=f7db891e68d3680418eab2db0e537323&amp;type=3#MainUI" />
-    <engine:VisualElement picking-mode="Ignore" style="flex-grow: 1;" />
+    
+    <!-- Main Layout: Left (Map) + Right (UI Panel) -->
+    <engine:VisualElement style="flex-grow: 1; flex-direction: row;">
+        <!-- Left Side: Map Area -->
+        <engine:VisualElement name="MapContainer" style="flex-grow: 1; background-color: rgba(20, 20, 30, 0.8);">
+            <!-- Map will be rendered here -->
+        </engine:VisualElement>
+        
+        <!-- Right Side: UI Panel Area -->
+        <engine:VisualElement name="UIPanelContainer" style="width: 400px; background-color: rgba(10, 10, 20, 0.9); flex-shrink: 0;">
+            <!-- Personal Phase Panel (initially visible) -->
+            <engine:Instance template="PersonalPhasePanel" name="PersonalPhasePanel" style="flex-grow: 1;" />
+        </engine:VisualElement>
+    </engine:VisualElement>
+    
+    <!-- Overlay Elements -->
     <engine:Instance template="BattleWindow" name="BattleWindow" class="window" picking-mode="Ignore" style="display: flex; position: absolute; top: 0; left: 0; bottom: 0; right: 0;" />
     <engine:Instance template="MainUIFrame" name="Frame" picking-mode="Ignore" style="position: absolute; top: 0; left: 0; bottom: 0; right: 0;" />
     <engine:Instance template="TileInfoOverlay" name="TileInfo" picking-mode="Ignore" style="position: absolute; top: 0; left: 0; bottom: 0; right: 0;" />

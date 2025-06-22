@@ -15,6 +15,12 @@ public partial class MainUI
 {
     [SerializeField]
     private UIDocument _document;
+    public PersonalPhasePanel PersonalPhasePanel { get; private set; }
+
+    public VisualElement MapContainer { get; private set; }
+
+    public VisualElement UIPanelContainer { get; private set; }
+
     public BattleWindow BattleWindow { get; private set; }
 
     public MainUIFrame Frame { get; private set; }
@@ -28,6 +34,9 @@ public partial class MainUI
     public VisualElement Root => _document?.rootVisualElement;
     public void InitializeDocument()
     {
+        PersonalPhasePanel = new PersonalPhasePanel(Root?.Q<VisualElement>("PersonalPhasePanel"));
+        MapContainer = Root?.Q<VisualElement>("MapContainer");
+        UIPanelContainer = Root?.Q<VisualElement>("UIPanelContainer");
         BattleWindow = new BattleWindow(Root?.Q<VisualElement>("BattleWindow"));
         Frame = new MainUIFrame(Root?.Q<VisualElement>("Frame"));
         TileInfo = new TileInfoOverlay(Root?.Q<VisualElement>("TileInfo"));

@@ -38,3 +38,5 @@ MonoBehaviour:
     _path: Assets/Main/UI/Parts/BattleSoldierIconAttackSide.uxml
   - _type: 1
     _path: Assets/Main/UI/Parts/BattleSoldierIconDefenceSide.uxml
+  - _type: 1
+    _path: Assets/Main/UI/Panels/PersonalPhasePanel.uxml
