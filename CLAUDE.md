@@ -75,6 +75,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## フォルダー構造 (ルートレベル)
 ```
 betrayer2/
+├── @参考ソース_betrayer1/       # 前作のソース(参考用)
 ├── Assets/                     # Unityメインアセット
 ├── Packages/                   # Unity Package Manager
 ├── ProjectSettings/           # Unityプロジェクト設定
