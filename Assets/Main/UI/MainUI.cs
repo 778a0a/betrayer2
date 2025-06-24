@@ -20,10 +20,6 @@ public partial class MainUI : MonoBehaviour
         InitializeDocument();
         BattleWindow.Initialize();
         Frame.Initialize();
-        TileInfo.Initialize();
-        TileDetail.Initialize();
-        TileDetail.L = L;
-        CharacterInfo.Initialize();
         
         // PersonalPhasePanelの初期化
         PersonalPhasePanel.Initialize();
@@ -31,8 +27,6 @@ public partial class MainUI : MonoBehaviour
 
     public void OnGameCoreAttached()
     {
-        TileDetail.OnGameCoreAttached();
-        
         // GameCore参照を保存
         gameCore = GameCore.Instance;
         

@@ -73,17 +73,11 @@ public class UIMapManager : MonoBehaviour
                 currentMousePosition = pos;
                 var tile = Map.GetTile(pos);
                 tile.UI.SetCellBorder(true);
-                MainUI.TileInfo.SetData(tile);
                 CellMouseOver?.Invoke(this, pos);
-
-                //var fmax = GameMapTile.TileFoodMax(tile);
-                //var gmax = GameMapTile.TileGoldMax(tile);
-                //Debug.Log($"foodmax:{fmax:0000} goldmax:{gmax:0000}");
             }
             else
             {
                 currentMousePosition = MapPosition.Invalid;
-                MainUI.TileInfo.SetData(null);
             }
         }
         // 必要ならクリックイベントを起こす。
@@ -109,7 +103,6 @@ public class UIMapManager : MonoBehaviour
     private void DefaultCellClickHandler(object sender, MapPosition pos)
     {
         Debug.Log($"Clicked {pos}");
-        MainUI.TileDetail.SetData(Map.GetTile(pos));
     }
 
     private void InvokeCellClickHandler(MapPosition pos)

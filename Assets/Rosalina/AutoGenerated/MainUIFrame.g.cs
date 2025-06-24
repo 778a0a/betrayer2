@@ -14,26 +14,6 @@ using UnityEngine.UIElements;
 
 public partial class MainUIFrame
 {
-    public Label labelPlayerGold { get; private set; }
-
-    public Label labelPlayerPrestige { get; private set; }
-
-    public Label labelPlayerContribution { get; private set; }
-
-    public Label labelPlayerSoldierCount { get; private set; }
-
-    public Label labelPlayerActionPoints { get; private set; }
-
-    public Button buttonShowPlayer { get; private set; }
-
-    public Button buttonMoveToCurrentLocation { get; private set; }
-
-    public Button buttonShowCastles { get; private set; }
-
-    public Button buttonShowForces { get; private set; }
-
-    public Foldout foldPlayerMenu { get; private set; }
-
     public Button buttonPlaySpeedPlus { get; private set; }
 
     public Button buttonPlaySpeedMinus { get; private set; }
@@ -54,8 +34,6 @@ public partial class MainUIFrame
 
     public Button buttonPlay { get; private set; }
 
-    public VisualElement PlayerPanel { get; private set; }
-
     public VisualElement DatePanel { get; private set; }
 
     public VisualElement Root { get; }
@@ -63,16 +41,6 @@ public partial class MainUIFrame
     public MainUIFrame(VisualElement root)
     {
         Root = root;
-        labelPlayerGold = Root?.Q<Label>("labelPlayerGold");
-        labelPlayerPrestige = Root?.Q<Label>("labelPlayerPrestige");
-        labelPlayerContribution = Root?.Q<Label>("labelPlayerContribution");
-        labelPlayerSoldierCount = Root?.Q<Label>("labelPlayerSoldierCount");
-        labelPlayerActionPoints = Root?.Q<Label>("labelPlayerActionPoints");
-        buttonShowPlayer = Root?.Q<Button>("buttonShowPlayer");
-        buttonMoveToCurrentLocation = Root?.Q<Button>("buttonMoveToCurrentLocation");
-        buttonShowCastles = Root?.Q<Button>("buttonShowCastles");
-        buttonShowForces = Root?.Q<Button>("buttonShowForces");
-        foldPlayerMenu = Root?.Q<Foldout>("foldPlayerMenu");
         buttonPlaySpeedPlus = Root?.Q<Button>("buttonPlaySpeedPlus");
         buttonPlaySpeedMinus = Root?.Q<Button>("buttonPlaySpeedMinus");
         buttonPlaySpeed0 = Root?.Q<Button>("buttonPlaySpeed0");
@@ -83,7 +51,6 @@ public partial class MainUIFrame
         buttonShowSystemMenu = Root?.Q<Button>("buttonShowSystemMenu");
         labelCurrentDate = Root?.Q<Label>("labelCurrentDate");
         buttonPlay = Root?.Q<Button>("buttonPlay");
-        PlayerPanel = Root?.Q<VisualElement>("PlayerPanel");
         DatePanel = Root?.Q<VisualElement>("DatePanel");
     }
 }

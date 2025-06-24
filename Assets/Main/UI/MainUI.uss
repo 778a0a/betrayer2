@@ -1,6 +1,7 @@
 Button {
     margin: 1px 2px 1px 2px;
     padding: 5px 6px 5px 6px;
+    color: black;
 }
 
 .window {
@@ -18,6 +19,19 @@ Button {
 .bg {
     background-color: rgb(0, 17, 34);
 }
+
+.panel {
+    color: white;
+    background-color: rgb(0, 17, 34);
+    align-self: flex-end;
+    width: 420px;
+    height: 540px;
+    padding-top: 0px;
+    padding-right: 5px;
+    padding-bottom: 5px;
+    padding-left: 5px;
+}
+
 
 .border {
     border-left-color: rgb(0, 156, 143);

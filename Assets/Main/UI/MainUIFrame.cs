@@ -8,11 +8,6 @@ public partial class MainUIFrame
 
     public void Initialize()
     {
-        buttonShowPlayer.clicked += () =>
-        {
-            MainUI.Instance.CharacterInfo.SetData(GameCore.Instance.World.Player, GameCore.Instance.World);
-        };
-
         buttonPlay.clicked += () =>
         {
             GameCore.Instance.TogglePlay();
@@ -70,25 +65,5 @@ public partial class MainUIFrame
                 }
             }
         }
-    }
-
-    public void SetPlayerPanelData(Character player)
-    {
-        if (player == null)
-        {
-            labelPlayerGold.text = "---";
-            labelPlayerPrestige.text = "---";
-            labelPlayerContribution.text = "---";
-            labelPlayerSoldierCount.text = "---";
-            labelPlayerActionPoints.text = "---";
-            return;
-        }
-
-
-        labelPlayerGold.text = $"{player.Gold} ({player.Salary:+#;-#;0})";
-        labelPlayerPrestige.text = player.Prestige.ToString();
-        labelPlayerContribution.text = player.Contribution.ToString();
-        labelPlayerSoldierCount.text = player.Soldiers.SoldierCount.ToString();
-        labelPlayerActionPoints.text = player.ActionPoints.ToString();
     }
 }

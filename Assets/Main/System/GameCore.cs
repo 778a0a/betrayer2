@@ -186,7 +186,6 @@ public partial class GameCore
 
         // 表示を更新する。
         MainUI.Frame.SetDatePanelData(this);
-        MainUI.Frame.SetPlayerPanelData(player);
         await test.HoldIfNeeded();
 
         GameDate++;
@@ -251,12 +250,6 @@ public partial class GameCore
         foreach (var chara in World.Characters)
         {
             chara.ActionPoints = (chara.ActionPoints + chara.Intelligence / 10).MaxWith(255);
-        }
-
-        // UIを更新する。
-        if (MainUI.TileDetail.IsVisible)
-        {
-            MainUI.TileDetail.SetData(MainUI.TileDetail.CurrentData);
         }
     }
 }

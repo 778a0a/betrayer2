@@ -2,52 +2,60 @@
     <Style src="project://database/Assets/Main/UI/MainUI.uss?fileID=7433441132597879392&amp;guid=58784b5e2f0cb174d8cf6549c5d2f08c&amp;type=3#MainUI" />
     
     <!-- PersonalPhase Panel: 個人行動フェーズのメインパネル -->
-    <ui:VisualElement name="PersonalPhasePanelRoot" class="phase-panel" style="flex-grow: 1; padding: 10px;">
+    <ui:VisualElement class="panel">
         
         <!-- ヘッダー: 日付・フェーズ情報 -->
-        <ui:VisualElement name="HeaderPanel" class="header-panel" style="flex-direction: row; justify-content: space-between; margin-bottom: 10px;">
-            <ui:VisualElement name="DateInfo" style="flex-direction: row; align-items: flex-end;">
-                <ui:Label name="labelDate" text="188年" class="date-text" style="font-size: 24px; margin-right: 5px;" />
-                <ui:Label name="labelMonth" text="1月" class="date-text" style="font-size: 18px; margin-right: 10px;" />
-                <ui:Label name="labelDay" text="15日" class="date-text" style="font-size: 16px;" />
+        <ui:VisualElement class="header-panel" style="flex-direction: row; justify-content: space-between;">
+            <ui:VisualElement style="flex-direction: row; align-items: flex-end; padding: 2px 0;">
+                <ui:Label text="個人" style="font-size: 18px; font-weight: bold; margin: 0; padding: 0" />
+                <ui:Label text="フェイズ" style="font-size: 12px; font-weight: bold; margin: 0; padding: 0" />
             </ui:VisualElement>
-            <ui:VisualElement name="PhaseInfo" style="flex-direction: row; align-items: flex-end;">
-                <ui:Label text="個人行動" name="labelPhase" class="phase-text" style="font-size: 20px; font-weight: bold;" />
-            </ui:VisualElement>
+            <ui:Button text="×" style="font-size: 10px; width: 20px; height: 20px; -unity-font-style: bold;" />
         </ui:VisualElement>
 
         <!-- プレイヤー情報パネル -->
-        <ui:VisualElement name="PlayerInfoPanel" class="info-panel" style="margin-bottom: 15px; padding: 8px; background-color: rgba(50, 50, 80, 0.3);">
-            <ui:VisualElement name="PlayerBasicInfo" style="flex-direction: row; margin-bottom: 8px;">
-                <ui:Image name="imagePlayerFace" style="width: 80px; height: 80px; background-color: rgba(0, 229, 255, 0.35); margin-right: 10px;" />
-                <ui:VisualElement name="PlayerStatus" style="flex-grow: 1;">
-                    <ui:VisualElement style="flex-direction: row; margin-bottom: 3px;">
-                        <ui:Label name="labelPlayerName" text="プレイヤー名" style="font-size: 18px; font-weight: bold;" />
-                        <ui:Label name="labelPlayerTitle" text="(将軍)" style="font-size: 14px; margin-left: 5px;" />
+        <ui:VisualElement style="padding: 5px; background-color: rgba(50, 50, 80, 0.3);">
+            <ui:VisualElement style="flex-direction: row;">
+                <ui:Image name="imagePlayerFace" style="width: 80px; height: 80px; background-color: rgba(0, 229, 255, 0.35);" />
+                <ui:VisualElement style="flex-grow: 1; margin-left: 5px;">
+                    <ui:VisualElement style="flex-direction: row; align-items: flex-end;">
+                        <ui:Label name="labelPlayerTitle" text="将軍" style="font-size: 14px; margin:0 5px 0 0; padding:0;" />
+                        <ui:Label name="labelPlayerName" text="ハイペリオン" style="font-size: 18px; font-weight: bold; margin:0; padding: 0;" />
                     </ui:VisualElement>
-                    <ui:VisualElement style="flex-direction: row; margin-bottom: 3px;">
-                        <ui:Label text="所持金:" style="font-size: 14px; width: 60px;" />
-                        <ui:Label name="labelPlayerGold" text="1,000" style="font-size: 14px; color: yellow;" />
+                    <!-- 能力値表示 -->
+                    <ui:VisualElement name="StatsPanel" style="flex-direction: row; margin-top: 10px;">
+                        <ui:Label text="攻撃:" style="font-size: 14px; margin: 0 5px 0 0; padding: 0;" />
+                        <ui:Label name="labelAttack" text="80" style="font-size: 14px; color: #f88; margin: 0; padding: 0;" />
+                        <ui:Label text="防衛:" style="font-size: 14px; margin: 0 5px 0 10px; padding: 0;" />
+                        <ui:Label name="labelDefense" text="75" style="font-size: 14px; color: #8af; margin: 0; padding: 0;" />
+                        <ui:Label text="智謀:" style="font-size: 14px; margin: 0 5px 0 10px; padding: 0;" />
+                        <ui:Label name="labelIntelligence" text="90" style="font-size: 14px; color: cyan; margin: 0; padding: 0;" />
+                        <ui:Label text="統治:" style="font-size: 14px; margin: 0 5px 0 10px; padding: 0;" />
+                        <ui:Label name="labelGoverning" text="85" style="font-size: 14px; color: #8f8; margin: 0; padding: 0;" />
                     </ui:VisualElement>
-                    <ui:VisualElement style="flex-direction: row;">
-                        <ui:Label text="AP:" style="font-size: 14px; width: 60px;" />
-                        <ui:Label name="labelPlayerAP" text="100/100" style="font-size: 14px; color: cyan;" />
+                    <ui:VisualElement style="flex-direction: row; margin-top: 5px;">
+                        <ui:Label text="所持金:" style="font-size: 14px; margin: 0 5px 0 0; padding: 0;" />
+                        <ui:Label name="labelPlayerGold" text="1,000" style="font-size: 14px; color: yellow; margin: 0; padding: 0;" />
+                        <ui:Label text="功績:" style="font-size: 14px; margin: 0 5px 0 10px; padding: 0;" />
+                        <ui:Label name="labelPlayerContribution" text="10000" style="font-size: 14px; color: white; margin: 0; padding: 0;" />
+                        <ui:Label text="名声:" style="font-size: 14px; margin: 0 5px 0 10px; padding: 0;" />
+                        <ui:Label name="labelPlayerPrestige" text="75000" style="font-size: 14px; color: white; margin: 0; padding: 0;" />
                     </ui:VisualElement>
                 </ui:VisualElement>
             </ui:VisualElement>
         </ui:VisualElement>
 
         <!-- アクションボタンエリア -->
-        <ui:VisualElement name="ActionsPanel" class="actions-panel" style="margin-bottom: 15px;">
-            <ui:Label text="個人アクション" style="font-size: 16px; font-weight: bold; margin-bottom: 8px;" />
+        <ui:VisualElement name="ActionsPanel" class="actions-panel" style="margin-top: 5px;">
+            <ui:Label text="アクション" style="font-size: 16px; font-weight: bold; margin: 0 0 5px 0; padding: 0" />
             <ui:VisualElement name="ActionButtons" style="flex-wrap: wrap; flex-direction: row;">
-                <ui:Button text="開発" name="buttonDevelop" class="action-button" style="margin: 2px; min-width: 80px;" />
-                <ui:Button text="城塞強化" name="buttonFortify" class="action-button" style="margin: 2px; min-width: 80px;" />
-                <ui:Button text="兵士雇用" name="buttonHireSoldier" class="action-button" style="margin: 2px; min-width: 80px;" />
-                <ui:Button text="投資" name="buttonInvest" class="action-button" style="margin: 2px; min-width: 80px;" />
-                <ui:Button text="訓練" name="buttonTrainSoldier" class="action-button" style="margin: 2px; min-width: 80px;" />
-                <ui:Button text="反乱" name="buttonRebel" class="action-button" style="margin: 2px; min-width: 80px;" />
-                <ui:Button text="放浪" name="buttonResign" class="action-button" style="margin: 2px; min-width: 80px;" />
+                <ui:Button text="雇兵" name="buttonHireSoldier" class="action-button" style="margin: 2px; width: 78px;" />
+                <ui:Button text="訓練" name="buttonTrainSoldier" class="action-button" style="margin: 2px; width: 78px;" />
+                <ui:Button text="内政" name="buttonDevelop" class="action-button" style="margin: 2px; width: 78px;" />
+                <ui:Button text="投資" name="buttonInvest" class="action-button" style="margin: 2px; width: 78px;" />
+                <ui:Button text="築城" name="buttonFortify" class="action-button" style="margin: 2px; width: 78px;" />
+                <ui:Button text="反乱" name="buttonRebel" class="action-button" style="margin: 2px; width: 78px;" />
+                <ui:Button text="放浪" name="buttonResign" class="action-button" style="margin: 2px; width: 78px;" />
             </ui:VisualElement>
         </ui:VisualElement>
 
@@ -71,38 +79,6 @@
         <!-- キャラクター詳細情報 -->
         <ui:VisualElement name="CharacterDetailPanel" class="character-panel" style="flex-grow: 1; padding: 8px; background-color: rgba(30, 30, 50, 0.3);">
             <ui:Label text="キャラクター詳細" style="font-size: 16px; font-weight: bold; margin-bottom: 8px;" />
-            
-            <!-- 能力値表示 -->
-            <ui:VisualElement name="StatsPanel" style="margin-bottom: 10px;">
-                <ui:VisualElement name="StatsRow1" style="flex-direction: row; justify-content: space-between; margin-bottom: 3px;">
-                    <ui:VisualElement style="flex-direction: row;">
-                        <ui:Label text="攻撃:" style="font-size: 12px; width: 40px;" />
-                        <ui:Label name="labelAttack" text="80" style="font-size: 12px; color: red;" />
-                    </ui:VisualElement>
-                    <ui:VisualElement style="flex-direction: row;">
-                        <ui:Label text="防御:" style="font-size: 12px; width: 40px;" />
-                        <ui:Label name="labelDefense" text="75" style="font-size: 12px; color: green;" />
-                    </ui:VisualElement>
-                    <ui:VisualElement style="flex-direction: row;">
-                        <ui:Label text="知力:" style="font-size: 12px; width: 40px;" />
-                        <ui:Label name="labelIntelligence" text="90" style="font-size: 12px; color: cyan;" />
-                    </ui:VisualElement>
-                </ui:VisualElement>
-                <ui:VisualElement name="StatsRow2" style="flex-direction: row; justify-content: space-between;">
-                    <ui:VisualElement style="flex-direction: row;">
-                        <ui:Label text="統治:" style="font-size: 12px; width: 40px;" />
-                        <ui:Label name="labelGoverning" text="85" style="font-size: 12px; color: orange;" />
-                    </ui:VisualElement>
-                    <ui:VisualElement style="flex-direction: row;">
-                        <ui:Label text="忠誠:" style="font-size: 12px; width: 40px;" />
-                        <ui:Label name="labelLoyalty" text="95" style="font-size: 12px; color: yellow;" />
-                    </ui:VisualElement>
-                    <ui:VisualElement style="flex-direction: row;">
-                        <ui:Label text="兵力:" style="font-size: 12px; width: 40px;" />
-                        <ui:Label name="labelSoldierCount" text="150" style="font-size: 12px; color: white;" />
-                    </ui:VisualElement>
-                </ui:VisualElement>
-            </ui:VisualElement>
 
             <!-- 兵士状況（簡易版） -->
             <ui:VisualElement name="SoldiersPanel" style="flex-grow: 1;">
