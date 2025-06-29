@@ -54,26 +54,24 @@
                 <ui:Button text="内政" name="buttonDevelop" class="action-button" style="margin: 2px; width: 78px;" />
                 <ui:Button text="投資" name="buttonInvest" class="action-button" style="margin: 2px; width: 78px;" />
                 <ui:Button text="築城" name="buttonFortify" class="action-button" style="margin: 2px; width: 78px;" />
+                <ui:Button text="出撃" name="buttonDeploy" class="action-button" style="margin: 2px; width: 78px;" />
                 <ui:Button text="反乱" name="buttonRebel" class="action-button" style="margin: 2px; width: 78px;" />
                 <ui:Button text="放浪" name="buttonResign" class="action-button" style="margin: 2px; width: 78px;" />
+                <ui:Button text="転居" name="buttonMove" class="action-button" style="margin: 2px; width: 78px;" />
+                <ui:Button text="奪取" name="buttonSeize" class="action-button" style="margin: 2px; width: 78px;" />
+                <ui:Button text="仕官" name="buttonGetJob" class="action-button" style="margin: 2px; width: 78px;" />
+                <ui:Button text="行動完了" name="buttonFinishTurn" class="action-button" style="margin: 2px; width: 78px; font-size: 15px" />
             </ui:VisualElement>
         </ui:VisualElement>
 
         <!-- アクション詳細・コスト表示 -->
-        <ui:VisualElement name="ActionDetailPanel" class="detail-panel" style="margin-bottom: 15px; padding: 8px; background-color: rgba(40, 40, 60, 0.3);">
-            <ui:Label name="labelActionName" text="アクション名" style="font-size: 16px; font-weight: bold; margin-bottom: 5px;" />
-            <ui:Label name="labelActionDescription" text="アクションの説明がここに表示されます。" style="font-size: 13px; margin-bottom: 8px; white-space: normal;" />
-            <ui:VisualElement name="CostInfo" style="flex-direction: row; justify-content: space-between;">
-                <ui:VisualElement style="flex-direction: row;">
-                    <ui:Label text="消費金:" style="font-size: 12px; width: 50px;" />
+        <ui:VisualElement name="ActionDetailPanel" class="detail-panel" style="margin-top: 5px; padding: 5px; background-color: rgba(40, 40, 60, 0.3);">
+                <ui:VisualElement style="flex-direction: row; align-items: center;">
+                    <ui:Label name="labelActionName" text="アクション名" style="font-size: 16px; font-weight: bold; margin: 0;" />
+                    <ui:Label text="消費金:" style="margin: 0 0 0 10px; font-size: 12px; width: 50px;" />
                     <ui:Label name="labelCostGold" text="---" style="font-size: 12px; color: yellow;" />
                 </ui:VisualElement>
-                <ui:VisualElement style="flex-direction: row;">
-                    <ui:Label text="AP:" style="font-size: 12px; width: 30px;" />
-                    <ui:Label name="labelCostAP" text="---" style="font-size: 12px; color: cyan;" />
-                </ui:VisualElement>
-                <ui:Button text="実行" name="buttonExecute" style="font-size: 12px; padding: 2px 8px;" />
-            </ui:VisualElement>
+            <ui:Label name="labelActionDescription" text="アクションの説明がここに表示されます。" style="font-size: 13px; white-space: normal;" />
         </ui:VisualElement>
 
         <!-- キャラクター詳細情報 -->
@@ -94,5 +92,6 @@
                 </ui:VisualElement>
             </ui:VisualElement>
         </ui:VisualElement>
+        
     </ui:VisualElement>
 </ui:UXML>
