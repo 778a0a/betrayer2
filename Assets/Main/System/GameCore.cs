@@ -34,8 +34,6 @@ public partial class GameCore
         AI = new AI(this);
         PersonalActions = new PersonalActions(this);
         StrategyActions = new StrategyActions(this);
-
-        MainUI.OnGameCoreAttached();
     }
 
     public void TogglePlay()

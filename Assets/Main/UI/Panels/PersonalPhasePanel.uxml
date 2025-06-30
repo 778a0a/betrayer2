@@ -1,4 +1,5 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:Template name="CharacterInfoSoldierIcon" src="project://database/Assets/Main/UI/Parts/CharacterInfoSoldierIcon.uxml?fileID=9197481963319205126&amp;guid=0231f6317e960bf4bb8de5014d4f8a94&amp;type=3#CharacterInfoSoldierIcon" />
     <Style src="project://database/Assets/Main/UI/MainUI.uss?fileID=7433441132597879392&amp;guid=58784b5e2f0cb174d8cf6549c5d2f08c&amp;type=3#MainUI" />
     
     <!-- PersonalPhase Panel: 個人行動フェーズのメインパネル -->
@@ -15,7 +16,7 @@
 
         <!-- プレイヤー情報パネル -->
         <ui:VisualElement style="padding: 5px; background-color: rgba(50, 50, 80, 0.3);">
-            <ui:VisualElement style="flex-direction: row;">
+            <ui:VisualElement style="flex-direction: row; align-items: center">
                 <ui:Image name="imagePlayerFace" style="width: 80px; height: 80px; background-color: rgba(0, 229, 255, 0.35);" />
                 <ui:VisualElement style="flex-grow: 1; margin-left: 5px;">
                     <ui:VisualElement style="flex-direction: row; align-items: flex-end;">
@@ -23,7 +24,7 @@
                         <ui:Label name="labelPlayerName" text="ハイペリオン" style="font-size: 18px; font-weight: bold; margin:0; padding: 0;" />
                     </ui:VisualElement>
                     <!-- 能力値表示 -->
-                    <ui:VisualElement name="StatsPanel" style="flex-direction: row; margin-top: 10px;">
+                    <ui:VisualElement name="StatsPanel" style="flex-direction: row; margin-top: 5px;">
                         <ui:Label text="攻撃:" style="font-size: 14px; margin: 0 5px 0 0; padding: 0;" />
                         <ui:Label name="labelAttack" text="80" style="font-size: 14px; color: #f88; margin: 0; padding: 0;" />
                         <ui:Label text="防衛:" style="font-size: 14px; margin: 0 5px 0 10px; padding: 0;" />
@@ -40,6 +41,23 @@
                         <ui:Label name="labelPlayerContribution" text="10000" style="font-size: 14px; color: white; margin: 0; padding: 0;" />
                         <ui:Label text="名声:" style="font-size: 14px; margin: 0 5px 0 10px; padding: 0;" />
                         <ui:Label name="labelPlayerPrestige" text="75000" style="font-size: 14px; color: white; margin: 0; padding: 0;" />
+                    </ui:VisualElement>
+                    <ui:VisualElement name="SoldierGrid" style="flex-direction: row; flex-wrap: wrap; margin-top: 5px;">
+                        <ui:Instance name="soldier00" template="CharacterInfoSoldierIcon" />
+                        <ui:Instance name="soldier01" template="CharacterInfoSoldierIcon" />
+                        <ui:Instance name="soldier02" template="CharacterInfoSoldierIcon" />
+                        <ui:Instance name="soldier03" template="CharacterInfoSoldierIcon" />
+                        <ui:Instance name="soldier04" template="CharacterInfoSoldierIcon" />
+                        <ui:Instance name="soldier05" template="CharacterInfoSoldierIcon" />
+                        <ui:Instance name="soldier06" template="CharacterInfoSoldierIcon" />
+                        <ui:Instance name="soldier07" template="CharacterInfoSoldierIcon" />
+                        <ui:Instance name="soldier08" template="CharacterInfoSoldierIcon" />
+                        <ui:Instance name="soldier09" template="CharacterInfoSoldierIcon" />
+                        <ui:Instance name="soldier10" template="CharacterInfoSoldierIcon" />
+                        <ui:Instance name="soldier11" template="CharacterInfoSoldierIcon" />
+                        <ui:Instance name="soldier12" template="CharacterInfoSoldierIcon" />
+                        <ui:Instance name="soldier13" template="CharacterInfoSoldierIcon" />
+                        <ui:Instance name="soldier14" template="CharacterInfoSoldierIcon" />
                     </ui:VisualElement>
                 </ui:VisualElement>
             </ui:VisualElement>
@@ -74,24 +92,5 @@
             <ui:Label name="labelActionDescription" text="アクションの説明がここに表示されます。" style="font-size: 13px; white-space: normal;" />
         </ui:VisualElement>
 
-        <!-- キャラクター詳細情報 -->
-        <ui:VisualElement name="CharacterDetailPanel" class="character-panel" style="flex-grow: 1; padding: 8px; background-color: rgba(30, 30, 50, 0.3);">
-            <ui:Label text="キャラクター詳細" style="font-size: 16px; font-weight: bold; margin-bottom: 8px;" />
-
-            <!-- 兵士状況（簡易版） -->
-            <ui:VisualElement name="SoldiersPanel" style="flex-grow: 1;">
-                <ui:Label text="兵士状況" style="font-size: 14px; font-weight: bold; margin-bottom: 5px;" />
-                <ui:VisualElement name="SoldierGrid" style="flex-direction: row; flex-wrap: wrap;">
-                    <!-- 兵士アイコンはC#側で動的生成する想定 -->
-                    <ui:VisualElement name="soldierSlot00" class="soldier-slot" style="width: 30px; height: 30px; margin: 1px; background-color: green;" />
-                    <ui:VisualElement name="soldierSlot01" class="soldier-slot" style="width: 30px; height: 30px; margin: 1px; background-color: green;" />
-                    <ui:VisualElement name="soldierSlot02" class="soldier-slot" style="width: 30px; height: 30px; margin: 1px; background-color: yellow;" />
-                    <ui:VisualElement name="soldierSlot03" class="soldier-slot" style="width: 30px; height: 30px; margin: 1px; background-color: red;" />
-                    <ui:VisualElement name="soldierSlot04" class="soldier-slot" style="width: 30px; height: 30px; margin: 1px; background-color: gray;" />
-                    <!-- 以下、15個まで配置（実際はC#で制御） -->
-                </ui:VisualElement>
-            </ui:VisualElement>
-        </ui:VisualElement>
-        
     </ui:VisualElement>
 </ui:UXML>

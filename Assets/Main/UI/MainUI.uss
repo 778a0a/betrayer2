@@ -143,3 +143,8 @@ Button {
 .CharacterPanel-StatCell-Value {
     font-size: 14px;
 }
+
+.SoldierInfoLarge-Image {
+    width: 55px;
+    height: 55px;
+}
