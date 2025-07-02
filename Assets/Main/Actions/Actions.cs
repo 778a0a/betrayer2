@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -31,32 +32,30 @@ public class ActionBase
 
     public virtual string Label => GetType().Name;
     public virtual string Description => L["(説明文なし: {0})", GetType().Name];
+    protected virtual ActionRequirements Requirements => ActionRequirements.None;
     /// <summary>
     /// UI上に選択肢として表示可能ならtrue
     /// </summary>
-    public virtual bool CanUISelect(Character player) => true;
+    public virtual bool CanUISelect(Character actor) => Requirements.IsOK(actor);
     /// <summary>
     /// UI上のボタンを有効状態として表示するならtrue
     /// </summary>
-    public virtual bool CanUIEnable(Character player) => CanUISelect(player);
+    public virtual bool CanUIEnable(Character actor) =>
+        CanUISelect(actor) &&
+        actor.CanPay(Cost(new(actor, estimate: true))) &&
+        CanDoCore(new(actor, estimate: true));
     /// <summary>
     /// UI上のボタンを押されたときに呼ばれ、アクションに必要な引数を準備します。
     /// </summary>
-    public virtual ValueTask<ActionArgs> Prepare(Character player) => new(new ActionArgs(player));
+    public virtual ValueTask<ActionArgs> Prepare(Character actor) => new(new ActionArgs(actor));
     /// <summary>
     /// アクションの実行に必要なコスト
     /// </summary>
     public virtual ActionCost Cost(ActionArgs args) => 0;
     /// <summary>
-    /// UIのアクション説明時のコスト
-    /// </summary>
-    public virtual ActionCost CostEstimate(Character actor) => Cost(new(actor));
-    /// <summary>
     /// アクションを実行可能ならtrue
     /// </summary>
     public bool CanDo(ActionArgs args) =>
-        CanUISelect(args.actor) &&
-        CanUIEnable(args.actor) &&
         args.actor.CanPay(Cost(args)) &&
         CanDoCore(args);
     /// <summary>
@@ -69,7 +68,7 @@ public class ActionBase
     /// </summary>
     public virtual ValueTask Do(ActionArgs args) => new();
 
-    protected void PayCost(ActionArgs args)
+    public void PayCost(ActionArgs args)
     {
         var cost = Cost(args);
         args.actor.Gold -= cost.actorGold;
@@ -83,27 +82,72 @@ public class ActionBase
     public override string ToString() => GetType().Name;
 }
 
+[Flags]
+public enum ActionRequirements
+{
+    None = 0,
+    Moving = 1 << 0,
+    NotMoving = Moving << 1,
+    Free = NotMoving << 1,
+    NotFree = Free << 1,
+    Vassal = NotFree << 1,
+    Boss = Vassal << 1,
+    Ruler = Boss << 1,
+    VassalNotBoss = Ruler << 1,
+
+    NotMovingAndVassalNotBoss = NotMoving | VassalNotBoss,
+    NotMovingAndNotFree = NotMoving | NotFree,
+}
+public static class ActionRequirementsExtensions
+{
+    public static bool IsOK(this ActionRequirements req, Character chara)
+    {
+        Debug.Log($"{req} {(int)req}");
+        if (req == ActionRequirements.None) return true;
+        if (req.HasFlag(ActionRequirements.Moving) && !chara.IsMoving) return false;
+        if (req.HasFlag(ActionRequirements.NotMoving) && chara.IsMoving) return false;
+        if (req.HasFlag(ActionRequirements.Free) && !chara.IsFree) return false;
+        if (req.HasFlag(ActionRequirements.NotFree) && chara.IsFree) return false;
+        if (req.HasFlag(ActionRequirements.Vassal) && !chara.IsVassal) return false;
+        if (req.HasFlag(ActionRequirements.Boss) && !chara.IsBoss) return false;
+        if (req.HasFlag(ActionRequirements.Ruler) && !chara.IsRuler) return false;
+        if (req.HasFlag(ActionRequirements.VassalNotBoss) && !(chara.IsVassal && !chara.IsBoss)) return false;
+        return true;
+    }
+}
+
 public struct ActionCost
 {
+    public static readonly ActionCost Variable = Of(int.MinValue, int.MinValue, int.MinValue);
+    public static ActionCost Of(int gold, int points = 0, int castleGold = 0) => new()
+    {
+        actorGold = gold,
+        actionPoints = points,
+        castleGold = castleGold,
+    };
+
     public int actorGold;
     public int actionPoints;
     public int castleGold;
 
     public readonly bool CanPay(Character chara) =>
+        IsVariable ||
         (actorGold == 0 || chara.Gold >= actorGold) &&
         chara.ActionPoints >= actionPoints &&
         (castleGold == 0 || chara.Castle.Gold >= castleGold);
 
-    public static ActionCost Of(int gold, int points = 0, int countryGold = 0) => new()
-    {
-        actorGold = gold,
-        actionPoints = points,
-        castleGold = countryGold,
-    };
+    public readonly bool IsVariable => this == Variable;
 
     public static implicit operator ActionCost(int gold) => new() { actorGold = gold };
+    public override readonly string ToString() => $"Cost({actorGold},{actionPoints},{castleGold})";
 
-    public override string ToString() => $"Cost({actorGold},{actionPoints},{castleGold})";
+    public override readonly int GetHashCode() => HashCode.Combine(actorGold, actionPoints, castleGold);
+    public static bool operator ==(ActionCost left, ActionCost right) => left.Equals(right);
+    public static bool operator !=(ActionCost left, ActionCost right) => !(left == right);
+    public override readonly bool Equals(object obj) => obj is ActionCost cost &&
+               actorGold == cost.actorGold &&
+               actionPoints == cost.actionPoints &&
+               castleGold == cost.castleGold;
 }
 
 public struct ActionArgs
@@ -111,30 +155,30 @@ public struct ActionArgs
     public Character actor;
     public Castle targetCastle;
     public Castle targetCastle2;
-    public Town targetTown;
     public Country targetCountry;
     public Character targetCharacter;
     public MapPosition? targetPosition;
     public float gold;
+    public bool estimate;
 
     public ActionArgs(
         Character actor,
         Castle targetCastle = null,
         Castle targetCastle2 = null,
-        Town targetTown = null,
         Country targetCountry = null,
         Character targetCharacter = null,
         MapPosition? targetPosition = null,
-        float gold = 0)
+        float gold = 0,
+        bool estimate = false)
     {
         this.actor = actor;
         this.targetCastle = targetCastle;
         this.targetCastle2 = targetCastle2;
-        this.targetTown = targetTown;
         this.targetCountry = targetCountry;
         this.targetCharacter = targetCharacter;
         this.targetPosition = targetPosition;
         this.gold = gold;
+        this.estimate = estimate;
     }
 
     public override readonly string ToString()
@@ -143,7 +187,6 @@ public struct ActionArgs
         sb.Append($"actor: {actor.Name}");
         if (targetCastle != null) sb.Append($", targetCastle: {targetCastle.Position}");
         if (targetCastle2 != null) sb.Append($", targetCastle2: {targetCastle2.Position}");
-        if (targetTown != null) sb.Append($", targetTown: {targetTown.Position}");
         if (targetCountry != null) sb.Append($", targetCountry: {targetCountry.Ruler.Name}");
         if (targetCharacter != null) sb.Append($", targetCharacter: {targetCharacter.Name}");
         if (targetPosition != null) sb.Append($", targetPosition: {targetPosition}");

@@ -15,7 +15,8 @@ partial class PersonalActions
     public class SeizeAction : PersonalActionBase
     {
         public override string Label => L["奪取"];
-        public override string Description => L["放浪時のみ利用可能。城を攻撃して成功すれば勢力を旗揚げする"];
+        public override string Description => L["城を攻撃して勢力を旗揚げします。"];
+        protected override ActionRequirements Requirements => ActionRequirements.Free;
 
         public override ActionCost Cost(ActionArgs args) => 5;
 

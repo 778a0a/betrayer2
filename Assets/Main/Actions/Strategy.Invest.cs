@@ -18,34 +18,15 @@ partial class StrategyActions
         public override string Description => L["ゴールド収入上限を増やします。"];
 
         private const int GoldCost = 20;
-
-        public override ActionCost Cost(ActionArgs args) => ActionCost.Of(0, countryGold: GoldCost);
+        public override ActionCost Cost(ActionArgs args) => ActionCost.Of(0, castleGold: GoldCost);
 
         public ActionArgs Args(Character actor) => new(actor);
-        public ActionArgs Args(Character actor, Town town) => new(actor, targetTown: town);
 
         protected override bool CanDoCore(ActionArgs args) => true;
 
         public override ValueTask Do(ActionArgs args)
         {
-            Util.IsTrue(CanDo(args));
-            var chara = args.actor;
-            var town = args.targetTown;
-            if (town == null)
-            {
-                var maxInvestment = chara.Castle.Towns.Max(t => t.TotalInvestment);
-                town = chara.Castle.Towns.RandomPickWeighted(t => 100 + (maxInvestment - t.TotalInvestment));
-            }
-
-            var adj = 1 + (chara.Governing - 75) / 100f;
-            if (chara.Traits.HasFlag(Traits.Merchant)) adj += 0.1f;
-            town.TotalInvestment += GoldCost * adj;
-
-            var contribAdj = town.Castle.Objective == CastleObjective.Commerce ? 1.5f : 1;
-            chara.Contribution += adj * contribAdj;
-            PayCost(args);
-
-            return default;
+            return PersonalActions.InvestAction.DoCore(this, args);
         }
     }
 }

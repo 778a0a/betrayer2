@@ -16,6 +16,7 @@ partial class PersonalActions
     {
         public override string Label => L["雇兵"];
         public override string Description => L["兵士を雇います。"];
+        protected override ActionRequirements Requirements => ActionRequirements.NotMoving;
 
         public override ActionCost Cost(ActionArgs args) => 2;
         protected override bool CanDoCore(ActionArgs args) => args.actor.Soldiers.HasEmptySlot;

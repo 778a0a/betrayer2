@@ -238,6 +238,8 @@ public class Character
     [JsonIgnore]
     public bool IsVassal => !IsFree && !IsRuler;
     [JsonIgnore]
+    public bool IsBoss => Castle?.Boss == this;
+    [JsonIgnore]
     public bool IsFree => Country == null;
     [JsonIgnore]
     public bool IsRulerOrVassal => !IsFree;

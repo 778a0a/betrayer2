@@ -20,7 +20,7 @@ public partial class PersonalPhasePanel
             ActionButtonHelper.Personal(buttonDeploy, a => a.Deploy),
             ActionButtonHelper.Personal(buttonRebel, a => a.Rebel),
             ActionButtonHelper.Personal(buttonResign, a => a.Resign),
-            ActionButtonHelper.Personal(buttonMove, a => a.Move),
+            ActionButtonHelper.Personal(buttonMove, a => a.Relocate),
             ActionButtonHelper.Personal(buttonSeize, a => a.Seize),
             ActionButtonHelper.Personal(buttonGetJob, a => a.GetJob),
             ActionButtonHelper.Common(buttonFinishTurn, a => a.FinishTurn),
@@ -73,6 +73,7 @@ public partial class PersonalPhasePanel
         imagePlayerFace.image = Static.Instance.GetFaceImage(chara);
         labelPlayerName.text = chara.Name;
         labelPlayerTitle.text = chara.GetTitle(GameCore.Instance.MainUI.L);
+        labelMoving.visible = chara.IsMoving;
         // 能力値の更新
         labelAttack.text = chara.Attack.ToString();
         labelDefense.text = chara.Defense.ToString();
@@ -155,15 +156,22 @@ public class ActionButtonHelper
 
         IsMouseOver = true;
         labelDescription.text = Action.Description;
-        var cost = Action.CostEstimate(chara);
-        labelCostGold.text = cost.actorGold.ToString();
+        var cost = Action.Cost(new(chara, estimate: true));
+        if (cost.IsVariable)
+        {
+            labelCostGold.text = "変動";
+        }
+        else
+        {
+            labelCostGold.text = cost.actorGold.ToString();
+        }
     }
 
     private void OnActionButtonPointerLeave(PointerLeaveEvent evt)
     {
         IsMouseOver = false;
         labelDescription.text = "";
-        labelCostGold.text = "---";
+        labelCostGold.text = "";
     }
 
     private void OnActionButtonClicked(ClickEvent ev)
@@ -173,7 +181,9 @@ public class ActionButtonHelper
 
     public void SetData(Character chara)
     {
-        Element.style.display = Util.Display(Action.CanUISelect(chara));
+        var canSelect = Action.CanUISelect(chara);
+        Debug.Log($"{chara.Name}: {Action} OK?: {canSelect}");
+        Element.style.display = Util.Display(canSelect);
         Element.SetEnabled(Action.CanUIEnable(chara));
         if (IsMouseOver)
         {

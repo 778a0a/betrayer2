@@ -11,11 +11,12 @@ partial class PersonalActions
     /// <summary>
     /// 放浪時のみ利用可能。他の城に移動する。
     /// </summary>
-    public MoveAction Move { get; } = new();
-    public class MoveAction : PersonalActionBase
+    public RelocateAction Relocate { get; } = new();
+    public class RelocateAction : PersonalActionBase
     {
         public override string Label => L["転居"];
-        public override string Description => L["放浪時のみ利用可能。他の城に移動する"];
+        public override string Description => L["近隣の城に移住します。"];
+        protected override ActionRequirements Requirements => ActionRequirements.Free;
 
         public override ActionCost Cost(ActionArgs args) => 5;
 

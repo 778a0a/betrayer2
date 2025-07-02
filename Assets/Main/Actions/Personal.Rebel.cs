@@ -16,6 +16,7 @@ partial class PersonalActions
     {
         public override string Label => L["反乱"];
         public override string Description => L["反乱を起こします。"];
+        protected override ActionRequirements Requirements => ActionRequirements.NotMovingAndVassalNotBoss;
 
         public override ActionCost Cost(ActionArgs args) => 5;
 

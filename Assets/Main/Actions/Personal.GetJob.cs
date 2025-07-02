@@ -15,7 +15,8 @@ partial class PersonalActions
     public class GetJobAction : PersonalActionBase
     {
         public override string Label => L["仕官"];
-        public override string Description => L["放浪時のみ利用可能。他の勢力に仕官する"];
+        public override string Description => L["現在の城の支配勢力に仕官します。"];
+        protected override ActionRequirements Requirements => ActionRequirements.Free;
 
         public override ActionCost Cost(ActionArgs args) => 5;
 

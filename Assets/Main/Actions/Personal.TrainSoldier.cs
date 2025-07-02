@@ -16,6 +16,7 @@ partial class PersonalActions
     {
         public override string Label => L["訓練"];
         public override string Description => L["兵士を訓練します。"];
+        protected override ActionRequirements Requirements => ActionRequirements.NotMoving;
 
         public override ActionCost Cost(ActionArgs args)
         {

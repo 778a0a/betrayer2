@@ -41,6 +41,14 @@ partial class GameCore
     private async ValueTask DoStrategyAction(Character chara)
     {
         // TODO プレーヤーの場合
+        if (chara.IsPlayer)
+        {
+            //test.hold = true;
+            //MainUI.StrategyPhasePanel.SetData(chara, World);
+            //await test.HoldIfNeeded();
+            return;
+        }
+
         var country = chara.Country;
         var castle = chara.Castle;
 
@@ -264,8 +272,6 @@ partial class GameCore
             var args = new ActionArgs();
             args.actor = chara;
             args.targetCastle = chara.Castle;
-            // TODO 発展していない町を優先する。
-            args.targetTown = args.targetCastle?.Towns.RandomPick();
 
             var action = default(ActionBase);
             // 空きスロットがあれば雇兵する。

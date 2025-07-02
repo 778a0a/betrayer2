@@ -14,12 +14,15 @@ partial class PersonalActions
     public FortifyAction Fortify { get; } = new();
     public class FortifyAction : PersonalActionBase
     {
-        public override string Label => L["城壁強化"];
+        public override string Label => L["築城"];
         public override string Description => L["城の強度を改善します。"];
+        protected override ActionRequirements Requirements => ActionRequirements.NotMovingAndNotFree;
 
         public override ActionCost Cost(ActionArgs args) => 2;
 
-        protected override bool CanDoCore(ActionArgs args) => args.targetCastle.Strength < args.targetCastle.StrengthMax;
+        protected override bool CanDoCore(ActionArgs args) => args.estimate ? 
+            args.actor.Castle.Strength < args.actor.Castle.StrengthMax :
+            args.targetCastle.Strength < args.targetCastle.StrengthMax;
 
         public override ValueTask Do(ActionArgs args)
         {

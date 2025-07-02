@@ -22,6 +22,7 @@
                     <ui:VisualElement style="flex-direction: row; align-items: flex-end;">
                         <ui:Label name="labelPlayerTitle" text="将軍" style="font-size: 14px; margin:0 5px 0 0; padding:0;" />
                         <ui:Label name="labelPlayerName" text="ハイペリオン" style="font-size: 18px; font-weight: bold; margin:0; padding: 0;" />
+                        <ui:Label name="labelMoving" text="出撃中" style="font-size: 14px; margin:0 0 0 5px; padding:0; color: red;" />
                     </ui:VisualElement>
                     <!-- 能力値表示 -->
                     <ui:VisualElement name="StatsPanel" style="flex-direction: row; margin-top: 5px;">

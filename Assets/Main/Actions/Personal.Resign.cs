@@ -16,6 +16,7 @@ partial class PersonalActions
     {
         public override string Label => L["放浪"];
         public override string Description => L["勢力を捨てて放浪します。"];
+        protected override ActionRequirements Requirements => ActionRequirements.NotMovingAndNotFree;
 
         public override ActionCost Cost(ActionArgs args) => 5;
 

@@ -9,16 +9,16 @@ using UnityEngine.Assertions;
 partial class CommonActions
 {
     /// <summary>
-    /// 自分のフェイズを終了します。
+    /// ターンを終了します。
     /// </summary>
     public FinishTurnAction FinishTurn { get; } = new();
     public class FinishTurnAction : CommonActionBase
     {
-        public override string Description => L["次のフェイズに進みます。"];
+        public override string Description => L["自分のターンを終了します。"];
 
         public override async ValueTask Do(ActionArgs args)
         {
-            //Test.Instance.hold = false;
+            GameCore.Instance.test.hold = false;
         }
     }
 }

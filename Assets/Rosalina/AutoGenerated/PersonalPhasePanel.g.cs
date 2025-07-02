@@ -18,6 +18,8 @@ public partial class PersonalPhasePanel
 
     public Label labelPlayerName { get; private set; }
 
+    public Label labelMoving { get; private set; }
+
     public Label labelAttack { get; private set; }
 
     public Label labelDefense { get; private set; }
@@ -111,6 +113,7 @@ public partial class PersonalPhasePanel
         Root = root;
         labelPlayerTitle = Root?.Q<Label>("labelPlayerTitle");
         labelPlayerName = Root?.Q<Label>("labelPlayerName");
+        labelMoving = Root?.Q<Label>("labelMoving");
         labelAttack = Root?.Q<Label>("labelAttack");
         labelDefense = Root?.Q<Label>("labelDefense");
         labelIntelligence = Root?.Q<Label>("labelIntelligence");

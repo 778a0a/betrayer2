@@ -15,14 +15,14 @@ partial class PersonalActions
     public class DeployAction : PersonalActionBase
     {
         public override string Label => L["出撃"];
-        public override string Description => L["勝手に出撃する。隣接する他国の城を攻撃する"];
+        public override string Description => L["勝手に出撃します。"];
+        protected override ActionRequirements Requirements => ActionRequirements.NotMovingAndVassalNotBoss;
 
         public override ActionCost Cost(ActionArgs args) => 5;
 
         protected override bool CanDoCore(ActionArgs args)
         {
-            // TODO: 出撃可能な条件チェックを実装
-            return false;
+            return true;
         }
 
         public override ValueTask Do(ActionArgs args)

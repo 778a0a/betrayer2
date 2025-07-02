@@ -9,23 +9,24 @@ using UnityEngine.Assertions;
 partial class PersonalActions
 {
     /// <summary>
-    /// ゴールド収入を改善します。
+    /// 城のゴールド収入を改善します。
     /// </summary>
     public DevelopAction Develop { get; } = new();
     public class DevelopAction : PersonalActionBase
     {
-        public override string Label => L["商業"];
-        public override string Description => L["ゴールド収入を改善します。"];
+        public override string Label => L["内政"];
+        public override string Description => L["城のゴールド収入を改善します。"];
+        protected override ActionRequirements Requirements => ActionRequirements.NotMovingAndNotFree;
 
         public override ActionCost Cost(ActionArgs args) => 2;
 
-        protected override bool CanDoCore(ActionArgs args) => args.targetTown.GoldIncome < args.targetTown.GoldIncomeMax;
+        protected override bool CanDoCore(ActionArgs args) => args.actor.Castle.GoldIncome < args.actor.Castle.GoldIncomeMax;
 
         public override ValueTask Do(ActionArgs args)
         {
             Util.IsTrue(CanDo(args));
             var chara = args.actor;
-            var town = args.targetTown;
+            var town = chara.Castle.Towns.Where(t => t.GoldIncome < t.GoldIncomeMax).RandomPick();
 
             // 能力値75なら2年で回収できる程度。
             var adj = 1 + (chara.Governing - 75) / 100f;
