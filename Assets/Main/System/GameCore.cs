@@ -19,6 +19,7 @@ public partial class GameCore
 
     public PersonalActions PersonalActions { get; }
     public StrategyActions StrategyActions { get; }
+    public CommonActions CommonActions { get; }
 
     public GameDate GameDate { get; set; }
 
@@ -29,11 +30,12 @@ public partial class GameCore
         Map = map;
         MainUI = mainui;
         this.test = test;
-        GameDate = new GameDate(0);
+        GameDate = new(0);
 
         AI = new AI(this);
-        PersonalActions = new PersonalActions(this);
-        StrategyActions = new StrategyActions(this);
+        PersonalActions = new(this);
+        StrategyActions = new(this);
+        CommonActions = new(this);
     }
 
     public void TogglePlay()

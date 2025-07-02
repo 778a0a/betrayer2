@@ -32,6 +32,36 @@ public partial class PersonalPhasePanel
 
     public Label labelPlayerPrestige { get; private set; }
 
+    public CharacterInfoSoldierIcon soldier00 { get; private set; }
+
+    public CharacterInfoSoldierIcon soldier01 { get; private set; }
+
+    public CharacterInfoSoldierIcon soldier02 { get; private set; }
+
+    public CharacterInfoSoldierIcon soldier03 { get; private set; }
+
+    public CharacterInfoSoldierIcon soldier04 { get; private set; }
+
+    public CharacterInfoSoldierIcon soldier05 { get; private set; }
+
+    public CharacterInfoSoldierIcon soldier06 { get; private set; }
+
+    public CharacterInfoSoldierIcon soldier07 { get; private set; }
+
+    public CharacterInfoSoldierIcon soldier08 { get; private set; }
+
+    public CharacterInfoSoldierIcon soldier09 { get; private set; }
+
+    public CharacterInfoSoldierIcon soldier10 { get; private set; }
+
+    public CharacterInfoSoldierIcon soldier11 { get; private set; }
+
+    public CharacterInfoSoldierIcon soldier12 { get; private set; }
+
+    public CharacterInfoSoldierIcon soldier13 { get; private set; }
+
+    public CharacterInfoSoldierIcon soldier14 { get; private set; }
+
     public VisualElement StatsPanel { get; private set; }
 
     public VisualElement SoldierGrid { get; private set; }
@@ -88,6 +118,21 @@ public partial class PersonalPhasePanel
         labelPlayerGold = Root?.Q<Label>("labelPlayerGold");
         labelPlayerContribution = Root?.Q<Label>("labelPlayerContribution");
         labelPlayerPrestige = Root?.Q<Label>("labelPlayerPrestige");
+        soldier00 = new CharacterInfoSoldierIcon(Root?.Q<VisualElement>("soldier00"));
+        soldier01 = new CharacterInfoSoldierIcon(Root?.Q<VisualElement>("soldier01"));
+        soldier02 = new CharacterInfoSoldierIcon(Root?.Q<VisualElement>("soldier02"));
+        soldier03 = new CharacterInfoSoldierIcon(Root?.Q<VisualElement>("soldier03"));
+        soldier04 = new CharacterInfoSoldierIcon(Root?.Q<VisualElement>("soldier04"));
+        soldier05 = new CharacterInfoSoldierIcon(Root?.Q<VisualElement>("soldier05"));
+        soldier06 = new CharacterInfoSoldierIcon(Root?.Q<VisualElement>("soldier06"));
+        soldier07 = new CharacterInfoSoldierIcon(Root?.Q<VisualElement>("soldier07"));
+        soldier08 = new CharacterInfoSoldierIcon(Root?.Q<VisualElement>("soldier08"));
+        soldier09 = new CharacterInfoSoldierIcon(Root?.Q<VisualElement>("soldier09"));
+        soldier10 = new CharacterInfoSoldierIcon(Root?.Q<VisualElement>("soldier10"));
+        soldier11 = new CharacterInfoSoldierIcon(Root?.Q<VisualElement>("soldier11"));
+        soldier12 = new CharacterInfoSoldierIcon(Root?.Q<VisualElement>("soldier12"));
+        soldier13 = new CharacterInfoSoldierIcon(Root?.Q<VisualElement>("soldier13"));
+        soldier14 = new CharacterInfoSoldierIcon(Root?.Q<VisualElement>("soldier14"));
         StatsPanel = Root?.Q<VisualElement>("StatsPanel");
         SoldierGrid = Root?.Q<VisualElement>("SoldierGrid");
         imagePlayerFace = Root?.Q<Image>("imagePlayerFace");

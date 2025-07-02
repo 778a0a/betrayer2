@@ -32,18 +32,31 @@ public class ActionBase
     public virtual string Label => GetType().Name;
     public virtual string Description => L["(説明文なし: {0})", GetType().Name];
     /// <summary>
-    /// 選択肢として表示可能ならtrue
+    /// UI上に選択肢として表示可能ならtrue
     /// </summary>
-    public virtual bool CanSelect(ActionArgs args) => true;
+    public virtual bool CanUISelect(Character player) => true;
+    /// <summary>
+    /// UI上のボタンを有効状態として表示するならtrue
+    /// </summary>
+    public virtual bool CanUIEnable(Character player) => CanUISelect(player);
+    /// <summary>
+    /// UI上のボタンを押されたときに呼ばれ、アクションに必要な引数を準備します。
+    /// </summary>
+    public virtual ValueTask<ActionArgs> Prepare(Character player) => new(new ActionArgs(player));
     /// <summary>
     /// アクションの実行に必要なコスト
     /// </summary>
     public virtual ActionCost Cost(ActionArgs args) => 0;
     /// <summary>
+    /// UIのアクション説明時のコスト
+    /// </summary>
+    public virtual ActionCost CostEstimate(Character actor) => Cost(new(actor));
+    /// <summary>
     /// アクションを実行可能ならtrue
     /// </summary>
     public bool CanDo(ActionArgs args) =>
-        CanSelect(args) &&
+        CanUISelect(args.actor) &&
+        CanUIEnable(args.actor) &&
         args.actor.CanPay(Cost(args)) &&
         CanDoCore(args);
     /// <summary>
@@ -157,5 +170,15 @@ public partial class StrategyActions : ActionsBase<StrategyActionBase>
     }
 }
 public class StrategyActionBase : ActionBase
+{
+}
+
+public partial class CommonActions : ActionsBase<CommonActionBase>
+{
+    public CommonActions(GameCore core) : base(core)
+    {
+    }
+}
+public class CommonActionBase : ActionBase
 {
 }

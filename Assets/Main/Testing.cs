@@ -6,6 +6,7 @@ using UnityEngine;
 public class Testing : MonoBehaviour
 {
     [SerializeField] private UIMapManager map;
+    [SerializeField] private string testPlayerName = "フレデリック";
     public float TickWait { get; set; }
     public bool hold = false;
 
@@ -24,7 +25,7 @@ public class Testing : MonoBehaviour
     {
         var world = DefaultData.Create();
         world.Map.AttachUI(map);
-        //world.Characters.FirstOrDefault(c => c.Name == "オーロラ").IsPlayer = true;
+        world.Characters.FirstOrDefault(c => c.Name == testPlayerName).IsPlayer = true;
 
         UpdatePlaySpeed(PlaySpeedIndex);
         core = new GameCore(world, map, MainUI.Instance, this);

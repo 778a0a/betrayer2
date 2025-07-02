@@ -163,6 +163,13 @@ partial class GameCore
     private async ValueTask DoPersonalAction(Character chara)
     {
         // TODO プレーヤーの場合
+        if (chara.IsPlayer)
+        {
+            test.hold = true;
+            MainUI.PersonalPhasePanel.SetData(chara, World);
+            await test.HoldIfNeeded();
+            return;
+        }
 
         // 未所属の場合
         if (chara.IsFree)

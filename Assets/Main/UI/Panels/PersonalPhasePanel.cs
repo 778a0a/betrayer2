@@ -1,171 +1,183 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-/// <summary>
-/// 個人行動フェーズのUIパネル部品
-/// MainUIの一部として動作する
-/// </summary>
 public partial class PersonalPhasePanel
 {
-    private GameCore gameCore;
+    private ActionButtonHelper[] buttons;
     private Character currentCharacter;
-    private PersonalActionBase selectedAction;
 
-    /// <summary>
-    /// パネルの初期化
-    /// </summary>
     public void Initialize()
     {
-        // TODO: Rosalina自動生成後に実装
-        // - イベントハンドラーの設定
-        // - アクションボタンのクリックイベント
-        // - 実行ボタンのクリックイベント
-        SetupActionButtons();
+        buttons = new[]
+        {
+            ActionButtonHelper.Personal(buttonHireSoldier, a => a.HireSoldier),
+            ActionButtonHelper.Personal(buttonTrainSoldier, a => a.TrainSoldiers),
+            ActionButtonHelper.Personal(buttonDevelop, a => a.Develop),
+            ActionButtonHelper.Personal(buttonInvest, a => a.Invest),
+            ActionButtonHelper.Personal(buttonFortify, a => a.Fortify),
+            ActionButtonHelper.Personal(buttonDeploy, a => a.Deploy),
+            ActionButtonHelper.Personal(buttonRebel, a => a.Rebel),
+            ActionButtonHelper.Personal(buttonResign, a => a.Resign),
+            ActionButtonHelper.Personal(buttonMove, a => a.Move),
+            ActionButtonHelper.Personal(buttonSeize, a => a.Seize),
+            ActionButtonHelper.Personal(buttonGetJob, a => a.GetJob),
+            ActionButtonHelper.Common(buttonFinishTurn, a => a.FinishTurn),
+        };
+
+        foreach (var button in buttons)
+        {
+            button.SetEventHandlers(
+                labelCostGold,
+                labelActionDescription,
+                () => currentCharacter,
+                OnActionButtonClicked
+            );
+        }
     }
 
-    /// <summary>
-    /// GameCoreインスタンスを設定
-    /// </summary>
-    public void SetGameCore(GameCore core)
+    private async void OnActionButtonClicked(ActionButtonHelper button)
     {
-        gameCore = core;
+        var chara = currentCharacter;
+        var action = button.Action;
+
+        var canPrepare = action.CanUIEnable(chara);
+        if (action is CommonActionBase)
+        {
+            if (canPrepare)
+            {
+                var argsCommon = await action.Prepare(chara);
+                await action.Do(argsCommon);
+            }
+            return;
+        }
+
+        if (!canPrepare)
+        {
+            return;
+        }
+
+        var args = await action.Prepare(chara);
+        await action.Do(args);
+        SetData(chara, GameCore.Instance.World);
     }
 
-    /// <summary>
-    /// データを設定してパネルを更新
-    /// </summary>
-    /// <param name="character">表示するキャラクター</param>
-    /// <param name="gameDate">現在のゲーム日付</param>
-    public void SetData(Character character, GameDate gameDate)
+    private CharacterInfoSoldierIcon[] soldierIcons;
+
+    public void SetData(Character chara, WorldData world)
     {
-        currentCharacter = character;
+        currentCharacter = chara;
+
+        // 基本情報の更新
+        imagePlayerFace.image = Static.Instance.GetFaceImage(chara);
+        labelPlayerName.text = chara.Name;
+        labelPlayerTitle.text = chara.GetTitle(GameCore.Instance.MainUI.L);
+        // 能力値の更新
+        labelAttack.text = chara.Attack.ToString();
+        labelDefense.text = chara.Defense.ToString();
+        labelIntelligence.text = chara.Intelligence.ToString();
+        labelGoverning.text = chara.Governing.ToString();
+        // 資産情報の更新
+        labelPlayerGold.text = chara.Gold.ToString();
+        labelPlayerContribution.text = chara.Contribution.ToString("0");
+        labelPlayerPrestige.text = chara.Prestige.ToString("0");
+
+
+        // 兵士情報の更新
+        soldierIcons ??= new[] { soldier00, soldier01, soldier02, soldier03, soldier04, soldier05, soldier06, soldier07, soldier08, soldier09, soldier10, soldier11, soldier12, soldier13, soldier14 };
+        for (int i = 0; i < soldierIcons.Length; i++)
+        {
+            if (chara.Soldiers.Count <= i)
+            {
+                soldierIcons[i].Root.style.visibility = Visibility.Hidden;
+                continue;
+            }
+            soldierIcons[i].Root.style.visibility = Visibility.Visible;
+            soldierIcons[i].SetData(chara.Soldiers[i]);
+        }
         
-        if (character == null) return;
+        // アクションボタンの状態更新
+        foreach (var button in buttons)
+        {
+            button.SetData(chara);
+        }
+    }
+}
 
-        // TODO: Rosalina自動生成後に実装
-        UpdateDateDisplay(gameDate);
-        UpdatePlayerInfo(character);
-        UpdateCharacterStats(character);
-        UpdateActionButtons(character);
-        UpdateSoldierDisplay(character);
+public class ActionButtonHelper
+{
+    public Button Element { get; private set; }
+    public ActionBase Action => actionGetter();
+    
+    private readonly Func<ActionBase> actionGetter;
+    private Label labelCostGold;
+    private Label labelDescription;
+    private Func<Character> currentCharacterGetter;
+    private Action<ActionButtonHelper> clickHandler;
+    private bool IsMouseOver;
+
+    private ActionButtonHelper(Button el, Func<ActionBase> actionGetter)
+    {
+        Element = el;
+        this.actionGetter = actionGetter;
     }
 
-    /// <summary>
-    /// 日付表示を更新
-    /// </summary>
-    private void UpdateDateDisplay(GameDate gameDate)
+    public static ActionButtonHelper Personal(Button button, Func<PersonalActions, PersonalActionBase> actionSelector)
     {
-        // TODO: 実装
-        // labelDate.text = $"{gameDate.Year}年";
-        // labelMonth.text = $"{gameDate.Month}月";
-        // labelDay.text = $"{gameDate.Day}日";
+        return new ActionButtonHelper(button, () => actionSelector(GameCore.Instance.PersonalActions));
     }
 
-    /// <summary>
-    /// プレイヤー情報を更新
-    /// </summary>
-    private void UpdatePlayerInfo(Character character)
+    public static ActionButtonHelper Common(Button button, Func<CommonActions, CommonActionBase> actionSelector)
     {
-        // TODO: 実装
-        // labelPlayerName.text = character.Name;
-        // labelPlayerGold.text = character.Gold.ToString("N0");
-        // labelPlayerAP.text = $"{character.ActionPoints}/{character.MaxActionPoints}";
-        // imagePlayerFace.image = FaceImageManager.Instance.GetImage(character);
+        return new ActionButtonHelper(button, () => actionSelector(GameCore.Instance.CommonActions));
     }
 
-    /// <summary>
-    /// キャラクター能力値を更新
-    /// </summary>
-    private void UpdateCharacterStats(Character character)
+    public void SetEventHandlers(
+        Label labelCostGold,
+        Label labelDescription,
+        Func<Character> currentCharacterGetter,
+        Action<ActionButtonHelper> clickHandler)
     {
-        // TODO: 実装
-        // labelAttack.text = character.Attack.ToString();
-        // labelDefense.text = character.Defense.ToString();
-        // labelIntelligence.text = character.Intelligence.ToString();
-        // labelGoverning.text = character.Governing.ToString();
-        // labelLoyalty.text = character.Loyalty.ToString();
-        // labelSoldierCount.text = character.Soldiers.SoldierCount.ToString();
+        this.labelCostGold = labelCostGold;
+        this.labelDescription = labelDescription;
+        this.currentCharacterGetter = currentCharacterGetter;
+        this.clickHandler = clickHandler;
+        
+        Element.RegisterCallback<ClickEvent>(OnActionButtonClicked);
+        Element.RegisterCallback<PointerEnterEvent>(OnActionButtonPointerEnter);
+        Element.RegisterCallback<PointerLeaveEvent>(OnActionButtonPointerLeave);
     }
 
-    /// <summary>
-    /// アクションボタンの状態を更新
-    /// </summary>
-    private void UpdateActionButtons(Character character)
+    private void OnActionButtonPointerEnter(PointerEnterEvent evt)
     {
-        // TODO: 実装
-        // 各アクションの実行可能性をチェックして、ボタンの有効/無効を設定
+        var chara = currentCharacterGetter();
+
+        IsMouseOver = true;
+        labelDescription.text = Action.Description;
+        var cost = Action.CostEstimate(chara);
+        labelCostGold.text = cost.actorGold.ToString();
     }
 
-    /// <summary>
-    /// 兵士表示を更新
-    /// </summary>
-    private void UpdateSoldierDisplay(Character character)
+    private void OnActionButtonPointerLeave(PointerLeaveEvent evt)
     {
-        // TODO: 実装
-        // 兵士スロットの色や状態を兵士のHPに応じて更新
+        IsMouseOver = false;
+        labelDescription.text = "";
+        labelCostGold.text = "---";
     }
 
-    /// <summary>
-    /// アクションボタンの設定
-    /// </summary>
-    private void SetupActionButtons()
+    private void OnActionButtonClicked(ClickEvent ev)
     {
-        // TODO: Rosalina自動生成後に実装
-        // buttonDevelop.clicked += () => OnActionSelected("Develop");
-        // buttonFortify.clicked += () => OnActionSelected("Fortify");
-        // buttonHireSoldier.clicked += () => OnActionSelected("HireSoldier");
-        // buttonInvest.clicked += () => OnActionSelected("Invest");
-        // buttonTrainSoldier.clicked += () => OnActionSelected("TrainSoldier");
-        // buttonRebel.clicked += () => OnActionSelected("Rebel");
-        // buttonResign.clicked += () => OnActionSelected("Resign");
-        // buttonExecute.clicked += OnExecuteAction;
+        clickHandler(this);
     }
 
-    /// <summary>
-    /// アクションが選択された時の処理
-    /// </summary>
-    private void OnActionSelected(string actionName)
+    public void SetData(Character chara)
     {
-        // TODO: 実装
-        // selectedAction = gameCore.PersonalActions.GetAction(actionName);
-        // UpdateActionDetail(selectedAction);
-    }
-
-    /// <summary>
-    /// アクション詳細表示を更新
-    /// </summary>
-    private void UpdateActionDetail(PersonalActionBase action)
-    {
-        // TODO: 実装
-        // labelActionName.text = action.Label;
-        // labelActionDescription.text = action.Description;
-        // var cost = action.Cost(new ActionArgs(currentCharacter));
-        // labelCostGold.text = cost.actorGold.ToString();
-        // labelCostAP.text = cost.actionPoints.ToString();
-        // buttonExecute.SetEnabled(action.CanDo(new ActionArgs(currentCharacter)));
-    }
-
-    /// <summary>
-    /// アクション実行処理
-    /// </summary>
-    private void OnExecuteAction()
-    {
-        // TODO: 実装
-        // if (selectedAction != null && currentCharacter != null)
-        // {
-        //     var args = new ActionArgs(currentCharacter);
-        //     await selectedAction.Do(args);
-        //     // UI更新
-        //     SetData(currentCharacter, gameCore.GameDate);
-        // }
-    }
-
-    /// <summary>
-    /// パネルの表示/非表示を切り替え
-    /// </summary>
-    public void SetVisible(bool visible)
-    {
-        // TODO: Rosalina自動生成後に実装
-        // PersonalPhasePanel.style.display = visible ? DisplayStyle.Flex : DisplayStyle.None;
+        Element.style.display = Util.Display(Action.CanUISelect(chara));
+        Element.SetEnabled(Action.CanUIEnable(chara));
+        if (IsMouseOver)
+        {
+            OnActionButtonPointerEnter(null);
+        }
     }
 }

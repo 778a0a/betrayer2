@@ -45,4 +45,10 @@ public class Static : MonoBehaviour
     {
         return soldiers.GetTexture(level);
     }
+
+    public Texture2D GetEmptySoldierImage()
+    {
+        return soldiers.GetEmptyTexture();
+    }
+
 }
