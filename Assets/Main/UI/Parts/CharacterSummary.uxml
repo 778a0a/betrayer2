@@ -1,0 +1,54 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:Template name="CharacterInfoSoldierIcon" src="project://database/Assets/Main/UI/Parts/CharacterInfoSoldierIcon.uxml?fileID=9197481963319205126&amp;guid=0231f6317e960bf4bb8de5014d4f8a94&amp;type=3#CharacterInfoSoldierIcon" />
+    <Style src="project://database/Assets/Main/UI/MainUI.uss?fileID=7433441132597879392&amp;guid=58784b5e2f0cb174d8cf6549c5d2f08c&amp;type=3#MainUI" />
+    
+    <!-- PlayerInfo Panel: プレイヤー情報表示パネル -->
+    <ui:VisualElement style="padding: 5px; background-color: rgba(50, 50, 80, 0.3);">
+        <ui:VisualElement style="flex-direction: row; align-items: center">
+            <ui:Image name="imagePlayerFace" style="width: 80px; height: 80px; background-color: rgba(0, 229, 255, 0.35);" />
+            <ui:VisualElement style="flex-grow: 1; margin-left: 5px;">
+                <ui:VisualElement style="flex-direction: row; align-items: flex-end;">
+                    <ui:Label name="labelPlayerTitle" text="将軍" style="font-size: 14px; margin:0 5px 0 0; padding:0;" />
+                    <ui:Label name="labelPlayerName" text="ハイペリオン" style="font-size: 18px; font-weight: bold; margin:0; " />
+                    <ui:Label name="labelMoving" text="出撃中" style="font-size: 14px; margin:0 0 0 5px; padding:0; color: red;" />
+                </ui:VisualElement>
+                <!-- 能力値表示 -->
+                <ui:VisualElement name="StatsPanel" style="flex-direction: row; margin-top: 5px;">
+                    <ui:Label text="攻撃:" style="font-size: 14px; margin: 0 5px 0 0; " />
+                    <ui:Label name="labelAttack" text="80" style="font-size: 14px; color: #f88; " />
+                    <ui:Label text="防衛:" style="font-size: 14px; margin: 0 5px 0 10px; " />
+                    <ui:Label name="labelDefense" text="75" style="font-size: 14px; color: #8af; " />
+                    <ui:Label text="智謀:" style="font-size: 14px; margin: 0 5px 0 10px; " />
+                    <ui:Label name="labelIntelligence" text="90" style="font-size: 14px; color: cyan; " />
+                    <ui:Label text="統治:" style="font-size: 14px; margin: 0 5px 0 10px; " />
+                    <ui:Label name="labelGoverning" text="85" style="font-size: 14px; color: #8f8; " />
+                </ui:VisualElement>
+                <ui:VisualElement style="flex-direction: row; margin-top: 5px;">
+                    <ui:Label text="所持金:" style="font-size: 14px; margin: 0 5px 0 0; " />
+                    <ui:Label name="labelPlayerGold" text="1,000" style="font-size: 14px; color: yellow; " />
+                    <ui:Label text="功績:" style="font-size: 14px; margin: 0 5px 0 10px; " />
+                    <ui:Label name="labelPlayerContribution" text="10000" style="font-size: 14px; color: white; " />
+                    <ui:Label text="名声:" style="font-size: 14px; margin: 0 5px 0 10px; " />
+                    <ui:Label name="labelPlayerPrestige" text="75000" style="font-size: 14px; color: white; " />
+                </ui:VisualElement>
+                <ui:VisualElement name="SoldierGrid" style="flex-direction: row; flex-wrap: wrap; margin-top: 5px;">
+                    <ui:Instance name="soldier00" template="CharacterInfoSoldierIcon" />
+                    <ui:Instance name="soldier01" template="CharacterInfoSoldierIcon" />
+                    <ui:Instance name="soldier02" template="CharacterInfoSoldierIcon" />
+                    <ui:Instance name="soldier03" template="CharacterInfoSoldierIcon" />
+                    <ui:Instance name="soldier04" template="CharacterInfoSoldierIcon" />
+                    <ui:Instance name="soldier05" template="CharacterInfoSoldierIcon" />
+                    <ui:Instance name="soldier06" template="CharacterInfoSoldierIcon" />
+                    <ui:Instance name="soldier07" template="CharacterInfoSoldierIcon" />
+                    <ui:Instance name="soldier08" template="CharacterInfoSoldierIcon" />
+                    <ui:Instance name="soldier09" template="CharacterInfoSoldierIcon" />
+                    <ui:Instance name="soldier10" template="CharacterInfoSoldierIcon" />
+                    <ui:Instance name="soldier11" template="CharacterInfoSoldierIcon" />
+                    <ui:Instance name="soldier12" template="CharacterInfoSoldierIcon" />
+                    <ui:Instance name="soldier13" template="CharacterInfoSoldierIcon" />
+                    <ui:Instance name="soldier14" template="CharacterInfoSoldierIcon" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

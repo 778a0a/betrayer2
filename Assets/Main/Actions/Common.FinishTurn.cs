@@ -14,6 +14,7 @@ partial class CommonActions
     public FinishTurnAction FinishTurn { get; } = new();
     public class FinishTurnAction : CommonActionBase
     {
+        public override string Label => L["完了"];
         public override string Description => L["自分のターンを終了します。"];
 
         public override async ValueTask Do(ActionArgs args)
