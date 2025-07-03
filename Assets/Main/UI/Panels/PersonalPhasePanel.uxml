@@ -8,8 +8,8 @@
         <!-- ヘッダー: 日付・フェーズ情報 -->
         <ui:VisualElement class="header-panel" style="flex-direction: row; justify-content: space-between;">
             <ui:VisualElement style="flex-direction: row; align-items: flex-end; padding: 2px 0;">
-                <ui:Label text="個人" style="font-size: 18px; font-weight: bold; margin: 0; padding: 0" />
-                <ui:Label text="フェイズ" style="font-size: 12px; font-weight: bold; margin: 0; padding: 0" />
+                <ui:Label text="個人" style="font-size: 18px; font-weight: bold;" />
+                <ui:Label text="フェイズ" style="font-size: 12px; font-weight: bold;" />
             </ui:VisualElement>
             <ui:Button text="×" style="font-size: 10px; width: 20px; height: 20px; -unity-font-style: bold;" />
         </ui:VisualElement>
@@ -21,27 +21,27 @@
                 <ui:VisualElement style="flex-grow: 1; margin-left: 5px;">
                     <ui:VisualElement style="flex-direction: row; align-items: flex-end;">
                         <ui:Label name="labelPlayerTitle" text="将軍" style="font-size: 14px; margin:0 5px 0 0; padding:0;" />
-                        <ui:Label name="labelPlayerName" text="ハイペリオン" style="font-size: 18px; font-weight: bold; margin:0; padding: 0;" />
+                        <ui:Label name="labelPlayerName" text="ハイペリオン" style="font-size: 18px; font-weight: bold; margin:0; " />
                         <ui:Label name="labelMoving" text="出撃中" style="font-size: 14px; margin:0 0 0 5px; padding:0; color: red;" />
                     </ui:VisualElement>
                     <!-- 能力値表示 -->
                     <ui:VisualElement name="StatsPanel" style="flex-direction: row; margin-top: 5px;">
-                        <ui:Label text="攻撃:" style="font-size: 14px; margin: 0 5px 0 0; padding: 0;" />
-                        <ui:Label name="labelAttack" text="80" style="font-size: 14px; color: #f88; margin: 0; padding: 0;" />
-                        <ui:Label text="防衛:" style="font-size: 14px; margin: 0 5px 0 10px; padding: 0;" />
-                        <ui:Label name="labelDefense" text="75" style="font-size: 14px; color: #8af; margin: 0; padding: 0;" />
-                        <ui:Label text="智謀:" style="font-size: 14px; margin: 0 5px 0 10px; padding: 0;" />
-                        <ui:Label name="labelIntelligence" text="90" style="font-size: 14px; color: cyan; margin: 0; padding: 0;" />
-                        <ui:Label text="統治:" style="font-size: 14px; margin: 0 5px 0 10px; padding: 0;" />
-                        <ui:Label name="labelGoverning" text="85" style="font-size: 14px; color: #8f8; margin: 0; padding: 0;" />
+                        <ui:Label text="攻撃:" style="font-size: 14px; margin: 0 5px 0 0; " />
+                        <ui:Label name="labelAttack" text="80" style="font-size: 14px; color: #f88; " />
+                        <ui:Label text="防衛:" style="font-size: 14px; margin: 0 5px 0 10px; " />
+                        <ui:Label name="labelDefense" text="75" style="font-size: 14px; color: #8af; " />
+                        <ui:Label text="智謀:" style="font-size: 14px; margin: 0 5px 0 10px; " />
+                        <ui:Label name="labelIntelligence" text="90" style="font-size: 14px; color: cyan; " />
+                        <ui:Label text="統治:" style="font-size: 14px; margin: 0 5px 0 10px; " />
+                        <ui:Label name="labelGoverning" text="85" style="font-size: 14px; color: #8f8; " />
                     </ui:VisualElement>
                     <ui:VisualElement style="flex-direction: row; margin-top: 5px;">
-                        <ui:Label text="所持金:" style="font-size: 14px; margin: 0 5px 0 0; padding: 0;" />
-                        <ui:Label name="labelPlayerGold" text="1,000" style="font-size: 14px; color: yellow; margin: 0; padding: 0;" />
-                        <ui:Label text="功績:" style="font-size: 14px; margin: 0 5px 0 10px; padding: 0;" />
-                        <ui:Label name="labelPlayerContribution" text="10000" style="font-size: 14px; color: white; margin: 0; padding: 0;" />
-                        <ui:Label text="名声:" style="font-size: 14px; margin: 0 5px 0 10px; padding: 0;" />
-                        <ui:Label name="labelPlayerPrestige" text="75000" style="font-size: 14px; color: white; margin: 0; padding: 0;" />
+                        <ui:Label text="所持金:" style="font-size: 14px; margin: 0 5px 0 0; " />
+                        <ui:Label name="labelPlayerGold" text="1,000" style="font-size: 14px; color: yellow; " />
+                        <ui:Label text="功績:" style="font-size: 14px; margin: 0 5px 0 10px; " />
+                        <ui:Label name="labelPlayerContribution" text="10000" style="font-size: 14px; color: white; " />
+                        <ui:Label text="名声:" style="font-size: 14px; margin: 0 5px 0 10px; " />
+                        <ui:Label name="labelPlayerPrestige" text="75000" style="font-size: 14px; color: white; " />
                     </ui:VisualElement>
                     <ui:VisualElement name="SoldierGrid" style="flex-direction: row; flex-wrap: wrap; margin-top: 5px;">
                         <ui:Instance name="soldier00" template="CharacterInfoSoldierIcon" />
@@ -65,32 +65,29 @@
         </ui:VisualElement>
 
         <!-- アクションボタンエリア -->
-        <ui:VisualElement name="ActionsPanel" class="actions-panel" style="margin-top: 5px;">
-            <ui:Label text="アクション" style="font-size: 16px; font-weight: bold; margin: 0 0 5px 0; padding: 0" />
-            <ui:VisualElement name="ActionButtons" style="flex-wrap: wrap; flex-direction: row;">
-                <ui:Button text="雇兵" name="buttonHireSoldier" class="action-button" style="margin: 2px; width: 78px;" />
-                <ui:Button text="訓練" name="buttonTrainSoldier" class="action-button" style="margin: 2px; width: 78px;" />
-                <ui:Button text="内政" name="buttonDevelop" class="action-button" style="margin: 2px; width: 78px;" />
-                <ui:Button text="投資" name="buttonInvest" class="action-button" style="margin: 2px; width: 78px;" />
-                <ui:Button text="築城" name="buttonFortify" class="action-button" style="margin: 2px; width: 78px;" />
-                <ui:Button text="出撃" name="buttonDeploy" class="action-button" style="margin: 2px; width: 78px;" />
-                <ui:Button text="反乱" name="buttonRebel" class="action-button" style="margin: 2px; width: 78px;" />
-                <ui:Button text="放浪" name="buttonResign" class="action-button" style="margin: 2px; width: 78px;" />
-                <ui:Button text="転居" name="buttonMove" class="action-button" style="margin: 2px; width: 78px;" />
-                <ui:Button text="奪取" name="buttonSeize" class="action-button" style="margin: 2px; width: 78px;" />
-                <ui:Button text="仕官" name="buttonGetJob" class="action-button" style="margin: 2px; width: 78px;" />
-                <ui:Button text="行動完了" name="buttonFinishTurn" class="action-button" style="margin: 2px; width: 78px; font-size: 15px" />
+        <ui:VisualElement name="ActionsPanel" class="actions-panel" style="margin-top: 5px; padding: 5px; background-color: #223344;">
+            <ui:VisualElement style="flex-direction: row; align-items: flex-end;">
+                <ui:Label text="アクション" style="font-size: 18px; font-weight: bold;" />
+                <ui:Label text="消費金:" style="margin: 0 5px 0 5px; font-size: 12px; " />
+                <ui:Label name="labelCostGold" text="100" style="font-size: 12px; color: yellow;" />
             </ui:VisualElement>
-        </ui:VisualElement>
-
-        <!-- アクション詳細・コスト表示 -->
-        <ui:VisualElement name="ActionDetailPanel" class="detail-panel" style="margin-top: 5px; padding: 5px; background-color: rgba(40, 40, 60, 0.3);">
-                <ui:VisualElement style="flex-direction: row; align-items: center;">
-                    <ui:Label name="labelActionName" text="アクション名" style="font-size: 16px; font-weight: bold; margin: 0;" />
-                    <ui:Label text="消費金:" style="margin: 0 0 0 10px; font-size: 12px; width: 50px;" />
-                    <ui:Label name="labelCostGold" text="---" style="font-size: 12px; color: yellow;" />
-                </ui:VisualElement>
-            <ui:Label name="labelActionDescription" text="アクションの説明がここに表示されます。" style="font-size: 13px; white-space: normal;" />
+            <ui:VisualElement style="flex-direction: row; align-items: center; height: 16px; margin: 8px 0 8px 0;">
+                <ui:Label name="labelActionDescription" text="アクションの説明がここに表示されます。" style="font-size: 13px; padding: 0 0 0 3px; white-space: normal" />
+            </ui:VisualElement>
+            <ui:VisualElement name="ActionButtons" style="flex-wrap: wrap; flex-direction: row;">
+                <ui:Button text="雇兵" name="buttonHireSoldier" class="action-button" style="margin: 2px; width: 76px;" />
+                <ui:Button text="訓練" name="buttonTrainSoldier" class="action-button" style="margin: 2px; width: 76px;" />
+                <ui:Button text="内政" name="buttonDevelop" class="action-button" style="margin: 2px; width: 76px;" />
+                <ui:Button text="投資" name="buttonInvest" class="action-button" style="margin: 2px; width: 76px;" />
+                <ui:Button text="築城" name="buttonFortify" class="action-button" style="margin: 2px; width: 76px;" />
+                <ui:Button text="出撃" name="buttonDeploy" class="action-button" style="margin: 2px; width: 76px;" />
+                <ui:Button text="反乱" name="buttonRebel" class="action-button" style="margin: 2px; width: 76px;" />
+                <ui:Button text="放浪" name="buttonResign" class="action-button" style="margin: 2px; width: 76px;" />
+                <ui:Button text="転居" name="buttonMove" class="action-button" style="margin: 2px; width: 76px;" />
+                <ui:Button text="奪取" name="buttonSeize" class="action-button" style="margin: 2px; width: 76px;" />
+                <ui:Button text="仕官" name="buttonGetJob" class="action-button" style="margin: 2px; width: 76px;" />
+                <ui:Button text="行動完了" name="buttonFinishTurn" class="action-button" style="margin: 2px; width: 76px; font-size: 15px" />
+            </ui:VisualElement>
         </ui:VisualElement>
 
     </ui:VisualElement>

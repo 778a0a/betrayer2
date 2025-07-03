@@ -159,7 +159,7 @@ public class ActionButtonHelper
         var cost = Action.Cost(new(chara, estimate: true));
         if (cost.IsVariable)
         {
-            labelCostGold.text = "変動";
+            labelCostGold.text = "---";
         }
         else
         {
