@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -12,22 +13,23 @@ public partial class PersonalPhasePanel
     {
         buttons = new[]
         {
-            ActionButtonHelper.Personal(buttonHireSoldier, a => a.HireSoldier),
-            ActionButtonHelper.Personal(buttonTrainSoldier, a => a.TrainSoldiers),
-            ActionButtonHelper.Personal(buttonDevelop, a => a.Develop),
-            ActionButtonHelper.Personal(buttonInvest, a => a.Invest),
-            ActionButtonHelper.Personal(buttonFortify, a => a.Fortify),
-            ActionButtonHelper.Personal(buttonDeploy, a => a.Deploy),
-            ActionButtonHelper.Personal(buttonRebel, a => a.Rebel),
-            ActionButtonHelper.Personal(buttonResign, a => a.Resign),
-            ActionButtonHelper.Personal(buttonMove, a => a.Relocate),
-            ActionButtonHelper.Personal(buttonSeize, a => a.Seize),
-            ActionButtonHelper.Personal(buttonGetJob, a => a.GetJob),
-            ActionButtonHelper.Common(buttonFinishTurn, a => a.FinishTurn),
+            ActionButtonHelper.Personal(a => a.HireSoldier),
+            ActionButtonHelper.Personal(a => a.TrainSoldiers),
+            ActionButtonHelper.Personal(a => a.Develop),
+            ActionButtonHelper.Personal(a => a.Invest),
+            ActionButtonHelper.Personal(a => a.Fortify),
+            ActionButtonHelper.Personal(a => a.Deploy),
+            ActionButtonHelper.Personal(a => a.Rebel),
+            ActionButtonHelper.Personal(a => a.Resign),
+            ActionButtonHelper.Personal(a => a.Relocate),
+            ActionButtonHelper.Personal(a => a.Seize),
+            ActionButtonHelper.Personal(a => a.GetJob),
+            ActionButtonHelper.Common(a => a.FinishTurn),
         };
 
         foreach (var button in buttons)
         {
+            ActionButtons.Add(button.Element);
             button.SetEventHandlers(
                 labelCostGold,
                 labelActionDescription,
@@ -124,13 +126,17 @@ public class ActionButtonHelper
         this.actionGetter = actionGetter;
     }
 
-    public static ActionButtonHelper Personal(Button button, Func<PersonalActions, PersonalActionBase> actionSelector)
+    public static ActionButtonHelper Personal(Func<PersonalActions, PersonalActionBase> actionSelector)
     {
+        var button = new Button();
+        button.AddToClassList("ActionButton");
         return new ActionButtonHelper(button, () => actionSelector(GameCore.Instance.PersonalActions));
     }
 
-    public static ActionButtonHelper Common(Button button, Func<CommonActions, CommonActionBase> actionSelector)
+    public static ActionButtonHelper Common(Func<CommonActions, CommonActionBase> actionSelector)
     {
+        var button = new Button();
+        button.AddToClassList("ActionButton");
         return new ActionButtonHelper(button, () => actionSelector(GameCore.Instance.CommonActions));
     }
 
@@ -182,7 +188,7 @@ public class ActionButtonHelper
     public void SetData(Character chara)
     {
         var canSelect = Action.CanUISelect(chara);
-        Debug.Log($"{chara.Name}: {Action} OK?: {canSelect}");
+        Element.text = Action.Label;
         Element.style.display = Util.Display(canSelect);
         Element.SetEnabled(Action.CanUIEnable(chara));
         if (IsMouseOver)

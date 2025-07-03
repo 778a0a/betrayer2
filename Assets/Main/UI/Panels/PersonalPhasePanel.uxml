@@ -75,18 +75,7 @@
                 <ui:Label name="labelActionDescription" text="アクションの説明がここに表示されます。" style="font-size: 13px; padding: 0 0 0 3px; white-space: normal" />
             </ui:VisualElement>
             <ui:VisualElement name="ActionButtons" style="flex-wrap: wrap; flex-direction: row;">
-                <ui:Button text="雇兵" name="buttonHireSoldier" class="action-button" style="margin: 2px; width: 76px;" />
-                <ui:Button text="訓練" name="buttonTrainSoldier" class="action-button" style="margin: 2px; width: 76px;" />
-                <ui:Button text="内政" name="buttonDevelop" class="action-button" style="margin: 2px; width: 76px;" />
-                <ui:Button text="投資" name="buttonInvest" class="action-button" style="margin: 2px; width: 76px;" />
-                <ui:Button text="築城" name="buttonFortify" class="action-button" style="margin: 2px; width: 76px;" />
-                <ui:Button text="出撃" name="buttonDeploy" class="action-button" style="margin: 2px; width: 76px;" />
-                <ui:Button text="反乱" name="buttonRebel" class="action-button" style="margin: 2px; width: 76px;" />
-                <ui:Button text="放浪" name="buttonResign" class="action-button" style="margin: 2px; width: 76px;" />
-                <ui:Button text="転居" name="buttonMove" class="action-button" style="margin: 2px; width: 76px;" />
-                <ui:Button text="奪取" name="buttonSeize" class="action-button" style="margin: 2px; width: 76px;" />
-                <ui:Button text="仕官" name="buttonGetJob" class="action-button" style="margin: 2px; width: 76px;" />
-                <ui:Button text="行動完了" name="buttonFinishTurn" class="action-button" style="margin: 2px; width: 76px; font-size: 15px" />
+                <!-- ボタンはC#で動的生成 -->
             </ui:VisualElement>
         </ui:VisualElement>
 

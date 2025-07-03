@@ -70,41 +70,13 @@ public partial class PersonalPhasePanel
 
     public Image imagePlayerFace { get; private set; }
 
-    public Button buttonHireSoldier { get; private set; }
-
-    public Button buttonTrainSoldier { get; private set; }
-
-    public Button buttonDevelop { get; private set; }
-
-    public Button buttonInvest { get; private set; }
-
-    public Button buttonFortify { get; private set; }
-
-    public Button buttonDeploy { get; private set; }
-
-    public Button buttonRebel { get; private set; }
-
-    public Button buttonResign { get; private set; }
-
-    public Button buttonMove { get; private set; }
-
-    public Button buttonSeize { get; private set; }
-
-    public Button buttonGetJob { get; private set; }
-
-    public Button buttonFinishTurn { get; private set; }
-
-    public VisualElement ActionButtons { get; private set; }
-
-    public Label labelActionName { get; private set; }
-
     public Label labelCostGold { get; private set; }
 
     public Label labelActionDescription { get; private set; }
 
-    public VisualElement ActionsPanel { get; private set; }
+    public VisualElement ActionButtons { get; private set; }
 
-    public VisualElement ActionDetailPanel { get; private set; }
+    public VisualElement ActionsPanel { get; private set; }
 
     public VisualElement Root { get; }
 
@@ -139,23 +111,9 @@ public partial class PersonalPhasePanel
         StatsPanel = Root?.Q<VisualElement>("StatsPanel");
         SoldierGrid = Root?.Q<VisualElement>("SoldierGrid");
         imagePlayerFace = Root?.Q<Image>("imagePlayerFace");
-        buttonHireSoldier = Root?.Q<Button>("buttonHireSoldier");
-        buttonTrainSoldier = Root?.Q<Button>("buttonTrainSoldier");
-        buttonDevelop = Root?.Q<Button>("buttonDevelop");
-        buttonInvest = Root?.Q<Button>("buttonInvest");
-        buttonFortify = Root?.Q<Button>("buttonFortify");
-        buttonDeploy = Root?.Q<Button>("buttonDeploy");
-        buttonRebel = Root?.Q<Button>("buttonRebel");
-        buttonResign = Root?.Q<Button>("buttonResign");
-        buttonMove = Root?.Q<Button>("buttonMove");
-        buttonSeize = Root?.Q<Button>("buttonSeize");
-        buttonGetJob = Root?.Q<Button>("buttonGetJob");
-        buttonFinishTurn = Root?.Q<Button>("buttonFinishTurn");
-        ActionButtons = Root?.Q<VisualElement>("ActionButtons");
-        labelActionName = Root?.Q<Label>("labelActionName");
         labelCostGold = Root?.Q<Label>("labelCostGold");
         labelActionDescription = Root?.Q<Label>("labelActionDescription");
+        ActionButtons = Root?.Q<VisualElement>("ActionButtons");
         ActionsPanel = Root?.Q<VisualElement>("ActionsPanel");
-        ActionDetailPanel = Root?.Q<VisualElement>("ActionDetailPanel");
     }
 }

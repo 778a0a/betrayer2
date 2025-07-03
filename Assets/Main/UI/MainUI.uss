@@ -153,3 +153,8 @@ Label {
     width: 55px;
     height: 55px;
 }
+
+.ActionButton {
+    margin: 2px;
+    width: 76px;
+}
