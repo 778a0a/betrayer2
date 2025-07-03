@@ -43,9 +43,9 @@ partial class GameCore
         // TODO プレーヤーの場合
         if (chara.IsPlayer)
         {
-            //test.hold = true;
-            //MainUI.StrategyPhasePanel.SetData(chara, World);
-            //await test.HoldIfNeeded();
+            test.hold = true;
+            MainUI.StrategyPhasePanel.SetData(chara, World);
+            await test.HoldIfNeeded();
             return;
         }
 

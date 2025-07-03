@@ -11,7 +11,7 @@ partial class StrategyActions
     /// <summary>
     /// 別の城へ物資を輸送します。
     /// </summary>
-    public TranspotAction Transpot { get; } = new();
+    public TranspotAction Transport { get; } = new();
     public class TranspotAction : StrategyActionBase
     {
         public override string Label => L["輸送"];

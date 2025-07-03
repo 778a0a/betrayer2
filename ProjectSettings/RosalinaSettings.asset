@@ -44,3 +44,5 @@ MonoBehaviour:
     _path: Assets/Main/UI/Parts/CharacterInfoSoldierIcon.uxml
   - _type: 1
     _path: Assets/Main/UI/Parts/CharacterSummary.uxml
+  - _type: 1
+    _path: Assets/Main/UI/Panels/StrategyPhasePanel.uxml

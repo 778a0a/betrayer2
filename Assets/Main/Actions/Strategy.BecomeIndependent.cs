@@ -11,8 +11,8 @@ partial class StrategyActions
     /// <summary>
     /// 独立します。
     /// </summary>
-    public BecomIndependentAction BecomIndependent { get; } = new();
-    public class BecomIndependentAction : StrategyActionBase
+    public BecomeIndependentAction BecomeIndependent { get; } = new();
+    public class BecomeIndependentAction : StrategyActionBase
     {
         public override string Label => L["独立"];
         public override string Description => L["独立します。"];

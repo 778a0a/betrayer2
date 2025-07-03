@@ -430,7 +430,7 @@ public class AI
         var gold = castle.Gold / 2;
         if (gold > 1)
         {
-            var act = core.StrategyActions.Transpot;
+            var act = core.StrategyActions.Transport;
             var args = act.Args(castle.Boss, castle, ruler.Castle, gold);
             if (act.CanDo(args))
             {
@@ -459,7 +459,7 @@ public class AI
                 .Where(c => c.Gold > 0)
                 .OrderByDescending(c => c.Gold);
 
-            var act = core.StrategyActions.Transpot;
+            var act = core.StrategyActions.Transport;
             foreach (var wealthy in wealthyCastles)
             {
                 var needGold = -castle.Gold;

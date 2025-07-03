@@ -18,5 +18,6 @@ public partial class MainUI : MonoBehaviour
         BattleWindow.Initialize();
         Frame.Initialize();
         PersonalPhasePanel.Initialize();
+        StrategyPhasePanel.Initialize();
     }
 }

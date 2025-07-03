@@ -106,6 +106,13 @@ public class ActionButtonHelper
         return new ActionButtonHelper(button, () => actionSelector(GameCore.Instance.PersonalActions));
     }
 
+    public static ActionButtonHelper Strategy(Func<StrategyActions, StrategyActionBase> actionSelector)
+    {
+        var button = new Button();
+        button.AddToClassList("ActionButton");
+        return new ActionButtonHelper(button, () => actionSelector(GameCore.Instance.StrategyActions));
+    }
+
     public static ActionButtonHelper Common(Func<CommonActions, CommonActionBase> actionSelector)
     {
         var button = new Button();
