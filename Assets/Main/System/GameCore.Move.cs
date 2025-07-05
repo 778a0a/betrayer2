@@ -44,7 +44,7 @@ partial class GameCore
         if (chara.IsPlayer)
         {
             test.hold = true;
-            MainUI.StrategyPhasePanel.SetData(chara, World);
+            MainUI.ShowStrategyPhasePanel(chara, World);
             await test.HoldIfNeeded();
             return;
         }
@@ -174,7 +174,7 @@ partial class GameCore
         if (chara.IsPlayer)
         {
             test.hold = true;
-            MainUI.PersonalPhasePanel.SetData(chara, World);
+            MainUI.ShowPersonalPhasePanel(chara, World);
             await test.HoldIfNeeded();
             return;
         }
