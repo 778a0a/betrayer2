@@ -102,7 +102,6 @@ public static class ActionRequirementsExtensions
 {
     public static bool IsOK(this ActionRequirements req, Character chara)
     {
-        Debug.Log($"{req} {(int)req}");
         if (req == ActionRequirements.None) return true;
         if (req.HasFlag(ActionRequirements.Moving) && !chara.IsMoving) return false;
         if (req.HasFlag(ActionRequirements.NotMoving) && chara.IsMoving) return false;
