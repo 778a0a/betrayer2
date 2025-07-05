@@ -3,9 +3,11 @@
     <engine:Template name="MainUIFrame" src="project://database/Assets/Main/UI/MainUIFrame.uxml?fileID=9197481963319205126&amp;guid=e95a0a77fa6d5dd469188bc0efcacedb&amp;type=3#MainUIFrame" />
     <engine:Template name="PersonalPhasePanel" src="project://database/Assets/Main/UI/Panels/PersonalPhasePanel.uxml?fileID=9197481963319205126&amp;guid=304adea7dbc40d3448a629b80c0211ec&amp;type=3#PersonalPhasePanel" />
     <engine:Template name="StrategyPhasePanel" src="project://database/Assets/Main/UI/Panels/StrategyPhasePanel.uxml?fileID=9197481963319205126&amp;guid=ae87ab5f58dd13c4db781afa05642805&amp;type=3#StrategyPhasePanel" />
+    <engine:Template name="SelectCharacterPanel" src="project://database/Assets/Main/UI/Panels/SelectCharacterPanel.uxml?fileID=9197481963319205126&amp;guid=55195c29e28ed33478dd1e4e4e54e45e&amp;type=3#SelectCharacterPanel" />
     <Style src="project://database/Assets/Main/UI/MainUI.uss?fileID=7433441132597879392&amp;guid=f7db891e68d3680418eab2db0e537323&amp;type=3#MainUI" />
     <engine:Instance template="BattleWindow" name="BattleWindow" picking-mode="Ignore" class="window" style="display: flex; position: absolute; top: 0; left: 0; bottom: 0; right: 0;" />
     <engine:Instance template="MainUIFrame" name="Frame" picking-mode="Ignore" style="position: absolute; top: 0; left: 0; bottom: 0; right: 0;" />
     <engine:Instance template="PersonalPhasePanel" name="PersonalPhasePanel" picking-mode="Ignore" style="flex-grow: 1;" />
     <engine:Instance template="StrategyPhasePanel" name="StrategyPhasePanel" picking-mode="Ignore" style="flex-grow: 1;" />
+    <engine:Instance template="SelectCharacterPanel" name="SelectCharacterPanel" picking-mode="Ignore" style="display: none;" />
 </engine:UXML>

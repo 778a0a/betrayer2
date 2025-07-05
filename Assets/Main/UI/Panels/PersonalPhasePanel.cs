@@ -170,7 +170,16 @@ public class ActionButtonHelper
         var canSelect = Action.CanUISelect(chara);
         Element.text = Action.Label;
         Element.style.display = Util.Display(canSelect);
-        Element.SetEnabled(Action.CanUIEnable(chara));
+        try
+        {
+            Element.SetEnabled(Action.CanUIEnable(chara));
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError($"アクション有効判定でエラー: {Action.Label} on character: {chara?.Name ?? "null"}");
+            Debug.LogException(ex);
+            Element.SetEnabled(false);
+        }
         if (IsMouseOver)
         {
             OnActionButtonPointerEnter(null);

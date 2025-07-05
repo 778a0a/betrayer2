@@ -23,6 +23,8 @@ public partial class MainUI
 
     public StrategyPhasePanel StrategyPhasePanel { get; private set; }
 
+    public SelectCharacterPanel SelectCharacterPanel { get; private set; }
+
     public VisualElement Root => _document?.rootVisualElement;
     public void InitializeDocument()
     {
@@ -30,5 +32,6 @@ public partial class MainUI
         Frame = new MainUIFrame(Root?.Q<VisualElement>("Frame"));
         PersonalPhasePanel = new PersonalPhasePanel(Root?.Q<VisualElement>("PersonalPhasePanel"));
         StrategyPhasePanel = new StrategyPhasePanel(Root?.Q<VisualElement>("StrategyPhasePanel"));
+        SelectCharacterPanel = new SelectCharacterPanel(Root?.Q<VisualElement>("SelectCharacterPanel"));
     }
 }

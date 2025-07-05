@@ -98,6 +98,29 @@ Label {
     padding: 0px 3px 0px 3px;
     margin: 0 0 -1px -1px;
     border-top-width: 0.5px;
+}
+
+.CharaInfo-Label {
+    width: 80px;
+    padding: 2px;
+    -unity-text-align: middle-left;
+    font-size: 30px;
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: 2px;
+    margin-right: 0;
+}
+
+.CharaInfo-Value {
+    width: 60px;
+    padding: 2px;
+    -unity-text-align: middle-left;
+    font-size: 35px;
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: 0px;
+    margin-right: 2px;
+ 
     border-right-width: 0.5px;
     border-bottom-width: 0.5px;
     border-left-width: 0.5px;
@@ -157,4 +180,94 @@ Label {
 .ActionButton {
     margin: 2px;
     width: 76px;
+}
+
+/* MemberInfo (CharacterTable) Styles */
+.MemberInfo-Cell {
+    font-size: 29px;
+    width: 65px;
+    -unity-text-align: middle-center;
+    color: rgb(221, 221, 221);
+}
+
+.MemberInfo-Header-Cell {
+    font-weight: bold;
+    color: rgb(255, 255, 255);
+}
+
+.MemberInfo-Col-Name {
+    width: 90px;
+    -unity-text-align: middle-left;
+}
+
+.MemberInfo-Col-Status {
+    width: 140px;
+    -unity-text-align: middle-left;
+}
+
+.MemberInfo-Col-IsAttacked {
+    -unity-text-align: middle-right;
+    margin-right: -10px;
+    width: 78px;
+}
+
+.MemberInfo-Col-Attack {
+    width: 65px;
+}
+
+.MemberInfo-Col-Defense {
+    width: 65px;
+}
+
+.MemberInfo-Col-Intelligence {
+    width: 65px;
+}
+
+.MemberInfo-Col-Loyalty {
+    width: 65px;
+}
+
+.MemberInfo-Col-Prestige {
+    width: 65px;
+}
+
+.MemberInfo-Col-Contribution {
+    width: 65px;
+}
+
+.MemberInfo-Col-SalaryRatio {
+    width: 65px;
+}
+
+/* CharacterTableRowItem Styles */
+#CharacterTableRowItemRoot {
+    border-top-width: 1px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+    border-color: transparent;
+    margin: 0;
+    padding: 0;
+    background-color: transparent;
+}
+
+#CharacterTableRowItemRoot:hover {
+    background-color: rgba(0, 156, 143, 0.3);
+    border-color: rgba(204, 204, 204, 0.7);
+}
+
+#CharacterTableRowItemRoot.clickable:hover {
+    background-color: rgba(0, 156, 143, 0.5);
+}
+
+#CharacterTableRowItemRoot.clickable:active {
+    background-color: rgba(0, 156, 143, 0.8);
+}
+
+#CharacterTableRowItemRoot.isAttacked * {
+    color: #999;
+}
+
+#CharacterTableRowItemRoot.isAttacked .MemberInfo-Col-IsAttacked {
+    color: #d99;
 }

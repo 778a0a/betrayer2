@@ -20,6 +20,7 @@ public partial class MainUI : MonoBehaviour
         Frame.Initialize();
         PersonalPhasePanel.Initialize();
         StrategyPhasePanel.Initialize();
+        SelectCharacterPanel.Initialize();
     }
 
     public void ShowPersonalPhasePanel(Character chara, WorldData world)

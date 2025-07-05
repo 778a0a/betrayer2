@@ -46,3 +46,11 @@ MonoBehaviour:
     _path: Assets/Main/UI/Parts/CharacterSummary.uxml
   - _type: 1
     _path: Assets/Main/UI/Panels/StrategyPhasePanel.uxml
+  - _type: 1
+    _path: Assets/Main/UI/Panels/SelectCharacterPanel.uxml
+  - _type: 1
+    _path: Assets/Main/UI/Parts/CharacterInfo.uxml
+  - _type: 1
+    _path: Assets/Main/UI/Parts/CharacterTable.uxml
+  - _type: 1
+    _path: Assets/Main/UI/Parts/CharacterTableRowItem.uxml

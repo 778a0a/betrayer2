@@ -14,15 +14,14 @@ public partial class StrategyPhasePanel
         buttons = new[]
         {
             ActionButtonHelper.Strategy(a => a.Deploy),
-            ActionButtonHelper.Strategy(a => a.DeployAsReinforcement),
             ActionButtonHelper.Strategy(a => a.Transport),
+            ActionButtonHelper.Strategy(a => a.Bonus),
             ActionButtonHelper.Strategy(a => a.HireVassal),
             ActionButtonHelper.Strategy(a => a.FireVassal),
             ActionButtonHelper.Strategy(a => a.Ally),
             ActionButtonHelper.Strategy(a => a.Goodwill),
-            ActionButtonHelper.Strategy(a => a.BuildTown),
             ActionButtonHelper.Strategy(a => a.Invest),
-            ActionButtonHelper.Strategy(a => a.Bonus),
+            ActionButtonHelper.Strategy(a => a.BuildTown),
             ActionButtonHelper.Strategy(a => a.DepositCastleGold),
             ActionButtonHelper.Strategy(a => a.WithdrawCastleGold),
             ActionButtonHelper.Strategy(a => a.BecomeIndependent),

@@ -14,7 +14,7 @@ partial class StrategyActions
     public FireVassalAction FireVassal { get; } = new();
     public class FireVassalAction : StrategyActionBase
     {
-        public override string Label => L["追放"];
+        public override string Label => L["解雇"];
         public override string Description => L["配下を解雇します。"];
 
         public override ActionCost Cost(ActionArgs args) => 5;
