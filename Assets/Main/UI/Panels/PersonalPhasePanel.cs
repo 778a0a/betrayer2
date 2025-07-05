@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public partial class PersonalPhasePanel
+public partial class PersonalPhasePanel : IPanel
 {
     private ActionButtonHelper[] buttons;
     private Character currentCharacter;

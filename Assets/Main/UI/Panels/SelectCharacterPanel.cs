@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public partial class SelectCharacterPanel : MonoBehaviour
+public partial class SelectCharacterPanel : IPanel
 {
     private ValueTaskCompletionSource<Character> tcs;
     private Character characterInfoTarget;

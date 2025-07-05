@@ -19,19 +19,13 @@ public partial class MainUI
 
     public MainUIFrame Frame { get; private set; }
 
-    public PersonalPhasePanel PersonalPhasePanel { get; private set; }
-
-    public StrategyPhasePanel StrategyPhasePanel { get; private set; }
-
-    public SelectCharacterPanel SelectCharacterPanel { get; private set; }
+    public VisualElement UIContainer { get; private set; }
 
     public VisualElement Root => _document?.rootVisualElement;
     public void InitializeDocument()
     {
         BattleWindow = new BattleWindow(Root?.Q<VisualElement>("BattleWindow"));
         Frame = new MainUIFrame(Root?.Q<VisualElement>("Frame"));
-        PersonalPhasePanel = new PersonalPhasePanel(Root?.Q<VisualElement>("PersonalPhasePanel"));
-        StrategyPhasePanel = new StrategyPhasePanel(Root?.Q<VisualElement>("StrategyPhasePanel"));
-        SelectCharacterPanel = new SelectCharacterPanel(Root?.Q<VisualElement>("SelectCharacterPanel"));
+        UIContainer = Root?.Q<VisualElement>("UIContainer");
     }
 }
