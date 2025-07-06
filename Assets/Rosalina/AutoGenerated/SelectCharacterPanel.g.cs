@@ -16,7 +16,7 @@ public partial class SelectCharacterPanel
 {
     public CharacterTable CharacterTable { get; private set; }
 
-    public CharacterInfo CharacterInfo { get; private set; }
+    public CharacterSummary CharacterSummary { get; private set; }
 
     public Button buttonClose { get; private set; }
 
@@ -28,7 +28,7 @@ public partial class SelectCharacterPanel
     {
         Root = root;
         CharacterTable = new CharacterTable(Root?.Q<VisualElement>("CharacterTable"));
-        CharacterInfo = new CharacterInfo(Root?.Q<VisualElement>("CharacterInfo"));
+        CharacterSummary = new CharacterSummary(Root?.Q<VisualElement>("CharacterSummary"));
         buttonClose = Root?.Q<Button>("buttonClose");
         labelDescription = Root?.Q<Label>("labelDescription");
     }

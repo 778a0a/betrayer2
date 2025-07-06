@@ -16,23 +16,19 @@ public partial class CharacterTableRowItem
 {
     public Label labelName { get; private set; }
 
-    public Label labelIsAttacked { get; private set; }
-
     public Label labelAttack { get; private set; }
 
     public Label labelDefense { get; private set; }
 
     public Label labelIntelligence { get; private set; }
 
+    public Label labelGoverning { get; private set; }
+
     public Label labelStatus { get; private set; }
-
-    public Label labelLoyalty { get; private set; }
-
-    public Label labelPrestige { get; private set; }
 
     public Label labelContribution { get; private set; }
 
-    public Label labelSalaryRatio { get; private set; }
+    public Label labelPrestige { get; private set; }
 
     public Button CharacterTableRowItemRoot { get; private set; }
 
@@ -42,15 +38,13 @@ public partial class CharacterTableRowItem
     {
         Root = root;
         labelName = Root?.Q<Label>("labelName");
-        labelIsAttacked = Root?.Q<Label>("labelIsAttacked");
         labelAttack = Root?.Q<Label>("labelAttack");
         labelDefense = Root?.Q<Label>("labelDefense");
         labelIntelligence = Root?.Q<Label>("labelIntelligence");
+        labelGoverning = Root?.Q<Label>("labelGoverning");
         labelStatus = Root?.Q<Label>("labelStatus");
-        labelLoyalty = Root?.Q<Label>("labelLoyalty");
-        labelPrestige = Root?.Q<Label>("labelPrestige");
         labelContribution = Root?.Q<Label>("labelContribution");
-        labelSalaryRatio = Root?.Q<Label>("labelSalaryRatio");
+        labelPrestige = Root?.Q<Label>("labelPrestige");
         CharacterTableRowItemRoot = Root?.Q<Button>("CharacterTableRowItemRoot");
     }
 }

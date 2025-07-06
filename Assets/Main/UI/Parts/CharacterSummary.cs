@@ -6,7 +6,7 @@ public partial class CharacterSummary
 {
     private CharacterInfoSoldierIcon[] soldierIcons;
 
-    public void SetData(Character chara, WorldData world)
+    public void SetData(Character chara)
     {
         // 基本情報の更新
         imagePlayerFace.image = Static.Instance.GetFaceImage(chara);

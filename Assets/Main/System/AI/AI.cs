@@ -328,7 +328,7 @@ public class AI
         }
     }
 
-    public void HireVassal(Castle castle)
+    public async ValueTask HireVassal(Castle castle)
     {
         // 未所属キャラがいないなら何もしない。
         if (castle.Frees.Count == 0)
@@ -375,12 +375,16 @@ public class AI
             return;
         }
 
-        target.Contribution /= 2;
-        target.IsImportant = false;
-        target.OrderIndex = country.Members.Max(m => m.OrderIndex) + 1;
-        target.Loyalty = 80 + target.Fealty * 2;
-        target.ChangeCastle(castle, false);
-        Debug.Log($"{target} が {castle} に採用されました。");
+        var action = core.StrategyActions.HireVassal;
+        var args = action.Args(castle.Boss, target);
+        if (action.CanDo(args))
+        {
+            await action.Do(args);
+        }
+        else
+        {
+            Debug.Log($"前提不足のため人材募集できませんでした。{args}");
+        }
     }
 
     public async ValueTask Invest(Castle castle)

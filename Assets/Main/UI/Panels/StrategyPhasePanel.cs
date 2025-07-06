@@ -66,14 +66,17 @@ public partial class StrategyPhasePanel : IPanel
         SetData(chara, GameCore.Instance.World);
     }
 
+    public void Show(Character chara, WorldData world)
+    {
+        MainUI.Instance.HideAllPanels();
+        Root.style.display = DisplayStyle.Flex;
+        SetData(chara, world);
+    }
+
     public void SetData(Character chara, WorldData world)
     {
         currentCharacter = chara;
-
-        // キャラクターサマリーの更新
-        CharacterSummary.SetData(chara, world);
-
-        // アクションボタンの状態更新
+        CharacterSummary.SetData(chara);
         foreach (var button in buttons)
         {
             button.SetData(chara);

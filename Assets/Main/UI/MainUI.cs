@@ -68,21 +68,7 @@ public partial class MainUI : MonoBehaviour
         }
     }
 
-    public void ShowPersonalPhasePanel(Character chara, WorldData world)
-    {
-        HideAllPanels();
-        PersonalPhasePanel.Root.style.display = DisplayStyle.Flex;
-        PersonalPhasePanel.SetData(chara, world);
-    }
-
-    public void ShowStrategyPhasePanel(Character chara, WorldData world)
-    {
-        HideAllPanels();
-        StrategyPhasePanel.Root.style.display = DisplayStyle.Flex;
-        StrategyPhasePanel.SetData(chara, world);
-    }
-
-    private void HideAllPanels()
+    public void HideAllPanels()
     {
         foreach (var child in UIContainer.Children())
         {

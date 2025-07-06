@@ -44,7 +44,7 @@ partial class GameCore
         if (chara.IsPlayer)
         {
             test.hold = true;
-            MainUI.ShowStrategyPhasePanel(chara, World);
+            MainUI.StrategyPhasePanel.Show(chara, World);
             await test.HoldIfNeeded();
             return;
         }
@@ -120,7 +120,7 @@ partial class GameCore
             }
 
             // 採用を行う。
-            AI.HireVassal(castle);
+            await AI.HireVassal(castle);
 
             // 投資を行う。
             await AI.Invest(castle);
@@ -174,7 +174,7 @@ partial class GameCore
         if (chara.IsPlayer)
         {
             test.hold = true;
-            MainUI.ShowPersonalPhasePanel(chara, World);
+            MainUI.PersonalPhasePanel.Show(chara, World);
             await test.HoldIfNeeded();
             return;
         }

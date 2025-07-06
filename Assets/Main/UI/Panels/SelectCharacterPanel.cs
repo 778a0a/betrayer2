@@ -16,14 +16,13 @@ public partial class SelectCharacterPanel : IPanel
     public void Initialize()
     {
         CharacterTable.Initialize();
-        CharacterInfo.Initialize();
 
         // マウスオーバー時
         CharacterTable.RowMouseMove += (sender, chara) =>
         {
             if (chara == characterInfoTarget) return;
             characterInfoTarget = chara;
-            CharacterInfo.SetData(chara);
+            CharacterSummary.SetData(chara);
         };
 
         // 選択された場合
@@ -47,7 +46,7 @@ public partial class SelectCharacterPanel : IPanel
         WorldData world, 
         Predicate<Character> predCanSelect)
     {
-        tcs = new ValueTaskCompletionSource<Character>();
+        tcs = new();
         this.world = world;
         this.predCanSelect = predCanSelect;
 
@@ -60,15 +59,12 @@ public partial class SelectCharacterPanel : IPanel
         // 人物詳細
         if (charas != null && charas.Count > 0)
         {
-            CharacterInfo.SetData(charas[0]);
+            CharacterSummary.SetData(charas[0]);
         }
 
-        // パネルを表示
+        MainUI.Instance.HideAllPanels();
         Root.style.display = DisplayStyle.Flex;
-
         var result = await tcs.Task;
-
-        // パネルを非表示
         Root.style.display = DisplayStyle.None;
 
         return result;

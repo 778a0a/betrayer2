@@ -1,15 +1,13 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/Main/UI/MainUI.uss?fileID=7433441132597879392&amp;guid=58784b5e2f0cb174d8cf6549c5d2f08c&amp;type=3#MainUI" />
-    <engine:Button name="CharacterTableRowItemRoot" style="flex-grow: 0; flex-direction: row;">
-        <engine:Label name="labelName" text="ハイペリオン" class="MemberInfo-Cell MemberInfo-Col-Name" />
-        <engine:Label name="labelIsAttacked" text="(済)" class="MemberInfo-Cell MemberInfo-Col-IsAttacked" />
-        <engine:Label name="labelAttack" text="88" class="MemberInfo-Cell MemberInfo-Col-Attack" />
-        <engine:Label name="labelDefense" text="88" class="MemberInfo-Cell MemberInfo-Col-Defense" />
-        <engine:Label name="labelIntelligence" text="88" class="MemberInfo-Cell MemberInfo-Col-Intelligence" />
-        <engine:Label name="labelStatus" text="主" class="MemberInfo-Cell MemberInfo-Col-Status" />
-        <engine:Label name="labelLoyalty" text="100" class="MemberInfo-Cell MemberInfo-Col-Loyalty" />
-        <engine:Label name="labelPrestige" text="100" class="MemberInfo-Cell MemberInfo-Col-Prestige" />
-        <engine:Label name="labelContribution" text="100" class="MemberInfo-Cell MemberInfo-Col-Contribution" />
-        <engine:Label name="labelSalaryRatio" text="25" class="MemberInfo-Cell MemberInfo-Col-SalaryRatio" />
+    <engine:Button name="CharacterTableRowItemRoot" class="CharacterTable-Row">
+        <engine:Label name="labelName" text="ハイペリオン" class="CharacterTable-Cell CharacterTable-Col-Name" />
+        <engine:Label name="labelAttack" text="88" class="CharacterTable-Cell CharacterTable-Col-Attack" />
+        <engine:Label name="labelDefense" text="88" class="CharacterTable-Cell CharacterTable-Col-Defense" />
+        <engine:Label name="labelIntelligence" text="88" class="CharacterTable-Cell CharacterTable-Col-Intelligence" />
+        <engine:Label name="labelGoverning" text="88" class="CharacterTable-Cell CharacterTable-Col-Governing" />
+        <engine:Label name="labelStatus" text="主" class="CharacterTable-Cell CharacterTable-Col-Status" />
+        <engine:Label name="labelContribution" text="100" class="CharacterTable-Cell CharacterTable-Col-Contribution" />
+        <engine:Label name="labelPrestige" text="100" class="CharacterTable-Cell CharacterTable-Col-Prestige" />
     </engine:Button>
 </engine:UXML>
