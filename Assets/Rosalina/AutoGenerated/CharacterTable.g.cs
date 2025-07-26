@@ -32,25 +32,7 @@ public partial class CharacterTable
 
     public VisualElement Header { get; private set; }
 
-    public CharacterTableRowItem row00 { get; private set; }
-
-    public CharacterTableRowItem row01 { get; private set; }
-
-    public CharacterTableRowItem row02 { get; private set; }
-
-    public CharacterTableRowItem row03 { get; private set; }
-
-    public CharacterTableRowItem row04 { get; private set; }
-
-    public CharacterTableRowItem row05 { get; private set; }
-
-    public CharacterTableRowItem row06 { get; private set; }
-
-    public CharacterTableRowItem row07 { get; private set; }
-
-    public CharacterTableRowItem row08 { get; private set; }
-
-    public CharacterTableRowItem row09 { get; private set; }
+    public ListView ListView { get; private set; }
 
     public VisualElement Root { get; }
 
@@ -66,15 +48,6 @@ public partial class CharacterTable
         labelHeaderContribution = Root?.Q<Label>("labelHeaderContribution");
         labelHeaderPrestige = Root?.Q<Label>("labelHeaderPrestige");
         Header = Root?.Q<VisualElement>("Header");
-        row00 = new CharacterTableRowItem(Root?.Q<VisualElement>("row00"));
-        row01 = new CharacterTableRowItem(Root?.Q<VisualElement>("row01"));
-        row02 = new CharacterTableRowItem(Root?.Q<VisualElement>("row02"));
-        row03 = new CharacterTableRowItem(Root?.Q<VisualElement>("row03"));
-        row04 = new CharacterTableRowItem(Root?.Q<VisualElement>("row04"));
-        row05 = new CharacterTableRowItem(Root?.Q<VisualElement>("row05"));
-        row06 = new CharacterTableRowItem(Root?.Q<VisualElement>("row06"));
-        row07 = new CharacterTableRowItem(Root?.Q<VisualElement>("row07"));
-        row08 = new CharacterTableRowItem(Root?.Q<VisualElement>("row08"));
-        row09 = new CharacterTableRowItem(Root?.Q<VisualElement>("row09"));
+        ListView = Root?.Q<ListView>("ListView");
     }
 }

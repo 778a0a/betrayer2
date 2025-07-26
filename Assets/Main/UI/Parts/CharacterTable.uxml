@@ -1,24 +1,15 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <engine:Template name="CharacterTableRowItem" src="project://database/Assets/Main/UI/Parts/CharacterTableRowItem.uxml?fileID=9197481963319205126&amp;guid=a4635dae24018f742b711e2b9db7b4e6&amp;type=3#CharacterTableRowItem" />
-    <Style src="project://database/Assets/Main/UI/MainUI.uss?fileID=7433441132597879392&amp;guid=58784b5e2f0cb174d8cf6549c5d2f08c&amp;type=3#MainUI" />
-    <engine:VisualElement name="Header" style="flex-grow: 0; flex-direction: row; background-color: rgba(70, 70, 90, 0.8); padding: 5px; margin-bottom: 2px;">
-        <engine:Label name="labelHeaderName" text="名前" class="CharacterTable-Header-Cell CharacterTable-Col-Name" />
-        <engine:Label name="labelHeaderAttack" text="攻撃" class="CharacterTable-Header-Cell CharacterTable-Col-Attack" />
-        <engine:Label name="labelHeaderDefence" text="防衛" class="CharacterTable-Header-Cell CharacterTable-Col-Defense" />
-        <engine:Label name="labelHeaderIntelligence" text="智謀" class="CharacterTable-Header-Cell CharacterTable-Col-Intelligence" />
-        <engine:Label name="labelHeaderGoverning" text="統治" class="CharacterTable-Header-Cell CharacterTable-Col-Governing" />
-        <engine:Label name="labelHeaderStatus" text="身分" class="CharacterTable-Header-Cell CharacterTable-Col-Status" />
-        <engine:Label name="labelHeaderContribution" text="功績" class="CharacterTable-Header-Cell CharacterTable-Col-Contribution" />
-        <engine:Label name="labelHeaderPrestige" text="名声" class="CharacterTable-Header-Cell CharacterTable-Col-Prestige" />
+    <Style src="project://database/Assets/Main/UI/MainUI.uss?fileID=7433441132597879392&amp;guid=f7db891e68d3680418eab2db0e537323&amp;type=3#MainUI" />
+    <engine:VisualElement name="Header" class="CharacterTable-Row" style="flex-grow: 0; flex-direction: row; background-color: rgba(70, 70, 90, 0.8); margin-bottom: 2px;">
+        <engine:Label name="labelHeaderName" text="名前" class="CharacterTable-Cell CharacterTable-Cell-Header CharacterTable-Col-Name" />
+        <engine:Label name="labelHeaderAttack" text="攻撃" class="CharacterTable-Cell CharacterTable-Cell-Header CharacterTable-Col-Attack" />
+        <engine:Label name="labelHeaderDefence" text="防衛" class="CharacterTable-Cell CharacterTable-Cell-Header CharacterTable-Col-Defense" />
+        <engine:Label name="labelHeaderIntelligence" text="智謀" class="CharacterTable-Cell CharacterTable-Cell-Header CharacterTable-Col-Intelligence" />
+        <engine:Label name="labelHeaderGoverning" text="統治" class="CharacterTable-Cell CharacterTable-Cell-Header CharacterTable-Col-Governing" />
+        <engine:Label name="labelHeaderStatus" text="身分" class="CharacterTable-Cell CharacterTable-Cell-Header CharacterTable-Col-Status" />
+        <engine:Label name="labelHeaderContribution" text="功績" class="CharacterTable-Cell CharacterTable-Cell-Header CharacterTable-Col-Contribution" />
+        <engine:Label name="labelHeaderPrestige" text="名声" class="CharacterTable-Cell CharacterTable-Cell-Header CharacterTable-Col-Prestige" />
     </engine:VisualElement>
-    <engine:Instance template="CharacterTableRowItem" name="row00" />
-    <engine:Instance template="CharacterTableRowItem" name="row01" />
-    <engine:Instance template="CharacterTableRowItem" name="row02" />
-    <engine:Instance template="CharacterTableRowItem" name="row03" />
-    <engine:Instance template="CharacterTableRowItem" name="row04" />
-    <engine:Instance template="CharacterTableRowItem" name="row05" />
-    <engine:Instance template="CharacterTableRowItem" name="row06" />
-    <engine:Instance template="CharacterTableRowItem" name="row07" />
-    <engine:Instance template="CharacterTableRowItem" name="row08" />
-    <engine:Instance template="CharacterTableRowItem" name="row09" />
+    <engine:ListView name="ListView" />
 </engine:UXML>

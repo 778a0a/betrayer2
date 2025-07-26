@@ -13,12 +13,24 @@ public partial class CharacterTable
     public void Initialize()
     {
         L.Register(this);
-        foreach (var row in Rows)
+
+        ListView.makeItem = () =>
         {
+            var element = MainUI.Instance.characterTableRowItem.Instantiate();
+            var row = new CharacterTableRowItem(element);
             row.Initialize();
             row.MouseDown += OnRowMouseDown;
             row.MouseMove += OnRowMouseMove;
-        }
+            element.userData = row;
+            Debug.Log("makeItem: " + element.name);
+            return element;
+        };
+        ListView.bindItem = (element, index) =>
+        {
+            var item = (CharacterTableRowItem)element.userData;
+            item.SetData(charas[index], world, clickable?.Invoke(charas[index]) ?? false);
+            Debug.Log("bindItem: " + index + " -> " + charas[index]?.Name);
+        };
     }
 
     private void OnRowMouseMove(object sender, Character e)
@@ -31,38 +43,15 @@ public partial class CharacterTable
         RowMouseDown?.Invoke(this, e);
     }
 
-    private const int RowCount = 10;
-    public IEnumerable<CharacterTableRowItem> Rows => Enumerable.Range(0, RowCount).Select(RowOf);
-    private CharacterTableRowItem RowOf(int index) => index switch
-    {
-        0 => row00,
-        1 => row01,
-        2 => row02,
-        3 => row03,
-        4 => row04,
-        5 => row05,
-        6 => row06,
-        7 => row07,
-        8 => row08,
-        9 => row09,
-        _ => throw new ArgumentOutOfRangeException(),
-    };
-
-    public void SetData(IEnumerable<Character> charas, WorldData world, bool clickable)
-        => SetData(charas, world, _ => clickable);
+    private WorldData world;
+    private List<Character> charas;
+    private Predicate<Character> clickable;
+    public void SetData(IEnumerable<Character> charas, WorldData world, bool clickable) => SetData(charas, world, _ => clickable);
     public void SetData(IEnumerable<Character> charas, WorldData world, Predicate<Character> clickable = null)
     {
-        var en = charas?.GetEnumerator();
-        for (int i = 0; i < RowCount; i++)
-        {
-            if (en?.MoveNext() ?? false)
-            {
-                RowOf(i).SetData(en.Current, world, clickable?.Invoke(en.Current) ?? false);
-            }
-            else
-            {
-                RowOf(i).SetData(null, world, false);
-            }
-        }
+        this.charas = charas?.ToList() ?? new List<Character>();
+        this.world = world ?? throw new ArgumentNullException(nameof(world));
+        this.clickable = clickable ?? (_ => false);
+        ListView.itemsSource = this.charas;
     }
 }

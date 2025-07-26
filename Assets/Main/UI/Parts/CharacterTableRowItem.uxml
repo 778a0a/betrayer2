@@ -6,8 +6,8 @@
         <engine:Label name="labelDefense" text="88" class="CharacterTable-Cell CharacterTable-Col-Defense" />
         <engine:Label name="labelIntelligence" text="88" class="CharacterTable-Cell CharacterTable-Col-Intelligence" />
         <engine:Label name="labelGoverning" text="88" class="CharacterTable-Cell CharacterTable-Col-Governing" />
-        <engine:Label name="labelStatus" text="主" class="CharacterTable-Cell CharacterTable-Col-Status" />
-        <engine:Label name="labelContribution" text="100" class="CharacterTable-Cell CharacterTable-Col-Contribution" />
-        <engine:Label name="labelPrestige" text="100" class="CharacterTable-Cell CharacterTable-Col-Prestige" />
+        <engine:Label name="labelStatus" text="従士" class="CharacterTable-Cell CharacterTable-Col-Status" />
+        <engine:Label name="labelContribution" text="88888" class="CharacterTable-Cell CharacterTable-Col-Contribution" />
+        <engine:Label name="labelPrestige" text="88888" class="CharacterTable-Cell CharacterTable-Col-Prestige" />
     </engine:Button>
 </engine:UXML>

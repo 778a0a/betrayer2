@@ -180,20 +180,18 @@ Label {
     color: #d99;
 }
 
-/* CharacterTable Styles - CharacterSummaryに合わせたモダンなデザイン */
-.CharacterTable-Header-Cell {
-    font-size: 14px;
-    font-weight: bold;
-    color: white;
-    -unity-text-align: middle-center;
-    padding: 2px 4px;
-}
-
 .CharacterTable-Cell {
     font-size: 13px;
     color: rgb(221, 221, 221);
     -unity-text-align: middle-center;
-    padding: 2px 4px;
+    padding: 2px 2px;
+    width: 26px;
+}
+
+.CharacterTable-Cell-Header {
+    font-size: 10px;
+    font-weight: bold;
+    color: white;
 }
 
 .CharacterTable-Row {
@@ -212,43 +210,36 @@ Label {
     background-color: rgba(100, 100, 120, 0.8);
 }
 
-/* Column widths */
 .CharacterTable-Col-Name {
-    width: 140px;
-    -unity-text-align: middle-left;
-}
-
-.CharacterTable-Col-Attack {
-    width: 50px;
-    color: #f88;
-}
-
-.CharacterTable-Col-Defense {
-    width: 50px;
-    color: #8af;
-}
-
-.CharacterTable-Col-Intelligence {
-    width: 50px;
-    color: cyan;
-}
-
-.CharacterTable-Col-Governing {
-    width: 50px;
-    color: #8f8;
-}
-
-.CharacterTable-Col-Status {
     width: 80px;
     -unity-text-align: middle-left;
 }
 
+.CharacterTable-Col-Attack {
+    color: #f88;
+}
+
+.CharacterTable-Col-Defense {
+    color: #8af;
+}
+
+.CharacterTable-Col-Intelligence {
+    color: cyan;
+}
+
+.CharacterTable-Col-Governing {
+    color: #8f8;
+}
+
+.CharacterTable-Col-Status {
+}
+
 .CharacterTable-Col-Contribution {
-    width: 60px;
+    width: 35px;
     color: white;
 }
 
 .CharacterTable-Col-Prestige {
-    width: 60px;
+    width: 35px;
     color: white;
 }

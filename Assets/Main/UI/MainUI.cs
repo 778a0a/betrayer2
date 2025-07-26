@@ -10,6 +10,7 @@ public partial class MainUI : MonoBehaviour
 
     [field: SerializeField] public LocalizationManager L { get; private set; }
     [SerializeField] private VisualTreeAsset[] panelVisualTreeAssets;
+    public VisualTreeAsset characterTableRowItem;
 
     public PersonalPhasePanel PersonalPhasePanel { get; private set; }
     public StrategyPhasePanel StrategyPhasePanel { get; private set; }
