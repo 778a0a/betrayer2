@@ -9,11 +9,8 @@ public partial class CharacterTableRowItem
 
     public Character Character { get; private set; }
 
-    private LocalizationManager L => MainUI.Instance.L;
     public void Initialize()
     {
-        L.Register(this);
-
         Root.RegisterCallback<MouseMoveEvent>(OnMouseMove);
         CharacterTableRowItemRoot.RegisterCallback<ClickEvent>(OnMouseDown);
     }
@@ -28,7 +25,7 @@ public partial class CharacterTableRowItem
         MouseDown?.Invoke(this, Character);
     }
 
-    public void SetData(Character chara, WorldData world, bool isClickable)
+    public void SetData(Character chara, bool isClickable)
     {
         Character = chara;
         var country = chara?.Country;
@@ -46,7 +43,7 @@ public partial class CharacterTableRowItem
         labelDefense.text = chara.Defense.ToString();
         labelIntelligence.text = chara.Intelligence.ToString();
         labelGoverning.text = chara.Governing.ToString();
-        labelStatus.text = chara.GetTitle(GameCore.Instance.MainUI.L);
+        labelStatus.text = chara.GetTitle();
         labelContribution.text = chara.Contribution.ToString("0");
         labelPrestige.text = chara.Prestige.ToString("0");
     }

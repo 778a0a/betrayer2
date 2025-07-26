@@ -9,9 +9,9 @@ public partial class CharacterSummary
     public void SetData(Character chara)
     {
         // 基本情報の更新
-        imagePlayerFace.image = Static.Instance.GetFaceImage(chara);
+        imagePlayerFace.image = Static.GetFaceImage(chara);
         labelPlayerName.text = chara.Name;
-        labelPlayerTitle.text = chara.GetTitle(GameCore.Instance.MainUI.L);
+        labelPlayerTitle.text = chara.GetTitle();
         labelMoving.visible = chara.IsMoving;
         // 能力値の更新
         labelAttack.text = chara.Attack.ToString();

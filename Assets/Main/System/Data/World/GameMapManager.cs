@@ -31,16 +31,16 @@ public class GameMapManager
         }
     }
 
-    public void AttachUI(UIMapManager ui)
+    public void AttachUIMap(UIMapManager ui)
     {
         ui.AttachGameMap(this);
-        foreach (var uiTile in ui.uiTilemap.GetComponentsInChildren<HexTile>())
+        foreach (var uiTile in ui.tilemap.GetComponentsInChildren<HexTile>())
         {
-            var uiPos = ui.uiTilemap.WorldToCell(uiTile.transform.position);
+            var uiPos = ui.tilemap.WorldToCell(uiTile.transform.position);
             var pos = MapPosition.FromGrid(uiPos);
             if (tiles.TryGetValue(pos, out var tile))
             {
-                tile.AttachUI(uiTile);
+                tile.AttachUIMap(uiTile);
             }
             else
             {

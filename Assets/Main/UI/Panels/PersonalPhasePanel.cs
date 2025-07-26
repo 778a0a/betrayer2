@@ -1,10 +1,8 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 using UnityEngine.UIElements;
 
-public partial class PersonalPhasePanel : IPanel
+public partial class PersonalPhasePanel : MainUIComponent, IPanel
 {
     private ActionButtonHelper[] buttons;
     private Character currentCharacter;
@@ -62,129 +60,23 @@ public partial class PersonalPhasePanel : IPanel
 
         var args = await action.Prepare(chara);
         await action.Do(args);
-        SetData(chara, GameCore.Instance.World);
+        SetData(chara);
     }
 
-    public void Show(Character chara, WorldData world)
+    public void Show(Character chara)
     {
-        MainUI.Instance.HideAllPanels();
+        UI.HideAllPanels();
         Root.style.display = DisplayStyle.Flex;
-        SetData(chara, world);
+        SetData(chara);
     }
 
-    public void SetData(Character chara, WorldData world)
+    public void SetData(Character chara)
     {
         currentCharacter = chara;
         CharacterSummary.SetData(chara);
         foreach (var button in buttons)
         {
             button.SetData(chara);
-        }
-    }
-}
-
-public class ActionButtonHelper
-{
-    public Button Element { get; private set; }
-    public ActionBase Action => actionGetter();
-    
-    private readonly Func<ActionBase> actionGetter;
-    private Label labelCostGold;
-    private Label labelDescription;
-    private Func<Character> currentCharacterGetter;
-    private Action<ActionButtonHelper> clickHandler;
-    private bool IsMouseOver;
-
-    private ActionButtonHelper(Button el, Func<ActionBase> actionGetter)
-    {
-        Element = el;
-        this.actionGetter = actionGetter;
-    }
-
-    public static ActionButtonHelper Personal(Func<PersonalActions, PersonalActionBase> actionSelector)
-    {
-        var button = new Button();
-        button.AddToClassList("ActionButton");
-        return new ActionButtonHelper(button, () => actionSelector(GameCore.Instance.PersonalActions));
-    }
-
-    public static ActionButtonHelper Strategy(Func<StrategyActions, StrategyActionBase> actionSelector)
-    {
-        var button = new Button();
-        button.AddToClassList("ActionButton");
-        return new ActionButtonHelper(button, () => actionSelector(GameCore.Instance.StrategyActions));
-    }
-
-    public static ActionButtonHelper Common(Func<CommonActions, CommonActionBase> actionSelector)
-    {
-        var button = new Button();
-        button.AddToClassList("ActionButton");
-        return new ActionButtonHelper(button, () => actionSelector(GameCore.Instance.CommonActions));
-    }
-
-    public void SetEventHandlers(
-        Label labelCostGold,
-        Label labelDescription,
-        Func<Character> currentCharacterGetter,
-        Action<ActionButtonHelper> clickHandler)
-    {
-        this.labelCostGold = labelCostGold;
-        this.labelDescription = labelDescription;
-        this.currentCharacterGetter = currentCharacterGetter;
-        this.clickHandler = clickHandler;
-        
-        Element.RegisterCallback<ClickEvent>(OnActionButtonClicked);
-        Element.RegisterCallback<PointerEnterEvent>(OnActionButtonPointerEnter);
-        Element.RegisterCallback<PointerLeaveEvent>(OnActionButtonPointerLeave);
-    }
-
-    private void OnActionButtonPointerEnter(PointerEnterEvent evt)
-    {
-        var chara = currentCharacterGetter();
-
-        IsMouseOver = true;
-        labelDescription.text = Action.Description;
-        var cost = Action.Cost(new(chara, estimate: true));
-        if (cost.IsVariable)
-        {
-            labelCostGold.text = "---";
-        }
-        else
-        {
-            labelCostGold.text = cost.actorGold.ToString();
-        }
-    }
-
-    private void OnActionButtonPointerLeave(PointerLeaveEvent evt)
-    {
-        IsMouseOver = false;
-        labelDescription.text = "";
-        labelCostGold.text = "";
-    }
-
-    private void OnActionButtonClicked(ClickEvent ev)
-    {
-        clickHandler(this);
-    }
-
-    public void SetData(Character chara)
-    {
-        var canSelect = Action.CanUISelect(chara);
-        Element.text = Action.Label;
-        Element.style.display = Util.Display(canSelect);
-        try
-        {
-            Element.SetEnabled(Action.CanUIEnable(chara));
-        }
-        catch (Exception ex)
-        {
-            Debug.LogError($"アクション有効判定でエラー: {Action.Label} on character: {chara?.Name ?? "null"}");
-            Debug.LogException(ex);
-            Element.SetEnabled(false);
-        }
-        if (IsMouseOver)
-        {
-            OnActionButtonPointerEnter(null);
         }
     }
 }

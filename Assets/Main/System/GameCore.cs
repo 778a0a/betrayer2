@@ -14,7 +14,7 @@ public partial class GameCore
     public WorldData World { get; }
     public UIMapManager Map { get; }
     public MainUI MainUI { get; }
-    public Testing test { get; }
+    public Booter Booter { get; }
     public AI AI { get; }
 
     public PersonalActions PersonalActions { get; }
@@ -23,13 +23,13 @@ public partial class GameCore
 
     public GameDate GameDate { get; set; }
 
-    public GameCore(WorldData world, UIMapManager map, MainUI mainui, Testing test)
+    public GameCore(WorldData world, UIMapManager map, MainUI mainui, Booter booter)
     {
         Instance = this;
         World = world;
         Map = map;
         MainUI = mainui;
-        this.test = test;
+        Booter = booter;
         GameDate = new(0);
 
         AI = new AI(this);
@@ -40,8 +40,8 @@ public partial class GameCore
 
     public void TogglePlay()
     {
-        test.hold = !test.hold;
-        MainUI.Frame.SetDatePanelData(this);
+        Booter.hold = !Booter.hold;
+        MainUI.Frame.RefreshUI();
     }
 
     public async ValueTask DoMainLoop()
@@ -65,7 +65,7 @@ public partial class GameCore
     /// </summary>
     private async ValueTask Tick()
     {
-        await Awaitable.WaitForSecondsAsync(test.TickWait);
+        await Awaitable.WaitForSecondsAsync(Booter.TickWait);
 
         var player = World.Player;
 
@@ -185,8 +185,8 @@ public partial class GameCore
         await OnCharacterMove(player);
 
         // 表示を更新する。
-        MainUI.Frame.SetDatePanelData(this);
-        await test.HoldIfNeeded();
+        MainUI.Frame.RefreshUI();
+        await Booter.HoldIfNeeded();
 
         GameDate++;
     }

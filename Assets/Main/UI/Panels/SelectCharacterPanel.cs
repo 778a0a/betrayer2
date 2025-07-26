@@ -4,14 +4,11 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public partial class SelectCharacterPanel : IPanel
+public partial class SelectCharacterPanel : MainUIComponent, IPanel
 {
     private ValueTaskCompletionSource<Character> tcs;
     private Character characterInfoTarget;
-    private WorldData world;
     private Predicate<Character> predCanSelect;
-
-    public LocalizationManager L => MainUI.Instance.L;
 
     public void Initialize()
     {
@@ -43,18 +40,16 @@ public partial class SelectCharacterPanel : IPanel
         string description,
         string cancelText,
         IList<Character> charas,
-        WorldData world, 
         Predicate<Character> predCanSelect)
     {
         tcs = new();
-        this.world = world;
         this.predCanSelect = predCanSelect;
 
         labelDescription.text = description;
         buttonClose.text = cancelText;
 
         // 人物情報テーブル
-        CharacterTable.SetData(charas, world, predCanSelect);
+        CharacterTable.SetData(charas, predCanSelect);
         
         // 人物詳細
         if (charas != null && charas.Count > 0)
@@ -62,7 +57,7 @@ public partial class SelectCharacterPanel : IPanel
             CharacterSummary.SetData(charas[0]);
         }
 
-        MainUI.Instance.HideAllPanels();
+        UI.HideAllPanels();
         Root.style.display = DisplayStyle.Flex;
         var result = await tcs.Task;
         Root.style.display = DisplayStyle.None;

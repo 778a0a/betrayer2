@@ -56,7 +56,7 @@ public class Soldier
     }
 
     [JsonIgnore]
-    public Texture2D Image => Static.Instance.GetSoldierImage(Level);
+    public Texture2D Image => Static.GetSoldierImage(Level);
 
     public override string ToString() => IsEmptySlot ? "Empty" : $"Lv{Level} HP{Hp}/{MaxHp} Exp:{Experience}";
     public string ToShortString() => IsEmptySlot ? "E" : $"{Level}";

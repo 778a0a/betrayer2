@@ -43,9 +43,9 @@ partial class GameCore
         // TODO プレーヤーの場合
         if (chara.IsPlayer)
         {
-            test.hold = true;
-            MainUI.StrategyPhasePanel.Show(chara, World);
-            await test.HoldIfNeeded();
+            Booter.hold = true;
+            MainUI.StrategyPhasePanel.Show(chara);
+            await Booter.HoldIfNeeded();
             return;
         }
 
@@ -173,9 +173,9 @@ partial class GameCore
         // TODO プレーヤーの場合
         if (chara.IsPlayer)
         {
-            test.hold = true;
-            MainUI.PersonalPhasePanel.Show(chara, World);
-            await test.HoldIfNeeded();
+            Booter.hold = true;
+            MainUI.PersonalPhasePanel.Show(chara);
+            await Booter.HoldIfNeeded();
             return;
         }
 
@@ -439,7 +439,7 @@ partial class GameCore
 
     public void Pause()
     {
-        test.hold = true;
+        Booter.hold = true;
     }
 
     private readonly Lazy<ActionBase[]> vassalActions = new(() => new ActionBase[]

@@ -56,7 +56,7 @@ public class Country : ICountryEntity
     /// マップの国の色のインデックス
     /// </summary>
     public int ColorIndex { get; set; }
-    public Sprite Sprite => Static.Instance.GetCountrySprite(ColorIndex);
+    public Sprite Sprite => Static.GetCountrySprite(ColorIndex);
 
     public string GetTerritoryName()
     {

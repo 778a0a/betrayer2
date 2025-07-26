@@ -31,24 +31,24 @@ public class Static : MonoBehaviour
         soldiers = new SoldierImageManager(soldierTexture);
     }
 
-    public Sprite GetCountrySprite(int countryIndex)
+    public static Sprite GetCountrySprite(int countryIndex)
     {
-        return countrySprites[countryIndex];
+        return Instance.countrySprites[countryIndex];
     }
 
-    public Texture2D GetFaceImage(Character chara)
+    public static Texture2D GetFaceImage(Character chara)
     {
-        return faces.GetImage(chara);
+        return Instance.faces.GetImage(chara);
     }
 
-    public Texture2D GetSoldierImage(int level)
+    public static Texture2D GetSoldierImage(int level)
     {
-        return soldiers.GetTexture(level);
+        return Instance.soldiers.GetTexture(level);
     }
 
-    public Texture2D GetEmptySoldierImage()
+    public static Texture2D GetEmptySoldierImage()
     {
-        return soldiers.GetEmptyTexture();
+        return Instance.soldiers.GetEmptyTexture();
     }
 
 }

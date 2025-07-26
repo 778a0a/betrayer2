@@ -89,7 +89,7 @@ public class TileInfoEditorWindow : EditorWindow
         staticAssets = FindAnyObjectByType<Static>();
         staticAssets.Initialize();
         world = DefaultData.Create(saveDir);
-        world.Map.AttachUI(uimap);
+        world.Map.AttachUIMap(uimap);
         world.Map.Tiles.ToList().ForEach(t => t.Refresh());
     }
 
@@ -981,7 +981,7 @@ public class TileInfoEditorWindow : EditorWindow
     private static void CharaImage(Character chara, int size = -1, Rect? rect = null)
     {
         if (size == -1) size = 100;
-        var image = Static.Instance.GetFaceImage(chara);
+        var image = Static.GetFaceImage(chara);
 
         if (rect != null)
         {

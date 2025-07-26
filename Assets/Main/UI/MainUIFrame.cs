@@ -2,7 +2,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public partial class MainUIFrame
+public partial class MainUIFrame : MainUIComponent
 {
     private Button[] playSpeedButtons;
 
@@ -10,7 +10,7 @@ public partial class MainUIFrame
     {
         buttonPlay.clicked += () =>
         {
-            GameCore.Instance.TogglePlay();
+            Core.TogglePlay();
         };
 
         playSpeedButtons = new[]
@@ -26,17 +26,17 @@ public partial class MainUIFrame
             var index = i;
             playSpeedButtons[i].clicked += () =>
             {
-                GameCore.Instance.test.UpdatePlaySpeed(index);
-                SetDatePanelData(GameCore.Instance);
+                Core.Booter.UpdatePlaySpeed(index);
+                RefreshUI();
             };
         }
     }
 
-    public void SetDatePanelData(GameCore core)
+    public void RefreshUI()
     {
-        labelCurrentDate.text = core.GameDate.ToString();
+        labelCurrentDate.text = Core.GameDate.ToString();
 
-        var paused = core.test.hold;
+        var paused = Core.Booter.hold;
         if (paused)
         {
             buttonPlay.text = "停止";
@@ -49,7 +49,7 @@ public partial class MainUIFrame
         for (var i = 0; i < playSpeedButtons.Length; i++)
         {
             var btn = playSpeedButtons[i];
-            if (i > GameCore.Instance.test.PlaySpeedIndex)
+            if (i > Core.Booter.PlaySpeedIndex)
             {
                 btn.style.backgroundColor = new StyleColor(new Color(0.1f, 0.1f, 0.1f));
             }

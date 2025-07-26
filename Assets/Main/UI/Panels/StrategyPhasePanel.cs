@@ -6,6 +6,7 @@ using UnityEngine.UIElements;
 
 public partial class StrategyPhasePanel : IPanel
 {
+    private GameCore Core => GameCore.Instance;
     private ActionButtonHelper[] buttons;
     private Character currentCharacter;
 
@@ -63,17 +64,17 @@ public partial class StrategyPhasePanel : IPanel
 
         var args = await action.Prepare(chara);
         await action.Do(args);
-        SetData(chara, GameCore.Instance.World);
+        SetData(chara);
     }
 
-    public void Show(Character chara, WorldData world)
+    public void Show(Character chara)
     {
-        MainUI.Instance.HideAllPanels();
+        Core.MainUI.HideAllPanels();
         Root.style.display = DisplayStyle.Flex;
-        SetData(chara, world);
+        SetData(chara);
     }
 
-    public void SetData(Character chara, WorldData world)
+    public void SetData(Character chara)
     {
         currentCharacter = chara;
         CharacterSummary.SetData(chara);

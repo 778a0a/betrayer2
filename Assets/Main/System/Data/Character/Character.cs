@@ -271,23 +271,23 @@ public class Character
     /// <summary>
     /// 地位
     /// </summary>
-    public string GetTitle(LocalizationManager L)
+    public string GetTitle()
     {
         if (IsRuler)
         {
-            return L[Country.CountryRank switch
+            return Country.CountryRank switch
             {
                 CountryRank.Empire => "皇帝",
                 CountryRank.Kingdom => "王",
                 CountryRank.Duchy => "大公",
                 _ => "君主",
-            }];
+            };
         }
         else if (IsVassal)
         {
             var country = Country;
             var order = country.Vassals.OrderBy(c => c.OrderIndex).ToList().IndexOf(this);
-            return L[new[]
+            return new[]
             {
                 "従士",
                 "従士",
@@ -297,11 +297,11 @@ public class Character
                 "宰相",
                 "総督",
                 "副王",
-            }[order]];
+            }[order];
         }
         else
         {
-            return L["浪士"];
+            return "浪士";
         }
     }
 

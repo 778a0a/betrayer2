@@ -8,12 +8,11 @@ using UnityEngine.Tilemaps;
 
 public class UIMapManager : MonoBehaviour
 {
-    [SerializeField] public Grid grid;
-    [SerializeField] public Tilemap uiTilemap;
+    [SerializeField] private Grid grid;
+    [SerializeField] public Tilemap tilemap;
+    [SerializeField] private MainUI ui;
 
     public event EventHandler<MapPosition> CellMouseOver;
-
-    private MainUI MainUI => MainUI.Instance;
 
     public GameMapManager Map { get; private set; }
     public void AttachGameMap(GameMapManager map)
@@ -42,9 +41,9 @@ public class UIMapManager : MonoBehaviour
             return;
         }
 
-        var uiScale = MainUI.Root.panel.scaledPixelsPerPoint;
+        var uiScale = ui.Root.panel.scaledPixelsPerPoint;
         var uiPoint = new Vector2(mousePoint.x, Screen.height - mousePoint.y) / uiScale;
-        var element = MainUI.Root.panel.Pick(uiPoint);
+        var element = ui.Root.panel.Pick(uiPoint);
         // マウスカーソル上にUI要素（メッセージウィンドウなど）がある場合は何もしない。
         if (element != null)
         {

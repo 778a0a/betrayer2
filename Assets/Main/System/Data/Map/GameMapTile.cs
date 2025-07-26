@@ -30,7 +30,7 @@ public class GameMapTile : ICountryEntity, IMapEntity
         this.world = world;
     }
 
-    public void AttachUI(HexTile ui)
+    public void AttachUIMap(HexTile ui)
     {
         UI = ui;
     }

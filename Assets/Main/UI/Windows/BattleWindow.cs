@@ -5,15 +5,12 @@ using UnityEngine.UIElements;
 
 public partial class BattleWindow// : IWindow
 {
-    private LocalizationManager L => MainUI.Instance.L;
-
     private IBattleSoldierIcon[] _attackerSoldiers;
     private IBattleSoldierIcon[] _defenderSoldiers;
 
     public void Initialize()
     {
         Root.style.display = DisplayStyle.None;
-        L.Register(this);
 
         _attackerSoldiers = new[]
         {
@@ -37,7 +34,7 @@ public partial class BattleWindow// : IWindow
             buttonAttack.style.display = DisplayStyle.None;
             buttonRetreat.style.display = DisplayStyle.None;
             buttonResult.style.display = DisplayStyle.Flex;
-            buttonResult.text = result == BattleResult.AttackerWin ? L["攻撃側の勝利"] : L["防衛側の勝利"];
+            buttonResult.text = result == BattleResult.AttackerWin ? "攻撃側の勝利" : "防衛側の勝利";
             if (result == BattleResult.AttackerWin)
             {
                 Root.AddToClassList("attacker-win");
@@ -77,12 +74,12 @@ public partial class BattleWindow// : IWindow
             _defenderSoldiers[i].SetData(soldier);
         }
 
-        imageAttacker.style.backgroundImage = Static.Instance.GetFaceImage(attacker);
+        imageAttacker.style.backgroundImage = Static.GetFaceImage(attacker);
         labelAttackerAttack.text = battle.Attacker.Strength.ToString();
         labelAttackerIntelligense.text = attacker.Intelligence.ToString();
         labelAttackerTerrain.text = attackerTerrain.ToString();
 
-        imageDefender.style.backgroundImage = Static.Instance.GetFaceImage(defender);
+        imageDefender.style.backgroundImage = Static.GetFaceImage(defender);
         labelDefenderDefence.text = battle.Defender.Strength.ToString();
         labelDefenderIntelligense.text = defender.Intelligence.ToString();
         labelDefenderTerrain.text = defenderTerrain.ToString();

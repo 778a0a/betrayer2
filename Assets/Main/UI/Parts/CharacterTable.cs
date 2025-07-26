@@ -4,19 +4,19 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public partial class CharacterTable
+public partial class CharacterTable : MainUIComponent
 {
     public event EventHandler<Character> RowMouseMove;
     public event EventHandler<Character> RowMouseDown;
 
-    public LocalizationManager L => MainUI.Instance.L;
+    private List<Character> charas;
+    private Predicate<Character> clickable;
+
     public void Initialize()
     {
-        L.Register(this);
-
         ListView.makeItem = () =>
         {
-            var element = MainUI.Instance.characterTableRowItem.Instantiate();
+            var element = UI.Assets.CharacterTableRowItem.Instantiate();
             var row = new CharacterTableRowItem(element);
             row.Initialize();
             row.MouseDown += OnRowMouseDown;
@@ -28,7 +28,7 @@ public partial class CharacterTable
         ListView.bindItem = (element, index) =>
         {
             var item = (CharacterTableRowItem)element.userData;
-            item.SetData(charas[index], world, clickable?.Invoke(charas[index]) ?? false);
+            item.SetData(charas[index], clickable?.Invoke(charas[index]) ?? false);
             Debug.Log("bindItem: " + index + " -> " + charas[index]?.Name);
         };
     }
@@ -43,14 +43,10 @@ public partial class CharacterTable
         RowMouseDown?.Invoke(this, e);
     }
 
-    private WorldData world;
-    private List<Character> charas;
-    private Predicate<Character> clickable;
-    public void SetData(IEnumerable<Character> charas, WorldData world, bool clickable) => SetData(charas, world, _ => clickable);
-    public void SetData(IEnumerable<Character> charas, WorldData world, Predicate<Character> clickable = null)
+    public void SetData(IEnumerable<Character> charas, bool clickable) => SetData(charas, _ => clickable);
+    public void SetData(IEnumerable<Character> charas, Predicate<Character> clickable = null)
     {
         this.charas = charas?.ToList() ?? new List<Character>();
-        this.world = world ?? throw new ArgumentNullException(nameof(world));
         this.clickable = clickable ?? (_ => false);
         ListView.itemsSource = this.charas;
     }
