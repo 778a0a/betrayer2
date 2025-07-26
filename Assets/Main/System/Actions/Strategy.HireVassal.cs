@@ -41,7 +41,7 @@ partial class StrategyActions
                 }
 
                 // SelectCharacterPanelでキャラクターを選択
-                args.targetCharacter = await UI.SelectCharacterPanel.Show(
+                args.targetCharacter = await UI.SelectCharacterScreen.Show(
                     "雇用するキャラクターを選択してください",
                     "キャンセル",
                     cands,

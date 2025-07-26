@@ -9,14 +9,14 @@ public partial class MainUI : MonoBehaviour
     [field: SerializeField] public MainUIVisualTreeAssetManager Assets { get; private set; }
     [field: SerializeField] public LocalizationManager L { get; private set; }
 
-    public PersonalPhasePanel PersonalPhasePanel { get; private set; }
-    public StrategyPhasePanel StrategyPhasePanel { get; private set; }
-    public SelectCharacterPanel SelectCharacterPanel { get; private set; }
+    public PersonalPhaseScreen PersonalPhaseScreen { get; private set; }
+    public StrategyPhaseScreen StrategyPhaseScreen { get; private set; }
+    public SelectCharacterScreen SelectCharacterScreen { get; private set; }
 
     private void OnEnable()
     {
         InitializeDocument();
-        Assets.InitializePanels(this);
+        Assets.InitializeScreens(this);
         BattleWindow.Initialize();
         Frame.Initialize();
     }
@@ -30,7 +30,7 @@ public partial class MainUI : MonoBehaviour
     }
 }
 
-public interface IPanel
+public interface IScreen
 {
     void Initialize();
 }

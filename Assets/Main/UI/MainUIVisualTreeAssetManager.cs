@@ -9,22 +9,22 @@ using UnityEngine.UIElements;
 /// </summary>
 public class MainUIVisualTreeAssetManager : MonoBehaviour
 {
-    [field: SerializeField] private VisualTreeAsset[] Panels { get; set; }
+    [field: SerializeField] private VisualTreeAsset[] Screens { get; set; }
     [field: SerializeField] public VisualTreeAsset CharacterTableRowItem { get; set; }
 
-    public void InitializePanels(MainUI ui)
+    public void InitializeScreens(MainUI ui)
     {
         // MainUIの画面プロパティを全て取得する。
         var panelProps = ui.GetType()
             .GetProperties()
-            .Where(p => p.PropertyType.GetInterface(nameof(IPanel)) != null)
+            .Where(p => p.PropertyType.GetInterface(nameof(IScreen)) != null)
             .ToList();
         
         var shouldStop = false;
         foreach (var prop in panelProps)
         {
             // VisualTreeAssetの名前とプロパティ名が一致するものを探す。
-            var asset = Panels.FirstOrDefault(a => a.name == prop.Name);
+            var asset = Screens.FirstOrDefault(a => a.name == prop.Name);
             if (asset == null)
             {
                 Debug.LogError($"VisualTreeAssetが見つかりません: {prop.Name}");
@@ -36,9 +36,9 @@ public class MainUIVisualTreeAssetManager : MonoBehaviour
             var element = asset.Instantiate();
             element.style.display = DisplayStyle.None;
             var constructor = prop.PropertyType.GetConstructor(new[] { typeof(VisualElement) });
-            var panel = constructor.Invoke(new[] { element }) as IPanel;
-            panel.Initialize();
-            prop.SetValue(ui, panel);
+            var screen = (IScreen)constructor.Invoke(new[] { element });
+            screen.Initialize();
+            prop.SetValue(ui, screen);
             // 画面コンテナに追加する。
             ui.UIContainer.Add(element);
         }

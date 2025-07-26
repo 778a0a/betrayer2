@@ -1,0 +1,15 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <engine:Template name="CharacterTable" src="project://database/Assets/Main/UI/Parts/CharacterTable.uxml?fileID=9197481963319205126&amp;guid=a9a57780f68fefd4b9470270e69c3da4&amp;type=3#CharacterTable" />
+    <engine:Template name="CharacterSummary" src="project://database/Assets/Main/UI/Parts/CharacterSummary.uxml?fileID=9197481963319205126&amp;guid=9aef5fd716d3c6e4689dd68874a9ccde&amp;type=3#CharacterSummary" />
+    <Style src="project://database/Assets/Main/UI/MainUI.uss?fileID=7433441132597879392&amp;guid=f7db891e68d3680418eab2db0e537323&amp;type=3#MainUI" />
+    <engine:VisualElement class="panel">
+        <engine:Label name="labelDescription" text="キャラクターを選択してください" style="font-size: 24px; color: white; margin-bottom: 20px;" />
+        <engine:VisualElement style="flex-direction: column; flex-grow: 1;">
+            <engine:Instance template="CharacterTable" name="CharacterTable" style="flex-grow: 1; margin-right: 20px;" />
+            <engine:Instance template="CharacterSummary" name="CharacterSummary" />
+        </engine:VisualElement>
+        <engine:VisualElement style="flex-direction: row; justify-content: flex-end; margin-top: 20px;">
+            <engine:Button name="buttonClose" text="キャンセル" style="width: 120px; height: 40px;" />
+        </engine:VisualElement>
+    </engine:VisualElement>
+</engine:UXML>
