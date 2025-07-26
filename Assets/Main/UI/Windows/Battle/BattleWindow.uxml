@@ -1,21 +1,21 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <engine:Template name="BattleSoldierIconAttackSide" src="project://database/Assets/Main/UI/Parts/BattleSoldierIconAttackSide.uxml" />
-    <engine:Template name="BattleSoldierIconDefenceSide" src="project://database/Assets/Main/UI/Parts/BattleSoldierIconDefenceSide.uxml" />
+    <engine:Template name="BattleSoldierIconAttackSide" src="project://database/Assets/Main/UI/Windows/Battle/BattleSoldierIconAttackSide.uxml" />
+    <engine:Template name="BattleSoldierIconDefenceSide" src="project://database/Assets/Main/UI/Windows/Battle/BattleSoldierIconDefenceSide.uxml" />
     <Style src="project://database/Assets/Main/UI/MainUI.uss" />
-    <engine:VisualElement style="flex-grow: 1; position: absolute; top: 0; right: 0; left: 0; bottom: 0; justify-content: center; align-items: center;">
-        <engine:VisualElement class="bg" style="flex-grow: 0; width: 420px; height: 540px; padding-top: 2.5px; padding-right: 2.5px; padding-bottom: 2.5px; padding-left: 2.5px; align-self: flex-end; justify-content: center;">
-            <engine:VisualElement class="border" style="flex-grow: 0; height: 400px;">
+    <engine:VisualElement class="panel" style="justify-content: center; align-items: center;">
+        <engine:VisualElement class="bg" style="flex-grow: 0; width: 840px; height: 1080px; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px; align-self: flex-end; justify-content: center;">
+            <engine:VisualElement class="border" style="flex-grow: 0; height: 800px; padding: 10px;">
                 <engine:VisualElement style="flex-grow: 0; flex-direction: row;">
                     <engine:VisualElement class="attacker-info" style="flex-grow: 1; flex-direction: row;">
-                        <engine:Label text="攻撃" name="labelAttackerNameCaption" style="-unity-text-align: lower-left;" />
-                        <engine:Label text="ハイペリオン" name="AttackerName" style="-unity-text-align: lower-left;" />
+                        <engine:Label text="攻撃" name="labelAttackerNameCaption" style="-unity-text-align: middle-left; margin-right: 8px; font-size: 30px;" />
+                        <engine:Label text="フランチェスカ" name="AttackerName" style="-unity-text-align: middle-left;" />
                     </engine:VisualElement>
                     <engine:VisualElement class="defender-info" style="flex-grow: 1; flex-direction: row; justify-content: flex-end;">
-                        <engine:Label text="防衛" name="labelDefenderNameCaption" style="-unity-text-align: lower-left;" />
-                        <engine:Label text="ハイペリオン" name="DefenderName" style="-unity-text-align: lower-left;" />
+                        <engine:Label text="防衛" name="labelDefenderNameCaption" style="-unity-text-align: middle-left; margin-right: 8px; font-size: 30px;" />
+                        <engine:Label text="フランチェスカ" name="DefenderName" style="-unity-text-align: middle-left;" />
                     </engine:VisualElement>
                 </engine:VisualElement>
-                <engine:VisualElement style="flex-grow: 0; flex-direction: row; margin-top: 10px;">
+                <engine:VisualElement style="flex-grow: 0; flex-direction: row; margin-top: 5px;">
                     <engine:VisualElement name="AttackerSoldiers" style="flex-grow: 1; flex-direction: row;">
                         <engine:VisualElement style="flex-grow: 1;">
                             <engine:Instance template="BattleSoldierIconAttackSide" name="AttackerSoldier10" />
@@ -63,46 +63,46 @@
                         </engine:VisualElement>
                     </engine:VisualElement>
                 </engine:VisualElement>
-                <engine:VisualElement style="flex-grow: 1; flex-direction: row; margin-top: 5px;">
+                <engine:VisualElement style="flex-grow: 1; flex-direction: row; margin-top: 20px;">
                     <engine:VisualElement class="attacker-info" style="flex-grow: 1;">
                         <engine:VisualElement style="flex-grow: 0; flex-direction: row;">
-                            <engine:VisualElement name="imageAttacker" style="flex-grow: 0; width: 100px; height: 100px;" />
-                            <engine:VisualElement style="flex-grow: 0; flex-direction: row;">
-                                <engine:VisualElement style="flex-grow: 0; flex-direction: column;">
-                                    <engine:Label text="攻撃" name="labelAttackerAttackCaption" style="height: 25px; -unity-text-align: middle-left;" />
-                                    <engine:Label text="智謀" name="labelAttackerIntelligenseCaption" style="height: 25px; -unity-text-align: middle-left;" />
+                            <engine:VisualElement name="imageAttacker" style="flex-grow: 0; width: 200px; height: 200px;" />
+                            <engine:VisualElement style="flex-grow: 0; flex-direction: column;">
+                                <engine:VisualElement style="flex-grow: 0; flex-direction: row;">
+                                    <engine:Label text="攻撃" name="labelAttackerAttackCaption" style="padding: 0 5px 20px 5px;" />
+                                    <engine:Label text="99" name="labelAttackerAttack" style="" />
                                 </engine:VisualElement>
-                                <engine:VisualElement style="flex-grow: 0; flex-direction: column;">
-                                    <engine:Label text="99" name="labelAttackerAttack" style="height: 25px;" />
-                                    <engine:Label text="99" name="labelAttackerIntelligense" style="height: 25px;" />
+                                <engine:VisualElement style="flex-grow: 0; flex-direction: row;">
+                                    <engine:Label text="智謀" name="labelAttackerIntelligenseCaption" style="padding: 0 5px 20px 5px;" />
+                                    <engine:Label text="99" name="labelAttackerIntelligense" style="" />
                                 </engine:VisualElement>
                             </engine:VisualElement>
                         </engine:VisualElement>
                         <engine:VisualElement>
                             <engine:VisualElement style="flex-direction: row;">
-                                <engine:Label text="地形" name="labelAttackerTerrainCaption" style="font-size: 15px; -unity-text-align: lower-left;" />
-                                <engine:Label text="Label" name="labelAttackerTerrain" style="font-size: 15px; -unity-text-align: lower-left;" />
+                                <engine:Label text="地形" name="labelAttackerTerrainCaption" style="font-size: 30px; padding: 5px 5px 5px 0px;" />
+                                <engine:Label text="大河" name="labelAttackerTerrain" style="font-size: 30px; padding: 5px 0" />
                             </engine:VisualElement>
                         </engine:VisualElement>
                     </engine:VisualElement>
                     <engine:VisualElement class="defender-info" style="flex-grow: 1;">
                         <engine:VisualElement style="flex-grow: 0; flex-direction: row-reverse;">
-                            <engine:VisualElement name="imageDefender" style="flex-grow: 0; width: 100px; height: 100px;" />
-                            <engine:VisualElement style="flex-grow: 0; flex-direction: row;">
-                                <engine:VisualElement style="flex-grow: 0; flex-direction: column;">
-                                    <engine:Label text="防衛" name="labelDefenderDefenceCaption" style="height: 25px; -unity-text-align: middle-left;" />
-                                    <engine:Label text="智謀" name="labelDefenderIntelligenseCaption" style="height: 25px; -unity-text-align: middle-left;" />
+                            <engine:VisualElement name="imageDefender" style="flex-grow: 0; width: 200px; height: 200px;" />
+                            <engine:VisualElement style="flex-grow: 0; flex-direction: column;">
+                                <engine:VisualElement style="flex-grow: 0; flex-direction: row;">
+                                    <engine:Label text="防衛" name="labelDefenderDefenceCaption" style="" />
+                                    <engine:Label text="99" name="labelDefenderDefence" style="padding: 0 5px 20px 5px;" />
                                 </engine:VisualElement>
-                                <engine:VisualElement style="flex-grow: 0; flex-direction: column;">
-                                    <engine:Label text="99" name="labelDefenderDefence" style="height: 25px;" />
-                                    <engine:Label text="99" name="labelDefenderIntelligense" style="height: 25px;" />
+                                <engine:VisualElement style="flex-grow: 0; flex-direction: row;">
+                                    <engine:Label text="智謀" name="labelDefenderIntelligenseCaption" style="" />
+                                    <engine:Label text="99" name="labelDefenderIntelligense" style="padding: 0 5px 20px 5px;" />
                                 </engine:VisualElement>
                             </engine:VisualElement>
                         </engine:VisualElement>
                         <engine:VisualElement style="align-self: flex-end;">
                             <engine:VisualElement style="flex-direction: row;">
-                                <engine:Label text="地形" name="labelDefenderTerrainCaption" style="font-size: 15px; -unity-text-align: lower-left;" />
-                                <engine:Label text="Label" name="labelDefenderTerrain" style="font-size: 15px; -unity-text-align: lower-left;" />
+                                <engine:Label text="地形" name="labelDefenderTerrainCaption" style="font-size: 30px; padding: 5px;" />
+                                <engine:Label text="城砦" name="labelDefenderTerrain" style="font-size: 30px; padding: 5px 0px 5px 5px;" />
                             </engine:VisualElement>
                         </engine:VisualElement>
                     </engine:VisualElement>

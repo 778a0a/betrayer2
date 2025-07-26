@@ -1,6 +1,6 @@
 Button {
-    margin: 1px 2px 1px 2px;
-    padding: 5px 6px 5px 6px;
+    margin: 2px 4px 2px 4px;
+    padding: 10px 12px 10px 12px;
     color: black;
 }
 
@@ -15,9 +15,6 @@ Label {
     left: 0;
     right: 0;
     bottom: 0;
-}
-
-.window Label {
     color: white;
 }
 
@@ -29,12 +26,12 @@ Label {
     color: white;
     background-color: rgb(0, 17, 34);
     align-self: flex-end;
-    width: 420px;
-    height: 540px;
+    width: 840px;
+    height: 1080px;
     padding-top: 0px;
-    padding-right: 5px;
-    padding-bottom: 5px;
-    padding-left: 5px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+    padding-left: 10px;
 }
 
 
@@ -43,14 +40,14 @@ Label {
     border-right-color: rgb(0, 156, 143);
     border-top-color: rgb(0, 156, 143);
     border-bottom-color: rgb(0, 156, 143);
-    border-top-width: 1px;
-    border-right-width: 1px;
-    border-bottom-width: 1px;
-    border-left-width: 1px;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
-    border-bottom-left-radius: 5px;
+    border-top-width: 2px;
+    border-right-width: 2px;
+    border-bottom-width: 2px;
+    border-left-width: 2px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
 }
 
 .attacker-lose .attacker-info {
@@ -78,81 +75,76 @@ Label {
 }
 
 .attacker-lose #imageAttacker {
-    background-color: default;
+    /* background-color: default; */
 }
 
 .defender-lose #imageDefender {
-    background-color: default;
-}
-
-.SoldierInfoLarge-Image {
-    width: 55px;
-    height: 55px;
+    /* background-color: default; */
 }
 
 .ActionButton {
-    margin: 2px;
-    width: 76px;
+    margin: 4px;
+    width: 152px;
 }
 
 /* MemberInfo (CharacterTable) Styles */
 .MemberInfo-Cell {
-    font-size: 15px;
-    height: 30px;
-    width: 65px;
+    font-size: 30px;
+    height: 60px;
+    width: 130px;
     -unity-text-align: middle-center;
     color: rgb(221, 221, 221);
 }
 
 .MemberInfo-Header-Cell {
-    font-weight: bold;
+    /* font-weight: bold; */
     color: rgb(255, 255, 255);
 }
 
 .MemberInfo-Col-Name {
-    width: 90px;
+    width: 180px;
     -unity-text-align: middle-left;
 }
 
 .MemberInfo-Col-Status {
-    width: 140px;
+    width: 280px;
     -unity-text-align: middle-left;
 }
 
 .MemberInfo-Col-Attack {
-    width: 65px;
+    width: 130px;
 }
 
 .MemberInfo-Col-Defense {
-    width: 65px;
+    width: 130px;
 }
 
 .MemberInfo-Col-Intelligence {
-    width: 65px;
+    width: 130px;
 }
 
 .MemberInfo-Col-Loyalty {
-    width: 65px;
+    width: 130px;
 }
 
 .MemberInfo-Col-Prestige {
-    width: 65px;
+    width: 130px;
 }
 
 .MemberInfo-Col-Contribution {
-    width: 65px;
+    width: 130px;
 }
 
 .MemberInfo-Col-SalaryRatio {
-    width: 65px;
+    width: 130px;
 }
 
 /* CharacterTableRowItem Styles */
 #CharacterTableRowItemRoot {
-    border-top-width: 1px;
-    border-right-width: 1px;
-    border-bottom-width: 1px;
-    border-left-width: 1px;
+    border-top-width: 2px;
+    border-right-width: 2px;
+    border-bottom-width: 2px;
+    border-left-width: 2px;
     border-color: transparent;
     margin: 0;
     padding: 0;
@@ -181,25 +173,25 @@ Label {
 }
 
 .CharacterTable-Cell {
-    font-size: 13px;
+    font-size: 26px;
     color: rgb(221, 221, 221);
     -unity-text-align: middle-center;
-    padding: 2px 2px;
-    width: 26px;
+    padding: 4px 4px;
+    width: 52px;
 }
 
 .CharacterTable-Cell-Header {
-    font-size: 10px;
-    font-weight: bold;
+    font-size: 20px;
+    /* font-weight: bold; */
     color: white;
 }
 
 .CharacterTable-Row {
     flex-direction: row;
     background-color: rgba(30, 30, 50, 0.3);
-    margin-bottom: 1px;
+    margin-bottom: 2px;
     border-width: 0;
-    padding: 2px;
+    padding: 4px;
 }
 
 .CharacterTable-Row:hover {
@@ -211,7 +203,7 @@ Label {
 }
 
 .CharacterTable-Col-Name {
-    width: 80px;
+    width: 120px;
     -unity-text-align: middle-left;
 }
 
@@ -235,11 +227,11 @@ Label {
 }
 
 .CharacterTable-Col-Contribution {
-    width: 35px;
+    width: 70px;
     color: white;
 }
 
 .CharacterTable-Col-Prestige {
-    width: 35px;
+    width: 70px;
     color: white;
 }

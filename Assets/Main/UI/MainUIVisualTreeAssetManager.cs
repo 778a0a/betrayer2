@@ -43,6 +43,9 @@ public class MainUIVisualTreeAssetManager : MonoBehaviour
             ui.UIContainer.Add(element);
         }
 
+        // ついでにMainUIのScreensプロパティもセットする。
+        ui.Screens = panelProps.Select(p => (IScreen)p.GetValue(ui)).ToArray();
+
         // ついでに自身のプロパティにnullがないかもチェックする。
         var selfNullProps = GetType()
             .GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)

@@ -4,8 +4,7 @@
   -unity-font-definition: url("project://database/Assets/NotoSansJP-Regular SDF-dev.asset");
 }
 
-Label
-, Button
+Label, Button
 {
-    font-size: 20px;
+    font-size: 40px;
 }
