@@ -1,7 +1,8 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <engine:Template name="CharacterTableRowItem" src="project://database/Assets/Main/UI/Parts/CharacterTableRowItem.uxml" />
     <Style src="project://database/Assets/Main/UI/MainUI.uss" />
-    <engine:VisualElement name="Header" class="CharacterTable-Row" style="flex-grow: 0; flex-direction: row; background-color: rgba(70, 70, 90, 0.8); margin-bottom: 2px;">
+    <Style src="CharacterTableStyle.uss" />
+    <engine:VisualElement name="Header" class="CharacterTable-Row" style="flex-shrink: 0; background-color: rgba(70, 70, 90, 0.5);">
         <engine:Label name="labelHeaderName" text="名前" class="CharacterTable-Cell CharacterTable-Cell-Header CharacterTable-Col-Name" />
         <engine:Label name="labelHeaderAttack" text="攻撃" class="CharacterTable-Cell CharacterTable-Cell-Header CharacterTable-Col-Attack" />
         <engine:Label name="labelHeaderDefence" text="防衛" class="CharacterTable-Cell CharacterTable-Cell-Header CharacterTable-Col-Defense" />

@@ -1,0 +1,73 @@
+.CharacterTable-Row {
+    flex-direction: row;
+    background-color: rgba(30, 30, 50, 0.3);
+    border-width: 2px;
+    border-color: transparent;
+    margin: 0;
+    padding: 4px;
+}
+
+#CharacterTable .unity-collection-view__item:hover {
+    background-color: initial;
+}
+
+#CharacterTableRowItemRoot:hover {
+    background-color: rgba(0, 156, 143, 0.3);
+    border-color: rgba(204, 204, 204, 0.7);
+}
+
+#CharacterTableRowItemRoot.clickable:hover {
+    background-color: rgba(0, 156, 143, 0.5);
+}
+
+#CharacterTableRowItemRoot.clickable:active {
+    background-color: rgba(0, 156, 143, 0.8);
+}
+
+.CharacterTable-Cell {
+    font-size: 30px;
+    color: rgb(221, 221, 221);
+    -unity-text-align: middle-center;
+    width: 65px;
+}
+
+.CharacterTable-Cell-Header {
+    font-size: 25px;
+    color: white;
+    -unity-font-style: bold;
+}
+
+
+.CharacterTable-Col-Name {
+    width: 230px;
+    -unity-text-align: middle-left;
+}
+
+.CharacterTable-Col-Attack {
+    color: #f88;
+}
+
+.CharacterTable-Col-Defense {
+    color: #8af;
+}
+
+.CharacterTable-Col-Intelligence {
+    color: cyan;
+}
+
+.CharacterTable-Col-Governing {
+    color: #8f8;
+}
+
+.CharacterTable-Col-Status {
+}
+
+.CharacterTable-Col-Contribution {
+    width: 105px;
+    color: white;
+}
+
+.CharacterTable-Col-Prestige {
+    width: 105px;
+    color: white;
+}

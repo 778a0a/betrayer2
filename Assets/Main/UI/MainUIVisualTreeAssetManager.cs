@@ -35,6 +35,7 @@ public class MainUIVisualTreeAssetManager : MonoBehaviour
             // インスタンス化して、MainUIのプロパティにセットする。
             var element = (VisualElement)asset.Instantiate();
             element.style.display = DisplayStyle.None;
+            element.pickingMode = PickingMode.Ignore;
             if (!reinitialize)
             {
                 var constructor = prop.PropertyType.GetConstructor(new[] { typeof(VisualElement) });

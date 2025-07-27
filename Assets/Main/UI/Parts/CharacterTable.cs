@@ -14,6 +14,8 @@ public partial class CharacterTable : MainUIComponent
 
     public void Initialize()
     {
+        ListView.selectionType = SelectionType.None;
+        ListView.virtualizationMethod = CollectionVirtualizationMethod.DynamicHeight;
         ListView.makeItem = () =>
         {
             var element = UI.Assets.CharacterTableRowItem.Instantiate();

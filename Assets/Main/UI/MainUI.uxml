@@ -4,5 +4,5 @@
     <Style src="project://database/Assets/Main/UI/MainUI.uss" />
     <engine:Instance template="BattleWindow" name="BattleWindow" picking-mode="Ignore" class="window" style="display: flex; position: absolute; top: 0; left: 0; bottom: 0; right: 0;" />
     <engine:Instance template="MainUIFrame" name="Frame" picking-mode="Ignore" style="position: absolute; top: 0; left: 0; bottom: 0; right: 0;" />
-    <engine:VisualElement name="UIContainer" style="flex-grow: 1;" />
+    <engine:VisualElement name="UIContainer" picking-mode="Ignore" style="flex-grow: 1;" />
 </engine:UXML>

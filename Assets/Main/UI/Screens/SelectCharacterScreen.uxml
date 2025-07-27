@@ -3,13 +3,11 @@
     <engine:Template name="CharacterSummary" src="project://database/Assets/Main/UI/Parts/CharacterSummary.uxml" />
     <Style src="project://database/Assets/Main/UI/MainUI.uss" />
     <engine:VisualElement class="panel">
-        <engine:Label name="labelDescription" text="キャラクターを選択してください" style="font-size: 32px; color: white; margin-bottom: 20px;" />
-        <engine:VisualElement style="flex-direction: column; flex-grow: 1;">
-            <engine:Instance template="CharacterTable" name="CharacterTable" style="flex-grow: 1; margin-right: 20px;" />
-            <engine:Instance template="CharacterSummary" name="CharacterSummary" />
-        </engine:VisualElement>
-        <engine:VisualElement style="flex-direction: row; justify-content: flex-end; margin-top: 20px;">
-            <engine:Button name="buttonClose" text="キャンセル" style="width: 120px; height: 40px;" />
+        <engine:Label name="labelDescription" text="キャラクターを選択してください" style="font-size: 32px; margin-top: 10px;" />
+        <engine:Instance template="CharacterTable" name="CharacterTable" style="margin-top: 20px; flex-grow: 1;" />
+        <engine:Instance template="CharacterSummary" name="CharacterSummary" style="flex-shrink: 0;" />
+        <engine:VisualElement style="margin-top: 10px; flex-shrink: 0;">
+            <engine:Button name="buttonClose" text="キャンセル" />
         </engine:VisualElement>
     </engine:VisualElement>
 </engine:UXML>
