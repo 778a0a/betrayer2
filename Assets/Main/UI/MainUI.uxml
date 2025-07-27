@@ -1,8 +1,12 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <engine:Template name="BattleWindow" src="project://database/Assets/Main/UI/Windows/Battle/BattleWindow.uxml" />
+    <engine:Template name="MessageWindow" src="project://database/Assets/Main/UI/Windows/MessageWindow.uxml" />
     <engine:Template name="MainUIFrame" src="project://database/Assets/Main/UI/MainUIFrame.uxml" />
     <Style src="project://database/Assets/Main/UI/MainUI.uss" />
-    <engine:Instance template="BattleWindow" name="BattleWindow" picking-mode="Ignore" class="window" style="display: flex; position: absolute; top: 0; left: 0; bottom: 0; right: 0;" />
     <engine:Instance template="MainUIFrame" name="Frame" picking-mode="Ignore" style="position: absolute; top: 0; left: 0; bottom: 0; right: 0;" />
     <engine:VisualElement name="UIContainer" picking-mode="Ignore" style="flex-grow: 1;" />
+    <engine:VisualElement name="WindowHost" picking-mode="Ignore" style="flex-grow: 1; position: absolute; top: 0; right: 0; left: 0; bottom: 0; align-items: center; justify-content: center;">
+        <engine:Instance template="BattleWindow" name="BattleWindow" picking-mode="Ignore" class="window" />
+        <engine:Instance template="MessageWindow" name="MessageWindow" picking-mode="Ignore" class="window" />
+    </engine:VisualElement>
 </engine:UXML>

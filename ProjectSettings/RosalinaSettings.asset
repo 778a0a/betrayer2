@@ -62,3 +62,5 @@ MonoBehaviour:
     _path: Assets/Main/UI/Screens/PersonalPhaseScreen.uxml
   - _type: 1
     _path: Assets/Main/UI/Windows/Battle/BattleWindow.uxml
+  - _type: 1
+    _path: Assets/Main/UI/Windows/MessageWindow.uxml

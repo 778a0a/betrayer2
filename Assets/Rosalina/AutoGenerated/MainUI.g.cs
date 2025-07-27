@@ -17,22 +17,30 @@ public partial class MainUI
     private UIDocument _document;
     public BattleWindow BattleWindow { get; private set; }
 
+    public MessageWindow MessageWindow { get; private set; }
+
     public MainUIFrame Frame { get; private set; }
 
     public VisualElement UIContainer { get; private set; }
+
+    public VisualElement WindowHost { get; private set; }
 
     public VisualElement Root => _document?.rootVisualElement;
     public void InitializeDocument()
     {
         BattleWindow = new BattleWindow(Root?.Q<VisualElement>("BattleWindow"));
+        MessageWindow = new MessageWindow(Root?.Q<VisualElement>("MessageWindow"));
         Frame = new MainUIFrame(Root?.Q<VisualElement>("Frame"));
         UIContainer = Root?.Q<VisualElement>("UIContainer");
+        WindowHost = Root?.Q<VisualElement>("WindowHost");
     }
 
     public void ReinitializeDocument()
     {
         BattleWindow.ReinitializeComponent(Root?.Q<VisualElement>("BattleWindow"));
+        MessageWindow.ReinitializeComponent(Root?.Q<VisualElement>("MessageWindow"));
         Frame.ReinitializeComponent(Root?.Q<VisualElement>("Frame"));
         UIContainer = Root?.Q<VisualElement>("UIContainer");
+        WindowHost = Root?.Q<VisualElement>("WindowHost");
     }
 }

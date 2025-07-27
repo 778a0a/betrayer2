@@ -68,6 +68,7 @@ public partial class SelectCharacterScreen : MainUIComponent, IScreen
         var result = await tcs.Task;
         Root.style.display = DisplayStyle.None;
 
+        Debug.Log($"SelectCharacterScreen.Show: Result = {result?.Name ?? "null"}");
         return result;
     }
 

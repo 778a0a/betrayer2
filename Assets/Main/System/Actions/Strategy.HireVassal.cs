@@ -14,7 +14,7 @@ partial class StrategyActions
     public HireVassalAction HireVassal { get; } = new();
     public class HireVassalAction : StrategyActionBase
     {
-        public override string Label => L["人材募集"];
+        public override string Label => L["探索"];
         public override string Description => L["配下を雇います。"];
 
         public override ActionCost Cost(ActionArgs args) => ActionCost.Of(10, 0, 0);
@@ -26,26 +26,36 @@ partial class StrategyActions
         {
             Util.IsTrue(CanDo(args));
 
+            // 探索は成否にかかわらずコストを消費する。
             PayCost(args);
 
             var actor = args.actor;
             if (actor.IsPlayer)
             {
-                var cands = World.Characters
-                    .Where(c => c.IsFree && c != actor)
-                    .ToArray();
-                if (cands.Length == 0)
+                // ランダムに所属なしのキャラを選ぶ。
+                var frees = World.Characters.Where(c => c.IsFree).ToList();
+                var candidates = new List<Character>();
+                var candCount = (int)MathF.Max(1, MathF.Ceiling(actor.Intelligence / 10) - 5);
+                for (int i = 0; i < candCount; i++)
                 {
-                    Debug.Log("雇用可能なキャラクターがいません。");
+                    if (frees.Count == 0) break;
+                    var cand = frees.RandomPick();
+                    candidates.Add(cand);
+                    frees.Remove(cand);
+                }
+
+                if (candidates.Count == 0)
+                {
+                    await MessageWindow.Show("雇用可能な人材が見つかりませんでした。");
                     return;
                 }
 
-                // SelectCharacterPanelでキャラクターを選択
+                // プレーヤーに選択させる。
                 args.targetCharacter = await UI.SelectCharacterScreen.Show(
-                    "雇用するキャラクターを選択してください",
-                    "キャンセル",
-                    cands,
-                    c => c.IsFree
+                    "採用するキャラクターを選択してください",
+                    "採用しない",
+                    candidates,
+                    _ => true
                 );
 
                 if (args.targetCharacter == null)
@@ -54,8 +64,10 @@ partial class StrategyActions
                     return;
                 }
             }
-            var target = args.targetCharacter;
 
+            // TODO targetがプレーヤーの場合
+
+            var target = args.targetCharacter;
             target.Contribution /= 2;
             target.IsImportant = false;
             target.OrderIndex = actor.Country.Members.Max(m => m.OrderIndex) + 1;

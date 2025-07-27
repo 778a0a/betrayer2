@@ -1,0 +1,14 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <engine:VisualElement class="window" style="background-color: rgba(0, 0, 0, 0.37); display: flex; flex-grow: 1; justify-content: center;">
+        <engine:VisualElement style="font-size: 40px; flex-grow: 0; justify-content: center; align-items: stretch; width: auto; align-self: center; align-content: auto; background-color: rgb(0, 0, 0); padding-top: 0; padding-right: 0; padding-bottom: 5px; padding-left: 0; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-left-color: rgb(0, 255, 255); border-right-color: rgb(0, 255, 255); border-top-color: rgb(0, 255, 255); border-bottom-color: rgb(0, 255, 255); max-width: 1500px; height: auto; max-height: 1000px;">
+            <engine:Label text="システムメッセージ" name="labelMessageWindowTitle" style="color: rgb(255, 255, 255); margin-left: 0; font-size: 30px; margin-top: 0; margin-right: 0; margin-bottom: 0; padding-top: 10px; padding-right: 10px; padding-bottom: 10px; padding-left: 10px; border-top-width: 2px; border-right-width: 2px; border-bottom-width: 2px; border-left-width: 2px; border-left-color: rgb(107, 107, 107); border-right-color: rgb(107, 107, 107); border-top-color: rgb(107, 107, 107); border-bottom-color: rgb(107, 107, 107);" />
+            <engine:Label text="ここにメッセージが入ります。" name="labelMessageText" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 20px; padding-right: 10px; padding-bottom: 20px; padding-left: 10px; color: rgb(255, 255, 255);" />
+            <engine:VisualElement style="flex-direction: row; justify-content: flex-end; margin: 5px;">
+                <engine:Button text="OK" name="buttonMessageOK" style="width: 150px;" />
+                <engine:Button text="はい" name="buttonMessageYes" style="width: 150px;" />
+                <engine:Button text="いいえ" name="buttonMessageNo" style="width: 150px;" />
+                <engine:Button text="キャンセル" name="buttonMessageCancel" />
+            </engine:VisualElement>
+        </engine:VisualElement>
+    </engine:VisualElement>
+</engine:UXML>

@@ -30,6 +30,7 @@ public partial class MainUI : MonoBehaviour
         }
 
         Frame.Initialize();
+        MessageWindow.Initialize();
         BattleWindow.Initialize();
         Assets.InitializeScreens(this, isInitialized);
 

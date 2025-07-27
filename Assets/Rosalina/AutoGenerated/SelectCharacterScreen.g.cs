@@ -14,31 +14,31 @@ using UnityEngine.UIElements;
 
 public partial class SelectCharacterScreen
 {
-    public CharacterTable CharacterTable { get; private set; }
-
-    public CharacterSummary CharacterSummary { get; private set; }
-
     public Button buttonClose { get; private set; }
 
     public Label labelDescription { get; private set; }
+
+    public CharacterTable CharacterTable { get; private set; }
+
+    public CharacterSummary CharacterSummary { get; private set; }
 
     public VisualElement Root { get; private set; }
 
     public SelectCharacterScreen(VisualElement root)
     {
         Root = root;
-        CharacterTable = new CharacterTable(Root?.Q<VisualElement>("CharacterTable"));
-        CharacterSummary = new CharacterSummary(Root?.Q<VisualElement>("CharacterSummary"));
         buttonClose = Root?.Q<Button>("buttonClose");
         labelDescription = Root?.Q<Label>("labelDescription");
+        CharacterTable = new CharacterTable(Root?.Q<VisualElement>("CharacterTable"));
+        CharacterSummary = new CharacterSummary(Root?.Q<VisualElement>("CharacterSummary"));
     }
 
     public void ReinitializeComponent(VisualElement root)
     {
         Root = root;
-        CharacterTable = new CharacterTable(Root?.Q<VisualElement>("CharacterTable"));
-        CharacterSummary = new CharacterSummary(Root?.Q<VisualElement>("CharacterSummary"));
         buttonClose = Root?.Q<Button>("buttonClose");
         labelDescription = Root?.Q<Label>("labelDescription");
+        CharacterTable = new CharacterTable(Root?.Q<VisualElement>("CharacterTable"));
+        CharacterSummary = new CharacterSummary(Root?.Q<VisualElement>("CharacterSummary"));
     }
 }

@@ -73,13 +73,14 @@ public partial class StrategyPhaseScreen : IScreen
         var args = await action.Prepare(chara);
         await action.Do(args);
         SetData(chara);
+        Root.style.display = DisplayStyle.Flex;
     }
 
     public void Show(Character chara)
     {
         Core.MainUI.HideAllPanels();
-        Root.style.display = DisplayStyle.Flex;
         SetData(chara);
+        Root.style.display = DisplayStyle.Flex;
     }
 
     public void SetData(Character chara)
