@@ -34,7 +34,7 @@ public partial class TileInfoOverlay
 
     public VisualElement labelTileOwnerParent { get; private set; }
 
-    public VisualElement Root { get; }
+    public VisualElement Root { get; private set; }
 
     public TileInfoOverlay(VisualElement root)
     {

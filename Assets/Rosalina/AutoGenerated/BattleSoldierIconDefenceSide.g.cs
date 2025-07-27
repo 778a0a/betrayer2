@@ -26,7 +26,7 @@ public partial class BattleSoldierIconDefenceSide
 
     public VisualElement Soldier { get; private set; }
 
-    public VisualElement Root { get; }
+    public VisualElement Root { get; private set; }
 
     public BattleSoldierIconDefenceSide(VisualElement root)
     {

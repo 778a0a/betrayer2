@@ -86,7 +86,7 @@ public partial class CharacterInfo
 
     public Image imageChara { get; private set; }
 
-    public VisualElement Root { get; }
+    public VisualElement Root { get; private set; }
 
     public CharacterInfo(VisualElement root)
     {

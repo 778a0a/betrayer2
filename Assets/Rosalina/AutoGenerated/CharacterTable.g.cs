@@ -34,9 +34,24 @@ public partial class CharacterTable
 
     public ListView ListView { get; private set; }
 
-    public VisualElement Root { get; }
+    public VisualElement Root { get; private set; }
 
     public CharacterTable(VisualElement root)
+    {
+        Root = root;
+        labelHeaderName = Root?.Q<Label>("labelHeaderName");
+        labelHeaderAttack = Root?.Q<Label>("labelHeaderAttack");
+        labelHeaderDefence = Root?.Q<Label>("labelHeaderDefence");
+        labelHeaderIntelligence = Root?.Q<Label>("labelHeaderIntelligence");
+        labelHeaderGoverning = Root?.Q<Label>("labelHeaderGoverning");
+        labelHeaderStatus = Root?.Q<Label>("labelHeaderStatus");
+        labelHeaderContribution = Root?.Q<Label>("labelHeaderContribution");
+        labelHeaderPrestige = Root?.Q<Label>("labelHeaderPrestige");
+        Header = Root?.Q<VisualElement>("Header");
+        ListView = Root?.Q<ListView>("ListView");
+    }
+
+    public void ReinitializeComponent(VisualElement root)
     {
         Root = root;
         labelHeaderName = Root?.Q<Label>("labelHeaderName");

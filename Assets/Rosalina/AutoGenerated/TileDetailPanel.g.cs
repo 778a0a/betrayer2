@@ -54,7 +54,7 @@ public partial class TileDetailPanel
 
     public VisualElement ActionMenu { get; private set; }
 
-    public VisualElement Root { get; }
+    public VisualElement Root { get; private set; }
 
     public TileDetailPanel(VisualElement root)
     {

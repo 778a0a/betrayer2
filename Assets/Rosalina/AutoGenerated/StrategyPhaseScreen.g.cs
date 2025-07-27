@@ -24,9 +24,19 @@ public partial class StrategyPhaseScreen
 
     public VisualElement ActionsPanel { get; private set; }
 
-    public VisualElement Root { get; }
+    public VisualElement Root { get; private set; }
 
     public StrategyPhaseScreen(VisualElement root)
+    {
+        Root = root;
+        labelCostGold = Root?.Q<Label>("labelCostGold");
+        labelActionDescription = Root?.Q<Label>("labelActionDescription");
+        ActionButtons = Root?.Q<VisualElement>("ActionButtons");
+        CharacterSummary = new CharacterSummary(Root?.Q<VisualElement>("CharacterSummary"));
+        ActionsPanel = Root?.Q<VisualElement>("ActionsPanel");
+    }
+
+    public void ReinitializeComponent(VisualElement root)
     {
         Root = root;
         labelCostGold = Root?.Q<Label>("labelCostGold");

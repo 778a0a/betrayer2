@@ -24,9 +24,19 @@ public partial class SystemSettingsWindow
 
     public VisualElement Border { get; private set; }
 
-    public VisualElement Root { get; }
+    public VisualElement Root { get; private set; }
 
     public SystemSettingsWindow(VisualElement root)
+    {
+        Root = root;
+        comboOrientation = Root?.Q<DropdownField>("comboOrientation");
+        comboLayout = Root?.Q<DropdownField>("comboLayout");
+        labelSaveDataListWindowTitle = Root?.Q<Label>("labelSaveDataListWindowTitle");
+        CloseButton = Root?.Q<Button>("CloseButton");
+        Border = Root?.Q<VisualElement>("Border");
+    }
+
+    public void ReinitializeComponent(VisualElement root)
     {
         Root = root;
         comboOrientation = Root?.Q<DropdownField>("comboOrientation");

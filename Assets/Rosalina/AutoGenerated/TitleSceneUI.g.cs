@@ -71,8 +71,6 @@ public partial class TitleSceneUI
 
     public SystemSettingsWindow SystemSettingsWindow { get; private set; }
 
-    //public MessageWindow MessageWindow { get; private set; }
-
     public VisualElement Windows { get; private set; }
 
     public VisualElement Root => _document?.rootVisualElement;
@@ -80,7 +78,7 @@ public partial class TitleSceneUI
     {
         buttonShowSystemSettings = Root?.Q<Button>("buttonShowSystemSettings");
         buttonShowLicense = Root?.Q<Button>("buttonShowLicense");
-        //SaveDataList = new SaveDataListWindow(Root?.Q<VisualElement>("SaveDataList"));
+        SaveDataList = new SaveDataListWindow(Root?.Q<VisualElement>("SaveDataList"));
         buttonCloseApplication = Root?.Q<Button>("buttonCloseApplication");
         buttonCloseNewGameWindow = Root?.Q<Button>("buttonCloseNewGameWindow");
         buttonStartNewGame = Root?.Q<Button>("buttonStartNewGame");
@@ -106,7 +104,39 @@ public partial class TitleSceneUI
         ProgressWindow = Root?.Q<VisualElement>("ProgressWindow");
         LicenseWindow = Root?.Q<VisualElement>("LicenseWindow");
         SystemSettingsWindow = new SystemSettingsWindow(Root?.Q<VisualElement>("SystemSettingsWindow"));
-        //MessageWindow = new MessageWindow(Root?.Q<VisualElement>("MessageWindow"));
+        Windows = Root?.Q<VisualElement>("Windows");
+    }
+
+    public void ReinitializeDocument()
+    {
+        buttonShowSystemSettings = Root?.Q<Button>("buttonShowSystemSettings");
+        buttonShowLicense = Root?.Q<Button>("buttonShowLicense");
+        SaveDataList.ReinitializeComponent(Root?.Q<VisualElement>("SaveDataList"));
+        buttonCloseApplication = Root?.Q<Button>("buttonCloseApplication");
+        buttonCloseNewGameWindow = Root?.Q<Button>("buttonCloseNewGameWindow");
+        buttonStartNewGame = Root?.Q<Button>("buttonStartNewGame");
+        buttonLoadTextData = Root?.Q<Button>("buttonLoadTextData");
+        buttonCopyFromSlot1 = Root?.Q<Button>("buttonCopyFromSlot1");
+        buttonCopyFromSlot2 = Root?.Q<Button>("buttonCopyFromSlot2");
+        buttonCopyFromSlot3 = Root?.Q<Button>("buttonCopyFromSlot3");
+        buttonCopyFromSlotAuto = Root?.Q<Button>("buttonCopyFromSlotAuto");
+        buttonClearText = Root?.Q<Button>("buttonClearText");
+        buttonPasteText = Root?.Q<Button>("buttonPasteText");
+        labelTextBoxWindowTitle = Root?.Q<Label>("labelTextBoxWindowTitle");
+        buttonCloseTextBoxWindow = Root?.Q<Button>("buttonCloseTextBoxWindow");
+        textTextBoxWindow = Root?.Q<TextField>("textTextBoxWindow");
+        buttonCopyText = Root?.Q<Button>("buttonCopyText");
+        buttonSubmitText = Root?.Q<Button>("buttonSubmitText");
+        labelProgressWindowTitle = Root?.Q<Label>("labelProgressWindowTitle");
+        progressLoading = Root?.Q<ProgressBar>("progressLoading");
+        labelLicenseWindowTitle = Root?.Q<Label>("labelLicenseWindowTitle");
+        buttonCloseLicenseWindow = Root?.Q<Button>("buttonCloseLicenseWindow");
+        textLicenseWindow = Root?.Q<TextField>("textLicenseWindow");
+        NewGameMenu = Root?.Q<VisualElement>("NewGameMenu");
+        TextBoxWindow = Root?.Q<VisualElement>("TextBoxWindow");
+        ProgressWindow = Root?.Q<VisualElement>("ProgressWindow");
+        LicenseWindow = Root?.Q<VisualElement>("LicenseWindow");
+        SystemSettingsWindow.ReinitializeComponent(Root?.Q<VisualElement>("SystemSettingsWindow"));
         Windows = Root?.Q<VisualElement>("Windows");
     }
 }

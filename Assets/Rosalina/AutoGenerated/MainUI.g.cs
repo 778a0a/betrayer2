@@ -28,4 +28,11 @@ public partial class MainUI
         Frame = new MainUIFrame(Root?.Q<VisualElement>("Frame"));
         UIContainer = Root?.Q<VisualElement>("UIContainer");
     }
+
+    public void ReinitializeDocument()
+    {
+        BattleWindow.ReinitializeComponent(Root?.Q<VisualElement>("BattleWindow"));
+        Frame.ReinitializeComponent(Root?.Q<VisualElement>("Frame"));
+        UIContainer = Root?.Q<VisualElement>("UIContainer");
+    }
 }

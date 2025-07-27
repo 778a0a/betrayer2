@@ -36,9 +36,25 @@ public partial class MainUIFrame
 
     public VisualElement DatePanel { get; private set; }
 
-    public VisualElement Root { get; }
+    public VisualElement Root { get; private set; }
 
     public MainUIFrame(VisualElement root)
+    {
+        Root = root;
+        buttonPlaySpeedPlus = Root?.Q<Button>("buttonPlaySpeedPlus");
+        buttonPlaySpeedMinus = Root?.Q<Button>("buttonPlaySpeedMinus");
+        buttonPlaySpeed0 = Root?.Q<Button>("buttonPlaySpeed0");
+        buttonPlaySpeed1 = Root?.Q<Button>("buttonPlaySpeed1");
+        buttonPlaySpeed2 = Root?.Q<Button>("buttonPlaySpeed2");
+        buttonPlaySpeed3 = Root?.Q<Button>("buttonPlaySpeed3");
+        buttonPlaySpeed4 = Root?.Q<Button>("buttonPlaySpeed4");
+        buttonShowSystemMenu = Root?.Q<Button>("buttonShowSystemMenu");
+        labelCurrentDate = Root?.Q<Label>("labelCurrentDate");
+        buttonPlay = Root?.Q<Button>("buttonPlay");
+        DatePanel = Root?.Q<VisualElement>("DatePanel");
+    }
+
+    public void ReinitializeComponent(VisualElement root)
     {
         Root = root;
         buttonPlaySpeedPlus = Root?.Q<Button>("buttonPlaySpeedPlus");

@@ -32,9 +32,23 @@ public partial class CharacterTableRowItem
 
     public Button CharacterTableRowItemRoot { get; private set; }
 
-    public VisualElement Root { get; }
+    public VisualElement Root { get; private set; }
 
     public CharacterTableRowItem(VisualElement root)
+    {
+        Root = root;
+        labelName = Root?.Q<Label>("labelName");
+        labelAttack = Root?.Q<Label>("labelAttack");
+        labelDefense = Root?.Q<Label>("labelDefense");
+        labelIntelligence = Root?.Q<Label>("labelIntelligence");
+        labelGoverning = Root?.Q<Label>("labelGoverning");
+        labelStatus = Root?.Q<Label>("labelStatus");
+        labelContribution = Root?.Q<Label>("labelContribution");
+        labelPrestige = Root?.Q<Label>("labelPrestige");
+        CharacterTableRowItemRoot = Root?.Q<Button>("CharacterTableRowItemRoot");
+    }
+
+    public void ReinitializeComponent(VisualElement root)
     {
         Root = root;
         labelName = Root?.Q<Label>("labelName");

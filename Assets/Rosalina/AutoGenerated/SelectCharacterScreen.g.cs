@@ -22,9 +22,18 @@ public partial class SelectCharacterScreen
 
     public Label labelDescription { get; private set; }
 
-    public VisualElement Root { get; }
+    public VisualElement Root { get; private set; }
 
     public SelectCharacterScreen(VisualElement root)
+    {
+        Root = root;
+        CharacterTable = new CharacterTable(Root?.Q<VisualElement>("CharacterTable"));
+        CharacterSummary = new CharacterSummary(Root?.Q<VisualElement>("CharacterSummary"));
+        buttonClose = Root?.Q<Button>("buttonClose");
+        labelDescription = Root?.Q<Label>("labelDescription");
+    }
+
+    public void ReinitializeComponent(VisualElement root)
     {
         Root = root;
         CharacterTable = new CharacterTable(Root?.Q<VisualElement>("CharacterTable"));

@@ -28,9 +28,21 @@ public partial class CharacterInfoSoldierIcon
 
     public VisualElement HPBar { get; private set; }
 
-    public VisualElement Root { get; }
+    public VisualElement Root { get; private set; }
 
     public CharacterInfoSoldierIcon(VisualElement root)
+    {
+        Root = root;
+        imageSoldier = Root?.Q<Image>("imageSoldier");
+        labelLevel = Root?.Q<Label>("labelLevel");
+        labelHp = Root?.Q<Label>("labelHp");
+        HPBarValue = Root?.Q<VisualElement>("HPBarValue");
+        HPBarBackground = Root?.Q<VisualElement>("HPBarBackground");
+        panelContainer = Root?.Q<VisualElement>("panelContainer");
+        HPBar = Root?.Q<VisualElement>("HPBar");
+    }
+
+    public void ReinitializeComponent(VisualElement root)
     {
         Root = root;
         imageSoldier = Root?.Q<Image>("imageSoldier");

@@ -46,9 +46,30 @@ public partial class SaveDataListWindowListItem
 
     public Button buttonNoData { get; private set; }
 
-    public VisualElement Root { get; }
+    public VisualElement Root { get; private set; }
 
     public SaveDataListWindowListItem(VisualElement root)
+    {
+        Root = root;
+        labelSoldiersCaption = Root?.Q<Label>("labelSoldiersCaption");
+        labelSoldiers = Root?.Q<Label>("labelSoldiers");
+        labelGoldCaption = Root?.Q<Label>("labelGoldCaption");
+        labelGold = Root?.Q<Label>("labelGold");
+        labelTitle = Root?.Q<Label>("labelTitle");
+        labelName = Root?.Q<Label>("labelName");
+        labelTurnCountCaption = Root?.Q<Label>("labelTurnCountCaption");
+        labelTurnCount = Root?.Q<Label>("labelTurnCount");
+        labelSavedTimeCaption = Root?.Q<Label>("labelSavedTimeCaption");
+        labelSavedTime = Root?.Q<Label>("labelSavedTime");
+        imageCharacter = Root?.Q<Image>("imageCharacter");
+        buttonMain = Root?.Q<Button>("buttonMain");
+        buttonDownload = Root?.Q<Button>("buttonDownload");
+        buttonDelete = Root?.Q<Button>("buttonDelete");
+        SaveDataLisItemRoot = Root?.Q<VisualElement>("SaveDataLisItemRoot");
+        buttonNoData = Root?.Q<Button>("buttonNoData");
+    }
+
+    public void ReinitializeComponent(VisualElement root)
     {
         Root = root;
         labelSoldiersCaption = Root?.Q<Label>("labelSoldiersCaption");

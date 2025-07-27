@@ -32,9 +32,23 @@ public partial class SaveDataListWindow
 
     public VisualElement Border { get; private set; }
 
-    public VisualElement Root { get; }
+    public VisualElement Root { get; private set; }
 
     public SaveDataListWindow(VisualElement root)
+    {
+        Root = root;
+        labelAutoSaveSlotTitle = Root?.Q<Label>("labelAutoSaveSlotTitle");
+        labelAutoSaveOriginalSlotNo = Root?.Q<Label>("labelAutoSaveOriginalSlotNo");
+        labelSaveDataListWindowTitle = Root?.Q<Label>("labelSaveDataListWindowTitle");
+        CloseButton = Root?.Q<Button>("CloseButton");
+        SaveSlot1 = new SaveDataListWindowListItem(Root?.Q<VisualElement>("SaveSlot1"));
+        SaveSlot2 = new SaveDataListWindowListItem(Root?.Q<VisualElement>("SaveSlot2"));
+        SaveSlot3 = new SaveDataListWindowListItem(Root?.Q<VisualElement>("SaveSlot3"));
+        SaveSlotAuto = new SaveDataListWindowListItem(Root?.Q<VisualElement>("SaveSlotAuto"));
+        Border = Root?.Q<VisualElement>("Border");
+    }
+
+    public void ReinitializeComponent(VisualElement root)
     {
         Root = root;
         labelAutoSaveSlotTitle = Root?.Q<Label>("labelAutoSaveSlotTitle");

@@ -70,9 +70,42 @@ public partial class CharacterSummary
 
     public Image imagePlayerFace { get; private set; }
 
-    public VisualElement Root { get; }
+    public VisualElement Root { get; private set; }
 
     public CharacterSummary(VisualElement root)
+    {
+        Root = root;
+        labelPlayerTitle = Root?.Q<Label>("labelPlayerTitle");
+        labelPlayerName = Root?.Q<Label>("labelPlayerName");
+        labelMoving = Root?.Q<Label>("labelMoving");
+        labelAttack = Root?.Q<Label>("labelAttack");
+        labelDefense = Root?.Q<Label>("labelDefense");
+        labelIntelligence = Root?.Q<Label>("labelIntelligence");
+        labelGoverning = Root?.Q<Label>("labelGoverning");
+        labelPlayerGold = Root?.Q<Label>("labelPlayerGold");
+        labelPlayerContribution = Root?.Q<Label>("labelPlayerContribution");
+        labelPlayerPrestige = Root?.Q<Label>("labelPlayerPrestige");
+        soldier00 = new CharacterInfoSoldierIcon(Root?.Q<VisualElement>("soldier00"));
+        soldier01 = new CharacterInfoSoldierIcon(Root?.Q<VisualElement>("soldier01"));
+        soldier02 = new CharacterInfoSoldierIcon(Root?.Q<VisualElement>("soldier02"));
+        soldier03 = new CharacterInfoSoldierIcon(Root?.Q<VisualElement>("soldier03"));
+        soldier04 = new CharacterInfoSoldierIcon(Root?.Q<VisualElement>("soldier04"));
+        soldier05 = new CharacterInfoSoldierIcon(Root?.Q<VisualElement>("soldier05"));
+        soldier06 = new CharacterInfoSoldierIcon(Root?.Q<VisualElement>("soldier06"));
+        soldier07 = new CharacterInfoSoldierIcon(Root?.Q<VisualElement>("soldier07"));
+        soldier08 = new CharacterInfoSoldierIcon(Root?.Q<VisualElement>("soldier08"));
+        soldier09 = new CharacterInfoSoldierIcon(Root?.Q<VisualElement>("soldier09"));
+        soldier10 = new CharacterInfoSoldierIcon(Root?.Q<VisualElement>("soldier10"));
+        soldier11 = new CharacterInfoSoldierIcon(Root?.Q<VisualElement>("soldier11"));
+        soldier12 = new CharacterInfoSoldierIcon(Root?.Q<VisualElement>("soldier12"));
+        soldier13 = new CharacterInfoSoldierIcon(Root?.Q<VisualElement>("soldier13"));
+        soldier14 = new CharacterInfoSoldierIcon(Root?.Q<VisualElement>("soldier14"));
+        StatsPanel = Root?.Q<VisualElement>("StatsPanel");
+        SoldierGrid = Root?.Q<VisualElement>("SoldierGrid");
+        imagePlayerFace = Root?.Q<Image>("imagePlayerFace");
+    }
+
+    public void ReinitializeComponent(VisualElement root)
     {
         Root = root;
         labelPlayerTitle = Root?.Q<Label>("labelPlayerTitle");
