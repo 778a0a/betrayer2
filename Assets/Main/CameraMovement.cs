@@ -138,6 +138,24 @@ public class CameraMovement : MonoBehaviour
         var scroll = Mouse.current.scroll.ReadValue();
         if (scroll.y != 0)
         {
+            // マウスカーソル上のセルを取得する。
+            var mousePoint = Mouse.current.position.ReadValue();
+            var ray = Camera.main.ScreenPointToRay(mousePoint);
+            var hit = Physics2D.GetRayIntersection(ray);
+            // マウスカーソルがマップ上にない場合は何もしない。
+            if (hit.collider == null)
+            {
+                return;
+            }
+            var uiScale = GameCore.Instance.MainUI.Root.panel.scaledPixelsPerPoint;
+            var uiPoint = new Vector2(mousePoint.x, Screen.height - mousePoint.y) / uiScale;
+            var element = GameCore.Instance.MainUI.Root.panel.Pick(uiPoint);
+            // マウスカーソル上にUI要素（メッセージウィンドウなど）がある場合は何もしない。
+            if (element != null)
+            {
+                return;
+            }
+
             // マウスのワールド座標を取得
             Vector3 mouseWorldPos = camera.ScreenToWorldPoint(Mouse.current.position.ReadValue());
             
