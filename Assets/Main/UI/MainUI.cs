@@ -14,29 +14,42 @@ public partial class MainUI : MonoBehaviour
     public SelectCharacterScreen SelectCharacterScreen { get; set; }
     public IScreen[] Screens { get; set; }
 
+    private bool isInitialized = false;
+    private IScreen lastVisibleScreen = null;
+
     private void OnEnable()
     {
         Debug.Log("MainUI.OnEnable");
-        InitializeDocument();
-        Assets.InitializeScreens(this);
-        BattleWindow.Initialize();
-        Frame.Initialize();
-
-        Debug.Log($"USERDATA: {SelectCharacterScreen.Root.userData}");
-        if (SelectCharacterScreen.Root.userData == null)
+        if (!isInitialized)
         {
-            SelectCharacterScreen.Root.userData = $"TEST{DateTime.Now}";
+            InitializeDocument();
         }
-        Debug.Log($"SET USERDATA: {SelectCharacterScreen.Root.userData}");
+        else
+        {
+            ReinitializeDocument();
+        }
+
+        Frame.Initialize();
+        BattleWindow.Initialize();
+        Assets.InitializeScreens(this, isInitialized);
+
+        if (isInitialized)
+        {
+            Frame.RefreshUI();
+            if (lastVisibleScreen != null)
+            {
+                lastVisibleScreen.Render();
+                lastVisibleScreen.Root.style.display = DisplayStyle.Flex;
+            }
+        }
+
+        isInitialized = true;
     }
 
     private void OnDisable()
     {
         Debug.Log("MainUI.OnDisable");
-        Debug.Log($"D USERDATA: {SelectCharacterScreen.Root.userData}");
-        foreach (var screen in Screens)
-        {
-        }
+        lastVisibleScreen = Screens.FirstOrDefault(s => s.Root.style.display != DisplayStyle.None);
     }
 
     public void HideAllPanels()
@@ -50,5 +63,10 @@ public partial class MainUI : MonoBehaviour
 
 public interface IScreen
 {
+    VisualElement Root { get; }
+    void ReinitializeComponent(VisualElement element);
+ 
     void Initialize();
+    void Reinitialize();
+    void Render();
 }

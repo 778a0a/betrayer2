@@ -36,6 +36,11 @@ public partial class SelectCharacterScreen : MainUIComponent, IScreen
         };
     }
 
+    public void Reinitialize()
+    {
+        Initialize();
+    }
+
     public async ValueTask<Character> Show(
         string description,
         string cancelText,
@@ -45,17 +50,18 @@ public partial class SelectCharacterScreen : MainUIComponent, IScreen
         tcs = new();
         this.predCanSelect = predCanSelect;
 
-        labelDescription.text = description;
-        buttonClose.text = cancelText;
-
-        // 人物情報テーブル
-        CharacterTable.SetData(charas, predCanSelect);
-        
-        // 人物詳細
-        if (charas != null && charas.Count > 0)
+        (_Render = () =>
         {
-            CharacterSummary.SetData(charas[0]);
-        }
+            labelDescription.text = description;
+            buttonClose.text = cancelText;
+            // 人物情報テーブル
+            CharacterTable.SetData(charas, predCanSelect);
+            // 人物詳細
+            if (charas != null && charas.Count > 0)
+            {
+                CharacterSummary.SetData(charas[0]);
+            }
+        }).Invoke();
 
         UI.HideAllPanels();
         Root.style.display = DisplayStyle.Flex;
@@ -63,6 +69,12 @@ public partial class SelectCharacterScreen : MainUIComponent, IScreen
         Root.style.display = DisplayStyle.None;
 
         return result;
+    }
+
+    private Action _Render;
+    public void Render()
+    {
+        _Render?.Invoke();
     }
 
 }

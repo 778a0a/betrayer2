@@ -12,7 +12,7 @@ public class MainUIVisualTreeAssetManager : MonoBehaviour
     [field: SerializeField] private VisualTreeAsset[] Screens { get; set; }
     [field: SerializeField] public VisualTreeAsset CharacterTableRowItem { get; set; }
 
-    public void InitializeScreens(MainUI ui)
+    public void InitializeScreens(MainUI ui, bool reinitialize)
     {
         // MainUIの画面プロパティを全て取得する。
         var panelProps = ui.GetType()
@@ -33,12 +33,22 @@ public class MainUIVisualTreeAssetManager : MonoBehaviour
             }
 
             // インスタンス化して、MainUIのプロパティにセットする。
-            var element = asset.Instantiate();
+            var element = (VisualElement)asset.Instantiate();
             element.style.display = DisplayStyle.None;
-            var constructor = prop.PropertyType.GetConstructor(new[] { typeof(VisualElement) });
-            var screen = (IScreen)constructor.Invoke(new[] { element });
-            screen.Initialize();
-            prop.SetValue(ui, screen);
+            if (!reinitialize)
+            {
+                var constructor = prop.PropertyType.GetConstructor(new[] { typeof(VisualElement) });
+                var screen = (IScreen)constructor.Invoke(new[] { element });
+                screen.Initialize();
+                prop.SetValue(ui, screen);
+            }
+            // 再初期化の場合
+            else
+            {
+                var screen = (IScreen)prop.GetValue(ui);
+                screen.ReinitializeComponent(element);
+                screen.Reinitialize();
+            }
             // 画面コンテナに追加する。
             ui.UIContainer.Add(element);
         }

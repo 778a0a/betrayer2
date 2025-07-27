@@ -41,6 +41,14 @@ public partial class StrategyPhaseScreen : IScreen
         }
     }
 
+    public void Reinitialize()
+    {
+        foreach (var button in buttons)
+        {
+            ActionButtons.Add(button.Element);
+        }
+    }
+
     private async void OnActionButtonClicked(ActionButtonHelper button)
     {
         var chara = currentCharacter;
@@ -77,10 +85,15 @@ public partial class StrategyPhaseScreen : IScreen
     public void SetData(Character chara)
     {
         currentCharacter = chara;
-        CharacterSummary.SetData(chara);
+        Render();
+    }
+
+    public void Render()
+    {
+        CharacterSummary.SetData(currentCharacter);
         foreach (var button in buttons)
         {
-            button.SetData(chara);
+            button.SetData(currentCharacter);
         }
     }
 }
