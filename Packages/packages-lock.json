@@ -1,11 +1,10 @@
 {
   "dependencies": {
     "com.eastylabs.rosalina": {
-      "version": "https://github.com/Eastrall/Rosalina.git",
+      "version": "file:../External/Rosalina",
       "depth": 0,
-      "source": "git",
-      "dependencies": {},
-      "hash": "bd7482d4c58cde332f8efc85b0ac45645155944d"
+      "source": "local",
+      "dependencies": {}
     },
     "com.singularitygroup.hotreload": {
       "version": "file:com.singularitygroup.hotreload",

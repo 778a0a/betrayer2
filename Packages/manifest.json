@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "com.eastylabs.rosalina": "https://github.com/Eastrall/Rosalina.git",
+    "com.eastylabs.rosalina": "file:../External/Rosalina",
     "com.unity.feature.2d": "2.0.1",
     "com.unity.ide.visualstudio": "2.0.23",
     "com.unity.inputsystem": "1.14.0",
