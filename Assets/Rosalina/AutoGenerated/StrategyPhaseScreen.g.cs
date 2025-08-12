@@ -14,11 +14,11 @@ using UnityEngine.UIElements;
 
 public partial class StrategyPhaseScreen
 {
-    public Label labelCostGold { get; private set; }
+    public Button TabButtonCastle { get; private set; }
 
-    public Label labelActionDescription { get; private set; }
+    public Button TabButtonCountry { get; private set; }
 
-    public VisualElement ActionButtons { get; private set; }
+    public Button TabButtonDiplomacy { get; private set; }
 
     public Label labelDevLevel { get; private set; }
 
@@ -52,20 +52,48 @@ public partial class StrategyPhaseScreen
 
     public VisualElement DeployedCharacterIcons { get; private set; }
 
+    public Label labelRulerName { get; private set; }
+
+    public Label labelRulerPersonality { get; private set; }
+
+    public Label labelCountryBalance { get; private set; }
+
+    public Label labelCountrySurplus { get; private set; }
+
+    public Label labelCastleCount { get; private set; }
+
+    public Label labelGeneralCount { get; private set; }
+
+    public VisualElement DiplomacyRelations { get; private set; }
+
+    public ScrollView DiplomacyScrollView { get; private set; }
+
+    public VisualElement CastleInfoTab { get; private set; }
+
+    public VisualElement CountryInfoTab { get; private set; }
+
+    public VisualElement DiplomacyInfoTab { get; private set; }
+
+    public Label labelCostGold { get; private set; }
+
+    public Label labelActionDescription { get; private set; }
+
+    public VisualElement ActionButtons { get; private set; }
+
     public CharacterSummary CharacterSummary { get; private set; }
 
-    public VisualElement ActionsPanel { get; private set; }
+    public VisualElement InfoTabPanel { get; private set; }
 
-    public VisualElement CastleInfoPanel { get; private set; }
+    public VisualElement ActionsPanel { get; private set; }
 
     public VisualElement Root { get; private set; }
 
     public StrategyPhaseScreen(VisualElement root)
     {
         Root = root;
-        labelCostGold = Root?.Q<Label>("labelCostGold");
-        labelActionDescription = Root?.Q<Label>("labelActionDescription");
-        ActionButtons = Root?.Q<VisualElement>("ActionButtons");
+        TabButtonCastle = Root?.Q<Button>("TabButtonCastle");
+        TabButtonCountry = Root?.Q<Button>("TabButtonCountry");
+        TabButtonDiplomacy = Root?.Q<Button>("TabButtonDiplomacy");
         labelDevLevel = Root?.Q<Label>("labelDevLevel");
         labelTotalInvestment = Root?.Q<Label>("labelTotalInvestment");
         MaxIncomeBar = Root?.Q<VisualElement>("MaxIncomeBar");
@@ -82,17 +110,31 @@ public partial class StrategyPhaseScreen
         GarrisonedCharacterIcons = Root?.Q<VisualElement>("GarrisonedCharacterIcons");
         labelDeployedCount = Root?.Q<Label>("labelDeployedCount");
         DeployedCharacterIcons = Root?.Q<VisualElement>("DeployedCharacterIcons");
+        labelRulerName = Root?.Q<Label>("labelRulerName");
+        labelRulerPersonality = Root?.Q<Label>("labelRulerPersonality");
+        labelCountryBalance = Root?.Q<Label>("labelCountryBalance");
+        labelCountrySurplus = Root?.Q<Label>("labelCountrySurplus");
+        labelCastleCount = Root?.Q<Label>("labelCastleCount");
+        labelGeneralCount = Root?.Q<Label>("labelGeneralCount");
+        DiplomacyRelations = Root?.Q<VisualElement>("DiplomacyRelations");
+        DiplomacyScrollView = Root?.Q<ScrollView>("DiplomacyScrollView");
+        CastleInfoTab = Root?.Q<VisualElement>("CastleInfoTab");
+        CountryInfoTab = Root?.Q<VisualElement>("CountryInfoTab");
+        DiplomacyInfoTab = Root?.Q<VisualElement>("DiplomacyInfoTab");
+        labelCostGold = Root?.Q<Label>("labelCostGold");
+        labelActionDescription = Root?.Q<Label>("labelActionDescription");
+        ActionButtons = Root?.Q<VisualElement>("ActionButtons");
         CharacterSummary = new CharacterSummary(Root?.Q<VisualElement>("CharacterSummary"));
+        InfoTabPanel = Root?.Q<VisualElement>("InfoTabPanel");
         ActionsPanel = Root?.Q<VisualElement>("ActionsPanel");
-        CastleInfoPanel = Root?.Q<VisualElement>("CastleInfoPanel");
     }
 
     public void ReinitializeComponent(VisualElement root)
     {
         Root = root;
-        labelCostGold = Root?.Q<Label>("labelCostGold");
-        labelActionDescription = Root?.Q<Label>("labelActionDescription");
-        ActionButtons = Root?.Q<VisualElement>("ActionButtons");
+        TabButtonCastle = Root?.Q<Button>("TabButtonCastle");
+        TabButtonCountry = Root?.Q<Button>("TabButtonCountry");
+        TabButtonDiplomacy = Root?.Q<Button>("TabButtonDiplomacy");
         labelDevLevel = Root?.Q<Label>("labelDevLevel");
         labelTotalInvestment = Root?.Q<Label>("labelTotalInvestment");
         MaxIncomeBar = Root?.Q<VisualElement>("MaxIncomeBar");
@@ -109,8 +151,22 @@ public partial class StrategyPhaseScreen
         GarrisonedCharacterIcons = Root?.Q<VisualElement>("GarrisonedCharacterIcons");
         labelDeployedCount = Root?.Q<Label>("labelDeployedCount");
         DeployedCharacterIcons = Root?.Q<VisualElement>("DeployedCharacterIcons");
+        labelRulerName = Root?.Q<Label>("labelRulerName");
+        labelRulerPersonality = Root?.Q<Label>("labelRulerPersonality");
+        labelCountryBalance = Root?.Q<Label>("labelCountryBalance");
+        labelCountrySurplus = Root?.Q<Label>("labelCountrySurplus");
+        labelCastleCount = Root?.Q<Label>("labelCastleCount");
+        labelGeneralCount = Root?.Q<Label>("labelGeneralCount");
+        DiplomacyRelations = Root?.Q<VisualElement>("DiplomacyRelations");
+        DiplomacyScrollView = Root?.Q<ScrollView>("DiplomacyScrollView");
+        CastleInfoTab = Root?.Q<VisualElement>("CastleInfoTab");
+        CountryInfoTab = Root?.Q<VisualElement>("CountryInfoTab");
+        DiplomacyInfoTab = Root?.Q<VisualElement>("DiplomacyInfoTab");
+        labelCostGold = Root?.Q<Label>("labelCostGold");
+        labelActionDescription = Root?.Q<Label>("labelActionDescription");
+        ActionButtons = Root?.Q<VisualElement>("ActionButtons");
         CharacterSummary = new CharacterSummary(Root?.Q<VisualElement>("CharacterSummary"));
+        InfoTabPanel = Root?.Q<VisualElement>("InfoTabPanel");
         ActionsPanel = Root?.Q<VisualElement>("ActionsPanel");
-        CastleInfoPanel = Root?.Q<VisualElement>("CastleInfoPanel");
     }
 }

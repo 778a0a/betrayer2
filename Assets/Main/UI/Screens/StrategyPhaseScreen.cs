@@ -9,6 +9,15 @@ public partial class StrategyPhaseScreen : IScreen
     private GameCore Core => GameCore.Instance;
     private ActionButtonHelper[] buttons;
     private Character currentCharacter;
+    
+    private enum InfoTab
+    {
+        Castle,
+        Country, 
+        Diplomacy
+    }
+    
+    private InfoTab currentTab = InfoTab.Castle;
 
     public void Initialize()
     {
@@ -39,6 +48,11 @@ public partial class StrategyPhaseScreen : IScreen
                 OnActionButtonClicked
             );
         }
+        
+        // タブボタンのイベントハンドラーを設定
+        Root.Q<Button>("TabButtonCastle").clicked += () => SwitchTab(InfoTab.Castle);
+        Root.Q<Button>("TabButtonCountry").clicked += () => SwitchTab(InfoTab.Country);
+        Root.Q<Button>("TabButtonDiplomacy").clicked += () => SwitchTab(InfoTab.Diplomacy);
     }
 
     public void Reinitialize()
@@ -97,22 +111,85 @@ public partial class StrategyPhaseScreen : IScreen
             button.SetData(currentCharacter);
         }
         
-        // 城情報の表示・非表示を制御
-        if (currentCharacter?.Castle != null)
+        // 情報タブパネルの表示・非表示を制御
+        if (currentCharacter?.Country != null || currentCharacter?.Castle != null)
         {
-            ShowCastleInfo(currentCharacter.Castle);
+            ShowInfoTabPanel();
+            UpdateTabContent();
         }
         else
         {
-            HideCastleInfo();
+            HideInfoTabPanel();
         }
     }
 
-    private void ShowCastleInfo(Castle castle)
+    private void ShowInfoTabPanel()
     {
-        var castlePanel = Root.Q<VisualElement>("CastleInfoPanel");
-        castlePanel.style.display = DisplayStyle.Flex;
+        Root.Q<VisualElement>("InfoTabPanel").style.display = DisplayStyle.Flex;
+    }
+
+    private void HideInfoTabPanel()
+    {
+        Root.Q<VisualElement>("InfoTabPanel").style.display = DisplayStyle.None;
+    }
+
+    private void SwitchTab(InfoTab tab)
+    {
+        currentTab = tab;
+        UpdateTabButtons();
+        UpdateTabContent();
+    }
+
+    private void UpdateTabButtons()
+    {
+        // タブボタンの色を更新
+        Root.Q<Button>("TabButtonCastle").style.backgroundColor = currentTab == InfoTab.Castle ? Color.gray : new Color(0.2f, 0.27f, 0.33f);
+        Root.Q<Button>("TabButtonCountry").style.backgroundColor = currentTab == InfoTab.Country ? Color.gray : new Color(0.2f, 0.27f, 0.33f);
+        Root.Q<Button>("TabButtonDiplomacy").style.backgroundColor = currentTab == InfoTab.Diplomacy ? Color.gray : new Color(0.2f, 0.27f, 0.33f);
+    }
+
+    private void UpdateTabContent()
+    {
+        // タブの表示・非表示を制御
+        Root.Q<VisualElement>("CastleInfoTab").style.display = currentTab == InfoTab.Castle ? DisplayStyle.Flex : DisplayStyle.None;
+        Root.Q<VisualElement>("CountryInfoTab").style.display = currentTab == InfoTab.Country ? DisplayStyle.Flex : DisplayStyle.None;
+        Root.Q<VisualElement>("DiplomacyInfoTab").style.display = currentTab == InfoTab.Diplomacy ? DisplayStyle.Flex : DisplayStyle.None;
+
+        // タブボタンの有効・無効を制御
+        Root.Q<Button>("TabButtonCastle").SetEnabled(currentCharacter?.Castle != null);
+        Root.Q<Button>("TabButtonCountry").SetEnabled(currentCharacter?.Country != null);
+        Root.Q<Button>("TabButtonDiplomacy").SetEnabled(currentCharacter?.Country != null);
         
+        // 選択可能なタブがない場合は最初の利用可能なタブに切り替え
+        if (currentTab == InfoTab.Castle && currentCharacter?.Castle == null)
+        {
+            if (currentCharacter?.Country != null)
+            {
+                SwitchTab(InfoTab.Country);
+                return;
+            }
+        }
+        
+        // タブに応じた内容を更新
+        switch (currentTab)
+        {
+            case InfoTab.Castle:
+                if (currentCharacter?.Castle != null)
+                    UpdateCastleTab(currentCharacter.Castle);
+                break;
+            case InfoTab.Country:
+                if (currentCharacter?.Country != null)
+                    UpdateCountryTab(currentCharacter.Country);
+                break;
+            case InfoTab.Diplomacy:
+                if (currentCharacter?.Country != null)
+                    UpdateDiplomacyTab(currentCharacter.Country);
+                break;
+        }
+    }
+
+    private void UpdateCastleTab(Castle castle)
+    {
         // 城のパラメータを表示
         Root.Q<Label>("labelDevLevel").text = ((int)castle.DevLevel).ToString();
         Root.Q<Label>("labelTotalInvestment").text = castle.TotalInvestment.ToString("F0");
@@ -162,10 +239,105 @@ public partial class StrategyPhaseScreen : IScreen
         currentIncomeBar.style.width = Length.Percent(currentIncomeRatio * 100f);
     }
 
-    private void HideCastleInfo()
+    private void UpdateCountryTab(Country country)
     {
-        var castlePanel = Root.Q<VisualElement>("CastleInfoPanel");
-        castlePanel.style.display = DisplayStyle.None;
+        // 国の基本情報を表示
+        Root.Q<Label>("labelRulerName").text = country.Ruler.Name;
+        Root.Q<Label>("labelRulerPersonality").text = country.Ruler.Personality.ToString();
+        Root.Q<Label>("labelCountryBalance").text = ((int)country.GoldBalance).ToString();
+        Root.Q<Label>("labelCountrySurplus").text = country.GoldSurplus.ToString();
+        
+        // 城数と将数を計算して表示
+        var castleCount = country.Castles.Count();
+        var generalCount = country.Vassals.Count();
+        Root.Q<Label>("labelCastleCount").text = castleCount.ToString();
+        Root.Q<Label>("labelGeneralCount").text = generalCount.ToString();
+    }
+
+    private void UpdateDiplomacyTab(Country country)
+    {
+        var container = Root.Q<VisualElement>("DiplomacyRelations");
+        container.Clear();
+        
+        // 他の国との関係を表示（TileInfoEditorWindow:309-341を参考）
+        var world = Core.World;
+        var otherCountries = world.Countries
+            .Where(c => c != country)
+            .OrderBy(o => o.GetRelation(country) == 50 ? 999 : o.GetRelation(country));
+            
+        foreach (var other in otherCountries)
+        {
+            var relation = country.GetRelation(other);
+            var relationItem = CreateDiplomacyRelationItem(other, relation, country);
+            container.Add(relationItem);
+        }
+    }
+
+    private VisualElement CreateDiplomacyRelationItem(Country other, float relation, Country myCountry)
+    {
+        var item = new VisualElement();
+        item.style.flexDirection = FlexDirection.Row;
+        item.style.alignItems = Align.Center;
+        item.style.marginBottom = 5;
+        item.style.paddingTop = 5;
+        item.style.paddingBottom = 5;
+        item.style.borderBottomWidth = 1;
+        item.style.borderBottomColor = new Color(0.3f, 0.3f, 0.3f);
+        
+        // 統治者の顔画像
+        var faceImage = new VisualElement();
+        faceImage.style.width = 40;
+        faceImage.style.height = 40;
+        faceImage.style.marginRight = 10;
+        faceImage.style.backgroundImage = new StyleBackground(Static.GetFaceImage(other.Ruler));
+        //faceImage.style.borderWidth = 1;
+        //faceImage.style.borderColor = Color.white;
+        
+        // 国名と統治者名
+        var nameLabel = new Label($"{other.Ruler.Name}");
+        nameLabel.style.fontSize = 20;
+        nameLabel.style.color = Color.white;
+        nameLabel.style.flexGrow = 1;
+        nameLabel.style.marginRight = 10;
+        
+        // 関係性ラベル
+        var statusLabel = new Label();
+        statusLabel.style.fontSize = 18;
+        statusLabel.style.marginRight = 10;
+        
+        if (myCountry.IsAlly(other))
+        {
+            statusLabel.text = "同盟";
+            statusLabel.style.color = Color.green;
+        }
+        else if (myCountry.IsEnemy(other))
+        {
+            statusLabel.text = "敵対";
+            statusLabel.style.color = Color.red;
+        }
+        else if (myCountry.Neighbors.Contains(other))
+        {
+            statusLabel.text = "隣接";
+            statusLabel.style.color = Color.yellow;
+        }
+        else
+        {
+            statusLabel.text = "";
+        }
+        
+        // 関係度
+        var relationLabel = new Label(relation.ToString());
+        relationLabel.style.fontSize = 20;
+        relationLabel.style.color = relation > 50 ? Color.Lerp(Color.white, Color.green, (relation - 50) / 50f) :
+                                     relation < 50 ? Color.Lerp(Color.red, Color.white, relation / 50f) :
+                                     Color.gray;
+        
+        item.Add(faceImage);
+        item.Add(nameLabel);
+        item.Add(statusLabel);
+        item.Add(relationLabel);
+        
+        return item;
     }
 
     private void ShowCharacterIcons(System.Collections.Generic.IEnumerable<Character> characters, string containerName)
