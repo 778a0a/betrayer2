@@ -20,9 +20,43 @@ public partial class StrategyPhaseScreen
 
     public VisualElement ActionButtons { get; private set; }
 
+    public Label labelDevLevel { get; private set; }
+
+    public Label labelTotalInvestment { get; private set; }
+
+    public VisualElement MaxIncomeBar { get; private set; }
+
+    public VisualElement CurrentIncomeBar { get; private set; }
+
+    public Label labelIncome { get; private set; }
+
+    public Label labelMaxIncome { get; private set; }
+
+    public VisualElement IncomeBar { get; private set; }
+
+    public Label labelExpenditure { get; private set; }
+
+    public Label labelGold { get; private set; }
+
+    public Label labelBalance { get; private set; }
+
+    public Label labelCastleStrength { get; private set; }
+
+    public Label labelTotalPower { get; private set; }
+
+    public Label labelGarrisonedCount { get; private set; }
+
+    public VisualElement GarrisonedCharacterIcons { get; private set; }
+
+    public Label labelDeployedCount { get; private set; }
+
+    public VisualElement DeployedCharacterIcons { get; private set; }
+
     public CharacterSummary CharacterSummary { get; private set; }
 
     public VisualElement ActionsPanel { get; private set; }
+
+    public VisualElement CastleInfoPanel { get; private set; }
 
     public VisualElement Root { get; private set; }
 
@@ -32,8 +66,25 @@ public partial class StrategyPhaseScreen
         labelCostGold = Root?.Q<Label>("labelCostGold");
         labelActionDescription = Root?.Q<Label>("labelActionDescription");
         ActionButtons = Root?.Q<VisualElement>("ActionButtons");
+        labelDevLevel = Root?.Q<Label>("labelDevLevel");
+        labelTotalInvestment = Root?.Q<Label>("labelTotalInvestment");
+        MaxIncomeBar = Root?.Q<VisualElement>("MaxIncomeBar");
+        CurrentIncomeBar = Root?.Q<VisualElement>("CurrentIncomeBar");
+        labelIncome = Root?.Q<Label>("labelIncome");
+        labelMaxIncome = Root?.Q<Label>("labelMaxIncome");
+        IncomeBar = Root?.Q<VisualElement>("IncomeBar");
+        labelExpenditure = Root?.Q<Label>("labelExpenditure");
+        labelGold = Root?.Q<Label>("labelGold");
+        labelBalance = Root?.Q<Label>("labelBalance");
+        labelCastleStrength = Root?.Q<Label>("labelCastleStrength");
+        labelTotalPower = Root?.Q<Label>("labelTotalPower");
+        labelGarrisonedCount = Root?.Q<Label>("labelGarrisonedCount");
+        GarrisonedCharacterIcons = Root?.Q<VisualElement>("GarrisonedCharacterIcons");
+        labelDeployedCount = Root?.Q<Label>("labelDeployedCount");
+        DeployedCharacterIcons = Root?.Q<VisualElement>("DeployedCharacterIcons");
         CharacterSummary = new CharacterSummary(Root?.Q<VisualElement>("CharacterSummary"));
         ActionsPanel = Root?.Q<VisualElement>("ActionsPanel");
+        CastleInfoPanel = Root?.Q<VisualElement>("CastleInfoPanel");
     }
 
     public void ReinitializeComponent(VisualElement root)
@@ -42,7 +93,24 @@ public partial class StrategyPhaseScreen
         labelCostGold = Root?.Q<Label>("labelCostGold");
         labelActionDescription = Root?.Q<Label>("labelActionDescription");
         ActionButtons = Root?.Q<VisualElement>("ActionButtons");
+        labelDevLevel = Root?.Q<Label>("labelDevLevel");
+        labelTotalInvestment = Root?.Q<Label>("labelTotalInvestment");
+        MaxIncomeBar = Root?.Q<VisualElement>("MaxIncomeBar");
+        CurrentIncomeBar = Root?.Q<VisualElement>("CurrentIncomeBar");
+        labelIncome = Root?.Q<Label>("labelIncome");
+        labelMaxIncome = Root?.Q<Label>("labelMaxIncome");
+        IncomeBar = Root?.Q<VisualElement>("IncomeBar");
+        labelExpenditure = Root?.Q<Label>("labelExpenditure");
+        labelGold = Root?.Q<Label>("labelGold");
+        labelBalance = Root?.Q<Label>("labelBalance");
+        labelCastleStrength = Root?.Q<Label>("labelCastleStrength");
+        labelTotalPower = Root?.Q<Label>("labelTotalPower");
+        labelGarrisonedCount = Root?.Q<Label>("labelGarrisonedCount");
+        GarrisonedCharacterIcons = Root?.Q<VisualElement>("GarrisonedCharacterIcons");
+        labelDeployedCount = Root?.Q<Label>("labelDeployedCount");
+        DeployedCharacterIcons = Root?.Q<VisualElement>("DeployedCharacterIcons");
         CharacterSummary = new CharacterSummary(Root?.Q<VisualElement>("CharacterSummary"));
         ActionsPanel = Root?.Q<VisualElement>("ActionsPanel");
+        CastleInfoPanel = Root?.Q<VisualElement>("CastleInfoPanel");
     }
 }
