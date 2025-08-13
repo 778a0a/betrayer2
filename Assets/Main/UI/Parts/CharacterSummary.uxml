@@ -5,12 +5,24 @@
     <!-- PlayerInfo Panel: プレイヤー情報表示パネル -->
     <ui:VisualElement style="padding: 10px; background-color: rgba(50, 50, 80, 0.3);">
         <ui:VisualElement style="flex-direction: row; align-items: center">
-            <ui:Image name="imagePlayerFace" style="width: 170px; height: 170px; background-color: rgba(0, 229, 255, 0.35);" />
+            <ui:VisualElement style="position: relative; width: 170px; height: 170px;">
+                <ui:Image name="imagePlayerFace" style="width: 170px; height: 170px; background-color: rgba(0, 229, 255, 0.35); position: absolute; top: 0; left: 0;" />
+                <ui:Label name="labelMoving" text="出撃中" style="position: absolute; bottom: 0px; right: 0px; font-size: 20px; padding: 2px 6px; color: white; background-color: rgba(255, 0, 0, 0.8); border-radius: 3px;" />
+            </ui:VisualElement>
             <ui:VisualElement style="flex-grow: 1; margin-left: 10px;">
                 <ui:VisualElement style="flex-direction: row; align-items: flex-end;">
                     <ui:Label name="labelPlayerTitle" text="将軍" style="font-size: 28px; margin:0 10px 0 0; padding:0;" />
-                    <ui:Label name="labelPlayerName" text="ハイペリオン" style="font-size: 36px; font-weight: bold; margin:0; " />
-                    <ui:Label name="labelMoving" text="出撃中" style="font-size: 28px; margin:0 0 0 10px; padding:0; color: red;" />
+                    <ui:Label name="labelPlayerName" text="ハイペリオン" style="font-size: 36px; font-weight: bold; margin:0; width:295px;" />
+                    <ui:VisualElement name="TraitContainer" style="flex-direction: row; margin-left: 10px; align-items: flex-end;">
+                        <ui:Label name="traitKnight" text="騎" class="trait-icon" style="font-size: 24px; color: yellow; margin: 0 3px; background-color: rgba(77, 77, 77, 0.8); padding: 2px 4px; border-width: 1px; border-color: gray;" />
+                        <ui:Label name="traitDrillmaster" text="教" class="trait-icon" style="font-size: 24px; color: yellow; margin: 0 3px; background-color: rgba(77, 77, 77, 0.8); padding: 2px 4px; border-width: 1px; border-color: gray;" />
+                        <ui:Label name="traitPirate" text="海" class="trait-icon" style="font-size: 24px; color: yellow; margin: 0 3px; background-color: rgba(77, 77, 77, 0.8); padding: 2px 4px; border-width: 1px; border-color: gray;" />
+                        <ui:Label name="traitAdmiral" text="提" class="trait-icon" style="font-size: 24px; color: yellow; margin: 0 3px; background-color: rgba(77, 77, 77, 0.8); padding: 2px 4px; border-width: 1px; border-color: gray;" />
+                        <ui:Label name="traitHunter" text="狩" class="trait-icon" style="font-size: 24px; color: yellow; margin: 0 3px; background-color: rgba(77, 77, 77, 0.8); padding: 2px 4px; border-width: 1px; border-color: gray;" />
+                        <ui:Label name="traitMountaineer" text="山" class="trait-icon" style="font-size: 24px; color: yellow; margin: 0 3px; background-color: rgba(77, 77, 77, 0.8); padding: 2px 4px; border-width: 1px; border-color: gray;" />
+                        <ui:Label name="traitMerchant" text="商" class="trait-icon" style="font-size: 24px; color: yellow; margin: 0 3px; background-color: rgba(77, 77, 77, 0.8); padding: 2px 4px; border-width: 1px; border-color: gray;" />
+                        <ui:Label name="traitDivineSpeed" text="迅" class="trait-icon" style="font-size: 24px; color: yellow; margin: 0 3px; background-color: rgba(77, 77, 77, 0.8); padding: 2px 4px; border-width: 1px; border-color: gray;" />
+                    </ui:VisualElement>
                 </ui:VisualElement>
                 <!-- 能力値表示 -->
                 <ui:VisualElement name="StatsPanel" style="flex-direction: row; margin-top: 10px;">

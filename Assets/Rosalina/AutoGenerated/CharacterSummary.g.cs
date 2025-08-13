@@ -14,11 +14,31 @@ using UnityEngine.UIElements;
 
 public partial class CharacterSummary
 {
+    public Image imagePlayerFace { get; private set; }
+
+    public Label labelMoving { get; private set; }
+
+    public Label traitKnight { get; private set; }
+
+    public Label traitDrillmaster { get; private set; }
+
+    public Label traitPirate { get; private set; }
+
+    public Label traitAdmiral { get; private set; }
+
+    public Label traitHunter { get; private set; }
+
+    public Label traitMountaineer { get; private set; }
+
+    public Label traitMerchant { get; private set; }
+
+    public Label traitDivineSpeed { get; private set; }
+
     public Label labelPlayerTitle { get; private set; }
 
     public Label labelPlayerName { get; private set; }
 
-    public Label labelMoving { get; private set; }
+    public VisualElement TraitContainer { get; private set; }
 
     public Label labelAttack { get; private set; }
 
@@ -68,16 +88,24 @@ public partial class CharacterSummary
 
     public VisualElement SoldierGrid { get; private set; }
 
-    public Image imagePlayerFace { get; private set; }
-
     public VisualElement Root { get; private set; }
 
     public CharacterSummary(VisualElement root)
     {
         Root = root;
+        imagePlayerFace = Root?.Q<Image>("imagePlayerFace");
+        labelMoving = Root?.Q<Label>("labelMoving");
+        traitKnight = Root?.Q<Label>("traitKnight");
+        traitDrillmaster = Root?.Q<Label>("traitDrillmaster");
+        traitPirate = Root?.Q<Label>("traitPirate");
+        traitAdmiral = Root?.Q<Label>("traitAdmiral");
+        traitHunter = Root?.Q<Label>("traitHunter");
+        traitMountaineer = Root?.Q<Label>("traitMountaineer");
+        traitMerchant = Root?.Q<Label>("traitMerchant");
+        traitDivineSpeed = Root?.Q<Label>("traitDivineSpeed");
         labelPlayerTitle = Root?.Q<Label>("labelPlayerTitle");
         labelPlayerName = Root?.Q<Label>("labelPlayerName");
-        labelMoving = Root?.Q<Label>("labelMoving");
+        TraitContainer = Root?.Q<VisualElement>("TraitContainer");
         labelAttack = Root?.Q<Label>("labelAttack");
         labelDefense = Root?.Q<Label>("labelDefense");
         labelIntelligence = Root?.Q<Label>("labelIntelligence");
@@ -102,15 +130,24 @@ public partial class CharacterSummary
         soldier14 = new CharacterInfoSoldierIcon(Root?.Q<VisualElement>("soldier14"));
         StatsPanel = Root?.Q<VisualElement>("StatsPanel");
         SoldierGrid = Root?.Q<VisualElement>("SoldierGrid");
-        imagePlayerFace = Root?.Q<Image>("imagePlayerFace");
     }
 
     public void ReinitializeComponent(VisualElement root)
     {
         Root = root;
+        imagePlayerFace = Root?.Q<Image>("imagePlayerFace");
+        labelMoving = Root?.Q<Label>("labelMoving");
+        traitKnight = Root?.Q<Label>("traitKnight");
+        traitDrillmaster = Root?.Q<Label>("traitDrillmaster");
+        traitPirate = Root?.Q<Label>("traitPirate");
+        traitAdmiral = Root?.Q<Label>("traitAdmiral");
+        traitHunter = Root?.Q<Label>("traitHunter");
+        traitMountaineer = Root?.Q<Label>("traitMountaineer");
+        traitMerchant = Root?.Q<Label>("traitMerchant");
+        traitDivineSpeed = Root?.Q<Label>("traitDivineSpeed");
         labelPlayerTitle = Root?.Q<Label>("labelPlayerTitle");
         labelPlayerName = Root?.Q<Label>("labelPlayerName");
-        labelMoving = Root?.Q<Label>("labelMoving");
+        TraitContainer = Root?.Q<VisualElement>("TraitContainer");
         labelAttack = Root?.Q<Label>("labelAttack");
         labelDefense = Root?.Q<Label>("labelDefense");
         labelIntelligence = Root?.Q<Label>("labelIntelligence");
@@ -135,6 +172,5 @@ public partial class CharacterSummary
         soldier14 = new CharacterInfoSoldierIcon(Root?.Q<VisualElement>("soldier14"));
         StatsPanel = Root?.Q<VisualElement>("StatsPanel");
         SoldierGrid = Root?.Q<VisualElement>("SoldierGrid");
-        imagePlayerFace = Root?.Q<Image>("imagePlayerFace");
     }
 }

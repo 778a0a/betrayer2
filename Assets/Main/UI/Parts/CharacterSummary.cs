@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -22,6 +23,15 @@ public partial class CharacterSummary
         labelPlayerGold.text = chara.Gold.ToString();
         labelPlayerContribution.text = chara.Contribution.ToString("0");
         labelPlayerPrestige.text = chara.Prestige.ToString("0");
+        // 特性情報の更新
+        traitKnight.style.display = Util.Display(chara.Traits.HasFlag(Traits.Knight));
+        traitDrillmaster.style.display = Util.Display(chara.Traits.HasFlag(Traits.Drillmaster));
+        traitPirate.style.display = Util.Display(chara.Traits.HasFlag(Traits.Pirate));
+        traitAdmiral.style.display = Util.Display(chara.Traits.HasFlag(Traits.Admiral));
+        traitHunter.style.display = Util.Display(chara.Traits.HasFlag(Traits.Hunter));
+        traitMountaineer.style.display = Util.Display(chara.Traits.HasFlag(Traits.Mountaineer));
+        traitMerchant.style.display = Util.Display(chara.Traits.HasFlag(Traits.Merchant));
+        traitDivineSpeed.style.display = Util.Display(chara.Traits.HasFlag(Traits.DivineSpeed));
 
         // 兵士情報の更新
         soldierIcons ??= new[] { soldier00, soldier01, soldier02, soldier03, soldier04, soldier05, soldier06, soldier07, soldier08, soldier09, soldier10, soldier11, soldier12, soldier13, soldier14 };
