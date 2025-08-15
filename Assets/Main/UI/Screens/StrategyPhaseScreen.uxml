@@ -11,124 +11,11 @@
                 <ui:Label text="戦略" style="font-size: 40px; font-weight: bold;" />
                 <ui:Label text="フェイズ" style="font-size: 30px; font-weight: bold;" />
             </ui:VisualElement>
-            <ui:Button text="×" style="font-size: 20px; width: 40px; height: 40px; -unity-font-style: bold;" />
+            <ui:Button text="×" style="font-size: 28px; width: 40px; height: 40px; -unity-font-style: bold;" />
         </ui:VisualElement>
 
         <!-- プレイヤー情報パネル -->
         <ui:Instance name="CharacterSummary" template="CharacterSummary" />
-
-        <!-- 情報タブパネル -->
-        <ui:VisualElement name="InfoTabPanel" style="margin-top: 10px; padding: 10px; background-color: #223344; display: none;">
-            <!-- タブボタン -->
-            <ui:VisualElement style="flex-direction: row; margin-bottom: 10px;">
-                <ui:Button name="TabButtonCastle" text="城情報" style="font-size: 24px; padding: 8px 16px; margin-right: 5px; background-color: #445566;" />
-                <ui:Button name="TabButtonCountry" text="国情報" style="font-size: 24px; padding: 8px 16px; margin-right: 5px; background-color: #334455;" />
-                <ui:Button name="TabButtonDiplomacy" text="外交" style="font-size: 24px; padding: 8px 16px; background-color: #334455;" />
-            </ui:VisualElement>
-
-            <!-- 城情報タブ -->
-            <ui:VisualElement name="CastleInfoTab" style="display: flex;">
-                <!-- 城の基本情報 -->
-                <ui:VisualElement style="flex-direction: row; margin-bottom: 10px;">
-                    <ui:VisualElement style="flex: 1;">
-                        <ui:VisualElement style="flex-direction: row; align-items: center; margin-bottom: 5px;">
-                            <ui:Label text="発展度:" style="margin-right: 10px; font-size: 24px;" />
-                            <ui:Label name="labelDevLevel" text="0" style="font-size: 24px; color: cyan;" />
-                            <ui:Label text="(総投資額:" style="margin-left: 10px; font-size: 20px;" />
-                            <ui:Label name="labelTotalInvestment" text="0" style="font-size: 20px; color: yellow;" />
-                            <ui:Label text=")" style="font-size: 20px;" />
-                        </ui:VisualElement>
-                        <ui:VisualElement style="flex-direction: row; align-items: center; margin-bottom: 5px;">
-                            <ui:Label text="収入:" style="margin-right: 10px; font-size: 24px;" />
-                            <ui:Label name="labelIncome" text="0" style="font-size: 24px; color: green; margin-right: 5px;" />
-                            <ui:Label text="/" style="font-size: 24px; margin-right: 5px;" />
-                            <ui:Label name="labelMaxIncome" text="0" style="font-size: 24px; color: lightgreen; margin-right: 10px;" />
-                            <ui:VisualElement name="IncomeBar" style="width: 200px; height: 20px; background-color: gray; margin-right: 15px; border-width: 1px; border-color: white;">
-                                <ui:VisualElement name="MaxIncomeBar" style="position: absolute; top: 0; left: 0; height: 100%; background-color: rgba(255, 255, 0, 0.3);" />
-                                <ui:VisualElement name="CurrentIncomeBar" style="position: absolute; top: 0; left: 0; height: 100%; background-color: yellow;" />
-                            </ui:VisualElement>
-                            <ui:Label text="支出:" style="margin-right: 10px; font-size: 24px;" />
-                            <ui:Label name="labelExpenditure" text="0" style="font-size: 24px; color: red;" />
-                        </ui:VisualElement>
-                        <ui:VisualElement style="flex-direction: row; align-items: center; margin-bottom: 5px;">
-                            <ui:Label text="ゴールド:" style="margin-right: 10px; font-size: 24px;" />
-                            <ui:Label name="labelGold" text="0" style="font-size: 24px; color: yellow;" />
-                            <ui:Label text="(" style="margin-left: 5px; font-size: 20px;" />
-                            <ui:Label name="labelBalance" text="+0" style="font-size: 20px; color: white;" />
-                            <ui:Label text=")" style="font-size: 20px;" />
-                        </ui:VisualElement>
-                        <ui:VisualElement style="flex-direction: row; align-items: center; margin-bottom: 5px;">
-                            <ui:Label text="城塞レベル:" style="margin-right: 10px; font-size: 24px;" />
-                            <ui:Label name="labelCastleStrength" text="0" style="font-size: 24px; color: cyan;" />
-                            <ui:Label text="総兵力:" style="margin-left: 15px; margin-right: 10px; font-size: 24px;" />
-                            <ui:Label name="labelTotalPower" text="0" style="font-size: 24px; color: orange;" />
-                        </ui:VisualElement>
-                    </ui:VisualElement>
-                </ui:VisualElement>
-
-                <!-- キャラクターアイコン一覧 -->
-                <ui:VisualElement style="margin-top: 10px;">
-                    <!-- 在城中キャラクター -->
-                    <ui:VisualElement style="margin-bottom: 15px;">
-                        <ui:VisualElement style="flex-direction: row; align-items: center; margin-bottom: 5px;">
-                            <ui:Label text="在城中" style="font-size: 24px; font-weight: bold;" />
-                            <ui:Label name="labelGarrisonedCount" text="(0人)" style="margin-left: 10px; font-size: 20px; color: gray;" />
-                        </ui:VisualElement>
-                        <ui:VisualElement name="GarrisonedCharacterIcons" style="flex-direction: row; flex-wrap: wrap;">
-                            <!-- 在城中キャラクターアイコンは動的に生成 -->
-                        </ui:VisualElement>
-                    </ui:VisualElement>
-                    
-                    <!-- 出撃中キャラクター -->
-                    <ui:VisualElement>
-                        <ui:VisualElement style="flex-direction: row; align-items: center; margin-bottom: 5px;">
-                            <ui:Label text="出撃中" style="font-size: 24px; font-weight: bold;" />
-                            <ui:Label name="labelDeployedCount" text="(0人)" style="margin-left: 10px; font-size: 20px; color: gray;" />
-                        </ui:VisualElement>
-                        <ui:VisualElement name="DeployedCharacterIcons" style="flex-direction: row; flex-wrap: wrap;">
-                            <!-- 出撃中キャラクターアイコンは動的に生成 -->
-                        </ui:VisualElement>
-                    </ui:VisualElement>
-                </ui:VisualElement>
-            </ui:VisualElement>
-
-            <!-- 国情報タブ -->
-            <ui:VisualElement name="CountryInfoTab" style="display: none;">
-                <!-- 国の基本情報 -->
-                <ui:VisualElement style="flex-direction: row; margin-bottom: 10px;">
-                    <ui:VisualElement style="flex: 1;">
-                        <ui:VisualElement style="flex-direction: row; align-items: center; margin-bottom: 5px;">
-                            <ui:Label text="統治者:" style="margin-right: 10px; font-size: 24px;" />
-                            <ui:Label name="labelRulerName" text="統治者名" style="font-size: 24px; color: cyan;" />
-                            <ui:Label text="(" style="margin-left: 10px; font-size: 20px;" />
-                            <ui:Label name="labelRulerPersonality" text="性格" style="font-size: 20px; color: lightblue;" />
-                            <ui:Label text=")" style="font-size: 20px;" />
-                        </ui:VisualElement>
-                        <ui:VisualElement style="flex-direction: row; align-items: center; margin-bottom: 5px;">
-                            <ui:Label text="国庫:" style="margin-right: 10px; font-size: 24px;" />
-                            <ui:Label name="labelCountryBalance" text="0" style="font-size: 24px; color: yellow;" />
-                            <ui:Label text="余剰:" style="margin-left: 15px; margin-right: 10px; font-size: 24px;" />
-                            <ui:Label name="labelCountrySurplus" text="0" style="font-size: 24px; color: green;" />
-                        </ui:VisualElement>
-                        <ui:VisualElement style="flex-direction: row; align-items: center;">
-                            <ui:Label text="城数:" style="margin-right: 10px; font-size: 24px;" />
-                            <ui:Label name="labelCastleCount" text="0" style="font-size: 24px; color: orange;" />
-                            <ui:Label text="将数:" style="margin-left: 15px; margin-right: 10px; font-size: 24px;" />
-                            <ui:Label name="labelGeneralCount" text="0" style="font-size: 24px; color: lightcyan;" />
-                        </ui:VisualElement>
-                    </ui:VisualElement>
-                </ui:VisualElement>
-            </ui:VisualElement>
-
-            <!-- 外交情報タブ -->
-            <ui:VisualElement name="DiplomacyInfoTab" style="display: none;">
-                <ui:ScrollView name="DiplomacyScrollView" style="max-height: 400px;">
-                    <ui:VisualElement name="DiplomacyRelations" style="flex-direction: column;">
-                        <!-- 外交関係は動的に生成 -->
-                    </ui:VisualElement>
-                </ui:ScrollView>
-            </ui:VisualElement>
-        </ui:VisualElement>
 
         <!-- アクションボタンエリア -->
         <ui:VisualElement name="ActionsPanel" class="actions-panel" style="margin-top: 10px; padding: 10px; background-color: #223344;">
@@ -147,6 +34,118 @@
             </ui:VisualElement>
         </ui:VisualElement>
 
+        <!-- 情報タブパネル -->
+        <ui:VisualElement name="InfoTabPanel" style="margin-top: 10px; flex: 1; padding: 10px; background-color: #223344;">
+            <!-- タブボタン -->
+            <ui:VisualElement style="flex-direction: row;">
+                <ui:Button name="TabButtonCastle" text="城情報" style="font-size: 28px;" />
+                <ui:Button name="TabButtonCountry" text="国情報" style="font-size: 28px;" />
+                <ui:Button name="TabButtonDiplomacy" text="外交情報" style="font-size: 28px;" />
+            </ui:VisualElement>
+
+            <!-- 城情報タブ -->
+            <ui:VisualElement name="CastleInfoTab" style="display: flex;">
+                <!-- 城の基本情報 -->
+                <ui:VisualElement style="flex-direction: row; margin-top: 10px;">
+                    <ui:VisualElement style="flex: 1;">
+                        <ui:VisualElement style="flex-direction: row; align-items: center; margin-top: 5px;">
+                            <ui:Label text="発展度:" style="margin-right: 10px; font-size: 28px;" />
+                            <ui:Label name="labelDevLevel" text="0" style="font-size: 28px; color: cyan;" />
+                            <ui:Label text="(総投資額:" style="margin-left: 10px; font-size: 28px;" />
+                            <ui:Label name="labelTotalInvestment" text="0" style="font-size: 28px; color: yellow;" />
+                            <ui:Label text=")" style="font-size: 28px;" />
+                        </ui:VisualElement>
+                        <ui:VisualElement style="flex-direction: row; align-items: center; margin-top: 5px;">
+                            <ui:Label text="収入:" style="margin-right: 10px; font-size: 28px;" />
+                            <ui:Label name="labelIncome" text="0" style="font-size: 28px; color: green; margin-right: 5px;" />
+                            <ui:Label text="/" style="font-size: 28px; margin-right: 5px;" />
+                            <ui:Label name="labelMaxIncome" text="0" style="font-size: 28px; color: lightgreen; margin-right: 10px;" />
+                            <ui:VisualElement name="IncomeBar" style="width: 200px; height: 20px; background-color: gray; margin-right: 15px; border-width: 1px; border-color: white;">
+                                <ui:VisualElement name="MaxIncomeBar" style="position: absolute; top: 0; left: 0; height: 100%; background-color: rgba(255, 255, 0, 0.3);" />
+                                <ui:VisualElement name="CurrentIncomeBar" style="position: absolute; top: 0; left: 0; height: 100%; background-color: yellow;" />
+                            </ui:VisualElement>
+                            <ui:Label text="支出:" style="margin-right: 10px; font-size: 28px;" />
+                            <ui:Label name="labelExpenditure" text="0" style="font-size: 28px; color: red;" />
+                        </ui:VisualElement>
+                        <ui:VisualElement style="flex-direction: row; align-items: center; margin-top: 5px;">
+                            <ui:Label text="ゴールド:" style="margin-right: 10px; font-size: 28px;" />
+                            <ui:Label name="labelGold" text="0" style="font-size: 28px; color: yellow;" />
+                            <ui:Label text="(" style="margin-left: 5px; font-size: 28px;" />
+                            <ui:Label name="labelBalance" text="+0" style="font-size: 28px; color: white;" />
+                            <ui:Label text=")" style="font-size: 28px;" />
+                        </ui:VisualElement>
+                        <ui:VisualElement style="flex-direction: row; align-items: center; margin-top: 5px;">
+                            <ui:Label text="城塞レベル:" style="margin-right: 10px; font-size: 28px;" />
+                            <ui:Label name="labelCastleStrength" text="0" style="font-size: 28px; color: cyan;" />
+                            <ui:Label text="総兵力:" style="margin-left: 15px; margin-right: 10px; font-size: 28px;" />
+                            <ui:Label name="labelTotalPower" text="0" style="font-size: 28px; color: orange;" />
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                </ui:VisualElement>
+
+                <!-- キャラクターアイコン一覧 -->
+                <ui:VisualElement style="margin-top: 10px;">
+                    <!-- 在城中キャラクター -->
+                    <ui:VisualElement style="margin-top: 15px;">
+                        <ui:VisualElement style="flex-direction: row; align-items: center; margin-top: 5px;">
+                            <ui:Label text="在城中" style="font-size: 28px; font-weight: bold;" />
+                            <ui:Label name="labelGarrisonedCount" text="(0人)" style="margin-left: 10px; font-size: 28px; color: gray;" />
+                        </ui:VisualElement>
+                        <ui:VisualElement name="GarrisonedCharacterIcons" style="flex-direction: row; flex-wrap: wrap;">
+                            <!-- 在城中キャラクターアイコンは動的に生成 -->
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                    
+                    <!-- 出撃中キャラクター -->
+                    <ui:VisualElement>
+                        <ui:VisualElement style="flex-direction: row; align-items: center; margin-top: 5px;">
+                            <ui:Label text="出撃中" style="font-size: 28px; font-weight: bold;" />
+                            <ui:Label name="labelDeployedCount" text="(0人)" style="margin-left: 10px; font-size: 28px; color: gray;" />
+                        </ui:VisualElement>
+                        <ui:VisualElement name="DeployedCharacterIcons" style="flex-direction: row; flex-wrap: wrap;">
+                            <!-- 出撃中キャラクターアイコンは動的に生成 -->
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                </ui:VisualElement>
+            </ui:VisualElement>
+
+            <!-- 国情報タブ -->
+            <ui:VisualElement name="CountryInfoTab" style="display: none;">
+                <!-- 国の基本情報 -->
+                <ui:VisualElement style="flex-direction: row; margin-top: 10px;">
+                    <ui:VisualElement style="flex: 1;">
+                        <ui:VisualElement style="flex-direction: row; align-items: center; margin-top: 5px;">
+                            <ui:Label text="統治者:" style="margin-right: 10px; font-size: 28px;" />
+                            <ui:Label name="labelRulerName" text="統治者名" style="font-size: 28px; color: cyan;" />
+                            <ui:Label text="(" style="margin-left: 10px; font-size: 28px;" />
+                            <ui:Label name="labelRulerPersonality" text="性格" style="font-size: 28px; color: lightblue;" />
+                            <ui:Label text=")" style="font-size: 28px;" />
+                        </ui:VisualElement>
+                        <ui:VisualElement style="flex-direction: row; align-items: center; margin-top: 5px;">
+                            <ui:Label text="国庫:" style="margin-right: 10px; font-size: 28px;" />
+                            <ui:Label name="labelCountryBalance" text="0" style="font-size: 28px; color: yellow;" />
+                            <ui:Label text="余剰:" style="margin-left: 15px; margin-right: 10px; font-size: 28px;" />
+                            <ui:Label name="labelCountrySurplus" text="0" style="font-size: 28px; color: green;" />
+                        </ui:VisualElement>
+                        <ui:VisualElement style="flex-direction: row; align-items: center;">
+                            <ui:Label text="城数:" style="margin-right: 10px; font-size: 28px;" />
+                            <ui:Label name="labelCastleCount" text="0" style="font-size: 28px; color: orange;" />
+                            <ui:Label text="将数:" style="margin-left: 15px; margin-right: 10px; font-size: 28px;" />
+                            <ui:Label name="labelGeneralCount" text="0" style="font-size: 28px; color: lightcyan;" />
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                </ui:VisualElement>
+            </ui:VisualElement>
+
+            <!-- 外交情報タブ -->
+            <ui:VisualElement name="DiplomacyInfoTab" style="display: none;">
+                <ui:ScrollView name="DiplomacyScrollView" style="max-height: 400px;">
+                    <ui:VisualElement name="DiplomacyRelations" style="flex-direction: column;">
+                        <!-- 外交関係は動的に生成 -->
+                    </ui:VisualElement>
+                </ui:ScrollView>
+            </ui:VisualElement>
+        </ui:VisualElement>
 
     </ui:VisualElement>
 </ui:UXML>
