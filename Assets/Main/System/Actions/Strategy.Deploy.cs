@@ -31,10 +31,56 @@ partial class StrategyActions
             return true;
         }
 
+        public override bool CanUIEnable(Character actor)
+        {
+            
+            return actor.CanPay(Cost(new(actor, estimate: true))) &&
+                // 進軍可能なキャラがいる場合のみ有効
+                actor.Castle.Members.Any(m => m.IsDefendable);
+        }
+
         public override ActionCost Cost(ActionArgs args) => ActionCost.Of(0, 1, 0);
 
-        public override ValueTask Do(ActionArgs args)
+        public override async ValueTask Do(ActionArgs args)
         {
+            var actor = args.actor;
+
+            // プレーヤーの場合
+            if (actor.IsPlayer)
+            {
+                // TODO 専用画面・マップから選択可能にする
+
+                // 隣接する城を取得する。
+                var neighborCastles = actor.Castle.Neighbors
+                    .Where(c => c != actor.Castle)
+                    .ToList();
+                args.targetCastle = (await UI.SelectCharacterScreen.Show(
+                    "進軍先の城を選択してください",
+                    "キャンセル",
+                    neighborCastles.Select(c => c.Boss).ToList(),
+                    _ => true
+                )).Castle;
+
+                if (args.targetCastle == null)
+                {
+                    Debug.Log("城選択がキャンセルされました。");
+                    return;
+                }
+
+                // 進軍するキャラを選択する
+                args.targetCharacter = (await UI.SelectCharacterScreen.Show(
+                    "進軍するキャラクターを選択してください",
+                    "キャンセル",
+                    actor.Castle.Members.Where(m => m.IsDefendable).ToList(),
+                    _ => true
+                ));
+
+                if (args.targetCastle == null)
+                {
+                    Debug.Log("キャラクター選択がキャンセルされました。");
+                    return;
+                }
+            }
             Util.IsTrue(CanDo(args));
 
             var force = new Force(World, args.targetCharacter, args.targetCharacter.Castle.Position);
@@ -42,10 +88,9 @@ partial class StrategyActions
             force.SetDestination(args.targetCastle);
             World.Forces.Register(force);
 
-            //Debug.Log($"{force} が出撃しました。");
+            Debug.Log($"{force} が出撃しました。");
 
             PayCost(args);
-            return default;
         }
     }
 }
