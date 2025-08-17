@@ -34,12 +34,17 @@ partial class PersonalActions
         {
             Util.IsTrue(action.CanDo(args));
             var chara = args.actor;
+            
             // ランダムに町を選ぶ。
             var maxInvestment = chara.Castle.Towns.Max(t => t.TotalInvestment);
             var town = chara.Castle.Towns.RandomPickWeighted(t => 100 + (maxInvestment - t.TotalInvestment));
 
+            // 投資金額を補正する。
+            // 能力値
             var adj = 1 + (chara.Governing - 75) / 100f;
+            // 特性
             if (chara.Traits.HasFlag(Traits.Merchant)) adj += 0.1f;
+            // 地形
             var adjTerrain = GameCore.Instance.World.Map.GetTile(town).Terrain switch
             {
                 Terrain.River or Terrain.LargeRiver => 0.2f,
@@ -48,12 +53,14 @@ partial class PersonalActions
                 Terrain.Forest => 0.75f,
                 _ => 1
             };
+            // 総投資額に加算する。
             town.TotalInvestment += GoldCost * adj;
 
+            // 功績を加算する。
             var contribAdj = town.Castle.Objective == CastleObjective.Commerce ? 1.5f : 1;
             chara.Contribution += adj * contribAdj;
-            action.PayCost(args);
 
+            action.PayCost(args);
             return default;
         }
     }

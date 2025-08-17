@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -70,7 +72,20 @@ public class ActionButtonHelper
         }
         else
         {
-            labelCostGold.text = cost.actorGold.ToString();
+            var costs = new List<string>();
+            if (cost.actorGold > 0)
+            {
+                costs.Add($"所持金 <color=yellow>{cost.actorGold}</color>");
+            }
+            if (cost.castleGold > 0)
+            {
+                costs.Add($"城資金 <color=yellow>{cost.castleGold}</color>");
+            }
+            if (costs.Count == 0)
+            {
+                costs.Add("なし");
+            }
+            labelCostGold.text = string.Join(", ", costs);
         }
     }
 
