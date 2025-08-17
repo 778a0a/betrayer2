@@ -31,7 +31,7 @@ public partial class StrategyPhaseScreen : IScreen
             ActionButtonHelper.Strategy(a => a.Ally),
             ActionButtonHelper.Strategy(a => a.Goodwill),
             ActionButtonHelper.Strategy(a => a.Invest),
-            ActionButtonHelper.Strategy(a => a.BuildTown),
+            //ActionButtonHelper.Strategy(a => a.BuildTown),
             ActionButtonHelper.Strategy(a => a.DepositCastleGold),
             ActionButtonHelper.Strategy(a => a.WithdrawCastleGold),
             ActionButtonHelper.Strategy(a => a.BecomeIndependent),
