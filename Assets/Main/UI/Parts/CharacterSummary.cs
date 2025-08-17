@@ -20,7 +20,9 @@ public partial class CharacterSummary
         labelIntelligence.text = chara.Intelligence.ToString();
         labelGoverning.text = chara.Governing.ToString();
         // 資産情報の更新
+        PlayerInfoContainer.style.display = Util.Display(chara.IsPlayer);
         labelPlayerGold.text = chara.Gold.ToString();
+        labelPlayerAP.text = chara.ActionPoints.ToString();
         labelPlayerContribution.text = chara.Contribution.ToString("0");
         labelPlayerPrestige.text = chara.Prestige.ToString("0");
         // 特性情報の更新

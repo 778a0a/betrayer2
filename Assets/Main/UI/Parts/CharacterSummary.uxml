@@ -36,12 +36,16 @@
                     <ui:Label name="labelGoverning" text="85" style="font-size: 28px; color: #8f8; " />
                 </ui:VisualElement>
                 <ui:VisualElement style="flex-direction: row; margin-top: 10px;">
-                    <ui:Label text="所持金:" style="font-size: 28px; margin: 0 10px 0 0; " />
-                    <ui:Label name="labelPlayerGold" text="1,000" style="font-size: 28px; color: yellow; " />
-                    <ui:Label text="功績:" style="font-size: 28px; margin: 0 10px 0 20px; " />
+                    <ui:Label text="功績:" style="font-size: 28px; margin: 0 10px 0 0; " />
                     <ui:Label name="labelPlayerContribution" text="10000" style="font-size: 28px; color: white; " />
                     <ui:Label text="名声:" style="font-size: 28px; margin: 0 10px 0 20px; " />
                     <ui:Label name="labelPlayerPrestige" text="75000" style="font-size: 28px; color: white; " />
+                    <ui:VisualElement name="PlayerInfoContainer" style="flex-direction: row;">
+                        <ui:Label text="所持金:" style="font-size: 28px; margin: 0 10px 0 20px; " />
+                        <ui:Label name="labelPlayerGold" text="1,000" style="font-size: 28px; color: yellow; " />
+                        <ui:Label text="AP:" style="font-size: 28px; margin: 0 10px 0 20px; " />
+                        <ui:Label name="labelPlayerAP" text="10" style="font-size: 28px; color: red; " />
+                    </ui:VisualElement>
                 </ui:VisualElement>
                 <ui:VisualElement name="SoldierGrid" style="flex-direction: row; flex-wrap: wrap; margin-top: 10px;">
                     <ui:Instance name="soldier00" template="CharacterInfoSoldierIcon" />

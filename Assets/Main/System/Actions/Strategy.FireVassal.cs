@@ -24,8 +24,9 @@ partial class StrategyActions
 
         public override bool CanUIEnable(Character actor)
         {
-            // 配下がいる場合のみ有効
-            return actor.Castle?.Members.Where(m => m != actor).Any() == true;
+            return actor.CanPay(Cost(new(actor, estimate: true))) &&
+                // 配下がいる場合のみ有効
+                (actor.Castle?.Members.Where(m => m != actor).Any() ?? false);
         }
 
         public override async ValueTask Do(ActionArgs args)

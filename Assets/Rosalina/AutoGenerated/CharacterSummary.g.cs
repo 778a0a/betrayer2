@@ -50,9 +50,13 @@ public partial class CharacterSummary
 
     public Label labelPlayerGold { get; private set; }
 
+    public Label labelPlayerAP { get; private set; }
+
     public Label labelPlayerContribution { get; private set; }
 
     public Label labelPlayerPrestige { get; private set; }
+
+    public VisualElement PlayerInfoContainer { get; private set; }
 
     public CharacterInfoSoldierIcon soldier00 { get; private set; }
 
@@ -111,8 +115,10 @@ public partial class CharacterSummary
         labelIntelligence = Root?.Q<Label>("labelIntelligence");
         labelGoverning = Root?.Q<Label>("labelGoverning");
         labelPlayerGold = Root?.Q<Label>("labelPlayerGold");
+        labelPlayerAP = Root?.Q<Label>("labelPlayerAP");
         labelPlayerContribution = Root?.Q<Label>("labelPlayerContribution");
         labelPlayerPrestige = Root?.Q<Label>("labelPlayerPrestige");
+        PlayerInfoContainer = Root?.Q<VisualElement>("PlayerInfoContainer");
         soldier00 = new CharacterInfoSoldierIcon(Root?.Q<VisualElement>("soldier00"));
         soldier01 = new CharacterInfoSoldierIcon(Root?.Q<VisualElement>("soldier01"));
         soldier02 = new CharacterInfoSoldierIcon(Root?.Q<VisualElement>("soldier02"));
@@ -153,8 +159,10 @@ public partial class CharacterSummary
         labelIntelligence = Root?.Q<Label>("labelIntelligence");
         labelGoverning = Root?.Q<Label>("labelGoverning");
         labelPlayerGold = Root?.Q<Label>("labelPlayerGold");
+        labelPlayerAP = Root?.Q<Label>("labelPlayerAP");
         labelPlayerContribution = Root?.Q<Label>("labelPlayerContribution");
         labelPlayerPrestige = Root?.Q<Label>("labelPlayerPrestige");
+        PlayerInfoContainer = Root?.Q<VisualElement>("PlayerInfoContainer");
         soldier00 = new CharacterInfoSoldierIcon(Root?.Q<VisualElement>("soldier00"));
         soldier01 = new CharacterInfoSoldierIcon(Root?.Q<VisualElement>("soldier01"));
         soldier02 = new CharacterInfoSoldierIcon(Root?.Q<VisualElement>("soldier02"));
