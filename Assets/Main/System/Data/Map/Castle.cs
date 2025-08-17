@@ -9,12 +9,22 @@ using UnityEngine;
 /// </summary>
 public class Castle : ICountryEntity, IMapEntity
 {
+    /// <summary>
+    /// ID
+    /// </summary>
     public int Id { get; set; }
-
     /// <summary>
     /// 位置
     /// </summary>
     public MapPosition Position { get; set; }
+    /// <summary>
+    /// 地方
+    /// </summary>
+    public string Region { get; set; }
+    /// <summary>
+    /// 名称
+    /// </summary>
+    public string Name { get; set; }
 
     /// <summary>
     /// 所有国

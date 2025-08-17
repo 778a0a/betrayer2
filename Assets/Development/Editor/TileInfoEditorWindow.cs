@@ -688,6 +688,8 @@ public class TileInfoEditorWindow : EditorWindow
             // ヘッダー
             EditorGUILayout.BeginHorizontal();
             BoldLabel($"城情報 (ID: {castle.Id})");
+            castle.Name = EditorGUILayout.TextField(castle.Name, GUILayout.Width(200));
+            castle.Region = EditorGUILayout.TextField(castle.Region, GUILayout.Width(200));
             Label("X");
             relocateX = EditorGUILayout.IntField(relocateX);
             Label("Y");
