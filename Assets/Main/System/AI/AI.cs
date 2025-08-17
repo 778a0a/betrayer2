@@ -116,13 +116,13 @@ public class AI
         // 親善
         foreach (var neighbor in neighbors.OrderBy(_ => Random.value))
         {
-            void Do()
+            async ValueTask Do()
             {
                 var action = core.StrategyActions.Goodwill;
                 var args = action.Args(country.Ruler, neighbor);
                 if (action.CanDo(args))
                 {
-                    action.Do(args);
+                    await action.Do(args);
                 }
             }
 
@@ -212,7 +212,7 @@ public class AI
 
             if ((prob / 12).Chance())
             {
-                Do();
+                await Do();
             }
         }
     }
