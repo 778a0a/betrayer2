@@ -87,9 +87,17 @@ partial class GameCore
                     .FirstOrDefault();
                 if (target != null)
                 {
-                    // TODO 解雇アクションを使う。
-                    target.ChangeCastle(target.Castle, true);
-                    Debug.LogError($"{country} 赤字のため、{target}を解雇しました。");
+                    var act = StrategyActions.FireVassal;
+                    var args = act.Args(chara, target);
+                    Debug.LogError($"{country} 赤字のため、{target}を解雇します。");
+                    if (act.CanDo(args))
+                    {
+                        await StrategyActions.FireVassal.Do(args);
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"{country} 赤字のため、{target}を解雇しようとしましたが実行不可でした。");
+                    }
                 }
             }
 

@@ -68,7 +68,6 @@ partial class StrategyActions
             // TODO targetがプレーヤーの場合
 
             var target = args.targetCharacter;
-            target.Contribution /= 2;
             target.IsImportant = false;
             target.OrderIndex = actor.Country.Members.Max(m => m.OrderIndex) + 1;
             target.Loyalty = 80 + target.Fealty * 2;

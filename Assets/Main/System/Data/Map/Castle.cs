@@ -203,7 +203,7 @@ public class Castle : ICountryEntity, IMapEntity
 
     public override string ToString()
     {
-        return $"城({Position} 城主: {Boss?.Name ?? "無"} - {Country.Ruler.Name}軍)";
+        return $"城({Name} 城主: {Boss?.Name ?? "無"} - {Country.Ruler.Name}軍)";
     }
 }
 
