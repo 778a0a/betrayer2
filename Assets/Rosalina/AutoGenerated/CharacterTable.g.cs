@@ -30,6 +30,8 @@ public partial class CharacterTable
 
     public Label labelHeaderPrestige { get; private set; }
 
+    public Label labelHeaderLoyalty { get; private set; }
+
     public VisualElement Header { get; private set; }
 
     public ListView ListView { get; private set; }
@@ -47,6 +49,7 @@ public partial class CharacterTable
         labelHeaderStatus = Root?.Q<Label>("labelHeaderStatus");
         labelHeaderContribution = Root?.Q<Label>("labelHeaderContribution");
         labelHeaderPrestige = Root?.Q<Label>("labelHeaderPrestige");
+        labelHeaderLoyalty = Root?.Q<Label>("labelHeaderLoyalty");
         Header = Root?.Q<VisualElement>("Header");
         ListView = Root?.Q<ListView>("ListView");
     }
@@ -62,6 +65,7 @@ public partial class CharacterTable
         labelHeaderStatus = Root?.Q<Label>("labelHeaderStatus");
         labelHeaderContribution = Root?.Q<Label>("labelHeaderContribution");
         labelHeaderPrestige = Root?.Q<Label>("labelHeaderPrestige");
+        labelHeaderLoyalty = Root?.Q<Label>("labelHeaderLoyalty");
         Header = Root?.Q<VisualElement>("Header");
         ListView = Root?.Q<ListView>("ListView");
     }

@@ -71,3 +71,6 @@
     width: 105px;
     color: white;
 }
+
+.CharacterTable-Col-Loyalty {
+}

@@ -37,9 +37,13 @@
                 </ui:VisualElement>
                 <ui:VisualElement style="flex-direction: row; margin-top: 10px;">
                     <ui:Label text="功績:" style="font-size: 28px; margin: 0 10px 0 0; " />
-                    <ui:Label name="labelPlayerContribution" text="10000" style="font-size: 28px; color: white; " />
+                    <ui:Label name="labelContribution" text="10000" style="font-size: 28px; color: white; " />
                     <ui:Label text="名声:" style="font-size: 28px; margin: 0 10px 0 20px; " />
-                    <ui:Label name="labelPlayerPrestige" text="75000" style="font-size: 28px; color: white; " />
+                    <ui:Label name="labelPrestige" text="75000" style="font-size: 28px; color: white; " />
+                    <ui:VisualElement name="NonPlayerInfoContainer" style="flex-direction: row;">
+                        <ui:Label text="忠誠:" style="font-size: 28px; margin: 0 10px 0 20px; " />
+                        <ui:Label name="labelLoyalty" text="75000" style="font-size: 28px; color: white; " />
+                    </ui:VisualElement>
                     <ui:VisualElement name="PlayerInfoContainer" style="flex-direction: row;">
                         <ui:Label text="所持金:" style="font-size: 28px; margin: 0 10px 0 20px; " />
                         <ui:Label name="labelPlayerGold" text="1,000" style="font-size: 28px; color: yellow; " />

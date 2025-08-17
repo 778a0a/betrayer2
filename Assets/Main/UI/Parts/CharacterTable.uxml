@@ -11,6 +11,7 @@
         <engine:Label name="labelHeaderStatus" text="身分" class="CharacterTable-Cell CharacterTable-Cell-Header CharacterTable-Col-Status" />
         <engine:Label name="labelHeaderContribution" text="功績" class="CharacterTable-Cell CharacterTable-Cell-Header CharacterTable-Col-Contribution" />
         <engine:Label name="labelHeaderPrestige" text="名声" class="CharacterTable-Cell CharacterTable-Cell-Header CharacterTable-Col-Prestige" />
+        <engine:Label name="labelHeaderLoyalty" text="忠誠" class="CharacterTable-Cell CharacterTable-Cell-Header CharacterTable-Col-Loyalty" />
     </engine:VisualElement>
     <engine:ListView name="ListView" />
 </engine:UXML>

@@ -46,5 +46,6 @@ public partial class CharacterTableRowItem
         labelStatus.text = chara.GetTitle();
         labelContribution.text = chara.Contribution.ToString("0");
         labelPrestige.text = chara.Prestige.ToString("0");
+        labelLoyalty.text = chara.Loyalty.MaxWith(100).ToString("0");
     }
 }

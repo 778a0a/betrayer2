@@ -10,5 +10,6 @@
         <engine:Label name="labelStatus" text="従士" class="CharacterTable-Cell CharacterTable-Col-Status" />
         <engine:Label name="labelContribution" text="88888" class="CharacterTable-Cell CharacterTable-Col-Contribution" />
         <engine:Label name="labelPrestige" text="88888" class="CharacterTable-Cell CharacterTable-Col-Prestige" />
+        <engine:Label name="labelLoyalty" text="88888" class="CharacterTable-Cell CharacterTable-Col-Loyalty" />
     </engine:Button>
 </engine:UXML>

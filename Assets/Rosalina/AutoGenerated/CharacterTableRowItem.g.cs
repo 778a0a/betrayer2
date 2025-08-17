@@ -30,6 +30,8 @@ public partial class CharacterTableRowItem
 
     public Label labelPrestige { get; private set; }
 
+    public Label labelLoyalty { get; private set; }
+
     public Button CharacterTableRowItemRoot { get; private set; }
 
     public VisualElement Root { get; private set; }
@@ -45,6 +47,7 @@ public partial class CharacterTableRowItem
         labelStatus = Root?.Q<Label>("labelStatus");
         labelContribution = Root?.Q<Label>("labelContribution");
         labelPrestige = Root?.Q<Label>("labelPrestige");
+        labelLoyalty = Root?.Q<Label>("labelLoyalty");
         CharacterTableRowItemRoot = Root?.Q<Button>("CharacterTableRowItemRoot");
     }
 
@@ -59,6 +62,7 @@ public partial class CharacterTableRowItem
         labelStatus = Root?.Q<Label>("labelStatus");
         labelContribution = Root?.Q<Label>("labelContribution");
         labelPrestige = Root?.Q<Label>("labelPrestige");
+        labelLoyalty = Root?.Q<Label>("labelLoyalty");
         CharacterTableRowItemRoot = Root?.Q<Button>("CharacterTableRowItemRoot");
     }
 }

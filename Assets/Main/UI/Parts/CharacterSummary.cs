@@ -21,10 +21,12 @@ public partial class CharacterSummary
         labelGoverning.text = chara.Governing.ToString();
         // 資産情報の更新
         PlayerInfoContainer.style.display = Util.Display(chara.IsPlayer);
+        NonPlayerInfoContainer.style.display = Util.Display(!chara.IsPlayer);
         labelPlayerGold.text = chara.Gold.ToString();
         labelPlayerAP.text = chara.ActionPoints.ToString();
-        labelPlayerContribution.text = chara.Contribution.ToString("0");
-        labelPlayerPrestige.text = chara.Prestige.ToString("0");
+        labelContribution.text = chara.Contribution.ToString("0");
+        labelPrestige.text = chara.Prestige.ToString("0");
+        labelLoyalty.text = chara.Loyalty.MaxWith(100).ToString("0");
         // 特性情報の更新
         traitKnight.style.display = Util.Display(chara.Traits.HasFlag(Traits.Knight));
         traitDrillmaster.style.display = Util.Display(chara.Traits.HasFlag(Traits.Drillmaster));
