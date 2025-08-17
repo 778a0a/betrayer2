@@ -27,8 +27,43 @@ partial class StrategyActions
             return args.gold <= args.targetCastle.Gold;
         }
 
-        public override ValueTask Do(ActionArgs args)
+        public override bool CanUIEnable(Character actor)
         {
+            return actor.CanPay(Cost(new(actor, estimate: true))) &&
+                // 他に拠点が存在する場合のみ有効
+                actor.Country.Castles.Any(c => c.Boss != actor);
+        }
+
+
+        public override async ValueTask Do(ActionArgs args)
+        {
+            var actor = args.actor;
+
+            // プレーヤーの場合
+            if (actor.IsPlayer)
+            {
+                // TODO 専用画面・マップから選択可能にする
+                args.gold = 10;
+                args.targetCastle = actor.Castle;
+
+                // 自国の他の拠点を取得する。
+                var bosses = actor.Country.Castles
+                    .Select(c => c.Boss)
+                    .Where(m => m != actor)
+                    .ToList();
+                args.targetCastle2 = (await UI.SelectCharacterScreen.Show(
+                    "輸送先を選択してください",
+                    "キャンセル",
+                    bosses,
+                    _ => true
+                )).Castle;
+
+                if (args.targetCastle2 == null)
+                {
+                    Debug.Log("キャラクター選択がキャンセルされました。");
+                    return;
+                }
+            }
             Util.IsTrue(CanDo(args));
 
             args.targetCastle.Gold -= args.gold;
@@ -38,9 +73,17 @@ partial class StrategyActions
                 args.actor.Contribution += args.gold / 10f;
             }
 
+            if (actor.IsPlayer)
+            {
+                await MessageWindow.Show($"{args.targetCastle2.Name}へ金{args.gold}を輸送しました。");
+            }
+            else if (args.targetCastle2.Boss.IsPlayer)
+            {
+                await MessageWindow.Show($"{args.targetCastle.Name}から金{args.gold}が輸送されました。");
+            }
+
             PayCost(args);
-            //Debug.Log($"{args.actor.Name} が {args.targetCastle} から {args.targetCastle2} へ {args.gold}G 運びました。");
-            return default;
+            Debug.Log($"{args.actor.Name} が {args.targetCastle} から {args.targetCastle2} へ {args.gold}G 運びました。");
         }
     }
 }
