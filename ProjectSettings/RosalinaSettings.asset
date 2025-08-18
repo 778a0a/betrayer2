@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af51af3e19e32d348888d403e641a9a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _isEnabled: 1
+  _isEnabled: 0
   _files:
   - _type: 0
     _path: Assets/Main/UI/MainUI.uxml
