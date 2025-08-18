@@ -26,9 +26,19 @@ public partial class StrategyPhaseScreen
 
     public Button TabButtonDiplomacy { get; private set; }
 
-    public Label labelDevLevel { get; private set; }
+    public Label labelObjective { get; private set; }
 
-    public Label labelTotalInvestment { get; private set; }
+    public Label labelCastleName { get; private set; }
+
+    public Label labelCastleRegion { get; private set; }
+
+    public VisualElement ObjectiveContainer { get; private set; }
+
+    public VisualElement CastleBossImage { get; private set; }
+
+    public Label labelGold { get; private set; }
+
+    public Label labelBalance { get; private set; }
 
     public VisualElement MaxIncomeBar { get; private set; }
 
@@ -42,19 +52,25 @@ public partial class StrategyPhaseScreen
 
     public Label labelExpenditure { get; private set; }
 
-    public Label labelGold { get; private set; }
+    public Label labelDevLevel { get; private set; }
 
-    public Label labelBalance { get; private set; }
+    public Label labelTotalInvestment { get; private set; }
 
     public Label labelCastleStrength { get; private set; }
 
     public Label labelTotalPower { get; private set; }
 
-    public Label labelGarrisonedCount { get; private set; }
+    public Label labelMemberCount { get; private set; }
+
+    public Label labelInCastleMemberCount { get; private set; }
+
+    public Label labelInCastlePower { get; private set; }
 
     public VisualElement GarrisonedCharacterIcons { get; private set; }
 
     public Label labelDeployedCount { get; private set; }
+
+    public Label labelDeployedPower { get; private set; }
 
     public VisualElement DeployedCharacterIcons { get; private set; }
 
@@ -97,21 +113,29 @@ public partial class StrategyPhaseScreen
         TabButtonCastle = Root?.Q<Button>("TabButtonCastle");
         TabButtonCountry = Root?.Q<Button>("TabButtonCountry");
         TabButtonDiplomacy = Root?.Q<Button>("TabButtonDiplomacy");
-        labelDevLevel = Root?.Q<Label>("labelDevLevel");
-        labelTotalInvestment = Root?.Q<Label>("labelTotalInvestment");
+        labelObjective = Root?.Q<Label>("labelObjective");
+        labelCastleName = Root?.Q<Label>("labelCastleName");
+        labelCastleRegion = Root?.Q<Label>("labelCastleRegion");
+        ObjectiveContainer = Root?.Q<VisualElement>("ObjectiveContainer");
+        CastleBossImage = Root?.Q<VisualElement>("CastleBossImage");
+        labelGold = Root?.Q<Label>("labelGold");
+        labelBalance = Root?.Q<Label>("labelBalance");
         MaxIncomeBar = Root?.Q<VisualElement>("MaxIncomeBar");
         CurrentIncomeBar = Root?.Q<VisualElement>("CurrentIncomeBar");
         labelIncome = Root?.Q<Label>("labelIncome");
         labelMaxIncome = Root?.Q<Label>("labelMaxIncome");
         IncomeBar = Root?.Q<VisualElement>("IncomeBar");
         labelExpenditure = Root?.Q<Label>("labelExpenditure");
-        labelGold = Root?.Q<Label>("labelGold");
-        labelBalance = Root?.Q<Label>("labelBalance");
+        labelDevLevel = Root?.Q<Label>("labelDevLevel");
+        labelTotalInvestment = Root?.Q<Label>("labelTotalInvestment");
         labelCastleStrength = Root?.Q<Label>("labelCastleStrength");
         labelTotalPower = Root?.Q<Label>("labelTotalPower");
-        labelGarrisonedCount = Root?.Q<Label>("labelGarrisonedCount");
+        labelMemberCount = Root?.Q<Label>("labelMemberCount");
+        labelInCastleMemberCount = Root?.Q<Label>("labelInCastleMemberCount");
+        labelInCastlePower = Root?.Q<Label>("labelInCastlePower");
         GarrisonedCharacterIcons = Root?.Q<VisualElement>("GarrisonedCharacterIcons");
         labelDeployedCount = Root?.Q<Label>("labelDeployedCount");
+        labelDeployedPower = Root?.Q<Label>("labelDeployedPower");
         DeployedCharacterIcons = Root?.Q<VisualElement>("DeployedCharacterIcons");
         labelRulerName = Root?.Q<Label>("labelRulerName");
         labelRulerPersonality = Root?.Q<Label>("labelRulerPersonality");
@@ -138,21 +162,29 @@ public partial class StrategyPhaseScreen
         TabButtonCastle = Root?.Q<Button>("TabButtonCastle");
         TabButtonCountry = Root?.Q<Button>("TabButtonCountry");
         TabButtonDiplomacy = Root?.Q<Button>("TabButtonDiplomacy");
-        labelDevLevel = Root?.Q<Label>("labelDevLevel");
-        labelTotalInvestment = Root?.Q<Label>("labelTotalInvestment");
+        labelObjective = Root?.Q<Label>("labelObjective");
+        labelCastleName = Root?.Q<Label>("labelCastleName");
+        labelCastleRegion = Root?.Q<Label>("labelCastleRegion");
+        ObjectiveContainer = Root?.Q<VisualElement>("ObjectiveContainer");
+        CastleBossImage = Root?.Q<VisualElement>("CastleBossImage");
+        labelGold = Root?.Q<Label>("labelGold");
+        labelBalance = Root?.Q<Label>("labelBalance");
         MaxIncomeBar = Root?.Q<VisualElement>("MaxIncomeBar");
         CurrentIncomeBar = Root?.Q<VisualElement>("CurrentIncomeBar");
         labelIncome = Root?.Q<Label>("labelIncome");
         labelMaxIncome = Root?.Q<Label>("labelMaxIncome");
         IncomeBar = Root?.Q<VisualElement>("IncomeBar");
         labelExpenditure = Root?.Q<Label>("labelExpenditure");
-        labelGold = Root?.Q<Label>("labelGold");
-        labelBalance = Root?.Q<Label>("labelBalance");
+        labelDevLevel = Root?.Q<Label>("labelDevLevel");
+        labelTotalInvestment = Root?.Q<Label>("labelTotalInvestment");
         labelCastleStrength = Root?.Q<Label>("labelCastleStrength");
         labelTotalPower = Root?.Q<Label>("labelTotalPower");
-        labelGarrisonedCount = Root?.Q<Label>("labelGarrisonedCount");
+        labelMemberCount = Root?.Q<Label>("labelMemberCount");
+        labelInCastleMemberCount = Root?.Q<Label>("labelInCastleMemberCount");
+        labelInCastlePower = Root?.Q<Label>("labelInCastlePower");
         GarrisonedCharacterIcons = Root?.Q<VisualElement>("GarrisonedCharacterIcons");
         labelDeployedCount = Root?.Q<Label>("labelDeployedCount");
+        labelDeployedPower = Root?.Q<Label>("labelDeployedPower");
         DeployedCharacterIcons = Root?.Q<VisualElement>("DeployedCharacterIcons");
         labelRulerName = Root?.Q<Label>("labelRulerName");
         labelRulerPersonality = Root?.Q<Label>("labelRulerPersonality");

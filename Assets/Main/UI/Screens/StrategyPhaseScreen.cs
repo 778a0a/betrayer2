@@ -50,9 +50,9 @@ public partial class StrategyPhaseScreen : IScreen
         }
         
         // タブボタンのイベントハンドラーを設定
-        Root.Q<Button>("TabButtonCastle").clicked += () => SwitchTab(InfoTab.Castle);
-        Root.Q<Button>("TabButtonCountry").clicked += () => SwitchTab(InfoTab.Country);
-        Root.Q<Button>("TabButtonDiplomacy").clicked += () => SwitchTab(InfoTab.Diplomacy);
+        TabButtonCastle.clicked += () => SwitchTab(InfoTab.Castle);
+        TabButtonCountry.clicked += () => SwitchTab(InfoTab.Country);
+        TabButtonDiplomacy.clicked += () => SwitchTab(InfoTab.Diplomacy);
     }
 
     public void Reinitialize()
@@ -125,12 +125,12 @@ public partial class StrategyPhaseScreen : IScreen
 
     private void ShowInfoTabPanel()
     {
-        Root.Q<VisualElement>("InfoTabPanel").style.display = DisplayStyle.Flex;
+        InfoTabPanel.style.display = DisplayStyle.Flex;
     }
 
     private void HideInfoTabPanel()
     {
-        Root.Q<VisualElement>("InfoTabPanel").style.display = DisplayStyle.None;
+        InfoTabPanel.style.display = DisplayStyle.None;
     }
 
     private void SwitchTab(InfoTab tab)
@@ -143,22 +143,22 @@ public partial class StrategyPhaseScreen : IScreen
     private void UpdateTabButtons()
     {
         // タブボタンの色を更新
-        Root.Q<Button>("TabButtonCastle").style.backgroundColor = currentTab == InfoTab.Castle ? Color.gray : new Color(0.2f, 0.27f, 0.33f);
-        Root.Q<Button>("TabButtonCountry").style.backgroundColor = currentTab == InfoTab.Country ? Color.gray : new Color(0.2f, 0.27f, 0.33f);
-        Root.Q<Button>("TabButtonDiplomacy").style.backgroundColor = currentTab == InfoTab.Diplomacy ? Color.gray : new Color(0.2f, 0.27f, 0.33f);
+        TabButtonCastle.style.backgroundColor = currentTab == InfoTab.Castle ? Color.gray : new Color(0.2f, 0.27f, 0.33f);
+        TabButtonCountry.style.backgroundColor = currentTab == InfoTab.Country ? Color.gray : new Color(0.2f, 0.27f, 0.33f);
+        TabButtonDiplomacy.style.backgroundColor = currentTab == InfoTab.Diplomacy ? Color.gray : new Color(0.2f, 0.27f, 0.33f);
     }
 
     private void UpdateTabContent()
     {
         // タブの表示・非表示を制御
-        Root.Q<VisualElement>("CastleInfoTab").style.display = currentTab == InfoTab.Castle ? DisplayStyle.Flex : DisplayStyle.None;
-        Root.Q<VisualElement>("CountryInfoTab").style.display = currentTab == InfoTab.Country ? DisplayStyle.Flex : DisplayStyle.None;
-        Root.Q<VisualElement>("DiplomacyInfoTab").style.display = currentTab == InfoTab.Diplomacy ? DisplayStyle.Flex : DisplayStyle.None;
+        CastleInfoTab.style.display = currentTab == InfoTab.Castle ? DisplayStyle.Flex : DisplayStyle.None;
+        CountryInfoTab.style.display = currentTab == InfoTab.Country ? DisplayStyle.Flex : DisplayStyle.None;
+        DiplomacyInfoTab.style.display = currentTab == InfoTab.Diplomacy ? DisplayStyle.Flex : DisplayStyle.None;
 
         // タブボタンの有効・無効を制御
-        Root.Q<Button>("TabButtonCastle").SetEnabled(currentCharacter?.Castle != null);
-        Root.Q<Button>("TabButtonCountry").SetEnabled(currentCharacter?.Country != null);
-        Root.Q<Button>("TabButtonDiplomacy").SetEnabled(currentCharacter?.Country != null);
+        TabButtonCastle.SetEnabled(currentCharacter?.Castle != null);
+        TabButtonCountry.SetEnabled(currentCharacter?.Country != null);
+        TabButtonDiplomacy.SetEnabled(currentCharacter?.Country != null);
         
         // 選択可能なタブがない場合は最初の利用可能なタブに切り替え
         if (currentTab == InfoTab.Castle && currentCharacter?.Castle == null)
@@ -190,73 +190,83 @@ public partial class StrategyPhaseScreen : IScreen
 
     private void UpdateCastleTab(Castle castle)
     {
+        // 城名・地方名・統治者・城主情報を表示
+        labelCastleName.text = castle.Name;
+        labelCastleRegion.text = castle.Region;
+        if (castle.Country?.Ruler != null)
+        {
+            var ruler = castle.Country.Ruler;
+            labelRulerName.text = ruler.Name;
+            labelRulerPersonality.text = ruler.Personality.ToString();
+        }
+        if (castle.Boss != null)
+        {
+            CastleBossImage.style.backgroundImage = new(Static.GetFaceImage(castle.Boss));
+        }
+        labelObjective.text = castle.Objective.ToString() ?? "--";
+
         // 城のパラメータを表示
-        Root.Q<Label>("labelDevLevel").text = ((int)castle.DevLevel).ToString();
-        Root.Q<Label>("labelTotalInvestment").text = castle.TotalInvestment.ToString("F0");
-        Root.Q<Label>("labelIncome").text = ((int)castle.GoldIncome).ToString();
-        Root.Q<Label>("labelMaxIncome").text = ((int)castle.GoldIncomeMax).ToString();
-        Root.Q<Label>("labelExpenditure").text = ((int)castle.GoldComsumption).ToString();
-        Root.Q<Label>("labelGold").text = castle.Gold.ToString("F0");
-        
+        labelGold.text = castle.Gold.ToString("F0");
         var balance = castle.GoldBalance;
-        var balanceLabel = Root.Q<Label>("labelBalance");
-        balanceLabel.text = balance >= 0 ? $"+{(int)balance}" : ((int)balance).ToString();
-        balanceLabel.style.color = balance >= 0 ? Color.green : Color.red;
-        
-        // 城塞レベルと総兵力を表示
-        Root.Q<Label>("labelCastleStrength").text = ((int)castle.Strength).ToString();
-        Root.Q<Label>("labelTotalPower").text = castle.Power.ToString();
-        
+        labelBalance.text = balance >= 0 ? $"+{(int)balance}" : $"-{(int)balance}";
+        labelBalance.style.color = balance >= 0 ? Color.green : Color.red;
+        labelIncome.text = $"{castle.GoldIncome:0}";
+        labelMaxIncome.text = $"{castle.GoldIncomeMax:0}";
+        labelExpenditure.text = $"{castle.GoldComsumption:0}";
+        labelDevLevel.text = $"{castle.DevLevel}";
+        labelTotalInvestment.text = $"{castle.TotalInvestment:0}";
+        labelCastleStrength.text = $"{castle.Strength:0}";
+        labelTotalPower.text = $"{castle.Power:0}";
+        labelMemberCount.text = $"{castle.Members.Count}";
         // 収入バーの表示
         UpdateIncomeBar(castle.GoldIncome, castle.GoldIncomeMax);
         
         // キャラクターを在城中と出撃中に分けて表示
-        var garrisoned = castle.Members.Where(m => !m.IsMoving).OrderBy(c => c.OrderIndex).ToList();
+        var inCastle = castle.Members.Where(m => !m.IsMoving).OrderBy(c => c.OrderIndex).ToList();
         var deployed = castle.Members.Where(m => m.IsMoving).OrderBy(c => c.OrderIndex).ToList();
         
         // 在城中キャラクター
-        Root.Q<Label>("labelGarrisonedCount").text = $"({garrisoned.Count}人)";
-        ShowCharacterIcons(garrisoned, "GarrisonedCharacterIcons");
+        labelInCastleMemberCount.text = $"({inCastle.Count}名)";
+        labelInCastlePower.text = $"{inCastle.Sum(c => c.Power):0}";
+        ShowCharacterIcons(inCastle, GarrisonedCharacterIcons);
         
         // 出撃中キャラクター
-        Root.Q<Label>("labelDeployedCount").text = $"({deployed.Count}人)";
-        ShowCharacterIcons(deployed, "DeployedCharacterIcons");
+        labelDeployedCount.text = $"({deployed.Count}名)";
+        labelDeployedPower.text = $"{deployed.Sum(c => c.Power):0}";
+        ShowCharacterIcons(deployed, DeployedCharacterIcons);
     }
 
     private void UpdateIncomeBar(float currentIncome, float maxIncome)
     {
         const float maxBarValue = 200f; // 最大値を200に設定
         
-        var maxIncomeBar = Root.Q<VisualElement>("MaxIncomeBar");
-        var currentIncomeBar = Root.Q<VisualElement>("CurrentIncomeBar");
-        
         // 最大収入バー（薄い黄色）の幅を設定
         var maxIncomeRatio = Mathf.Clamp01(maxIncome / maxBarValue);
-        maxIncomeBar.style.width = Length.Percent(maxIncomeRatio * 100f);
+        MaxIncomeBar.style.width = Length.Percent(maxIncomeRatio * 100f);
         
         // 現在収入バー（黄色）の幅を設定
         var currentIncomeRatio = Mathf.Clamp01(currentIncome / maxBarValue);
-        currentIncomeBar.style.width = Length.Percent(currentIncomeRatio * 100f);
+        CurrentIncomeBar.style.width = Length.Percent(currentIncomeRatio * 100f);
     }
 
     private void UpdateCountryTab(Country country)
     {
         // 国の基本情報を表示
-        Root.Q<Label>("labelRulerName").text = country.Ruler.Name;
-        Root.Q<Label>("labelRulerPersonality").text = country.Ruler.Personality.ToString();
-        Root.Q<Label>("labelCountryBalance").text = ((int)country.GoldBalance).ToString();
-        Root.Q<Label>("labelCountrySurplus").text = country.GoldSurplus.ToString();
+        labelRulerName.text = country.Ruler.Name;
+        labelRulerPersonality.text = country.Ruler.Personality.ToString();
+        labelCountryBalance.text = ((int)country.GoldBalance).ToString();
+        labelCountrySurplus.text = country.GoldSurplus.ToString();
         
         // 城数と将数を計算して表示
         var castleCount = country.Castles.Count();
         var generalCount = country.Vassals.Count();
-        Root.Q<Label>("labelCastleCount").text = castleCount.ToString();
-        Root.Q<Label>("labelGeneralCount").text = generalCount.ToString();
+        labelCastleCount.text = castleCount.ToString();
+        labelGeneralCount.text = generalCount.ToString();
     }
 
     private void UpdateDiplomacyTab(Country country)
     {
-        var container = Root.Q<VisualElement>("DiplomacyRelations");
+        var container = DiplomacyRelations;
         container.Clear();
         
         // 他の国との関係を表示（TileInfoEditorWindow:309-341を参考）
@@ -340,9 +350,8 @@ public partial class StrategyPhaseScreen : IScreen
         return item;
     }
 
-    private void ShowCharacterIcons(System.Collections.Generic.IEnumerable<Character> characters, string containerName)
+    private void ShowCharacterIcons(System.Collections.Generic.IEnumerable<Character> characters, VisualElement iconContainer)
     {
-        var iconContainer = Root.Q<VisualElement>(containerName);
         iconContainer.Clear();
         
         foreach (var character in characters)
