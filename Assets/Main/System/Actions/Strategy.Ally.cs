@@ -76,7 +76,7 @@ partial class StrategyActions
             if (target.Ruler.IsPlayer)
             {
                 // プレイヤーに選択させる。
-                var message = $"{target.Ruler.Name} から同盟を申し込まれました。受諾しますか？";
+                var message = $"{actor.Name} から同盟を申し込まれました。\n受諾しますか？";
                 accepted = await MessageWindow.ShowYesNo(message);
             }
             // AIの場合
