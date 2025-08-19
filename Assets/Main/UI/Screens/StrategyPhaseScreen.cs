@@ -40,7 +40,6 @@ public partial class StrategyPhaseScreen : IScreen
             );
         }
         
-        // CastleInfoPanelを初期化
         CastleInfoPanel.Initialize();
     }
 
@@ -50,6 +49,7 @@ public partial class StrategyPhaseScreen : IScreen
         {
             ActionButtons.Add(button.Element);
         }
+        CastleInfoPanel.Initialize();
     }
 
     private async void OnActionButtonClicked(ActionButtonHelper button)
@@ -100,6 +100,6 @@ public partial class StrategyPhaseScreen : IScreen
             button.SetData(currentCharacter);
         }
         
-        CastleInfoPanel.SetData(currentCharacter);
+        CastleInfoPanel.SetData(currentCharacter.Castle);
     }
 }

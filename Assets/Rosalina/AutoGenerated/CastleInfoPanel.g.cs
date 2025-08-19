@@ -90,7 +90,7 @@ public partial class CastleInfoPanel
 
     public VisualElement DiplomacyInfoTab { get; private set; }
 
-    public VisualElement InfoTabPanel { get; private set; }
+    public VisualElement CastleInfo { get; private set; }
 
     public VisualElement Root { get; private set; }
 
@@ -135,7 +135,7 @@ public partial class CastleInfoPanel
         CastleInfoTab = Root?.Q<VisualElement>("CastleInfoTab");
         CountryInfoTab = Root?.Q<VisualElement>("CountryInfoTab");
         DiplomacyInfoTab = Root?.Q<VisualElement>("DiplomacyInfoTab");
-        InfoTabPanel = Root?.Q<VisualElement>("InfoTabPanel");
+        CastleInfo = Root?.Q<VisualElement>("CastleInfo");
     }
 
     public void ReinitializeComponent(VisualElement root)
@@ -179,6 +179,6 @@ public partial class CastleInfoPanel
         CastleInfoTab = Root?.Q<VisualElement>("CastleInfoTab");
         CountryInfoTab = Root?.Q<VisualElement>("CountryInfoTab");
         DiplomacyInfoTab = Root?.Q<VisualElement>("DiplomacyInfoTab");
-        InfoTabPanel = Root?.Q<VisualElement>("InfoTabPanel");
+        CastleInfo = Root?.Q<VisualElement>("CastleInfo");
     }
 }

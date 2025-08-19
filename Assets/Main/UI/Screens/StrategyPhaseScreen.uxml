@@ -36,7 +36,7 @@
         </ui:VisualElement>
 
         <!-- 情報タブパネル -->
-        <ui:Instance name="CastleInfoPanel" template="CastleInfoPanel" />
+        <ui:Instance name="CastleInfoPanel" style="margin-top: 10px; flex:1;" template="CastleInfoPanel" />
 
     </ui:VisualElement>
 </ui:UXML>

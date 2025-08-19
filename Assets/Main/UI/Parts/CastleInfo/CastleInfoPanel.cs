@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -6,122 +7,72 @@ using UnityEngine.UIElements;
 public partial class CastleInfoPanel
 {
     private GameCore Core => GameCore.Instance;
-    private Character currentCharacter;
-    
+    private Castle targetCastle;
+
+    private InfoTab currentTab;
+    private Button CurrentTabButton => currentTab switch
+    {
+        InfoTab.Castle => TabButtonCastle,
+        InfoTab.Country => TabButtonCountry,
+        InfoTab.Diplomacy => TabButtonDiplomacy,
+        _ => throw new NotImplementedException(),
+    };
     private enum InfoTab
     {
         Castle,
         Country, 
         Diplomacy
     }
-    
-    private InfoTab currentTab = InfoTab.Castle;
 
     public void Initialize()
     {
         TabButtonCastle.clicked += () => SwitchTab(InfoTab.Castle);
         TabButtonCountry.clicked += () => SwitchTab(InfoTab.Country);
         TabButtonDiplomacy.clicked += () => SwitchTab(InfoTab.Diplomacy);
-    }
 
-    public void SetData(Character character)
-    {
-        currentCharacter = character;
-        UpdateDisplay();
-    }
-
-    public void UpdateDisplay()
-    {
-        // 情報タブパネルの表示・非表示を制御
-        if (currentCharacter?.Country != null || currentCharacter?.Castle != null)
-        {
-            ShowInfoTabPanel();
-            UpdateTabContent();
-        }
-        else
-        {
-            HideInfoTabPanel();
-        }
-    }
-
-    private void ShowInfoTabPanel()
-    {
-        InfoTabPanel.style.display = DisplayStyle.Flex;
-    }
-
-    private void HideInfoTabPanel()
-    {
-        InfoTabPanel.style.display = DisplayStyle.None;
+        SwitchTab(InfoTab.Castle);
     }
 
     private void SwitchTab(InfoTab tab)
     {
         currentTab = tab;
-        UpdateTabButtons();
-        UpdateTabContent();
+
+        // タブボタンの色を更新する。
+        TabButtonCastle.RemoveFromClassList("active");
+        TabButtonCountry.RemoveFromClassList("active");
+        TabButtonDiplomacy.RemoveFromClassList("active");
+        CurrentTabButton.AddToClassList("active");
+
+        CastleInfoTab.style.display = Util.Display(currentTab == InfoTab.Castle);
+        CountryInfoTab.style.display = Util.Display(currentTab == InfoTab.Country);
+        DiplomacyInfoTab.style.display = Util.Display(currentTab == InfoTab.Diplomacy);
     }
 
-    private void UpdateTabButtons()
+    public void SetData(Castle castle)
     {
-        // タブボタンの色を更新
-        TabButtonCastle.style.backgroundColor = currentTab == InfoTab.Castle ? Color.gray : new Color(0.2f, 0.27f, 0.33f);
-        TabButtonCountry.style.backgroundColor = currentTab == InfoTab.Country ? Color.gray : new Color(0.2f, 0.27f, 0.33f);
-        TabButtonDiplomacy.style.backgroundColor = currentTab == InfoTab.Diplomacy ? Color.gray : new Color(0.2f, 0.27f, 0.33f);
+        targetCastle = castle;
+
+        SetCastleData(targetCastle);
+        SetCountryData(targetCastle.Country);
+        SetDiplomacyData(targetCastle.Country);
     }
 
-    private void UpdateTabContent()
+    /// <summary>
+    /// 城情報を設定します。
+    /// </summary>
+    private void SetCastleData(Castle castle)
     {
-        // タブの表示・非表示を制御
-        CastleInfoTab.style.display = currentTab == InfoTab.Castle ? DisplayStyle.Flex : DisplayStyle.None;
-        CountryInfoTab.style.display = currentTab == InfoTab.Country ? DisplayStyle.Flex : DisplayStyle.None;
-        DiplomacyInfoTab.style.display = currentTab == InfoTab.Diplomacy ? DisplayStyle.Flex : DisplayStyle.None;
-
-        // タブボタンの有効・無効を制御
-        TabButtonCastle.SetEnabled(currentCharacter?.Castle != null);
-        TabButtonCountry.SetEnabled(currentCharacter?.Country != null);
-        TabButtonDiplomacy.SetEnabled(currentCharacter?.Country != null);
-        
-        // 選択可能なタブがない場合は最初の利用可能なタブに切り替え
-        if (currentTab == InfoTab.Castle && currentCharacter?.Castle == null)
-        {
-            if (currentCharacter?.Country != null)
-            {
-                SwitchTab(InfoTab.Country);
-                return;
-            }
-        }
-        
-        // タブに応じた内容を更新
-        switch (currentTab)
-        {
-            case InfoTab.Castle:
-                if (currentCharacter?.Castle != null)
-                    UpdateCastleTab(currentCharacter.Castle);
-                break;
-            case InfoTab.Country:
-                if (currentCharacter?.Country != null)
-                    UpdateCountryTab(currentCharacter.Country);
-                break;
-            case InfoTab.Diplomacy:
-                if (currentCharacter?.Country != null)
-                    UpdateDiplomacyTab(currentCharacter.Country);
-                break;
-        }
-    }
-
-    private void UpdateCastleTab(Castle castle)
-    {
-        // 城名・地方名・城主情報を表示
+        // 城名等
         labelCastleName.text = castle.Name;
         labelCastleRegion.text = castle.Region;
-        
         if (castle.Boss != null)
         {
-            CastleBossImage.style.backgroundImage = new StyleBackground(Static.GetFaceImage(castle.Boss));
+            CastleBossImage.style.backgroundImage = new(Static.GetFaceImage(castle.Boss));
         }
-        labelObjective.text = castle.Objective.ToString() ?? "--";
-
-        // 城のパラメータを表示
+        ObjectiveContainer.style.display = Util.Display((castle.Boss?.IsPlayer ?? false) || castle.Country.Ruler.IsPlayer);
+        labelObjective.text = castle.Objective.ToString();
+        
+        // パラメーター等
         labelGold.text = castle.Gold.ToString("F0");
         var balance = castle.GoldBalance;
         labelBalance.text = balance >= 0 ? $"+{(int)balance}" : $"-{(int)balance}";
@@ -135,53 +86,49 @@ public partial class CastleInfoPanel
         labelTotalPower.text = $"{castle.Power:0}";
         labelMemberCount.text = $"{castle.Members.Count}";
         
-        // 収入バーの表示
-        UpdateIncomeBar(castle.GoldIncome, castle.GoldIncomeMax);
+        // 収入バー
+        SetIncomeBar(castle.GoldIncome, castle.GoldIncomeMax);
         
-        // キャラクターを在城中と出撃中に分けて表示
+        // 在城中キャラ一覧
         var inCastle = castle.Members.Where(m => !m.IsMoving).OrderBy(c => c.OrderIndex).ToList();
-        var deployed = castle.Members.Where(m => m.IsMoving).OrderBy(c => c.OrderIndex).ToList();
-        
-        // 在城中キャラクター
         labelInCastleMemberCount.text = $"({inCastle.Count}名)";
         labelInCastlePower.text = $"{inCastle.Sum(c => c.Power):0}";
         ShowCharacterIcons(inCastle, GarrisonedCharacterIcons);
         
-        // 出撃中キャラクター
+        // 出撃中キャラ一覧
+        var deployed = castle.Members.Where(m => m.IsMoving).OrderBy(c => c.OrderIndex).ToList();
         labelDeployedCount.text = $"({deployed.Count}名)";
         labelDeployedPower.text = $"{deployed.Sum(c => c.Power):0}";
         ShowCharacterIcons(deployed, DeployedCharacterIcons);
     }
 
-    private void UpdateIncomeBar(float currentIncome, float maxIncome)
+    /// <summary>
+    /// 収入バーを設定します。
+    /// </summary>
+    private void SetIncomeBar(float currentIncome, float maxIncome)
     {
-        const float maxBarValue = 200f; // 最大値を200に設定
+        const float maxBarValue = 200f;
         
-        // 最大収入バー（薄い黄色）の幅を設定
+        // 最大収入バー（薄い黄色）の幅を設定する。
         var maxIncomeRatio = Mathf.Clamp01(maxIncome / maxBarValue);
         MaxIncomeBar.style.width = Length.Percent(maxIncomeRatio * 100f);
         
-        // 現在収入バー（黄色）の幅を設定
+        // 現在収入バー（黄色）の幅を設定する。
         var currentIncomeRatio = Mathf.Clamp01(currentIncome / maxBarValue);
         CurrentIncomeBar.style.width = Length.Percent(currentIncomeRatio * 100f);
     }
 
-    private void UpdateCountryTab(Country country)
+    /// <summary>
+    /// 国情報タブを設定します。
+    /// </summary>
+    private void SetCountryData(Country country)
     {
-        // 国の基本情報を表示
-        labelRulerName.text = country.Ruler.Name;
-        labelRulerPersonality.text = country.Ruler.Personality.ToString();
-        labelCountryBalance.text = ((int)country.GoldBalance).ToString();
-        labelCountrySurplus.text = country.GoldSurplus.ToString();
-        
-        // 城数と将数を計算して表示
-        var castleCount = country.Castles.Count();
-        var generalCount = country.Vassals.Count();
-        labelCastleCount.text = castleCount.ToString();
-        labelGeneralCount.text = generalCount.ToString();
     }
 
-    private void UpdateDiplomacyTab(Country country)
+    /// <summary>
+    /// 外交関係タブを設定します。
+    /// </summary>
+    private void SetDiplomacyData(Country country)
     {
         var container = DiplomacyRelations;
         container.Clear();
@@ -190,7 +137,8 @@ public partial class CastleInfoPanel
         var world = Core.World;
         var otherCountries = world.Countries
             .Where(c => c != country)
-            .OrderBy(o => o.GetRelation(country) == 50 ? 999 : o.GetRelation(country));
+            .Where(o => o.GetRelation(country) != 50)
+            .OrderBy(o => o.GetRelation(country));
             
         foreach (var other in otherCountries)
         {
@@ -265,7 +213,7 @@ public partial class CastleInfoPanel
         return item;
     }
 
-    private void ShowCharacterIcons(System.Collections.Generic.IEnumerable<Character> characters, VisualElement iconContainer)
+    private void ShowCharacterIcons(IEnumerable<Character> characters, VisualElement iconContainer)
     {
         iconContainer.Clear();
         
@@ -278,48 +226,15 @@ public partial class CastleInfoPanel
 
     private VisualElement CreateCharacterIcon(Character character)
     {
-        // キャラクター顔画像（大きくして名前ラベルを削除）
         var faceImage = new VisualElement();
-        faceImage.style.width = 70;
-        faceImage.style.height = 70;
-        faceImage.style.marginRight = 5;
-        faceImage.style.marginBottom = 5;
-        faceImage.style.backgroundImage = new StyleBackground(Static.GetFaceImage(character));
-        faceImage.style.borderTopWidth = 2;
-        faceImage.style.borderBottomWidth = 2;
-        faceImage.style.borderLeftWidth = 2;
-        faceImage.style.borderRightWidth = 2;
-        faceImage.style.borderTopColor = Color.white;
-        faceImage.style.borderBottomColor = Color.white;
-        faceImage.style.borderLeftColor = Color.white;
-        faceImage.style.borderRightColor = Color.white;
-        
-        // クリックイベント（キャラクター詳細表示用）
+        faceImage.AddToClassList("SmallCharacterIcon");
+        faceImage.style.backgroundImage = new(Static.GetFaceImage(character));
         faceImage.RegisterCallback<ClickEvent>(evt => OnCharacterIconClicked(character));
-        
-        // ホバーエフェクト
-        faceImage.RegisterCallback<MouseEnterEvent>(evt => 
-        {
-            faceImage.style.borderTopColor = Color.yellow;
-            faceImage.style.borderBottomColor = Color.yellow;
-            faceImage.style.borderLeftColor = Color.yellow;
-            faceImage.style.borderRightColor = Color.yellow;
-        });
-        
-        faceImage.RegisterCallback<MouseLeaveEvent>(evt => 
-        {
-            faceImage.style.borderTopColor = Color.white;
-            faceImage.style.borderBottomColor = Color.white;
-            faceImage.style.borderLeftColor = Color.white;
-            faceImage.style.borderRightColor = Color.white;
-        });
-        
         return faceImage;
     }
 
     private void OnCharacterIconClicked(Character character)
     {
-        // キャラクター詳細を表示（今後の拡張用）
         Debug.Log($"キャラクターがクリックされました: {character.Name}");
     }
 }
