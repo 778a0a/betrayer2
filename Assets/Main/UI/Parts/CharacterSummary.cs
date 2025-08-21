@@ -31,6 +31,7 @@ public partial class CharacterSummary
         labelPlayerGold.text = chara.Gold.ToString();
         labelPlayerAP.text = chara.ActionPoints.ToString();
         labelContribution.text = chara.Contribution.ToString("0");
+        labelSoldiers.text = chara.Soldiers.SoldierCount.ToString();
         labelPrestige.text = chara.Prestige.ToString("0");
         labelLoyalty.text = chara.Loyalty.MaxWith(100).ToString("0");
         // 特性情報の更新

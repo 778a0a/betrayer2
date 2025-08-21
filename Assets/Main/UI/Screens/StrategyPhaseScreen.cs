@@ -33,7 +33,7 @@ public partial class StrategyPhaseScreen : IScreen
         {
             ActionButtons.Add(button.Element);
             button.SetEventHandlers(
-                labelCostGold,
+                labelCost,
                 labelActionDescription,
                 () => currentCharacter,
                 OnActionButtonClicked
@@ -94,6 +94,9 @@ public partial class StrategyPhaseScreen : IScreen
 
     public void Render()
     {
+        labelCurrentCastleGold.text = currentCharacter.Castle.Gold.ToString();
+        labelCurrentAP.text = currentCharacter.ActionPoints.ToString();
+
         foreach (var button in buttons)
         {
             button.SetData(currentCharacter);

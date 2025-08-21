@@ -25,16 +25,14 @@
 }
 
 .CharacterTable-Cell {
-    font-size: 30px;
+    font-size: 28px;
     color: rgb(221, 221, 221);
     -unity-text-align: middle-center;
-    width: 65px;
+    width: 55px;
 }
 
 .CharacterTable-Cell-Header {
-    font-size: 25px;
-    color: white;
-    -unity-font-style: bold;
+    font-size: 24px;
 }
 
 
@@ -43,12 +41,18 @@
     -unity-text-align: middle-left;
 }
 
+.CharacterTable-Col-Deployed {
+    -unity-text-align: middle-right;
+    width: initial;
+    color: #f00;
+}
+
 .CharacterTable-Col-Attack {
     color: #f88;
 }
 
 .CharacterTable-Col-Defense {
-    color: #8af;
+    color: #bcf;
 }
 
 .CharacterTable-Col-Intelligence {
@@ -59,18 +63,22 @@
     color: #8f8;
 }
 
-.CharacterTable-Col-Status {
+.CharacterTable-Col-Soldiers {
+    width: 90px;
+    color: orange;
 }
 
 .CharacterTable-Col-Contribution {
-    width: 105px;
+    width: 90px;
     color: white;
 }
 
 .CharacterTable-Col-Prestige {
-    width: 105px;
+    width: 90px;
     color: white;
 }
 
+
 .CharacterTable-Col-Loyalty {
 }
+

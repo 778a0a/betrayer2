@@ -8,7 +8,7 @@
         <engine:Label name="labelHeaderDefence" text="防衛" class="CharacterTable-Cell CharacterTable-Cell-Header CharacterTable-Col-Defense" />
         <engine:Label name="labelHeaderIntelligence" text="智謀" class="CharacterTable-Cell CharacterTable-Cell-Header CharacterTable-Col-Intelligence" />
         <engine:Label name="labelHeaderGoverning" text="統治" class="CharacterTable-Cell CharacterTable-Cell-Header CharacterTable-Col-Governing" />
-        <engine:Label name="labelHeaderStatus" text="身分" class="CharacterTable-Cell CharacterTable-Cell-Header CharacterTable-Col-Status" />
+        <engine:Label name="labelHeaderSoldiers" text="兵数" class="CharacterTable-Cell CharacterTable-Cell-Header CharacterTable-Col-Soldiers" />
         <engine:Label name="labelHeaderContribution" text="功績" class="CharacterTable-Cell CharacterTable-Cell-Header CharacterTable-Col-Contribution" />
         <engine:Label name="labelHeaderPrestige" text="名声" class="CharacterTable-Cell CharacterTable-Cell-Header CharacterTable-Col-Prestige" />
         <engine:Label name="labelHeaderLoyalty" text="忠誠" class="CharacterTable-Cell CharacterTable-Cell-Header CharacterTable-Col-Loyalty" />

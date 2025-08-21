@@ -16,6 +16,8 @@ public partial class CharacterTableRowItem
 {
     public Label labelName { get; private set; }
 
+    public Label labelDeployed { get; private set; }
+
     public Label labelAttack { get; private set; }
 
     public Label labelDefense { get; private set; }
@@ -24,7 +26,7 @@ public partial class CharacterTableRowItem
 
     public Label labelGoverning { get; private set; }
 
-    public Label labelStatus { get; private set; }
+    public Label labelSoldiers { get; private set; }
 
     public Label labelContribution { get; private set; }
 
@@ -40,11 +42,12 @@ public partial class CharacterTableRowItem
     {
         Root = root;
         labelName = Root?.Q<Label>("labelName");
+        labelDeployed = Root?.Q<Label>("labelDeployed");
         labelAttack = Root?.Q<Label>("labelAttack");
         labelDefense = Root?.Q<Label>("labelDefense");
         labelIntelligence = Root?.Q<Label>("labelIntelligence");
         labelGoverning = Root?.Q<Label>("labelGoverning");
-        labelStatus = Root?.Q<Label>("labelStatus");
+        labelSoldiers = Root?.Q<Label>("labelSoldiers");
         labelContribution = Root?.Q<Label>("labelContribution");
         labelPrestige = Root?.Q<Label>("labelPrestige");
         labelLoyalty = Root?.Q<Label>("labelLoyalty");
@@ -55,11 +58,12 @@ public partial class CharacterTableRowItem
     {
         Root = root;
         labelName = Root?.Q<Label>("labelName");
+        labelDeployed = Root?.Q<Label>("labelDeployed");
         labelAttack = Root?.Q<Label>("labelAttack");
         labelDefense = Root?.Q<Label>("labelDefense");
         labelIntelligence = Root?.Q<Label>("labelIntelligence");
         labelGoverning = Root?.Q<Label>("labelGoverning");
-        labelStatus = Root?.Q<Label>("labelStatus");
+        labelSoldiers = Root?.Q<Label>("labelSoldiers");
         labelContribution = Root?.Q<Label>("labelContribution");
         labelPrestige = Root?.Q<Label>("labelPrestige");
         labelLoyalty = Root?.Q<Label>("labelLoyalty");

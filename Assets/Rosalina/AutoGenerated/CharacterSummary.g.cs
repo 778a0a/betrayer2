@@ -54,6 +54,8 @@ public partial class CharacterSummary
 
     public Label labelPlayerAP { get; private set; }
 
+    public Label labelSoldiers { get; private set; }
+
     public Label labelContribution { get; private set; }
 
     public Label labelPrestige { get; private set; }
@@ -121,6 +123,7 @@ public partial class CharacterSummary
         labelLoyalty = Root?.Q<Label>("labelLoyalty");
         labelPlayerGold = Root?.Q<Label>("labelPlayerGold");
         labelPlayerAP = Root?.Q<Label>("labelPlayerAP");
+        labelSoldiers = Root?.Q<Label>("labelSoldiers");
         labelContribution = Root?.Q<Label>("labelContribution");
         labelPrestige = Root?.Q<Label>("labelPrestige");
         NonPlayerInfoContainer = Root?.Q<VisualElement>("NonPlayerInfoContainer");
@@ -167,6 +170,7 @@ public partial class CharacterSummary
         labelLoyalty = Root?.Q<Label>("labelLoyalty");
         labelPlayerGold = Root?.Q<Label>("labelPlayerGold");
         labelPlayerAP = Root?.Q<Label>("labelPlayerAP");
+        labelSoldiers = Root?.Q<Label>("labelSoldiers");
         labelContribution = Root?.Q<Label>("labelContribution");
         labelPrestige = Root?.Q<Label>("labelPrestige");
         NonPlayerInfoContainer = Root?.Q<VisualElement>("NonPlayerInfoContainer");

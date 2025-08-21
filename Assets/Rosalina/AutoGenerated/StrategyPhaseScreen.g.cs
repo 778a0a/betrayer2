@@ -14,7 +14,11 @@ using UnityEngine.UIElements;
 
 public partial class StrategyPhaseScreen
 {
-    public Label labelCostGold { get; private set; }
+    public Label labelCurrentCastleGold { get; private set; }
+
+    public Label labelCurrentAP { get; private set; }
+
+    public Label labelCost { get; private set; }
 
     public Label labelActionDescription { get; private set; }
 
@@ -29,7 +33,9 @@ public partial class StrategyPhaseScreen
     public StrategyPhaseScreen(VisualElement root)
     {
         Root = root;
-        labelCostGold = Root?.Q<Label>("labelCostGold");
+        labelCurrentCastleGold = Root?.Q<Label>("labelCurrentCastleGold");
+        labelCurrentAP = Root?.Q<Label>("labelCurrentAP");
+        labelCost = Root?.Q<Label>("labelCost");
         labelActionDescription = Root?.Q<Label>("labelActionDescription");
         ActionButtons = Root?.Q<VisualElement>("ActionButtons");
         ActionsPanel = Root?.Q<VisualElement>("ActionsPanel");
@@ -39,7 +45,9 @@ public partial class StrategyPhaseScreen
     public void ReinitializeComponent(VisualElement root)
     {
         Root = root;
-        labelCostGold = Root?.Q<Label>("labelCostGold");
+        labelCurrentCastleGold = Root?.Q<Label>("labelCurrentCastleGold");
+        labelCurrentAP = Root?.Q<Label>("labelCurrentAP");
+        labelCost = Root?.Q<Label>("labelCost");
         labelActionDescription = Root?.Q<Label>("labelActionDescription");
         ActionButtons = Root?.Q<VisualElement>("ActionButtons");
         ActionsPanel = Root?.Q<VisualElement>("ActionsPanel");

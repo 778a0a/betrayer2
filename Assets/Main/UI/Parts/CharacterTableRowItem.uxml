@@ -2,14 +2,17 @@
     <Style src="project://database/Assets/Main/UI/MainUI.uss" />
     <Style src="CharacterTableStyle.uss" />
     <engine:Button name="CharacterTableRowItemRoot" class="CharacterTable-Row">
-        <engine:Label name="labelName" text="フランチェスカ" class="CharacterTable-Cell CharacterTable-Col-Name" />
+        <engine:VisualElement style="position: relative;">
+            <engine:Label name="labelName" text="フランチェスカ" class="CharacterTable-Cell CharacterTable-Col-Name" />
+            <engine:Label name="labelDeployed" text="出" style="position: absolute; right: 0;" class="CharacterTable-Cell CharacterTable-Col-Deployed" />
+        </engine:VisualElement>
         <engine:Label name="labelAttack" text="88" class="CharacterTable-Cell CharacterTable-Col-Attack" />
         <engine:Label name="labelDefense" text="88" class="CharacterTable-Cell CharacterTable-Col-Defense" />
         <engine:Label name="labelIntelligence" text="88" class="CharacterTable-Cell CharacterTable-Col-Intelligence" />
         <engine:Label name="labelGoverning" text="88" class="CharacterTable-Cell CharacterTable-Col-Governing" />
-        <engine:Label name="labelStatus" text="従士" class="CharacterTable-Cell CharacterTable-Col-Status" />
+        <engine:Label name="labelSoldiers" text="88888" class="CharacterTable-Cell CharacterTable-Col-Soldiers" />
         <engine:Label name="labelContribution" text="88888" class="CharacterTable-Cell CharacterTable-Col-Contribution" />
         <engine:Label name="labelPrestige" text="88888" class="CharacterTable-Cell CharacterTable-Col-Prestige" />
-        <engine:Label name="labelLoyalty" text="88888" class="CharacterTable-Cell CharacterTable-Col-Loyalty" />
+        <engine:Label name="labelLoyalty" text="100" class="CharacterTable-Cell CharacterTable-Col-Loyalty" />
     </engine:Button>
 </engine:UXML>

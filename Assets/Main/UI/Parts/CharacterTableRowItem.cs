@@ -39,11 +39,12 @@ public partial class CharacterTableRowItem
         CharacterTableRowItemRoot.EnableInClassList("clickable", isClickable);
         
         labelName.text = chara.Name;
+        labelDeployed.style.display = Util.Display(chara.IsMoving);
         labelAttack.text = chara.Attack.ToString();
         labelDefense.text = chara.Defense.ToString();
         labelIntelligence.text = chara.Intelligence.ToString();
         labelGoverning.text = chara.Governing.ToString();
-        labelStatus.text = chara.GetTitle();
+        labelSoldiers.text = chara.Soldiers.SoldierCount.ToString();
         labelContribution.text = chara.Contribution.ToString("0");
         labelPrestige.text = chara.Prestige.ToString("0");
         labelLoyalty.text = chara.Loyalty.MaxWith(100).ToString("0");

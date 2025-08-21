@@ -10,9 +10,9 @@ Button.active {
     border-color: #888;
     background-color: transparent;
 }
-.MiddleCharacterIcon:hover {
+/* .MiddleCharacterIcon:hover {
     border-color: yellow;
-}
+} */
 
 .SmallCharacterIcon {
     width: 70px;
