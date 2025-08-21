@@ -28,6 +28,8 @@ public partial class CastleInfoPanel
 
     public VisualElement ObjectiveContainer { get; private set; }
 
+    public Button buttonCharacterList { get; private set; }
+
     public VisualElement CastleBossImage { get; private set; }
 
     public Label labelGold { get; private set; }
@@ -67,6 +69,12 @@ public partial class CastleInfoPanel
     public Label labelDeployedPower { get; private set; }
 
     public VisualElement DeployedCharacterIcons { get; private set; }
+
+    public CharacterTable CharacterTable { get; private set; }
+
+    public VisualElement CastleInfoNormalView { get; private set; }
+
+    public VisualElement CastleInfoCharacterListView { get; private set; }
 
     public CharacterSummary CharacterSummary { get; private set; }
 
@@ -112,6 +120,7 @@ public partial class CastleInfoPanel
         labelCastleName = Root?.Q<Label>("labelCastleName");
         labelCastleRegion = Root?.Q<Label>("labelCastleRegion");
         ObjectiveContainer = Root?.Q<VisualElement>("ObjectiveContainer");
+        buttonCharacterList = Root?.Q<Button>("buttonCharacterList");
         CastleBossImage = Root?.Q<VisualElement>("CastleBossImage");
         labelGold = Root?.Q<Label>("labelGold");
         labelBalance = Root?.Q<Label>("labelBalance");
@@ -132,6 +141,9 @@ public partial class CastleInfoPanel
         labelDeployedCount = Root?.Q<Label>("labelDeployedCount");
         labelDeployedPower = Root?.Q<Label>("labelDeployedPower");
         DeployedCharacterIcons = Root?.Q<VisualElement>("DeployedCharacterIcons");
+        CharacterTable = new CharacterTable(Root?.Q<VisualElement>("CharacterTable"));
+        CastleInfoNormalView = Root?.Q<VisualElement>("CastleInfoNormalView");
+        CastleInfoCharacterListView = Root?.Q<VisualElement>("CastleInfoCharacterListView");
         CharacterSummary = new CharacterSummary(Root?.Q<VisualElement>("CharacterSummary"));
         TabButtonCountrySummary = Root?.Q<Button>("TabButtonCountrySummary");
         TabButtonCountryMemberList = Root?.Q<Button>("TabButtonCountryMemberList");
@@ -160,6 +172,7 @@ public partial class CastleInfoPanel
         labelCastleName = Root?.Q<Label>("labelCastleName");
         labelCastleRegion = Root?.Q<Label>("labelCastleRegion");
         ObjectiveContainer = Root?.Q<VisualElement>("ObjectiveContainer");
+        buttonCharacterList = Root?.Q<Button>("buttonCharacterList");
         CastleBossImage = Root?.Q<VisualElement>("CastleBossImage");
         labelGold = Root?.Q<Label>("labelGold");
         labelBalance = Root?.Q<Label>("labelBalance");
@@ -180,6 +193,9 @@ public partial class CastleInfoPanel
         labelDeployedCount = Root?.Q<Label>("labelDeployedCount");
         labelDeployedPower = Root?.Q<Label>("labelDeployedPower");
         DeployedCharacterIcons = Root?.Q<VisualElement>("DeployedCharacterIcons");
+        CharacterTable = new CharacterTable(Root?.Q<VisualElement>("CharacterTable"));
+        CastleInfoNormalView = Root?.Q<VisualElement>("CastleInfoNormalView");
+        CastleInfoCharacterListView = Root?.Q<VisualElement>("CastleInfoCharacterListView");
         CharacterSummary = new CharacterSummary(Root?.Q<VisualElement>("CharacterSummary"));
         TabButtonCountrySummary = Root?.Q<Button>("TabButtonCountrySummary");
         TabButtonCountryMemberList = Root?.Q<Button>("TabButtonCountryMemberList");

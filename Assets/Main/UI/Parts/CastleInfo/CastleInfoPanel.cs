@@ -10,6 +10,7 @@ public partial class CastleInfoPanel
     private Castle targetCastle;
     private Character characterSummaryTarget;
     private Character characterSummaryTargetDefault;
+    private bool isCharacterListViewVisible;
 
     private InfoTab currentTab;
     private Button CurrentTabButton => currentTab switch
@@ -36,6 +37,31 @@ public partial class CastleInfoPanel
         {
             CharacterSummary.SetData(characterSummaryTargetDefault);
         });
+
+        // CharacterTable初期化
+        CharacterTable.Initialize();
+
+        buttonCharacterList.clicked += () =>
+        {
+            if (isCharacterListViewVisible)
+            {
+                HideCharacterListView();
+                buttonCharacterList.text = "人物一覧";
+            }
+            else
+            {
+                ShowCharacterListView();
+                buttonCharacterList.text = "戻る";
+            }
+        };
+
+        // CharacterTableのイベント設定
+        CharacterTable.RowMouseMove += (sender, chara) =>
+        {
+            if (chara == characterSummaryTarget) return;
+            characterSummaryTarget = chara;
+            CharacterSummary.SetData(chara);
+        };
      
         SwitchTab(InfoTab.Castle);
     }
@@ -251,5 +277,36 @@ public partial class CastleInfoPanel
             CharacterSummary.SetData(character);
         });
         return faceImage;
+    }
+
+    /// <summary>
+    /// キャラクター一覧表示を表示します。
+    /// </summary>
+    private void ShowCharacterListView()
+    {
+        isCharacterListViewVisible = true;
+        
+        CastleInfoNormalView.style.display = DisplayStyle.None;
+        CastleInfoCharacterListView.style.display = DisplayStyle.Flex;
+        CharacterTable.SetData(targetCastle.Members.ToList(), null);
+        
+        // 最初のキャラクターをCharacterSummaryに表示する。
+        if (targetCastle.Members.Count > 0)
+        {
+            CharacterSummary.SetData(targetCastle.Members.First());
+        }
+    }
+
+    /// <summary>
+    /// キャラクター一覧表示を非表示にして元の表示に戻します。
+    /// </summary>
+    private void HideCharacterListView()
+    {
+        isCharacterListViewVisible = false;
+
+        CastleInfoCharacterListView.style.display = DisplayStyle.None;
+        CastleInfoNormalView.style.display = DisplayStyle.Flex;
+        
+        CharacterSummary.SetData(characterSummaryTargetDefault);
     }
 }
