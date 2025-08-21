@@ -1,5 +1,4 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <ui:Template name="CharacterSummary" src="project://database/Assets/Main/UI/Parts/CharacterSummary.uxml" />
     <ui:Template name="CastleInfoPanel" src="project://database/Assets/Main/UI/Parts/CastleInfo/CastleInfoPanel.uxml" />
     <Style src="project://database/Assets/Main/UI/MainUI.uss" />
     
@@ -14,9 +13,6 @@
             </ui:VisualElement>
             <ui:Button text="×" style="font-size: 28px; width: 40px; height: 40px; -unity-font-style: bold;" />
         </ui:VisualElement>
-
-        <!-- プレイヤー情報パネル -->
-        <ui:Instance name="CharacterSummary" template="CharacterSummary" />
 
         <!-- アクションボタンエリア -->
         <ui:VisualElement name="ActionsPanel" class="actions-panel" style="margin-top: 10px; padding: 10px; background-color: #223344;">

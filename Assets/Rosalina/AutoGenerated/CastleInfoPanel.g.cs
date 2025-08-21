@@ -60,13 +60,21 @@ public partial class CastleInfoPanel
 
     public Label labelInCastlePower { get; private set; }
 
-    public VisualElement GarrisonedCharacterIcons { get; private set; }
+    public VisualElement InCastleCharacterIcons { get; private set; }
 
     public Label labelDeployedCount { get; private set; }
 
     public Label labelDeployedPower { get; private set; }
 
     public VisualElement DeployedCharacterIcons { get; private set; }
+
+    public CharacterSummary CharacterSummary { get; private set; }
+
+    public Button TabButtonCountrySummary { get; private set; }
+
+    public Button TabButtonCountryMemberList { get; private set; }
+
+    public Button TabButtonCountryCastleList { get; private set; }
 
     public Label labelRulerName { get; private set; }
 
@@ -120,10 +128,14 @@ public partial class CastleInfoPanel
         labelCastleStrength = Root?.Q<Label>("labelCastleStrength");
         labelInCastleMemberCount = Root?.Q<Label>("labelInCastleMemberCount");
         labelInCastlePower = Root?.Q<Label>("labelInCastlePower");
-        GarrisonedCharacterIcons = Root?.Q<VisualElement>("GarrisonedCharacterIcons");
+        InCastleCharacterIcons = Root?.Q<VisualElement>("InCastleCharacterIcons");
         labelDeployedCount = Root?.Q<Label>("labelDeployedCount");
         labelDeployedPower = Root?.Q<Label>("labelDeployedPower");
         DeployedCharacterIcons = Root?.Q<VisualElement>("DeployedCharacterIcons");
+        CharacterSummary = new CharacterSummary(Root?.Q<VisualElement>("CharacterSummary"));
+        TabButtonCountrySummary = Root?.Q<Button>("TabButtonCountrySummary");
+        TabButtonCountryMemberList = Root?.Q<Button>("TabButtonCountryMemberList");
+        TabButtonCountryCastleList = Root?.Q<Button>("TabButtonCountryCastleList");
         labelRulerName = Root?.Q<Label>("labelRulerName");
         labelRulerPersonality = Root?.Q<Label>("labelRulerPersonality");
         labelCountryBalance = Root?.Q<Label>("labelCountryBalance");
@@ -164,10 +176,14 @@ public partial class CastleInfoPanel
         labelCastleStrength = Root?.Q<Label>("labelCastleStrength");
         labelInCastleMemberCount = Root?.Q<Label>("labelInCastleMemberCount");
         labelInCastlePower = Root?.Q<Label>("labelInCastlePower");
-        GarrisonedCharacterIcons = Root?.Q<VisualElement>("GarrisonedCharacterIcons");
+        InCastleCharacterIcons = Root?.Q<VisualElement>("InCastleCharacterIcons");
         labelDeployedCount = Root?.Q<Label>("labelDeployedCount");
         labelDeployedPower = Root?.Q<Label>("labelDeployedPower");
         DeployedCharacterIcons = Root?.Q<VisualElement>("DeployedCharacterIcons");
+        CharacterSummary = new CharacterSummary(Root?.Q<VisualElement>("CharacterSummary"));
+        TabButtonCountrySummary = Root?.Q<Button>("TabButtonCountrySummary");
+        TabButtonCountryMemberList = Root?.Q<Button>("TabButtonCountryMemberList");
+        TabButtonCountryCastleList = Root?.Q<Button>("TabButtonCountryCastleList");
         labelRulerName = Root?.Q<Label>("labelRulerName");
         labelRulerPersonality = Root?.Q<Label>("labelRulerPersonality");
         labelCountryBalance = Root?.Q<Label>("labelCountryBalance");

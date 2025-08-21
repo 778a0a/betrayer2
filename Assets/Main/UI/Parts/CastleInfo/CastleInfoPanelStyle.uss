@@ -3,17 +3,26 @@ Button.active {
     background-color: #eee;
 }
 
+.MiddleCharacterIcon {
+    width: 128px;
+    height: 128px;
+    border-width: 2px;
+    border-color: #888;
+    background-color: transparent;
+}
+.MiddleCharacterIcon:hover {
+    border-color: yellow;
+}
+
 .SmallCharacterIcon {
     width: 70px;
     height: 70px;
     margin-right: 5px;
     margin-bottom: 5px;
     border-width: 2px;
-    border-color: white;
+    border-color: #888;
     background-color: transparent;
-    background-image: none;
 }
-
 .SmallCharacterIcon:hover {
     border-color: yellow;
 }

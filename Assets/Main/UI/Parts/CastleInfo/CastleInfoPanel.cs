@@ -8,6 +8,8 @@ public partial class CastleInfoPanel
 {
     private GameCore Core => GameCore.Instance;
     private Castle targetCastle;
+    private Character characterSummaryTarget;
+    private Character characterSummaryTargetDefault;
 
     private InfoTab currentTab;
     private Button CurrentTabButton => currentTab switch
@@ -30,6 +32,11 @@ public partial class CastleInfoPanel
         TabButtonCountry.clicked += () => SwitchTab(InfoTab.Country);
         TabButtonDiplomacy.clicked += () => SwitchTab(InfoTab.Diplomacy);
 
+        CastleInfoTab.RegisterCallback<MouseLeaveEvent>(evt =>
+        {
+            CharacterSummary.SetData(characterSummaryTargetDefault);
+        });
+     
         SwitchTab(InfoTab.Castle);
     }
 
@@ -48,10 +55,17 @@ public partial class CastleInfoPanel
         DiplomacyInfoTab.style.display = Util.Display(currentTab == InfoTab.Diplomacy);
     }
 
-    public void SetData(Castle castle)
+    public void SetData(Castle castle, Character characterSummaryTargetDefault)
     {
         targetCastle = castle;
+        characterSummaryTarget = characterSummaryTargetDefault;
+        this.characterSummaryTargetDefault = characterSummaryTargetDefault;
 
+        Render();
+    }
+
+    private void Render()
+    {
         SetCastleData(targetCastle);
         SetCountryData(targetCastle.Country);
         SetDiplomacyData(targetCastle.Country);
@@ -93,13 +107,16 @@ public partial class CastleInfoPanel
         var inCastle = castle.Members.Where(m => !m.IsMoving).OrderBy(c => c.OrderIndex).ToList();
         labelInCastleMemberCount.text = $"({inCastle.Count}名)";
         labelInCastlePower.text = $"{inCastle.Sum(c => c.Power):0}";
-        ShowCharacterIcons(inCastle, GarrisonedCharacterIcons);
+        ShowCharacterIcons(inCastle, InCastleCharacterIcons);
         
         // 出撃中キャラ一覧
         var deployed = castle.Members.Where(m => m.IsMoving).OrderBy(c => c.OrderIndex).ToList();
         labelDeployedCount.text = $"({deployed.Count}名)";
         labelDeployedPower.text = $"{deployed.Sum(c => c.Power):0}";
         ShowCharacterIcons(deployed, DeployedCharacterIcons);
+
+        // 人物サマリー
+        CharacterSummary.SetData(characterSummaryTarget);
     }
 
     /// <summary>
@@ -229,12 +246,10 @@ public partial class CastleInfoPanel
         var faceImage = new VisualElement();
         faceImage.AddToClassList("SmallCharacterIcon");
         faceImage.style.backgroundImage = new(Static.GetFaceImage(character));
-        faceImage.RegisterCallback<ClickEvent>(evt => OnCharacterIconClicked(character));
+        faceImage.RegisterCallback<MouseEnterEvent>(evt =>
+        {
+            CharacterSummary.SetData(character);
+        });
         return faceImage;
-    }
-
-    private void OnCharacterIconClicked(Character character)
-    {
-        Debug.Log($"キャラクターがクリックされました: {character.Name}");
     }
 }

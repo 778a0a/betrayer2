@@ -9,6 +9,12 @@ public partial class CharacterSummary
 
     public void SetData(Character chara)
     {
+        if (chara == null)
+        {
+            Root.style.visibility = Visibility.Hidden;
+            return;
+        }
+
         // 基本情報の更新
         imagePlayerFace.image = Static.GetFaceImage(chara);
         labelPlayerName.text = chara.Name;

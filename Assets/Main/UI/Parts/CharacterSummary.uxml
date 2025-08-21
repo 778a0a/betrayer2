@@ -3,7 +3,7 @@
     <Style src="project://database/Assets/Main/UI/MainUI.uss" />
     
     <!-- PlayerInfo Panel: プレイヤー情報表示パネル -->
-    <ui:VisualElement style="padding: 10px; background-color: rgba(50, 50, 80, 0.3);">
+    <ui:VisualElement style="padding: 10px; background-color: #224;">
         <ui:VisualElement style="flex-direction: row; align-items: center">
             <ui:VisualElement style="position: relative; width: 170px; height: 170px;">
                 <ui:Image name="imagePlayerFace" style="width: 170px; height: 170px; background-color: rgba(0, 229, 255, 0.35); position: absolute; top: 0; left: 0;" />

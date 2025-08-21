@@ -20,8 +20,6 @@ public partial class StrategyPhaseScreen
 
     public VisualElement ActionButtons { get; private set; }
 
-    public CharacterSummary CharacterSummary { get; private set; }
-
     public VisualElement ActionsPanel { get; private set; }
 
     public CastleInfoPanel CastleInfoPanel { get; private set; }
@@ -34,7 +32,6 @@ public partial class StrategyPhaseScreen
         labelCostGold = Root?.Q<Label>("labelCostGold");
         labelActionDescription = Root?.Q<Label>("labelActionDescription");
         ActionButtons = Root?.Q<VisualElement>("ActionButtons");
-        CharacterSummary = new CharacterSummary(Root?.Q<VisualElement>("CharacterSummary"));
         ActionsPanel = Root?.Q<VisualElement>("ActionsPanel");
         CastleInfoPanel = new CastleInfoPanel(Root?.Q<VisualElement>("CastleInfoPanel"));
     }
@@ -45,7 +42,6 @@ public partial class StrategyPhaseScreen
         labelCostGold = Root?.Q<Label>("labelCostGold");
         labelActionDescription = Root?.Q<Label>("labelActionDescription");
         ActionButtons = Root?.Q<VisualElement>("ActionButtons");
-        CharacterSummary = new CharacterSummary(Root?.Q<VisualElement>("CharacterSummary"));
         ActionsPanel = Root?.Q<VisualElement>("ActionsPanel");
         CastleInfoPanel = new CastleInfoPanel(Root?.Q<VisualElement>("CastleInfoPanel"));
     }

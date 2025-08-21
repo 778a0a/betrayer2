@@ -94,12 +94,11 @@ public partial class StrategyPhaseScreen : IScreen
 
     public void Render()
     {
-        CharacterSummary.SetData(currentCharacter);
         foreach (var button in buttons)
         {
             button.SetData(currentCharacter);
         }
         
-        CastleInfoPanel.SetData(currentCharacter.Castle);
+        CastleInfoPanel.SetData(currentCharacter.Castle, currentCharacter);
     }
 }
