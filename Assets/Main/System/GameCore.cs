@@ -77,6 +77,23 @@ public partial class GameCore
             {
                 // 序列を更新する。
                 World.Countries.UpdateRanking();
+
+                // 方針を更新する。
+                foreach (var country in World.Countries)
+                {
+                    if (country.Ruler.IsPlayer) continue;
+                    var prevObjective = country.Objective;
+                    var newObjective = AI.SelectCountryObjective(country, prevObjective);
+                    country.Objective = newObjective;
+                    if (newObjective != prevObjective)
+                    {
+                        Debug.Log($"国方針更新: {newObjective} <- {prevObjective} at {country}");
+                    }
+                    else
+                    {
+                        Debug.Log($"国方針継続: {newObjective} at {country}");
+                    }
+                }
             }
 
             // 収入月の場合
@@ -90,6 +107,27 @@ public partial class GameCore
                 foreach (var castle in World.Castles)
                 {
                     castle.QuarterActionDone = false;
+                }
+
+                // 各城の方針を更新する。
+                foreach (var country in World.Countries)
+                {
+                    if (country.Ruler.IsPlayer) continue;
+                    foreach (var castle in country.Castles)
+                    {
+                        // 各城の方針を設定する。
+                        var prevObjective = castle.Objective;
+                        var newObjective = AI.SelectCastleObjective(castle);
+                        castle.Objective = newObjective;
+                        if (newObjective != prevObjective)
+                        {
+                            Debug.Log($"方針更新: {newObjective} <- {prevObjective} at {castle}");
+                        }
+                        else
+                        {
+                            Debug.Log($"方針継続: {newObjective} at {castle}");
+                        }
+                    }
                 }
 
                 // 収入処理を行う。

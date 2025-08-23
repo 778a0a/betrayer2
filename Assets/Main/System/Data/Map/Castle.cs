@@ -58,6 +58,11 @@ public class Castle : ICountryEntity, IMapEntity
     public List<Character> MembersRaw { get; } = new();
 
     [JsonIgnore]
+    public int SoldierCount => Members
+        .Select(m => m.Soldiers.SoldierCount)
+        .DefaultIfEmpty(0)
+        .Sum();
+    [JsonIgnore]
     public float Power => Members
         .Select(m => m.Power)
         .DefaultIfEmpty(0)
@@ -212,7 +217,7 @@ public class Castle : ICountryEntity, IMapEntity
 }
 
 [JsonObject(ItemTypeNameHandling = TypeNameHandling.Auto)]
-public class CastleObjective
+public record CastleObjective
 {
     public static List<CastleObjective> Candidates(Castle castle)
     {
@@ -259,49 +264,53 @@ public class CastleObjective
     /// <summary>
     /// 方針なし
     /// </summary>
-    public class None : CastleObjective
+    public record None : CastleObjective
     {
     }
 
     /// <summary>
     /// 城攻撃
     /// </summary>
-    public class Attack : CastleObjective
+    public record Attack : CastleObjective
     {
         public string TargetCastleName { get; set; }
-        public override string ToString() => $"{nameof(Attack)}({TargetCastleName})";
 
         public override bool IsAttackTarget(Castle target) => target.Name == TargetCastleName;
+        
+        public override string ToString() => $"攻撃({TargetCastleName})";
     }
 
     /// <summary>
     /// 訓練
     /// </summary>
-    public class Train : CastleObjective
+    public record Train : CastleObjective
     {
+        public override string ToString() => $"訓練";
     }
 
     /// <summary>
     /// 防備
     /// </summary>
-    public class Fortify : CastleObjective
+    public record Fortify : CastleObjective
     {
+        public override string ToString() => $"防備";
     }
 
     /// <summary>
     /// 開発
     /// </summary>
-    public class Develop : CastleObjective
+    public record Develop : CastleObjective
     {
+        public override string ToString() => $"開発";
     }
 
     /// <summary>
     /// 輸送
     /// </summary>
-    public class Transport : CastleObjective
+    public record Transport : CastleObjective
     {
         public string TargetCastleName { get; set; }
 
-        public override string ToString() => $"{nameof(Transport)}({TargetCastleName})";
+        public override string ToString() => $"輸送({TargetCastleName})";
     }
 }

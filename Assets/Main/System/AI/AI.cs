@@ -18,10 +18,95 @@ public class AI
         world = core.World;
     }
 
+    public CountryObjective SelectCountryObjective(Country country, CountryObjective prev)
+    {
+        var candTypes = CountryObjective.Candidates(country);
+        // まず目標の種類を選ぶ。
+        var cands = candTypes.RandomPickWeighted(list =>
+        {
+            if (list.Count == 0) return 0;
+            var sample = list[0];
+            var prevIsSameType = prev != null && prev.GetType() == sample.GetType();
+            var sameAdj = prevIsSameType ? 5 : 1;
+            switch (sample)
+            {
+                case CountryObjective.RegionConquest:
+                    var personalityAdj = country.Ruler.Personality switch
+                    {
+                        Personality.Conqueror => 1000,
+                        Personality.Chaos => 1000,
+                        Personality.Warrior => 500,
+                        Personality.Pacifist => 50,
+                        Personality.Merchant => 50,
+                        _ => 100,
+                    };
+                    return personalityAdj * sameAdj;
+                case CountryObjective.CountryAttack:
+                    // 敵対国があるなら優先する。
+                    if (country.Neighbors.Any(c => c.IsEnemy(country))) return 1000 * sameAdj;
+                    // 前回と同じ敵が候補にあれば優先する。
+                    var clist = list.Cast<CountryObjective.CountryAttack>();
+                    if (clist.Any(o => o == prev && world.Countries.First(o.IsAttackTarget).GetRelation(country) < 50)) return 1000 * sameAdj;
+                    if (country.Neighbors.All(c => c.GetRelation(country) >= 50)) return 0;
+                    var minRelAdj = (100 - country.Neighbors.Min(c => c.GetRelation(country))) * 10;
+                    return minRelAdj * sameAdj;
+                case CountryObjective.StatusQuo:
+                    personalityAdj = country.Ruler.Personality switch
+                    {
+                        Personality.Pacifist => 1000,
+                        Personality.Merchant => 1000,
+                        Personality.Warrior => 50,
+                        Personality.Conqueror => 10,
+                        Personality.Chaos => 0,
+                        _ => 100,
+                    };
+                    return personalityAdj * sameAdj;
+                default: throw new Exception("Unknown CountryObjective type: " + sample.GetType().Name);
+            }
+        });
+
+        // 次に具体的な目標を選ぶ。
+        return cands.RandomPickWeighted(o =>
+        {
+            var prevIsSame = prev != null && prev == o;
+            var sameAdj = prevIsSame ? 4 : 1;
+            switch (o)
+            {
+                case CountryObjective.RegionConquest co:
+                    var targetCastles = world.Castles.Where(co.IsAttackTarget).ToList();
+                    // 統一済みなら選ばない。
+                    if (targetCastles.All(country.IsSelfOrAlly)) return 0;
+                    // 自国が含まれない地方の場合
+                    if (targetCastles.All(country.IsAttackable))
+                    {
+                        // 他の地方が未統一の場合は選ばない。
+                        var countryRegions = country.Castles.Select(c => c.Region).Distinct();
+                        if (!prevIsSame && countryRegions.Any(r => world.Castles.Where(c => c.Region == r).Any(country.IsAttackable))) return 0;
+                    }
+                    // 未統一の地方の場合
+                    var myCountAdj = targetCastles.Count(c => country.IsSelfOrAlly(c)) + 1;
+                    var enemyCountAdj = targetCastles.Count(c => !country.IsSelf(c) && country.IsEnemy(c)) + 1;
+                    var weakCountAdj = targetCastles.Where(country.IsAttackable).Max(c => c.Country.Power) < country.Power ? 3 : 1;
+                    var closeAdj = country.Castles.Sum(c => c.Neighbors.Where(country.IsAttackable).Count(n => n.Region == co.TargetRegionName)) + 1;
+                    return myCountAdj + enemyCountAdj * weakCountAdj * closeAdj * sameAdj;
+                case CountryObjective.CountryAttack co:
+                    var target = world.Countries.First(co.IsAttackTarget);
+                    var enemyAdj = country.IsEnemy(target) ? 10 : 1;
+                    var powerAdj = target.Power < country.Power ? 10 : 1;
+                    var relAdj = Mathf.Lerp(1, 5, (100 - country.GetRelation(target)) / 100f);
+                    var goodRelAdj = target.GetRelation(country) > 50 ? 0.1f : 1;
+                    return enemyAdj * powerAdj * relAdj * goodRelAdj * sameAdj;
+                case CountryObjective.StatusQuo:
+                    return 1;
+                default: throw new Exception("Unknown CountryObjective type: " + o.GetType().Name);
+            }
+        });
+    }
+
     /// <summary>
     /// 城の方針を決定します。
     /// </summary>
-    public CastleObjective SelectCastleObjective(Character ruler, Castle castle)
+    public CastleObjective SelectCastleObjective(Castle castle)
     {
         var country = castle.Country;
         var countryObjective = country.Objective;

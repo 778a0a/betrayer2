@@ -59,21 +59,6 @@ partial class GameCore
             if (!country.QuarterActionDone)
             {
                 country.QuarterActionDone = true;
-
-                foreach (var rulingCastle in country.Castles)
-                {
-                    // 各城の方針を設定する。
-                    var prevObjective = rulingCastle.Objective;
-                    rulingCastle.Objective = AI.SelectCastleObjective(chara, rulingCastle);
-                    if (prevObjective != rulingCastle.Objective)
-                    {
-                        Debug.Log($"方針: 更新 {rulingCastle.Objective} <- {prevObjective} at {rulingCastle}");
-                    }
-                    else
-                    {
-                        Debug.Log($"方針継続: {rulingCastle.Objective} at {rulingCastle}");
-                    }
-                }
             }
 
             // 赤字で物資も乏しい場合は序列の低いメンバーを解雇する。

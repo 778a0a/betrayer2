@@ -42,6 +42,9 @@ public class Country : ICountryEntity
     public float GoldBalance => Castles.Sum(c => c.GoldBalance);
     public float GoldSurplus => Castles.Sum(c => c.GoldSurplus);
 
+    public int SoldierCount => Castles.Sum(c => c.SoldierCount);
+    public float Power => Castles.Sum(c => c.Power);
+
     public IEnumerable<Country> DiplomacyTargets => Ruler.Personality switch
     {
         Personality.Merchant or Personality.Leader =>
@@ -108,7 +111,7 @@ public enum CountryRank
 /// <summary>
 /// 勢力目標
 /// </summary>
-public class CountryObjective
+public record CountryObjective
 {
     public static CountryObjective Parse(string csvColumn)
     {
@@ -143,33 +146,60 @@ public class CountryObjective
         };
     }
 
+    public static List<IReadOnlyList<CountryObjective>> Candidates(Country country)
+    {
+        var list = new List<IReadOnlyList<CountryObjective>>
+        {
+            country.Castles
+                .Concat(country.Castles.SelectMany(c => c.Neighbors))
+                .Select(c => c.Region)
+                .Distinct()
+                .Select(r => new RegionConquest { TargetRegionName = r })
+                .ToList(),
+            country.Neighbors
+                .Where(n => country.IsAttackable(n))
+                .Select(n => new CountryAttack { TargetRulerName = n.Ruler.Name })
+                .ToList(),
+            new List<CountryObjective>() { new StatusQuo() }
+        };
+
+        return list;
+    }
+
     public virtual bool IsAttackTarget(Castle target) => false;
 
     /// <summary>
     /// 地方統一
     /// </summary>
-    public class RegionConquest : CountryObjective
+    public record RegionConquest : CountryObjective
     {
         public string TargetRegionName { get; set; }
 
         public override bool IsAttackTarget(Castle target) => target.Region == TargetRegionName;
+
+        public override string ToString() => $"地方統一({TargetRegionName})";
     }
 
     /// <summary>
     /// 勢力打倒
     /// </summary>
-    public class CountryAttack : CountryObjective
+    public record CountryAttack : CountryObjective
     {
         public string TargetRulerName { get; set; }
 
         public bool IsAttackTarget(Country target) => target.Ruler.Name == TargetRulerName;
         public override bool IsAttackTarget(Castle target) => IsAttackTarget(target.Country);
+
+        public override string ToString() => $"勢力打倒({TargetRulerName})";
     }
 
     /// <summary>
     /// 現状維持
     /// </summary>
-    public class StatusQuo : CountryObjective
+    public record StatusQuo : CountryObjective
     {
+        public bool IsTempolary { get; set; } = false;
+
+        public override string ToString() => IsTempolary ? "現状維持(一時的)" : "現状維持";
     }
 }
