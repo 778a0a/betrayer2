@@ -195,6 +195,10 @@ public class Castle : ICountryEntity, IMapEntity
     /// 方針
     /// </summary>
     public CastleObjective Objective { get; set; } = new CastleObjective.None();
+    /// <summary>
+    /// 指定した城が攻撃目標に合致しているならtrue
+    /// </summary>
+    public bool IsAttackTarget(Castle target) => Objective.IsAttackTarget(target) || Country.Objective.IsAttackTarget(target);
 
     /// <summary>
     /// 四半期の戦略アクションを行っていればtrue
@@ -250,6 +254,8 @@ public class CastleObjective
 
     public override string ToString() => GetType().Name;
 
+    public virtual bool IsAttackTarget(Castle target) => false;
+
     /// <summary>
     /// 方針なし
     /// </summary>
@@ -264,6 +270,8 @@ public class CastleObjective
     {
         public string TargetCastleName { get; set; }
         public override string ToString() => $"{nameof(Attack)}({TargetCastleName})";
+
+        public override bool IsAttackTarget(Castle target) => target.Name == TargetCastleName;
     }
 
     /// <summary>

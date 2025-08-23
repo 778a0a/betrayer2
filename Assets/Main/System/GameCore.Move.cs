@@ -172,7 +172,7 @@ partial class GameCore
         }
 
         // 進軍を行うか判定する。
-        AI.Deploy(castle);
+        await AI.Deploy(castle);
     }
 
     private async ValueTask DoPersonalAction(Character chara)

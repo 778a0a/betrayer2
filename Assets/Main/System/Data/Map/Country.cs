@@ -143,12 +143,16 @@ public class CountryObjective
         };
     }
 
+    public virtual bool IsAttackTarget(Castle target) => false;
+
     /// <summary>
     /// 地方統一
     /// </summary>
     public class RegionConquest : CountryObjective
     {
         public string TargetRegionName { get; set; }
+
+        public override bool IsAttackTarget(Castle target) => target.Region == TargetRegionName;
     }
 
     /// <summary>
@@ -157,6 +161,9 @@ public class CountryObjective
     public class CountryAttack : CountryObjective
     {
         public string TargetRulerName { get; set; }
+
+        public bool IsAttackTarget(Country target) => target.Ruler.Name == TargetRulerName;
+        public override bool IsAttackTarget(Castle target) => IsAttackTarget(target.Country);
     }
 
     /// <summary>

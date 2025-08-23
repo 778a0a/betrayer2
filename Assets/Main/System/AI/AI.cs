@@ -37,7 +37,7 @@ public class AI
             switch (o)
             {
                 case CastleObjective.Attack atk:
-                    var targetCastle = world.Castles.First(c => c.Name == atk.TargetCastleName);
+                    var targetCastle = world.Castles.First(atk.IsAttackTarget);
                     var rel = country.GetRelation(targetCastle.Country);
                     var val = 0f;
                     var relThresh = country.Ruler.Personality switch
@@ -238,7 +238,7 @@ public class AI
     /// <summary>
     /// 出撃
     /// </summary>
-    public void Deploy(Castle castle)
+    public async ValueTask Deploy(Castle castle)
     {
         if (castle.DangerForcesExists) return;
 
@@ -272,7 +272,8 @@ public class AI
         foreach (var neighbor in neighbors)
         {
             var rel = neighbor.Country.GetRelation(castle.Country);
-            if (rel >= relThresh) continue;
+            var objectiveAdj = castle.IsAttackTarget(neighbor) ? 10 : 0;
+            if (rel >= relThresh + objectiveAdj) continue;
             targetCands.Add(neighbor);
         }
 
@@ -299,16 +300,28 @@ public class AI
             var powerAdj2 = Mathf.Lerp(0, 200, (castle.Power / (neighbor.DefencePower + 0.01f)) - 1);
             val = Mathf.Max(val, hateAdj + powerAdj + powerAdj2);
             if (rel == minRel) val *= 3f;
+            if (castle.Objective.IsAttackTarget(neighbor)) val *= 10f;
+            if (castle.Country.Objective.IsAttackTarget(neighbor)) val *= 10f;
             return val;
         });
 
         if (castle.Country.Ruler.Personality != Personality.Chaos)
         {
             // すでに他に敵対国がある場合は、敵対国でない国を攻撃しないようにする。
-            if (!target.Country.IsEnemy(castle) && castle.Country.Neighbors.Any(castle.Country.IsEnemy))
+            var otherEnemyExists = !target.Country.IsEnemy(castle) && castle.Country.Neighbors.Any(castle.Country.IsEnemy);
+            if (otherEnemyExists)
             {
-                Debug.LogError($"出撃判定 {castle} 目標 {target} は敵対国ではないため出撃しません。");
-                return;
+                // ただし、攻撃目標に含まれているなら低確率で攻撃する。
+                var isAttackTarget = castle.IsAttackTarget(target);
+                if (isAttackTarget && 0.1f.Chance())
+                {
+                    Debug.LogError($"出撃判定 {castle} 目標 {target} は敵対国ではないですが攻撃目標のため出撃します。");
+                }
+                else
+                {
+                    Debug.LogError($"出撃判定 {castle} 目標 {target} は敵対国ではないため出撃しません。");
+                    return;
+                }
             }
         }
 
@@ -337,7 +350,7 @@ public class AI
             //Debug.Log($"出撃候補 {attacker}");
             if (act.CanDo(args))
             {
-                act.Do(args);
+                await act.Do(args);
             }
             else
             {
