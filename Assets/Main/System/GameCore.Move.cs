@@ -65,14 +65,13 @@ partial class GameCore
                     // 各城の方針を設定する。
                     var prevObjective = rulingCastle.Objective;
                     rulingCastle.Objective = AI.SelectCastleObjective(chara, rulingCastle);
-                    // TODO 攻撃の場合は目標城を設定する。
                     if (prevObjective != rulingCastle.Objective)
                     {
-                        //Debug.Log($"方針: 更新 {rulingCastle.Objective} <- {prevObjective} at {rulingCastle}");
+                        Debug.Log($"方針: 更新 {rulingCastle.Objective} <- {prevObjective} at {rulingCastle}");
                     }
                     else
                     {
-                        //Debug.Log($"方針継続: {rulingCastle.Objective} at {rulingCastle}");
+                        Debug.Log($"方針継続: {rulingCastle.Objective} at {rulingCastle}");
                     }
                 }
             }
@@ -293,16 +292,18 @@ partial class GameCore
             {
                 switch (chara.Castle.Objective)
                 {
-                    case CastleObjective.CastleStrength:
+                    case CastleObjective.Fortify:
                         action = PersonalActions.Fortify;
                         break;
-                    case CastleObjective.Commerce:
+                    case CastleObjective.Develop:
                         var investChance = Mathf.Pow(chara.Castle.GoldIncomeProgress, 2);
                         action = investChance.Chance() ? PersonalActions.Invest : PersonalActions.Develop;
                         break;
+                    case CastleObjective.Train:
+                        action = PersonalActions.TrainSoldiers;
+                        break;
                     case CastleObjective.None:
                     case CastleObjective.Attack:
-                    case CastleObjective.Train:
                     default:
                         break;
                 }

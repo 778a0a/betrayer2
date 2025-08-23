@@ -194,7 +194,7 @@ public class Castle : ICountryEntity, IMapEntity
     /// <summary>
     /// 方針
     /// </summary>
-    public CastleObjective Objective { get; set; }
+    public CastleObjective Objective { get; set; } = new CastleObjective.None();
 
     /// <summary>
     /// 四半期の戦略アクションを行っていればtrue
@@ -207,11 +207,93 @@ public class Castle : ICountryEntity, IMapEntity
     }
 }
 
-public enum CastleObjective
+[JsonObject(ItemTypeNameHandling = TypeNameHandling.Auto)]
+public class CastleObjective
 {
-    None,
-    Attack,
-    Train,
-    CastleStrength,
-    Commerce,
+    public static List<CastleObjective> Candidates(Castle castle)
+    {
+        var list = new List<CastleObjective>
+        {
+            new None(),
+            new Train(),
+            new Fortify(),
+            new Develop(),
+        };
+        if (castle.IsFrontline)
+        {
+            // 前線なら攻撃も候補に入れる。
+            foreach (var neighbor in castle.Neighbors)
+            {
+                if (castle.IsAttackable(neighbor))
+                {
+                    list.Add(new Attack { TargetCastleName = neighbor.Name });
+                }
+            }
+        }
+        else
+        {
+            // 後方なら輸送も候補に入れる。
+            // ただし物資が余っている場合のみ。
+            if (castle.GoldSurplus >= 0)
+            {
+                foreach (var other in castle.Country.Castles.Except(new[] { castle }))
+                {
+                    if (other.IsFrontline || other.Boss == castle.Country.Ruler)
+                    {
+                        list.Add(new Transport { TargetCastleName = other.Name });
+                    }
+                }
+            }
+        }
+        return list;
+    }
+
+    public override string ToString() => GetType().Name;
+
+    /// <summary>
+    /// 方針なし
+    /// </summary>
+    public class None : CastleObjective
+    {
+    }
+
+    /// <summary>
+    /// 城攻撃
+    /// </summary>
+    public class Attack : CastleObjective
+    {
+        public string TargetCastleName { get; set; }
+        public override string ToString() => $"{nameof(Attack)}({TargetCastleName})";
+    }
+
+    /// <summary>
+    /// 訓練
+    /// </summary>
+    public class Train : CastleObjective
+    {
+    }
+
+    /// <summary>
+    /// 防備
+    /// </summary>
+    public class Fortify : CastleObjective
+    {
+    }
+
+    /// <summary>
+    /// 開発
+    /// </summary>
+    public class Develop : CastleObjective
+    {
+    }
+
+    /// <summary>
+    /// 輸送
+    /// </summary>
+    public class Transport : CastleObjective
+    {
+        public string TargetCastleName { get; set; }
+
+        public override string ToString() => $"{nameof(Transport)}({TargetCastleName})";
+    }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -62,7 +63,32 @@ public partial class CastleInfoPanel
             characterSummaryTarget = chara;
             CharacterSummary.SetData(chara);
         };
-     
+
+        comboObjective.RegisterCallback<ChangeEvent<string>>(evt =>
+        {
+            Debug.Log($"Objective changed: {evt.newValue}");
+            if (targetCastle == null) return;
+            var selected = comboObjective.index;
+            switch (selected)
+            {
+                //case 0: => new CastleObjective.Attack("敵城"), // TODO 敵城名
+                case 1:
+                    targetCastle.Objective = new CastleObjective.Train();
+                    break;
+                case 2:
+                    targetCastle.Objective = new CastleObjective.Fortify();
+                    break;
+                case 3:
+                    targetCastle.Objective = new CastleObjective.Develop();
+                    break;
+                //4 => new CastleObjective.Transport("味方城"), // TODO 味方城名
+                case 5:
+                    targetCastle.Objective = new CastleObjective.None();
+                    break;
+            }
+            Render();
+        });
+
         SwitchTab(InfoTab.Castle);
     }
 
@@ -109,9 +135,28 @@ public partial class CastleInfoPanel
         {
             CastleBossImage.style.backgroundImage = new(Static.GetFaceImage(castle.Boss));
         }
-        ObjectiveContainer.style.display = Util.Display((castle.Boss?.IsPlayer ?? false) || castle.Country.Ruler.IsPlayer);
-        labelObjective.text = castle.Objective.ToString();
-        
+        else
+        {
+            CastleBossImage.style.backgroundImage = null;
+        }
+
+        ObjectiveContainer.style.display = Util.Display(Core.World.Player?.Country == castle.Country);
+        var canOrder = (castle.Boss?.IsPlayer ?? false) || castle.Country.Ruler.IsPlayer;
+        labelObjective.style.display = Util.Display(!canOrder);
+        comboObjective.style.display = Util.Display(canOrder);
+
+        var objectiveText = castle.Objective switch
+        {
+            CastleObjective.Attack o => $"{o.TargetCastleName}攻略",
+            CastleObjective.Train => $"訓練",
+            CastleObjective.Fortify => $"防備",
+            CastleObjective.Develop => $"開発",
+            CastleObjective.Transport o => $"{o.TargetCastleName}輸送",
+            _ => "なし",
+        };
+        labelObjective.text = objectiveText;
+        comboObjective.value = objectiveText;
+
         // パラメーター等
         labelGold.text = castle.Gold.ToString("F0");
         var balance = castle.GoldBalance;

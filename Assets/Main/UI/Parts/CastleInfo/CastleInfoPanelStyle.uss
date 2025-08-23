@@ -26,3 +26,19 @@ Button.active {
 .SmallCharacterIcon:hover {
     border-color: yellow;
 }
+
+DropdownField {
+    color: black;
+    font-size: 24px;
+    min-width: 165px;
+    height: 35px;
+    margin: -5px 0 -30px 5px;
+    padding: 0;
+
+}
+
+.unity-popup-field__input {
+    font-size: 24px;
+    margin-left: 0;
+    padding: 0 5px 0 5px;
+}

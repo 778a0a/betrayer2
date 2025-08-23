@@ -22,6 +22,8 @@ public partial class CastleInfoPanel
 
     public Label labelObjective { get; private set; }
 
+    public DropdownField comboObjective { get; private set; }
+
     public Label labelCastleName { get; private set; }
 
     public Label labelCastleRegion { get; private set; }
@@ -117,6 +119,7 @@ public partial class CastleInfoPanel
         TabButtonCountry = Root?.Q<Button>("TabButtonCountry");
         TabButtonDiplomacy = Root?.Q<Button>("TabButtonDiplomacy");
         labelObjective = Root?.Q<Label>("labelObjective");
+        comboObjective = Root?.Q<DropdownField>("comboObjective");
         labelCastleName = Root?.Q<Label>("labelCastleName");
         labelCastleRegion = Root?.Q<Label>("labelCastleRegion");
         ObjectiveContainer = Root?.Q<VisualElement>("ObjectiveContainer");
@@ -169,6 +172,7 @@ public partial class CastleInfoPanel
         TabButtonCountry = Root?.Q<Button>("TabButtonCountry");
         TabButtonDiplomacy = Root?.Q<Button>("TabButtonDiplomacy");
         labelObjective = Root?.Q<Label>("labelObjective");
+        comboObjective = Root?.Q<DropdownField>("comboObjective");
         labelCastleName = Root?.Q<Label>("labelCastleName");
         labelCastleRegion = Root?.Q<Label>("labelCastleRegion");
         ObjectiveContainer = Root?.Q<VisualElement>("ObjectiveContainer");

@@ -32,7 +32,7 @@ partial class PersonalActions
             var chara = args.actor;
 
             var drillMasterExists = chara.Castle.Members.Any(m => m.Traits.HasFlag(Traits.Drillmaster));
-            var isObjective = chara.Castle.Objective == CastleObjective.Train || chara.Castle.Objective == CastleObjective.Attack;
+            var isObjective = chara.Castle.Objective is CastleObjective.Train || chara.Castle.Objective is CastleObjective.Attack;
             foreach (var soldier in chara.Soldiers)
             {
                 if (soldier.IsEmptySlot) continue;

@@ -20,6 +20,10 @@ public class Country : ICountryEntity
     /// </summary>
     public Character Ruler { get; set; }
     /// <summary>
+    /// 勢力目標
+    /// </summary>
+    public CountryObjective Objective { get; set; }
+    /// <summary>
     /// 拠点
     /// </summary>
     public IReadOnlyList<Castle> Castles => CastlesRaw;
@@ -101,3 +105,64 @@ public enum CountryRank
     Chiefdom,
 }
 
+/// <summary>
+/// 勢力目標
+/// </summary>
+public class CountryObjective
+{
+    public static CountryObjective Parse(string csvColumn)
+    {
+        var cols = csvColumn.Split(':');
+        var type = cols[0];
+        switch (type)
+        {
+            case nameof(RegionConquest):
+                return new RegionConquest
+                {
+                    TargetRegionName = cols[1],
+                };
+            case nameof(CountryAttack):
+                return new CountryAttack
+                {
+                    TargetRulerName = cols[1],
+                };
+            case nameof(StatusQuo):
+                return new StatusQuo();
+            default:
+                throw new Exception("Unknown CountryObjective type: " + type);
+        }
+    }
+    public string ToCsvColumn()
+    {
+        return this switch
+        {
+            RegionConquest rc => $"{nameof(RegionConquest)}:{rc.TargetRegionName}",
+            CountryAttack ca => $"{nameof(CountryAttack)}:{ca.TargetRulerName}",
+            StatusQuo _ => nameof(StatusQuo),
+            _ => throw new Exception("Unknown CountryObjective type: " + GetType().Name),
+        };
+    }
+
+    /// <summary>
+    /// 地方統一
+    /// </summary>
+    public class RegionConquest : CountryObjective
+    {
+        public string TargetRegionName { get; set; }
+    }
+
+    /// <summary>
+    /// 勢力打倒
+    /// </summary>
+    public class CountryAttack : CountryObjective
+    {
+        public string TargetRulerName { get; set; }
+    }
+
+    /// <summary>
+    /// 現状維持
+    /// </summary>
+    public class StatusQuo : CountryObjective
+    {
+    }
+}

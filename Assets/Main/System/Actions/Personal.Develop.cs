@@ -36,7 +36,7 @@ partial class PersonalActions
             var adjCount = Mathf.Pow(0.9f, (chara.Castle.Members.Count - 3).MinWith(0));
             town.GoldIncome = (town.GoldIncome + adj * adjDim * adjImp * adjCount / 8).MaxWith(town.GoldIncomeMax);
 
-            var contribAdj = town.Castle.Objective == CastleObjective.Commerce ? 1.5f : 1;
+            var contribAdj = town.Castle.Objective is CastleObjective.Develop ? 1.5f : 1;
             chara.Contribution += adj * contribAdj;
             PayCost(args);
 

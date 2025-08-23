@@ -6,5 +6,9 @@
 
 Label, Button
 {
-    font-size: 40px;
+    font-size: 28px;
+}
+
+.unity-base-dropdown__item {
+    font-size: 24px;
 }

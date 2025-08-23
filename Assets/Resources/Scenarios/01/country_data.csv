@@ -1,34 +1,34 @@
-﻿Id	ColorIndex	Memo	
-0	17	レオナルド	
-1	1	セレスティア	
-2	19	オズ	
-3	3	エルシア	
-4	96	ドラゴミール	
-5	51	マーガレット	
-6	0	フレデリック	
-7	4	ザンダー	
-8	84	ウィリアム	
-9	36	ザフィール	
-10	78	ナディア	
-11	6	カリオペ	
-12	26	フリージア	
-13	2	セレスト	
-14	63	ケルベロス	
-15	27	イリス	
-16	10	アトラス	
-17	14	サイムンドル	
-18	23	リュコス	
-19	8	アイナ	
-20	58	アストリッド	
-21	18	ジョージ	
-22	54	デューン	
-23	98	カメリア	
-24	70	リヴィア	
-25	32	サフィラ	
-26	77	アステル	
-27	5	ヴェロニカ	
-28	7	ルクレティア	
-29	88	モニカ	
-30	67	シリウス	
-31	22	アウレリウス	
-32	42	バジル
+﻿Id	ColorIndex	Objective	Memo	
+0	17	StatusQuo	レオナルド	
+1	1	CountryAttack:アストリッド	セレスティア	
+2	19	CountryAttack:アストリッド	オズ	
+3	3	CountryAttack:ドラゴミール	エルシア	
+4	96	CountryAttack:フレデリック	ドラゴミール	
+5	51	StatusQuo	マーガレット	
+6	0	RegionConquest:ドラコニア	フレデリック	
+7	4	RegionConquest:アクアティア	ザンダー	
+8	84	StatusQuo	ウィリアム	
+9	36	CountryAttack:ドラゴミール	ザフィール	
+10	78	RegionConquest:フラクタリア	ナディア	
+11	6	RegionConquest:フェルティリア	カリオペ	
+12	26	CountryAttack:アトラス	フリージア	
+13	2	RegionConquest:ラクストリア	セレスト	
+14	63	StatusQuo	ケルベロス	
+15	27	StatusQuo	イリス	
+16	10	StatusQuo	アトラス	
+17	14	CountryAttack:カメリア	サイムンドル	
+18	23	CountryAttack:アストリッド	リュコス	
+19	8	CountryAttack:アストリッド	アイナ	
+20	58	RegionConquest:東シルヴァニア	アストリッド	
+21	18	StatusQuo	ジョージ	
+22	54	StatusQuo	デューン	
+23	98	StatusQuo	カメリア	
+24	70	RegionConquest:アクアティア	リヴィア	
+25	32	RegionConquest:アクアティア	サフィラ	
+26	77	CountryAttack:カメリア	アステル	
+27	5	CountryAttack:フレデリック	ヴェロニカ	
+28	7	StatusQuo	ルクレティア	
+29	88	StatusQuo	モニカ	
+30	67	StatusQuo	シリウス	
+31	22	StatusQuo	アウレリウス	
+32	42	StatusQuo	バジル

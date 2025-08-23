@@ -57,7 +57,7 @@ partial class PersonalActions
             town.TotalInvestment += GoldCost * adj;
 
             // 功績を加算する。
-            var contribAdj = town.Castle.Objective == CastleObjective.Commerce ? 1.5f : 1;
+            var contribAdj = town.Castle.Objective is CastleObjective.Develop ? 1.5f : 1;
             chara.Contribution += adj * contribAdj;
 
             action.PayCost(args);

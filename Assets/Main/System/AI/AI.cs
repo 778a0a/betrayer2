@@ -24,57 +24,75 @@ public class AI
     public CastleObjective SelectCastleObjective(Character ruler, Castle castle)
     {
         var country = castle.Country;
+        var countryObjective = country.Objective;
         var neighbors = castle.Neighbors.Where(c => c.Country != country);
         var minRel = neighbors
             .Select(n => n.Country.GetRelation(country))
             .DefaultIfEmpty(100)
             .Min();
-        return Util.EnumArray<CastleObjective>().RandomPickWeighted(o =>
+
+        var cands = CastleObjective.Candidates(castle);
+        return cands.RandomPickWeighted(o =>
         {
             switch (o)
             {
-                // 攻撃方針 戦闘+
-                // ・近隣に友好度の低い国がある
-                // ・近隣に友好的でなく戦力の低い城がある
-                // ・近隣に在城戦力の低い城がある
-                case CastleObjective.Attack:
+                case CastleObjective.Attack atk:
+                    var targetCastle = world.Castles.First(c => c.Name == atk.TargetCastleName);
+                    var rel = country.GetRelation(targetCastle.Country);
                     var val = 0f;
-                    foreach (var neighbor in neighbors)
+                    var relThresh = country.Ruler.Personality switch
                     {
-                        var rel = neighbor.Country.GetRelation(country);
-                        var relThresh = country.Ruler.Personality switch
-                        {
-                            Personality.Merchant => 15,
-                            Personality.Pacifist => 31,
-                            _ => 40,
-                        };
-                        if (rel <= relThresh)
-                        {
-                            var hateAdj = Mathf.Lerp(100, 400, (relThresh - rel) / relThresh);
-                            var powerAdj = Mathf.Lerp(0, 200, (castle.Power / (neighbor.Power + 0.01f)) - 1);
-                            var powerAdj2 = Mathf.Lerp(0, 200, (castle.Power / (neighbor.DefencePower + 0.01f)) - 1);
-                            val = Mathf.Max(val, hateAdj + powerAdj + powerAdj2);
-                            var memberAdj = castle.Members.Count > 2;
-                            val *= memberAdj ? 1 : 0.1f;
-                        }
+                        Personality.Merchant => 15,
+                        Personality.Pacifist => 31,
+                        _ => 40,
+                    };
+
+                    var countryObjectiveAdj = 1f;
+                    switch (countryObjective)
+                    {
+                        case CountryObjective.RegionConquest co:
+                            if (co.TargetRegionName == targetCastle.Region) countryObjectiveAdj = 2;
+                            else countryObjectiveAdj = 0.1f;
+                            relThresh += 10;
+                            break;
+                        case CountryObjective.CountryAttack co:
+                            if (co.TargetRulerName == targetCastle.Country.Ruler.Name) countryObjectiveAdj = 2;
+                            else countryObjectiveAdj = 0.1f;
+                            relThresh += 10;
+                            break;
+                    }
+
+                    if (rel <= relThresh)
+                    {
+                        var hateAdj = Mathf.Lerp(100, 400, (relThresh - rel) / relThresh);
+                        var powerAdj = Mathf.Lerp(0, 200, (castle.Power / (targetCastle.Power + 0.01f)) - 1);
+                        var powerAdj2 = Mathf.Lerp(0, 200, (castle.Power / (targetCastle.DefencePower + 0.01f)) - 1);
+                        val = Mathf.Max(val, hateAdj + powerAdj + powerAdj2);
+                        var memberAdj = castle.Members.Count > 2;
+                        val *= memberAdj ? 1 : 0.1f;
+                        val *= countryObjectiveAdj;
                     }
                     return val;
-
+                case CastleObjective.Transport tran:
+                    // 物資が不足している城を優先する。
+                    targetCastle = castle.Country.Castles.FirstOrDefault(c => c.Name == tran.TargetCastleName);
+                    if (targetCastle.GoldSurplus < 0) return 300 - targetCastle.GoldSurplus;
+                    return castle.Members.Count * 10 + 50;
                 case CastleObjective.Train:
                     if (minRel <= 20) return 300;
                     if (minRel < 50) return 200;
                     if (minRel >= 80) return 0;
                     return 50;
 
-                case CastleObjective.CastleStrength:
+                case CastleObjective.Fortify:
                     if (castle.Strength == castle.StrengthMax) return 0;
                     //if (castle.DangerForcesExists) return 500;
                     if (minRel <= 20) return 50;
                     return 10;
 
-                case CastleObjective.Commerce:
+                case CastleObjective.Develop:
                     if (castle.GoldIncome == castle.GoldIncomeMax) return 0;
-                    if (castle.GoldBalance < 0) return 1000;
+                    if (castle.GoldSurplus < 0) return 1000;
                     return 100;
                 default:
                     return 0;
@@ -228,7 +246,7 @@ public class AI
         var neighbors = castle.Neighbors.Where(c => c.Country != castle.Country).ToList();
 
         // 攻撃するか判定する。
-        var shouldAttack = castle.Objective == CastleObjective.Attack ?
+        var shouldAttack = castle.Objective is CastleObjective.Attack ?
             0.3f :
             0.05f;
         if (!shouldAttack.Chance())

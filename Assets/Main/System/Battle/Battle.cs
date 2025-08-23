@@ -150,7 +150,7 @@ public class Battle
         winner.Character.Prestige += 1;
 
         // 功績の処理を行う。
-        winner.Character.Contribution += 10 * (winner.Character.Castle.Objective == CastleObjective.Attack ? 1.5f : 1f);
+        winner.Character.Contribution += 10 * (winner.Character.Castle.Objective is CastleObjective.Attack ? 1.5f : 1f);
         loser.Character.Contribution += 1;
 
         // 攻城戦の場合は城の耐久力を減らす。

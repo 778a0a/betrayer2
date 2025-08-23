@@ -37,7 +37,7 @@ partial class PersonalActions
             var adjCount = Mathf.Pow(0.9f, (chara.Castle.Members.Count - 3).MinWith(0));
             castle.Strength = (castle.Strength + 0.1f * adj * adjDim * adjImp * adjCount).MaxWith(castle.StrengthMax);
 
-            var contribAdj = castle.Objective == CastleObjective.CastleStrength ? 1.5f : 1;
+            var contribAdj = castle.Objective is CastleObjective.Fortify ? 1.5f : 1;
             chara.Contribution += adj * contribAdj;
             PayCost(args);
 

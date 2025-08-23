@@ -23,7 +23,8 @@
                 <ui:Label text="地方)" style="font-size: 24px; color: silver" />
                 <ui:VisualElement name="ObjectiveContainer" style="flex-direction: row;">
                     <ui:Label text="方針: " style="font-size: 24px; margin-left: 10px;" />
-                <ui:Label name="labelObjective" text="開発" style="font-size: 24px; margin-left: 5px;" />
+                    <ui:Label name="labelObjective" text="開発" style="font-size: 24px; margin-left: 5px;" />
+                    <ui:DropdownField name="comboObjective" choices="拠点攻略,訓練,防備,開発,輸送,なし" />
                 </ui:VisualElement>
 
                 <ui:Button name="buttonCharacterList" text="人物一覧" style="position: relative; padding: 5px; margin: -30px 0 -30px 10px; font-size: 24px; width: 120px;" />
