@@ -2,9 +2,13 @@
     <engine:Template name="BattleWindow" src="project://database/Assets/Main/UI/Windows/Battle/BattleWindow.uxml" />
     <engine:Template name="MessageWindow" src="project://database/Assets/Main/UI/Windows/MessageWindow.uxml" />
     <engine:Template name="MainUIFrame" src="project://database/Assets/Main/UI/MainUIFrame.uxml" />
+    <engine:Template name="CameraMovementArea" src="project://database/Assets/Main/UI/CameraMovementArea.uxml" />
     <Style src="project://database/Assets/Main/UI/MainUI.uss" />
     <engine:Instance template="MainUIFrame" name="Frame" picking-mode="Ignore" style="position: absolute; top: 0; left: 0; bottom: 0; right: 0;" />
-    <engine:VisualElement name="UIContainer" picking-mode="Ignore" style="flex-grow: 1;" />
+    <engine:VisualElement style="flex-direction: row; flex: 1" picking-mode="Ignore">
+        <engine:Instance template="CameraMovementArea" name="CameraMovementArea" picking-mode="Ignore" style="flex: 1;"/>
+        <engine:VisualElement name="UIContainer" picking-mode="Ignore" />
+    </engine:VisualElement>
     <engine:VisualElement name="WindowHost" picking-mode="Ignore" style="flex-grow: 1; position: absolute; top: 0; right: 0; left: 0; bottom: 0; align-items: center; justify-content: center;">
         <engine:Instance template="BattleWindow" name="BattleWindow" picking-mode="Ignore" class="window" />
         <engine:Instance template="MessageWindow" name="MessageWindow" picking-mode="Ignore" class="window" />

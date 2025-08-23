@@ -32,6 +32,11 @@ public partial class MainUI : MonoBehaviour
         Frame.Initialize();
         MessageWindow.Initialize();
         BattleWindow.Initialize();
+        
+        // CameraMovementAreaを初期化
+        var cameraMovement = FindObjectOfType<CameraMovement>();
+        CameraMovementArea.Initialize(cameraMovement);
+        
         Assets.InitializeScreens(this, isInitialized);
 
         if (isInitialized)

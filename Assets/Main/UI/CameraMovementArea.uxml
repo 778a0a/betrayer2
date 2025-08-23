@@ -1,0 +1,6 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <engine:VisualElement name="TopScrollZone" style="cursor: url('project://database/Assets/Resources/ArrowUp.png'); position: absolute; top: 0; left: 0; right: 0; height: 40px; background-color: rgba(255, 200, 200, 0);" />
+    <engine:VisualElement name="BottomScrollZone" style="cursor: url('project://database/Assets/Resources/ArrowDown.png'); position: absolute; bottom: 0; left: 0; right: 0; height: 40px; background-color: rgba(255, 200, 255, 0);" />
+    <engine:VisualElement name="LeftScrollZone" style="cursor: url('project://database/Assets/Resources/ArrowLeft.png'); position: absolute; left: 0; top: 40px; bottom: 40px; width: 40px; background-color: rgba(255, 255, 255, 0);" />
+    <engine:VisualElement name="RightScrollZone" style="cursor: url('project://database/Assets/Resources/ArrowRight.png'); position: absolute; right: 0; top: 40px; bottom: 40px; width: 40px; background-color: rgba(255, 255, 200, 0);" />
+</engine:UXML>

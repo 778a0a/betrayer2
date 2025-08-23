@@ -26,6 +26,10 @@ public class CameraMovement : MonoBehaviour
     private Vector2 lastMousePosition;
     private bool isDragging = false;
 
+    // UI scroll control variables
+    private bool isUIScrolling = false;
+    private Vector2 uiScrollDirection = Vector2.zero;
+
 
     private void Start()
     {
@@ -65,7 +69,7 @@ public class CameraMovement : MonoBehaviour
         }
 
         // 画面端でのカメラ移動処理
-        if (false)
+        if (true)
         {
             if (mousePosition.y >= topPanBorder)
             {
@@ -95,6 +99,13 @@ public class CameraMovement : MonoBehaviour
                 hAccelaration = hAccelaration * 0.9f;
             }
             pos.x += panSpeed * Time.deltaTime * hAccelaration;
+        }
+
+        // UI scroll processing
+        if (isUIScrolling)
+        {
+            pos.x += panSpeed * Time.deltaTime * uiScrollDirection.x;
+            pos.y += panSpeed * Time.deltaTime * uiScrollDirection.y;
         }
 
 
@@ -175,5 +186,17 @@ public class CameraMovement : MonoBehaviour
                 newPos.z
             );
         }
+    }
+
+    public void StartUIScroll(Vector2 direction)
+    {
+        isUIScrolling = true;
+        uiScrollDirection = direction;
+    }
+
+    public void StopUIScroll()
+    {
+        isUIScrolling = false;
+        uiScrollDirection = Vector2.zero;
     }
 }

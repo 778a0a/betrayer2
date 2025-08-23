@@ -23,6 +23,8 @@ public partial class MainUI
 
     public VisualElement UIContainer { get; private set; }
 
+    public CameraMovementArea CameraMovementArea { get; private set; }
+
     public VisualElement WindowHost { get; private set; }
 
     public VisualElement Root => _document?.rootVisualElement;
@@ -32,6 +34,7 @@ public partial class MainUI
         MessageWindow = new MessageWindow(Root?.Q<VisualElement>("MessageWindow"));
         Frame = new MainUIFrame(Root?.Q<VisualElement>("Frame"));
         UIContainer = Root?.Q<VisualElement>("UIContainer");
+        CameraMovementArea = new CameraMovementArea(Root?.Q<VisualElement>("CameraMovementArea"));
         WindowHost = Root?.Q<VisualElement>("WindowHost");
     }
 
@@ -41,6 +44,7 @@ public partial class MainUI
         MessageWindow.ReinitializeComponent(Root?.Q<VisualElement>("MessageWindow"));
         Frame.ReinitializeComponent(Root?.Q<VisualElement>("Frame"));
         UIContainer = Root?.Q<VisualElement>("UIContainer");
+        CameraMovementArea.ReinitializeComponent(Root?.Q<VisualElement>("CameraMovementArea"));
         WindowHost = Root?.Q<VisualElement>("WindowHost");
     }
 }
