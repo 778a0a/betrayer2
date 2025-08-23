@@ -83,7 +83,10 @@ partial class StrategyActions
             else
             {
                 var rel = actor.Country.GetRelation(target);
-                var prob = Mathf.Pow((rel - 50) / 50, 2);
+                var actorAllyCount = World.Countries.Where(c => c != actor.Country).Count(c => c.IsAlly(actor.Country));
+                var targetAllyCount = World.Countries.Where(c => c != target).Count(c => c.IsAlly(target));
+                var tooFar = !target.Neighbors.Concat(target.Neighbors.SelectMany(n => n.Neighbors)).Contains(actor.Country);
+                var prob = (rel - actorAllyCount * 10) / (1 + targetAllyCount) / (tooFar ? 2 : 1) / (rel <= 50 ? 5 : 1) / 100;
                 Debug.Log($"{actor.Name}->{target.Ruler.Name} 同盟受諾確率: {prob} ({rel})");
                 accepted = prob.Chance();
             }
