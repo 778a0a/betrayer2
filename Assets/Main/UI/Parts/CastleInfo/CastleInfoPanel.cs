@@ -12,6 +12,7 @@ public partial class CastleInfoPanel
     private Character characterSummaryTarget;
     private Character characterSummaryTargetDefault;
     private bool isCharacterListViewVisible;
+    private bool isObjectiveSelectViewVisible;
 
     private InfoTab currentTab;
     private Button CurrentTabButton => currentTab switch
@@ -41,6 +42,8 @@ public partial class CastleInfoPanel
 
         // CharacterTable初期化
         CharacterTable.Initialize();
+        // SimpleTable初期化
+        ObjectiveSimpleTable.Initialize();
 
         buttonCharacterList.clicked += () =>
         {
@@ -54,6 +57,17 @@ public partial class CastleInfoPanel
                 ShowCharacterListView();
                 buttonCharacterList.text = "戻る";
             }
+        };
+
+        buttonBackFromObjectiveSelect.clicked += () =>
+        {
+            HideObjectiveSelectView();
+        };
+
+        // SimpleTableの選択イベント
+        ObjectiveSimpleTable.ItemSelected += (sender, selectedItem) =>
+        {
+            OnObjectiveSelected(selectedItem);
         };
 
         // CharacterTableのイベント設定
@@ -71,22 +85,35 @@ public partial class CastleInfoPanel
             var selected = comboObjective.index;
             switch (selected)
             {
-                //case 0: => new CastleObjective.Attack("敵城"), // TODO 敵城名
+                case 0:
+                    ShowObjectiveSelectView("攻略目標を選択してください", targetCastle.Neighbors
+                        .Where(c => targetCastle.IsAttackable(c))
+                        .Select(c => c.Name)
+                        .ToList());
+                    break;
                 case 1:
                     targetCastle.Objective = new CastleObjective.Train();
+                    HideObjectiveSelectView();
                     break;
                 case 2:
                     targetCastle.Objective = new CastleObjective.Fortify();
+                    HideObjectiveSelectView();
                     break;
                 case 3:
                     targetCastle.Objective = new CastleObjective.Develop();
+                    HideObjectiveSelectView();
                     break;
-                //4 => new CastleObjective.Transport("味方城"), // TODO 味方城名
+                case 4:
+                    ShowObjectiveSelectView("輸送目標を選択してください", targetCastle.Country.Castles
+                        .Where(c => c != targetCastle)
+                        .Select(c => c.Name)
+                        .ToList());
+                    break;
                 case 5:
                     targetCastle.Objective = new CastleObjective.None();
+                    HideObjectiveSelectView();
                     break;
             }
-            Render();
         });
 
         SwitchTab(InfoTab.Castle);
@@ -155,7 +182,7 @@ public partial class CastleInfoPanel
             _ => "なし",
         };
         labelObjective.text = objectiveText;
-        comboObjective.value = objectiveText;
+        SetObjectiveComboValue();
 
         // パラメーター等
         labelGold.text = castle.Gold.ToString("F0");
@@ -353,5 +380,73 @@ public partial class CastleInfoPanel
         CastleInfoNormalView.style.display = DisplayStyle.Flex;
         
         CharacterSummary.SetData(characterSummaryTargetDefault);
+    }
+
+    /// <summary>
+    /// 目標選択画面を表示します。
+    /// </summary>
+    private void ShowObjectiveSelectView(string title, List<string> options)
+    {
+        isObjectiveSelectViewVisible = true;
+        
+        CastleInfoNormalView.style.display = DisplayStyle.None;
+        CastleInfoObjectiveSelectView.style.display = DisplayStyle.Flex;
+        
+        labelObjectiveSelectTitle.text = title;
+        ObjectiveSimpleTable.SetData(options, "対象");
+    }
+
+    /// <summary>
+    /// 目標選択画面を非表示にして元の表示に戻します。
+    /// </summary>
+    private void HideObjectiveSelectView()
+    {
+        isObjectiveSelectViewVisible = false;
+
+        CastleInfoObjectiveSelectView.style.display = DisplayStyle.None;
+        CastleInfoNormalView.style.display = DisplayStyle.Flex;
+        
+        // ドロップダウンを元の値に戻す
+        SetObjectiveComboValue();
+    }
+
+
+    /// <summary>
+    /// 目標が選択された時の処理。
+    /// </summary>
+    private void OnObjectiveSelected(string selectedItem)
+    {
+        if (string.IsNullOrEmpty(selectedItem)) return;
+
+        var currentDropdownIndex = comboObjective.index;
+        Debug.Log($"Objective selected: {selectedItem} (dropdown index: {currentDropdownIndex})");
+        switch (currentDropdownIndex)
+        {
+            case 0: // 拠点攻略
+                targetCastle.Objective = new CastleObjective.Attack() { TargetCastleName = selectedItem, };
+                break;
+            case 4: // 輸送
+                targetCastle.Objective = new CastleObjective.Transport() { TargetCastleName = selectedItem, };
+                break;
+        }
+
+        HideObjectiveSelectView();
+    }
+
+    /// <summary>
+    /// 現在の目標に基づいてドロップダウンの値を設定します。
+    /// </summary>
+    private void SetObjectiveComboValue()
+    {
+        var objectiveText = targetCastle.Objective switch
+        {
+            CastleObjective.Attack o => $"{o.TargetCastleName}攻略",
+            CastleObjective.Train => $"訓練",
+            CastleObjective.Fortify => $"防備",
+            CastleObjective.Develop => $"開発",
+            CastleObjective.Transport o => $"{o.TargetCastleName}輸送",
+            _ => "なし",
+        };
+        comboObjective.value = objectiveText;
     }
 }

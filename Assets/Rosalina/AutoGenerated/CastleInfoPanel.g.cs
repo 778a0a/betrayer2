@@ -74,9 +74,17 @@ public partial class CastleInfoPanel
 
     public CharacterTable CharacterTable { get; private set; }
 
+    public Button buttonBackFromObjectiveSelect { get; private set; }
+
+    public Label labelObjectiveSelectTitle { get; private set; }
+
+    public SimpleTable ObjectiveSimpleTable { get; private set; }
+
     public VisualElement CastleInfoNormalView { get; private set; }
 
     public VisualElement CastleInfoCharacterListView { get; private set; }
+
+    public VisualElement CastleInfoObjectiveSelectView { get; private set; }
 
     public CharacterSummary CharacterSummary { get; private set; }
 
@@ -145,8 +153,12 @@ public partial class CastleInfoPanel
         labelDeployedPower = Root?.Q<Label>("labelDeployedPower");
         DeployedCharacterIcons = Root?.Q<VisualElement>("DeployedCharacterIcons");
         CharacterTable = new CharacterTable(Root?.Q<VisualElement>("CharacterTable"));
+        buttonBackFromObjectiveSelect = Root?.Q<Button>("buttonBackFromObjectiveSelect");
+        labelObjectiveSelectTitle = Root?.Q<Label>("labelObjectiveSelectTitle");
+        ObjectiveSimpleTable = new SimpleTable(Root?.Q<VisualElement>("ObjectiveSimpleTable"));
         CastleInfoNormalView = Root?.Q<VisualElement>("CastleInfoNormalView");
         CastleInfoCharacterListView = Root?.Q<VisualElement>("CastleInfoCharacterListView");
+        CastleInfoObjectiveSelectView = Root?.Q<VisualElement>("CastleInfoObjectiveSelectView");
         CharacterSummary = new CharacterSummary(Root?.Q<VisualElement>("CharacterSummary"));
         TabButtonCountrySummary = Root?.Q<Button>("TabButtonCountrySummary");
         TabButtonCountryMemberList = Root?.Q<Button>("TabButtonCountryMemberList");
@@ -198,8 +210,12 @@ public partial class CastleInfoPanel
         labelDeployedPower = Root?.Q<Label>("labelDeployedPower");
         DeployedCharacterIcons = Root?.Q<VisualElement>("DeployedCharacterIcons");
         CharacterTable = new CharacterTable(Root?.Q<VisualElement>("CharacterTable"));
+        buttonBackFromObjectiveSelect = Root?.Q<Button>("buttonBackFromObjectiveSelect");
+        labelObjectiveSelectTitle = Root?.Q<Label>("labelObjectiveSelectTitle");
+        ObjectiveSimpleTable = new SimpleTable(Root?.Q<VisualElement>("ObjectiveSimpleTable"));
         CastleInfoNormalView = Root?.Q<VisualElement>("CastleInfoNormalView");
         CastleInfoCharacterListView = Root?.Q<VisualElement>("CastleInfoCharacterListView");
+        CastleInfoObjectiveSelectView = Root?.Q<VisualElement>("CastleInfoObjectiveSelectView");
         CharacterSummary = new CharacterSummary(Root?.Q<VisualElement>("CharacterSummary"));
         TabButtonCountrySummary = Root?.Q<Button>("TabButtonCountrySummary");
         TabButtonCountryMemberList = Root?.Q<Button>("TabButtonCountryMemberList");

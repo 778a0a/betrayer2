@@ -12,3 +12,11 @@ Label, Button
 .unity-base-dropdown__item {
     font-size: 24px;
 }
+
+.unity-base-dropdown__checkmark {
+    align-self: center;
+}
+
+.unity-list-view__empty-label {
+    margin-top: 10px;
+}

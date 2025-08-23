@@ -1,6 +1,7 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <ui:Template name="CharacterTable" src="project://database/Assets/Main/UI/Parts/CharacterTable.uxml" />
     <ui:Template name="CharacterSummary" src="project://database/Assets/Main/UI/Parts/CharacterSummary.uxml" />
+    <ui:Template name="SimpleTable" src="project://database/Assets/Main/UI/Parts/SimpleTable.uxml" />
     <Style src="project://database/Assets/Main/UI/MainUI.uss" />
     <Style src="CastleInfoPanelStyle.uss" />
     
@@ -118,6 +119,13 @@
             <!-- 将一覧表示 -->
             <ui:VisualElement name="CastleInfoCharacterListView" style="display: none; flex: 1; margin: 10px -5px 0 -5px;">
                 <ui:Instance name="CharacterTable" template="CharacterTable" style="flex: 1;" />
+            </ui:VisualElement>
+
+            <!-- 目標選択表示 -->
+            <ui:VisualElement name="CastleInfoObjectiveSelectView" style="display: none; flex: 1; margin-top: 10px;">
+                <ui:Label name="labelObjectiveSelectTitle" text="攻略目標|輸送目標を選択してください" style="font-size: 28px; color: #0ff;" />
+                <ui:Instance name="ObjectiveSimpleTable" template="SimpleTable" style="flex: 1; margin: 10px -5px 0 -5px;" />
+                <ui:Button name="buttonBackFromObjectiveSelect" text="キャンセル" style="font-size: 28px; padding: 10px; margin-top: 10px;" />
             </ui:VisualElement>
 
             <!-- キャラクターサマリー -->

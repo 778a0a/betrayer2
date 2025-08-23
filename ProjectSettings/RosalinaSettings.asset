@@ -68,3 +68,5 @@ MonoBehaviour:
     _path: Assets/Main/UI/Parts/CastleInfo/CastleInfoPanel.uxml
   - _type: 1
     _path: Assets/Main/UI/CameraMovementArea.uxml
+  - _type: 1
+    _path: Assets/Main/UI/Parts/SimpleTable.uxml
