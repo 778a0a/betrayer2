@@ -53,7 +53,7 @@
                         <ui:Label name="labelPlayerAP" text="10" style="font-size: 24px; color: red; " />
                     </ui:VisualElement>
                 </ui:VisualElement>
-                <ui:VisualElement name="SoldierGrid" style="flex-direction: row; flex-wrap: wrap; margin-top: 10px;">
+                <ui:VisualElement name="SoldierGrid" style="flex-direction: row; flex-wrap: wrap; margin-top: 5px;">
                     <ui:Instance name="soldier00" template="CharacterInfoSoldierIcon" />
                     <ui:Instance name="soldier01" template="CharacterInfoSoldierIcon" />
                     <ui:Instance name="soldier02" template="CharacterInfoSoldierIcon" />

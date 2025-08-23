@@ -82,7 +82,9 @@ Label {
 }
 
 .ActionButton {
-    font-size: 32px;
+    font-size: 30px;
     margin: 4px;
+    padding: 0;
+    height: 48px;
     width: 125px;
 }
