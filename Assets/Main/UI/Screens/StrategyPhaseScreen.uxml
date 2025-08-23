@@ -15,7 +15,7 @@
         </ui:VisualElement>
 
         <!-- アクションボタンエリア -->
-        <ui:VisualElement name="ActionsPanel" class="actions-panel" style="margin-top: 10px; padding: 10px; background-color: #223344;">
+        <ui:VisualElement name="ActionsPanel" class="actions-panel" style="margin-top: 10px; padding: 10px 5px 5px 5px; background-color: #223344;">
             <ui:VisualElement style="flex-direction: row; align-items: flex-end;">
                 <ui:Label text="アクション" style="font-size: 32px; margin-left: 4px" />
                 <ui:Label text="(城資金 " style="font-size: 28px; margin: 0 5px 0 10px;" />

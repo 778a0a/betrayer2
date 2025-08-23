@@ -7,7 +7,7 @@
     <!-- 情報タブパネル -->
     <ui:VisualElement name="CastleInfo" class="CastleInfo" style="flex:1; padding: 5px 10px 5px 10px; background-color: #223344;">
         <!-- タブボタン -->
-        <ui:VisualElement style="flex-direction: row;">
+        <ui:VisualElement style="flex-direction: row; margin-left: -5px;">
             <ui:Button name="TabButtonCastle" text="城情報" style="font-size: 24px; padding: 10px 12px;" />
             <ui:Button name="TabButtonCountry" text="国情報" style="font-size: 24px; padding: 10px 12px;" />
             <ui:Button name="TabButtonDiplomacy" text="外交情報" style="font-size: 24px; padding: 10px 12px;" />
