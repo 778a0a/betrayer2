@@ -20,73 +20,7 @@ public partial class CastleInfoPanel
 
     public Button TabButtonDiplomacy { get; private set; }
 
-    public Label labelObjective { get; private set; }
-
-    public DropdownField comboObjective { get; private set; }
-
-    public Label labelCastleName { get; private set; }
-
-    public Label labelCastleRegion { get; private set; }
-
-    public VisualElement ObjectiveContainer { get; private set; }
-
-    public Button buttonCharacterList { get; private set; }
-
-    public VisualElement CastleBossImage { get; private set; }
-
-    public Label labelGold { get; private set; }
-
-    public Label labelBalance { get; private set; }
-
-    public VisualElement MaxIncomeBar { get; private set; }
-
-    public VisualElement CurrentIncomeBar { get; private set; }
-
-    public Label labelIncome { get; private set; }
-
-    public Label labelMaxIncome { get; private set; }
-
-    public VisualElement IncomeBar { get; private set; }
-
-    public Label labelExpenditure { get; private set; }
-
-    public Label labelDevLevel { get; private set; }
-
-    public Label labelTotalInvestment { get; private set; }
-
-    public Label labelTotalPower { get; private set; }
-
-    public Label labelMemberCount { get; private set; }
-
-    public Label labelCastleStrength { get; private set; }
-
-    public Label labelInCastleMemberCount { get; private set; }
-
-    public Label labelInCastlePower { get; private set; }
-
-    public VisualElement InCastleCharacterIcons { get; private set; }
-
-    public Label labelDeployedCount { get; private set; }
-
-    public Label labelDeployedPower { get; private set; }
-
-    public VisualElement DeployedCharacterIcons { get; private set; }
-
-    public CharacterTable CharacterTable { get; private set; }
-
-    public Button buttonBackFromObjectiveSelect { get; private set; }
-
-    public Label labelObjectiveSelectTitle { get; private set; }
-
-    public SimpleTable ObjectiveSimpleTable { get; private set; }
-
-    public VisualElement CastleInfoNormalView { get; private set; }
-
-    public VisualElement CastleInfoCharacterListView { get; private set; }
-
-    public VisualElement CastleInfoObjectiveSelectView { get; private set; }
-
-    public CharacterSummary CharacterSummary { get; private set; }
+    public CastleDetailTab CastleDetailTab { get; private set; }
 
     public Button TabButtonCountrySummary { get; private set; }
 
@@ -126,40 +60,7 @@ public partial class CastleInfoPanel
         TabButtonCastle = Root?.Q<Button>("TabButtonCastle");
         TabButtonCountry = Root?.Q<Button>("TabButtonCountry");
         TabButtonDiplomacy = Root?.Q<Button>("TabButtonDiplomacy");
-        labelObjective = Root?.Q<Label>("labelObjective");
-        comboObjective = Root?.Q<DropdownField>("comboObjective");
-        labelCastleName = Root?.Q<Label>("labelCastleName");
-        labelCastleRegion = Root?.Q<Label>("labelCastleRegion");
-        ObjectiveContainer = Root?.Q<VisualElement>("ObjectiveContainer");
-        buttonCharacterList = Root?.Q<Button>("buttonCharacterList");
-        CastleBossImage = Root?.Q<VisualElement>("CastleBossImage");
-        labelGold = Root?.Q<Label>("labelGold");
-        labelBalance = Root?.Q<Label>("labelBalance");
-        MaxIncomeBar = Root?.Q<VisualElement>("MaxIncomeBar");
-        CurrentIncomeBar = Root?.Q<VisualElement>("CurrentIncomeBar");
-        labelIncome = Root?.Q<Label>("labelIncome");
-        labelMaxIncome = Root?.Q<Label>("labelMaxIncome");
-        IncomeBar = Root?.Q<VisualElement>("IncomeBar");
-        labelExpenditure = Root?.Q<Label>("labelExpenditure");
-        labelDevLevel = Root?.Q<Label>("labelDevLevel");
-        labelTotalInvestment = Root?.Q<Label>("labelTotalInvestment");
-        labelTotalPower = Root?.Q<Label>("labelTotalPower");
-        labelMemberCount = Root?.Q<Label>("labelMemberCount");
-        labelCastleStrength = Root?.Q<Label>("labelCastleStrength");
-        labelInCastleMemberCount = Root?.Q<Label>("labelInCastleMemberCount");
-        labelInCastlePower = Root?.Q<Label>("labelInCastlePower");
-        InCastleCharacterIcons = Root?.Q<VisualElement>("InCastleCharacterIcons");
-        labelDeployedCount = Root?.Q<Label>("labelDeployedCount");
-        labelDeployedPower = Root?.Q<Label>("labelDeployedPower");
-        DeployedCharacterIcons = Root?.Q<VisualElement>("DeployedCharacterIcons");
-        CharacterTable = new CharacterTable(Root?.Q<VisualElement>("CharacterTable"));
-        buttonBackFromObjectiveSelect = Root?.Q<Button>("buttonBackFromObjectiveSelect");
-        labelObjectiveSelectTitle = Root?.Q<Label>("labelObjectiveSelectTitle");
-        ObjectiveSimpleTable = new SimpleTable(Root?.Q<VisualElement>("ObjectiveSimpleTable"));
-        CastleInfoNormalView = Root?.Q<VisualElement>("CastleInfoNormalView");
-        CastleInfoCharacterListView = Root?.Q<VisualElement>("CastleInfoCharacterListView");
-        CastleInfoObjectiveSelectView = Root?.Q<VisualElement>("CastleInfoObjectiveSelectView");
-        CharacterSummary = new CharacterSummary(Root?.Q<VisualElement>("CharacterSummary"));
+        CastleDetailTab = new CastleDetailTab(Root?.Q<VisualElement>("CastleDetailTab"));
         TabButtonCountrySummary = Root?.Q<Button>("TabButtonCountrySummary");
         TabButtonCountryMemberList = Root?.Q<Button>("TabButtonCountryMemberList");
         TabButtonCountryCastleList = Root?.Q<Button>("TabButtonCountryCastleList");
@@ -183,40 +84,7 @@ public partial class CastleInfoPanel
         TabButtonCastle = Root?.Q<Button>("TabButtonCastle");
         TabButtonCountry = Root?.Q<Button>("TabButtonCountry");
         TabButtonDiplomacy = Root?.Q<Button>("TabButtonDiplomacy");
-        labelObjective = Root?.Q<Label>("labelObjective");
-        comboObjective = Root?.Q<DropdownField>("comboObjective");
-        labelCastleName = Root?.Q<Label>("labelCastleName");
-        labelCastleRegion = Root?.Q<Label>("labelCastleRegion");
-        ObjectiveContainer = Root?.Q<VisualElement>("ObjectiveContainer");
-        buttonCharacterList = Root?.Q<Button>("buttonCharacterList");
-        CastleBossImage = Root?.Q<VisualElement>("CastleBossImage");
-        labelGold = Root?.Q<Label>("labelGold");
-        labelBalance = Root?.Q<Label>("labelBalance");
-        MaxIncomeBar = Root?.Q<VisualElement>("MaxIncomeBar");
-        CurrentIncomeBar = Root?.Q<VisualElement>("CurrentIncomeBar");
-        labelIncome = Root?.Q<Label>("labelIncome");
-        labelMaxIncome = Root?.Q<Label>("labelMaxIncome");
-        IncomeBar = Root?.Q<VisualElement>("IncomeBar");
-        labelExpenditure = Root?.Q<Label>("labelExpenditure");
-        labelDevLevel = Root?.Q<Label>("labelDevLevel");
-        labelTotalInvestment = Root?.Q<Label>("labelTotalInvestment");
-        labelTotalPower = Root?.Q<Label>("labelTotalPower");
-        labelMemberCount = Root?.Q<Label>("labelMemberCount");
-        labelCastleStrength = Root?.Q<Label>("labelCastleStrength");
-        labelInCastleMemberCount = Root?.Q<Label>("labelInCastleMemberCount");
-        labelInCastlePower = Root?.Q<Label>("labelInCastlePower");
-        InCastleCharacterIcons = Root?.Q<VisualElement>("InCastleCharacterIcons");
-        labelDeployedCount = Root?.Q<Label>("labelDeployedCount");
-        labelDeployedPower = Root?.Q<Label>("labelDeployedPower");
-        DeployedCharacterIcons = Root?.Q<VisualElement>("DeployedCharacterIcons");
-        CharacterTable = new CharacterTable(Root?.Q<VisualElement>("CharacterTable"));
-        buttonBackFromObjectiveSelect = Root?.Q<Button>("buttonBackFromObjectiveSelect");
-        labelObjectiveSelectTitle = Root?.Q<Label>("labelObjectiveSelectTitle");
-        ObjectiveSimpleTable = new SimpleTable(Root?.Q<VisualElement>("ObjectiveSimpleTable"));
-        CastleInfoNormalView = Root?.Q<VisualElement>("CastleInfoNormalView");
-        CastleInfoCharacterListView = Root?.Q<VisualElement>("CastleInfoCharacterListView");
-        CastleInfoObjectiveSelectView = Root?.Q<VisualElement>("CastleInfoObjectiveSelectView");
-        CharacterSummary = new CharacterSummary(Root?.Q<VisualElement>("CharacterSummary"));
+        CastleDetailTab = new CastleDetailTab(Root?.Q<VisualElement>("CastleDetailTab"));
         TabButtonCountrySummary = Root?.Q<Button>("TabButtonCountrySummary");
         TabButtonCountryMemberList = Root?.Q<Button>("TabButtonCountryMemberList");
         TabButtonCountryCastleList = Root?.Q<Button>("TabButtonCountryCastleList");

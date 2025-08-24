@@ -1,7 +1,5 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <ui:Template name="CharacterTable" src="project://database/Assets/Main/UI/Parts/CharacterTable.uxml" />
-    <ui:Template name="CharacterSummary" src="project://database/Assets/Main/UI/Parts/CharacterSummary.uxml" />
-    <ui:Template name="SimpleTable" src="project://database/Assets/Main/UI/Parts/SimpleTable.uxml" />
+    <ui:Template name="CastleDetailTab" src="project://database/Assets/Main/UI/Parts/CastleInfo/CastleDetailTab.uxml" />
     <Style src="project://database/Assets/Main/UI/MainUI.uss" />
     <Style src="CastleInfoPanelStyle.uss" />
     
@@ -16,120 +14,7 @@
 
         <!-- 城情報タブ -->
         <ui:VisualElement name="CastleInfoTab" style="flex: 1">
-            <!-- 城名 -->
-            <ui:VisualElement style="margin-top: 10px; flex-direction: row; align-items: center;">
-                <ui:Label name="labelCastleName" text="クリスタルウォーター" style="font-size: 24px;" />
-                <ui:Label text="(" style="font-size: 24px; margin-left: 5px; color: silver" />
-                <ui:Label name="labelCastleRegion" text="中央シルヴァニア" style="font-size: 24px; color: silver" />
-                <ui:Label text="地方)" style="font-size: 24px; color: silver" />
-                <ui:VisualElement name="ObjectiveContainer" style="flex-direction: row;">
-                    <ui:Label text="方針: " style="font-size: 24px; margin-left: 10px;" />
-                    <ui:Label name="labelObjective" text="開発" style="font-size: 24px; margin-left: 5px;" />
-                    <ui:DropdownField name="comboObjective" choices="拠点攻略,訓練,防備,開発,輸送,なし" />
-                </ui:VisualElement>
-
-                <ui:Button name="buttonCharacterList" text="人物一覧" style="position: relative; padding: 5px; margin: -30px 0 -30px 10px; font-size: 24px; width: 120px;" />
-            </ui:VisualElement>
-
-            <!-- 通常表示コンテナ -->
-            <ui:VisualElement name="CastleInfoNormalView" style="flex: 1; margin-top: 15px;">
-
-                <ui:VisualElement style="flex-direction: row;">
-                    <!-- 城主情報 -->
-                    <ui:VisualElement style="flex-direction: row;">
-                        <ui:VisualElement style="flex-direction: column;">
-                            <ui:Label text="城主" style="font-size: 24px; font-weight: bold; margin-bottom: 5px;" />
-                            <ui:VisualElement name="CastleBossImage" class="MiddleCharacterIcon" style="background-image: url('project://database/Assets/Resources/CharacterImages/0010.jpg');" />
-                        </ui:VisualElement>
-                    </ui:VisualElement>
-
-                    <!-- 城の基本情報 -->
-                    <ui:VisualElement style="flex-direction: row; margin-left: 20px;">
-                        <ui:VisualElement style="flex: 1;">
-                            <ui:VisualElement style="flex-direction: row; align-items: center;">
-                                <ui:Label text="城資金:" style="margin-right: 10px; font-size: 28px;" />
-                                <ui:Label name="labelGold" text="0" style="font-size: 28px; color: yellow;" />
-                                <ui:Label text="(" style="margin-left: 5px; font-size: 28px;" />
-                                <ui:Label name="labelBalance" text="+0" style="font-size: 28px; color: white;" />
-                                <ui:Label text=")" style="font-size: 28px;" />
-                            </ui:VisualElement>
-                            <ui:VisualElement style="flex-direction: row; align-items: center; margin-top: 5px;">
-                                <ui:Label text="　収入:" style="margin-right: 10px; font-size: 28px;" />
-                                <ui:Label name="labelIncome" text="0" style="font-size: 28px; color: white; margin-right: 5px;" />
-                                <ui:Label text="/" style="font-size: 28px; margin-right: 5px;" />
-                                <ui:Label name="labelMaxIncome" text="0" style="font-size: 28px; color: silver; margin-right: 10px;" />
-                                <ui:VisualElement name="IncomeBar" style="width: 200px; height: 20px; background-color: gray; margin-right: 15px; border-width: 1px; border-color: white;">
-                                    <ui:VisualElement name="MaxIncomeBar" style="position: absolute; top: 0; left: 0; height: 100%; background-color: rgba(255, 255, 0, 0.3);" />
-                                    <ui:VisualElement name="CurrentIncomeBar" style="position: absolute; top: 0; left: 0; height: 100%; background-color: yellow;" />
-                                </ui:VisualElement>
-                            </ui:VisualElement>
-                            <ui:VisualElement style="flex-direction: row; align-items: center; margin-top: 5px;">
-                                <ui:Label text="　支出:" style="margin-right: 10px; font-size: 28px;" />
-                                <ui:Label name="labelExpenditure" text="0" style="font-size: 28px; color: red;" />
-                            </ui:VisualElement>
-                            <ui:VisualElement style="flex-direction: row; align-items: center; margin-top: 5px;">
-                                <ui:Label text="発展度:" style="margin-right: 10px; font-size: 28px;" />
-                                <ui:Label name="labelDevLevel" text="0" style="font-size: 28px; color: cyan;" />
-                                <ui:Label text="(総投資額:" style="margin-left: 10px; margin-right: 10px; font-size: 28px;" />
-                                <ui:Label name="labelTotalInvestment" text="0" style="font-size: 28px; color: yellow;" />
-                                <ui:Label text=")" style="font-size: 28px;" />
-                            </ui:VisualElement>
-                            <ui:VisualElement style="flex-direction: row; align-items: center; margin-top: 5px;">
-                                <ui:Label text="総兵力:" style="margin-right: 10px; font-size: 28px;" />
-                                <ui:Label name="labelTotalPower" text="88888" style="font-size: 28px; color: orange;" />
-                                <ui:Label text="将数:" style="margin-left: 15px; margin-right: 10px; font-size: 28px;" />
-                                <ui:Label name="labelMemberCount" text="88" style="font-size: 28px;" />
-                                <ui:Label text="城塞レベル:" style="margin-left: 15px; margin-right: 10px; font-size: 28px;" />
-                                <ui:Label name="labelCastleStrength" text="888" style="font-size: 28px; color: cyan;" />
-                            </ui:VisualElement>
-                        </ui:VisualElement>
-                    </ui:VisualElement>
-                </ui:VisualElement>
-
-                <!-- キャラクターアイコン一覧 -->
-                <ui:VisualElement style="margin-top: 10px; flex: 1">
-                    <!-- 在城中キャラクター -->
-                    <ui:VisualElement style="">
-                        <ui:VisualElement style="flex-direction: row; align-items: center; margin-top: 5px;">
-                            <ui:Label text="在城中" style="font-size: 28px; font-weight: bold;" />
-                            <ui:Label name="labelInCastleMemberCount" text="(0名)" style="margin-left: 10px; font-size: 28px; color: silver;" />
-                            <ui:Label text="兵力:" style="margin-left: 15px; margin-right: 10px; font-size: 28px;" />
-                            <ui:Label name="labelInCastlePower" text="88888" style="font-size: 28px; color: orange;" />
-                        </ui:VisualElement>
-                        <ui:VisualElement name="InCastleCharacterIcons" style="flex-direction: row; flex-wrap: wrap; margin-top: 5px">
-                            <!-- 在城中キャラクターアイコンは動的に生成 -->
-                        </ui:VisualElement>
-                    </ui:VisualElement>
-                    
-                    <!-- 出撃中キャラクター -->
-                    <ui:VisualElement>
-                        <ui:VisualElement style="flex-direction: row; align-items: center; margin-top: 5px;">
-                            <ui:Label text="出撃中" style="font-size: 28px; font-weight: bold;" />
-                            <ui:Label name="labelDeployedCount" text="(0名)" style="margin-left: 10px; font-size: 28px; color: silver;" />
-                            <ui:Label text="兵力:" style="margin-left: 15px; margin-right: 10px; font-size: 28px;" />
-                            <ui:Label name="labelDeployedPower" text="88888" style="font-size: 28px; color: orange;" />
-                        </ui:VisualElement>
-                        <ui:VisualElement name="DeployedCharacterIcons" style="flex-direction: row; flex-wrap: wrap; margin-top: 5px">
-                            <!-- 出撃中キャラクターアイコンは動的に生成 -->
-                        </ui:VisualElement>
-                    </ui:VisualElement>
-                </ui:VisualElement>
-            </ui:VisualElement>
-
-            <!-- 将一覧表示 -->
-            <ui:VisualElement name="CastleInfoCharacterListView" style="display: none; flex: 1; margin: 10px -5px 0 -5px;">
-                <ui:Instance name="CharacterTable" template="CharacterTable" style="flex: 1;" />
-            </ui:VisualElement>
-
-            <!-- 目標選択表示 -->
-            <ui:VisualElement name="CastleInfoObjectiveSelectView" style="display: none; flex: 1; margin-top: 10px;">
-                <ui:Label name="labelObjectiveSelectTitle" text="攻略目標|輸送目標を選択してください" style="font-size: 28px; color: #0ff;" />
-                <ui:Instance name="ObjectiveSimpleTable" template="SimpleTable" style="flex: 1; margin: 10px -5px 0 -5px;" />
-                <ui:Button name="buttonBackFromObjectiveSelect" text="キャンセル" style="font-size: 28px; padding: 10px; margin-top: 10px;" />
-            </ui:VisualElement>
-
-            <!-- キャラクターサマリー -->
-            <ui:Instance name="CharacterSummary" template="CharacterSummary" style="margin: 0 -10px 0 -10px;" />
+            <ui:Instance name="CastleDetailTab" template="CastleDetailTab" style="flex: 1;" />
         </ui:VisualElement>
 
         <!-- 国情報タブ -->
