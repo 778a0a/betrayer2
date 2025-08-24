@@ -59,7 +59,7 @@ partial class StrategyActions
                     "キャンセル",
                     neighborCastles.Select(c => c.Boss).ToList(),
                     _ => true
-                )).Castle;
+                ))?.Castle;
 
                 if (args.targetCastle == null)
                 {
@@ -75,7 +75,7 @@ partial class StrategyActions
                     _ => true
                 ));
 
-                if (args.targetCastle == null)
+                if (args.targetCharacter == null)
                 {
                     Debug.Log("キャラクター選択がキャンセルされました。");
                     return;
