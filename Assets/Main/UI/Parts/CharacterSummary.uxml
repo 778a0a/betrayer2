@@ -34,10 +34,12 @@
                     <ui:Label name="labelIntelligence" text="90" style="font-size: 28px; color: cyan; " />
                     <ui:Label text="統治:" style="font-size: 28px; margin: 0 5px 0 10px; " />
                     <ui:Label name="labelGoverning" text="85" style="font-size: 28px; color: #8f8; " />
+                    <ui:Label text="兵数:" style="font-size: 24px; margin: 0 5px 0 0;" />
+                    <ui:Label name="labelSoldiers" text="8888" style="font-size: 28px; color: orange;" />
                 </ui:VisualElement>
                 <ui:VisualElement style="flex-direction: row; margin-top: 10px;">
-                    <ui:Label text="兵数:" style="font-size: 24px; margin: 0 5px 0 0;" />
-                    <ui:Label name="labelSoldiers" text="8888" style="font-size: 24px; color: orange; min-width:50px" />
+                    <ui:Label text="給料:" style="font-size: 24px; margin: 0 5px 0 0;" />
+                    <ui:Label name="labelSalary" text="30" style="font-size: 24px; color: yellow; min-width:50px" />
                     <ui:Label text="功績:" style="font-size: 24px; margin: 0 5px 0 10px; " />
                     <ui:Label name="labelContribution" text="10000" style="font-size: 24px; color: white; min-width:50px" />
                     <ui:Label text="名声:" style="font-size: 24px; margin: 0 5px 0 10px; " />

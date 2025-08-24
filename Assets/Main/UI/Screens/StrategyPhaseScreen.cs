@@ -94,7 +94,7 @@ public partial class StrategyPhaseScreen : IScreen
 
     public void Render()
     {
-        labelCurrentCastleGold.text = currentCharacter.Castle.Gold.ToString();
+        labelCurrentCastleGold.text = currentCharacter.Castle.Gold.ToString("0");
         labelCurrentAP.text = currentCharacter.ActionPoints.ToString();
 
         foreach (var button in buttons)

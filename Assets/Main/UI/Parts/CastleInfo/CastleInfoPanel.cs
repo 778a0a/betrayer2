@@ -187,7 +187,7 @@ public partial class CastleInfoPanel
         // パラメーター等
         labelGold.text = castle.Gold.ToString("F0");
         var balance = castle.GoldBalance;
-        labelBalance.text = balance >= 0 ? $"+{(int)balance}" : $"-{(int)balance}";
+        labelBalance.text = balance >= 0 ? $"+{(int)balance}" : $"{(int)balance}";
         labelBalance.style.color = balance >= 0 ? Color.green : Color.red;
         labelIncome.text = $"{castle.GoldIncome:0}";
         labelMaxIncome.text = $"{castle.GoldIncomeMax:0}";

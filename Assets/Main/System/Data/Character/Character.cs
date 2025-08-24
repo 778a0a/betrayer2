@@ -115,12 +115,12 @@ public class Character
         get
         {
             // 通常は25日で1回行動できる。
-            var x = 100f / 25;
+            var x = 100f / 30;
             var cap = IsMoving ?
                 Math.Max(Attack, Defense) * 0.5f + Intelligence * 0.3f + Governing * 0.2f :
                 Math.Max(Attack, Defense) * 0.3f + Intelligence * 0.4f + Governing * 0.3f;
-            // 能力が100なら2倍速、75なら1倍速、50なら0.5倍速。
-            var capAdj = 1 + (cap - 75) / 25f;
+            // 能力が100なら1.5倍速、75なら1倍速、50なら0.75倍速。
+            var capAdj = 1 + (cap - 75) / 25f / 2f;
             return x * capAdj;
         }
     }
@@ -134,7 +134,7 @@ public class Character
         get
         {
             // 通常は25日で1回行動できる。
-            var x = 100f / 25;
+            var x = 100f / 30;
             var cap = Math.Max(Attack, Defense) * 0.2f + Intelligence * 0.4f + Governing * 0.4f;
             var capAdj = 1 + (cap - 75) / 25f;
             return x * capAdj;

@@ -28,7 +28,8 @@ public partial class CharacterSummary
         // 資産情報の更新
         PlayerInfoContainer.style.display = Util.Display(chara.IsPlayer);
         NonPlayerInfoContainer.style.display = Util.Display(!chara.IsPlayer);
-        labelPlayerGold.text = chara.Gold.ToString();
+        labelSalary.text = chara.Salary.ToString("0");
+        labelPlayerGold.text = chara.Gold.ToString("0");
         labelPlayerAP.text = chara.ActionPoints.ToString();
         labelContribution.text = chara.Contribution.ToString("0");
         labelSoldiers.text = chara.Soldiers.SoldierCount.ToString();
