@@ -195,7 +195,7 @@ public partial class CastleInfoPanel
         labelDevLevel.text = $"{castle.DevLevel}";
         labelTotalInvestment.text = $"{castle.TotalInvestment:0}";
         labelCastleStrength.text = $"{castle.Strength:0}";
-        labelTotalPower.text = $"{castle.Power:0}";
+        labelTotalPower.text = $"{castle.SoldierCount:0}";
         labelMemberCount.text = $"{castle.Members.Count}";
         
         // 収入バー
@@ -204,13 +204,13 @@ public partial class CastleInfoPanel
         // 在城中キャラ一覧
         var inCastle = castle.Members.Where(m => !m.IsMoving).OrderBy(c => c.OrderIndex).ToList();
         labelInCastleMemberCount.text = $"({inCastle.Count}名)";
-        labelInCastlePower.text = $"{inCastle.Sum(c => c.Power):0}";
+        labelInCastlePower.text = $"{inCastle.Sum(c => c.Soldiers.SoldierCount):0}";
         ShowCharacterIcons(inCastle, InCastleCharacterIcons);
         
         // 出撃中キャラ一覧
         var deployed = castle.Members.Where(m => m.IsMoving).OrderBy(c => c.OrderIndex).ToList();
         labelDeployedCount.text = $"({deployed.Count}名)";
-        labelDeployedPower.text = $"{deployed.Sum(c => c.Power):0}";
+        labelDeployedPower.text = $"{deployed.Sum(c => c.Soldiers.SoldierCount):0}";
         ShowCharacterIcons(deployed, DeployedCharacterIcons);
 
         // 人物サマリー
