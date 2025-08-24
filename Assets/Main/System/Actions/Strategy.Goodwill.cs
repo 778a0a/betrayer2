@@ -86,7 +86,7 @@ partial class StrategyActions
             if (target.Ruler.IsPlayer)
             {
                 // プレイヤーに選択させる。
-                var message = $"{target.Ruler.Name} からゴールドが贈られました。\n金額: {giftAmount}\n受け取りますか？";
+                var message = $"{actor.Name} からゴールドが贈られました。\n金額: {giftAmount}\n受け取りますか？";
                 accepted = await MessageWindow.ShowYesNo(message);
             }
             else
