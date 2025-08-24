@@ -26,7 +26,7 @@ public partial class StrategyPhaseScreen : IScreen
             ActionButtonHelper.Strategy(a => a.DepositCastleGold),
             ActionButtonHelper.Strategy(a => a.WithdrawCastleGold),
             ActionButtonHelper.Strategy(a => a.BecomeIndependent),
-            ActionButtonHelper.Common(a => a.FinishTurn),
+            //ActionButtonHelper.Common(a => a.FinishTurn),
         };
 
         foreach (var button in buttons)
@@ -39,7 +39,11 @@ public partial class StrategyPhaseScreen : IScreen
                 OnActionButtonClicked
             );
         }
-        
+        buttonTurnEnd.clicked += () =>
+        {
+            OnActionButtonClicked(ActionButtonHelper.Common(a => a.FinishTurn));
+        };
+
         CastleInfoPanel.Initialize();
     }
 
@@ -49,6 +53,10 @@ public partial class StrategyPhaseScreen : IScreen
         {
             ActionButtons.Add(button.Element);
         }
+        buttonTurnEnd.clicked += () =>
+        {
+            OnActionButtonClicked(ActionButtonHelper.Common(a => a.FinishTurn));
+        };
         CastleInfoPanel.Initialize();
     }
 

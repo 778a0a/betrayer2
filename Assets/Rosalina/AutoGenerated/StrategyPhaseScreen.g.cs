@@ -18,6 +18,8 @@ public partial class StrategyPhaseScreen
 
     public Label labelCurrentAP { get; private set; }
 
+    public Button buttonTurnEnd { get; private set; }
+
     public Label labelCost { get; private set; }
 
     public Label labelActionDescription { get; private set; }
@@ -35,6 +37,7 @@ public partial class StrategyPhaseScreen
         Root = root;
         labelCurrentCastleGold = Root?.Q<Label>("labelCurrentCastleGold");
         labelCurrentAP = Root?.Q<Label>("labelCurrentAP");
+        buttonTurnEnd = Root?.Q<Button>("buttonTurnEnd");
         labelCost = Root?.Q<Label>("labelCost");
         labelActionDescription = Root?.Q<Label>("labelActionDescription");
         ActionButtons = Root?.Q<VisualElement>("ActionButtons");
@@ -47,6 +50,7 @@ public partial class StrategyPhaseScreen
         Root = root;
         labelCurrentCastleGold = Root?.Q<Label>("labelCurrentCastleGold");
         labelCurrentAP = Root?.Q<Label>("labelCurrentAP");
+        buttonTurnEnd = Root?.Q<Button>("buttonTurnEnd");
         labelCost = Root?.Q<Label>("labelCost");
         labelActionDescription = Root?.Q<Label>("labelActionDescription");
         ActionButtons = Root?.Q<VisualElement>("ActionButtons");
