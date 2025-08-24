@@ -14,35 +14,43 @@ using UnityEngine.UIElements;
 
 public partial class PersonalPhaseScreen
 {
-    public Label labelCostGold { get; private set; }
+    public Label labelCurrentPersonalGold { get; private set; }
+
+    public Button buttonTurnEnd { get; private set; }
+
+    public Label labelCost { get; private set; }
 
     public Label labelActionDescription { get; private set; }
 
     public VisualElement ActionButtons { get; private set; }
 
-    public CharacterSummary CharacterSummary { get; private set; }
-
     public VisualElement ActionsPanel { get; private set; }
+
+    public CastleInfoPanel CastleInfoPanel { get; private set; }
 
     public VisualElement Root { get; private set; }
 
     public PersonalPhaseScreen(VisualElement root)
     {
         Root = root;
-        labelCostGold = Root?.Q<Label>("labelCostGold");
+        labelCurrentPersonalGold = Root?.Q<Label>("labelCurrentPersonalGold");
+        buttonTurnEnd = Root?.Q<Button>("buttonTurnEnd");
+        labelCost = Root?.Q<Label>("labelCost");
         labelActionDescription = Root?.Q<Label>("labelActionDescription");
         ActionButtons = Root?.Q<VisualElement>("ActionButtons");
-        CharacterSummary = new CharacterSummary(Root?.Q<VisualElement>("CharacterSummary"));
         ActionsPanel = Root?.Q<VisualElement>("ActionsPanel");
+        CastleInfoPanel = new CastleInfoPanel(Root?.Q<VisualElement>("CastleInfoPanel"));
     }
 
     public void ReinitializeComponent(VisualElement root)
     {
         Root = root;
-        labelCostGold = Root?.Q<Label>("labelCostGold");
+        labelCurrentPersonalGold = Root?.Q<Label>("labelCurrentPersonalGold");
+        buttonTurnEnd = Root?.Q<Button>("buttonTurnEnd");
+        labelCost = Root?.Q<Label>("labelCost");
         labelActionDescription = Root?.Q<Label>("labelActionDescription");
         ActionButtons = Root?.Q<VisualElement>("ActionButtons");
-        CharacterSummary = new CharacterSummary(Root?.Q<VisualElement>("CharacterSummary"));
         ActionsPanel = Root?.Q<VisualElement>("ActionsPanel");
+        CastleInfoPanel = new CastleInfoPanel(Root?.Q<VisualElement>("CastleInfoPanel"));
     }
 }

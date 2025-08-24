@@ -8,7 +8,7 @@
         <!-- ヘッダー: 日付・フェーズ情報 -->
         <ui:VisualElement class="header-panel" style="flex-direction: row; justify-content: space-between;">
             <ui:VisualElement style="flex-direction: row; align-items: flex-end; padding: 4px 0;">
-                <ui:Label text="戦略" style="font-size: 40px; font-weight: bold;" />
+                <ui:Label text="戦略" style="font-size: 40px; font-weight: bold; color: #0ff;" />
                 <ui:Label text="フェイズ" style="font-size: 30px; font-weight: bold;" />
             </ui:VisualElement>
             <ui:Button text="×" style="font-size: 28px; width: 40px; height: 40px; -unity-font-style: bold;" />

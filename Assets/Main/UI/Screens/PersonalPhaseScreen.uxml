@@ -1,5 +1,5 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <ui:Template name="CharacterSummary" src="project://database/Assets/Main/UI/Parts/CharacterSummary.uxml" />
+    <ui:Template name="CastleInfoPanel" src="project://database/Assets/Main/UI/Parts/CastleInfo/CastleInfoPanel.uxml" />
     <Style src="project://database/Assets/Main/UI/MainUI.uss" />
     
     <!-- PersonalPhase Panel: 個人行動フェーズのメインパネル -->
@@ -8,31 +8,35 @@
         <!-- ヘッダー: 日付・フェーズ情報 -->
         <ui:VisualElement class="header-panel" style="flex-direction: row; justify-content: space-between;">
             <ui:VisualElement style="flex-direction: row; align-items: flex-end; padding: 4px 0;">
-                <ui:Label text="個人" style="font-size: 40px; font-weight: bold;" />
+                <ui:Label text="個人" style="font-size: 40px; font-weight: bold; color: orange;" />
                 <ui:Label text="フェイズ" style="font-size: 30px; font-weight: bold;" />
             </ui:VisualElement>
-            <ui:Button text="×" style="font-size: 20px; width: 40px; height: 40px; -unity-font-style: bold;" />
+            <ui:Button text="×" style="font-size: 28px; width: 40px; height: 40px; -unity-font-style: bold;" />
         </ui:VisualElement>
 
-        <!-- プレイヤー情報パネル -->
-        <ui:Instance name="CharacterSummary" template="CharacterSummary" />
-
         <!-- アクションボタンエリア -->
-        <ui:VisualElement name="ActionsPanel" class="actions-panel" style="margin-top: 10px; padding: 10px; background-color: #223344;">
-            <ui:VisualElement style="flex-direction: row; align-items: flex-end;">
-                <ui:Label text="アクション" style="font-size: 40px; font-weight: bold;" />
+        <ui:VisualElement name="ActionsPanel" class="actions-panel" style="margin-top: 10px; padding: 10px 5px 5px 5px; background-color: #223344;">
+            <ui:VisualElement style="flex-direction: row; align-items: center;">
+                <ui:Label text="アクション" style="font-size: 32px; margin-left: 4px" />
+                <ui:Label text="(所持金 " style="font-size: 28px; margin: 0 5px 0 10px;" />
+                <ui:Label text="8888" name="labelCurrentPersonalGold" style="font-size: 28px; color: yellow;" />
+                <ui:Label text=")" style="font-size: 28px;" />
+                <ui:Button text="ターン終了" name="buttonTurnEnd" style="font-size: 28px; margin: -10px 0 -20px auto;" />
             </ui:VisualElement>
             <ui:VisualElement style="flex-direction: row; align-items: flex-end; margin-top: 15px; margin-left: 5px;">
-                <ui:Label text="消費金:" style="margin: 0 10px 0 0px; font-size: 30px; " />
-                <ui:Label name="labelCostGold" text="100" style="font-size: 30px; color: yellow;" />
+                <ui:Label text="コスト:" style="margin: 0 10px 0 0px; font-size: 28px; " />
+                <ui:Label name="labelCost" text="個人資金 10" style="font-size: 28px;" />
             </ui:VisualElement>
             <ui:VisualElement style="flex-direction: row; align-items: center; min-height: 32px; margin: 15px 0 15px 5px;">
-                <ui:Label name="labelActionDescription" text="アクションの説明がここに表示されます。" style="font-size: 30px; white-space: normal" />
+                <ui:Label name="labelActionDescription" text="アクションの説明がここに表示されます。" style="font-size: 28px; white-space: normal" />
             </ui:VisualElement>
             <ui:VisualElement name="ActionButtons" style="flex-wrap: wrap; flex-direction: row;">
                 <!-- ボタンはC#で動的生成 -->
             </ui:VisualElement>
         </ui:VisualElement>
+
+        <!-- 情報タブパネル -->
+        <ui:Instance name="CastleInfoPanel" style="margin-top: 10px; flex:1;" template="CastleInfoPanel" />
 
     </ui:VisualElement>
 </ui:UXML>

@@ -1,9 +1,12 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 using UnityEngine.UIElements;
 
-public partial class PersonalPhaseScreen : MainUIComponent, IScreen
+public partial class PersonalPhaseScreen : IScreen
 {
+    private GameCore Core => GameCore.Instance;
     private ActionButtonHelper[] buttons;
     private Character currentCharacter;
 
@@ -22,19 +25,25 @@ public partial class PersonalPhaseScreen : MainUIComponent, IScreen
             ActionButtonHelper.Personal(a => a.Relocate),
             ActionButtonHelper.Personal(a => a.Seize),
             ActionButtonHelper.Personal(a => a.GetJob),
-            ActionButtonHelper.Common(a => a.FinishTurn),
+            //ActionButtonHelper.Common(a => a.FinishTurn),
         };
 
         foreach (var button in buttons)
         {
             ActionButtons.Add(button.Element);
             button.SetEventHandlers(
-                labelCostGold,
+                labelCost,
                 labelActionDescription,
                 () => currentCharacter,
                 OnActionButtonClicked
             );
         }
+        buttonTurnEnd.clicked += () =>
+        {
+            OnActionButtonClicked(ActionButtonHelper.Common(a => a.FinishTurn));
+        };
+
+        CastleInfoPanel.Initialize();
     }
 
     public void Reinitialize()
@@ -43,6 +52,11 @@ public partial class PersonalPhaseScreen : MainUIComponent, IScreen
         {
             ActionButtons.Add(button.Element);
         }
+        buttonTurnEnd.clicked += () =>
+        {
+            OnActionButtonClicked(ActionButtonHelper.Common(a => a.FinishTurn));
+        };
+        CastleInfoPanel.Initialize();
     }
 
     private async void OnActionButtonClicked(ActionButtonHelper button)
@@ -74,7 +88,7 @@ public partial class PersonalPhaseScreen : MainUIComponent, IScreen
 
     public void Show(Character chara)
     {
-        UI.HideAllPanels();
+        Core.MainUI.HideAllPanels();
         SetData(chara);
         Root.style.display = DisplayStyle.Flex;
     }
@@ -87,10 +101,13 @@ public partial class PersonalPhaseScreen : MainUIComponent, IScreen
 
     public void Render()
     {
-        CharacterSummary.SetData(currentCharacter);
+        labelCurrentPersonalGold.text = currentCharacter.Gold.ToString("0");
+
         foreach (var button in buttons)
         {
             button.SetData(currentCharacter);
         }
+        
+        CastleInfoPanel.SetData(currentCharacter.Castle, currentCharacter);
     }
 }
