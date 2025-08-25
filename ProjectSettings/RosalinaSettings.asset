@@ -72,3 +72,5 @@ MonoBehaviour:
     _path: Assets/Main/UI/Parts/SimpleTable.uxml
   - _type: 1
     _path: Assets/Main/UI/Parts/CastleInfo/CastleDetailTab.uxml
+  - _type: 1
+    _path: Assets/Main/UI/Parts/CastleInfo/CountryDetailTab.uxml

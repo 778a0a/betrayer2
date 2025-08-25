@@ -127,16 +127,6 @@ public partial class CastleDetailTab
         labelObjective.style.display = Util.Display(!canOrder);
         comboObjective.style.display = Util.Display(canOrder);
 
-        var objectiveText = castle.Objective switch
-        {
-            CastleObjective.Attack o => $"{o.TargetCastleName}攻略",
-            CastleObjective.Train => $"訓練",
-            CastleObjective.Fortify => $"防備",
-            CastleObjective.Develop => $"開発",
-            CastleObjective.Transport o => $"{o.TargetCastleName}輸送",
-            _ => "なし",
-        };
-        labelObjective.text = objectiveText;
         SetObjectiveComboValue();
 
         // 城主情報
@@ -313,6 +303,7 @@ public partial class CastleDetailTab
             CastleObjective.Transport o => $"{o.TargetCastleName}輸送",
             _ => "なし",
         };
+        labelObjective.text = objectiveText;
         comboObjective.value = objectiveText;
     }
 }

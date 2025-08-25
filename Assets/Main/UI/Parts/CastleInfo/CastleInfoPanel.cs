@@ -33,6 +33,9 @@ public partial class CastleInfoPanel
 
         // CastleDetailTab初期化
         CastleDetailTab.Initialize();
+        
+        // CountryDetailTab初期化
+        CountryDetailTab.Initialize();
 
         SwitchTab(InfoTab.Castle);
     }
@@ -56,24 +59,19 @@ public partial class CastleInfoPanel
     {
         targetCastle = castle;
         CastleDetailTab.SetData(targetCastle, characterSummaryTargetDefault);
+        CountryDetailTab.SetData(targetCastle.Country, characterSummaryTargetDefault);
 
         Render();
     }
 
     private void Render()
     {
-        SetCountryData(targetCastle.Country);
         SetDiplomacyData(targetCastle.Country);
         CastleDetailTab.Render();
+        CountryDetailTab.Render();
     }
 
 
-    /// <summary>
-    /// 国情報タブを設定します。
-    /// </summary>
-    private void SetCountryData(Country country)
-    {
-    }
 
     /// <summary>
     /// 外交関係タブを設定します。

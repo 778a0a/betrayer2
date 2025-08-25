@@ -22,23 +22,7 @@ public partial class CastleInfoPanel
 
     public CastleDetailTab CastleDetailTab { get; private set; }
 
-    public Button TabButtonCountrySummary { get; private set; }
-
-    public Button TabButtonCountryMemberList { get; private set; }
-
-    public Button TabButtonCountryCastleList { get; private set; }
-
-    public Label labelRulerName { get; private set; }
-
-    public Label labelRulerPersonality { get; private set; }
-
-    public Label labelCountryBalance { get; private set; }
-
-    public Label labelCountrySurplus { get; private set; }
-
-    public Label labelCastleCount { get; private set; }
-
-    public Label labelGeneralCount { get; private set; }
+    public CountryDetailTab CountryDetailTab { get; private set; }
 
     public VisualElement DiplomacyRelations { get; private set; }
 
@@ -61,15 +45,7 @@ public partial class CastleInfoPanel
         TabButtonCountry = Root?.Q<Button>("TabButtonCountry");
         TabButtonDiplomacy = Root?.Q<Button>("TabButtonDiplomacy");
         CastleDetailTab = new CastleDetailTab(Root?.Q<VisualElement>("CastleDetailTab"));
-        TabButtonCountrySummary = Root?.Q<Button>("TabButtonCountrySummary");
-        TabButtonCountryMemberList = Root?.Q<Button>("TabButtonCountryMemberList");
-        TabButtonCountryCastleList = Root?.Q<Button>("TabButtonCountryCastleList");
-        labelRulerName = Root?.Q<Label>("labelRulerName");
-        labelRulerPersonality = Root?.Q<Label>("labelRulerPersonality");
-        labelCountryBalance = Root?.Q<Label>("labelCountryBalance");
-        labelCountrySurplus = Root?.Q<Label>("labelCountrySurplus");
-        labelCastleCount = Root?.Q<Label>("labelCastleCount");
-        labelGeneralCount = Root?.Q<Label>("labelGeneralCount");
+        CountryDetailTab = new CountryDetailTab(Root?.Q<VisualElement>("CountryDetailTab"));
         DiplomacyRelations = Root?.Q<VisualElement>("DiplomacyRelations");
         DiplomacyScrollView = Root?.Q<ScrollView>("DiplomacyScrollView");
         CastleInfoTab = Root?.Q<VisualElement>("CastleInfoTab");
@@ -85,15 +61,7 @@ public partial class CastleInfoPanel
         TabButtonCountry = Root?.Q<Button>("TabButtonCountry");
         TabButtonDiplomacy = Root?.Q<Button>("TabButtonDiplomacy");
         CastleDetailTab = new CastleDetailTab(Root?.Q<VisualElement>("CastleDetailTab"));
-        TabButtonCountrySummary = Root?.Q<Button>("TabButtonCountrySummary");
-        TabButtonCountryMemberList = Root?.Q<Button>("TabButtonCountryMemberList");
-        TabButtonCountryCastleList = Root?.Q<Button>("TabButtonCountryCastleList");
-        labelRulerName = Root?.Q<Label>("labelRulerName");
-        labelRulerPersonality = Root?.Q<Label>("labelRulerPersonality");
-        labelCountryBalance = Root?.Q<Label>("labelCountryBalance");
-        labelCountrySurplus = Root?.Q<Label>("labelCountrySurplus");
-        labelCastleCount = Root?.Q<Label>("labelCastleCount");
-        labelGeneralCount = Root?.Q<Label>("labelGeneralCount");
+        CountryDetailTab = new CountryDetailTab(Root?.Q<VisualElement>("CountryDetailTab"));
         DiplomacyRelations = Root?.Q<VisualElement>("DiplomacyRelations");
         DiplomacyScrollView = Root?.Q<ScrollView>("DiplomacyScrollView");
         CastleInfoTab = Root?.Q<VisualElement>("CastleInfoTab");

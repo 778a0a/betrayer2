@@ -1,0 +1,86 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Main/UI/MainUI.uss" />
+    <Style src="CastleInfoPanelStyle.uss" />
+    
+    <ui:Template name="CharacterTable" src="project://database/Assets/Main/UI/Parts/CharacterTable.uxml" />
+    <ui:Template name="SimpleTable" src="project://database/Assets/Main/UI/Parts/SimpleTable.uxml" />
+    <ui:Template name="CharacterSummary" src="project://database/Assets/Main/UI/Parts/CharacterSummary.uxml" />
+
+    <!-- 国詳細タブの内容 -->
+    <ui:VisualElement name="CountryDetailTabContent" style="flex: 1;">
+        
+        <!-- 1行目: 国名・方針・人物一覧ボタン -->
+        <ui:VisualElement style="margin-top: 10px; flex-direction: row; align-items: center;">
+            <ui:Label name="labelCountryRulerName" text="フランチェスカ" style="font-size: 24px;" />
+            <ui:Label text="軍" style="font-size: 24px;" />
+            <ui:VisualElement name="CountryObjectiveContainer" style="flex-direction: row;">
+                <ui:Label text="国方針: " style="font-size: 24px; margin-left: 10px;" />
+                <ui:Label name="labelCountryObjective" text="現状維持" style="font-size: 24px; margin-left: 5px;" />
+                <ui:DropdownField name="comboCountryObjective" choices="地方統一,勢力打倒,現状維持" />
+            </ui:VisualElement>
+
+            <ui:Button name="buttonCountryCharacterList" text="人物一覧" style="position: relative; padding: 5px; margin: -30px 0 -30px 10px; font-size: 24px; width: 120px;" />
+        </ui:VisualElement>
+
+        <!-- 通常表示コンテナ -->
+        <ui:VisualElement name="CountryInfoNormalView" style="flex: 1; margin-top: 15px;">
+
+            <ui:VisualElement style="flex-direction: row; flex: 1;">
+                <!-- 統治者情報 -->
+                <ui:VisualElement style="flex-direction: row;">
+                    <ui:VisualElement style="flex-direction: column;">
+                        <ui:Label text="統治者" style="font-size: 24px; font-weight: bold; margin-bottom: 5px;" />
+                        <ui:VisualElement name="CountryRulerImage" class="MiddleCharacterIcon" style="background-image: url('project://database/Assets/Resources/CharacterImages/0010.jpg');" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
+
+                <!-- 国の基本情報 -->
+                <ui:VisualElement style="flex-direction: row; margin-left: 20px;">
+                    <ui:VisualElement style="flex: 1;">
+                        <ui:VisualElement style="flex-direction: row; align-items: center;">
+                            <ui:Label text="総資金:" style="margin-right: 10px; font-size: 28px;" />
+                            <ui:Label name="labelTotalGold" text="0" style="font-size: 28px; color: yellow;" />
+                            <ui:Label text="(" style="margin-left: 5px; font-size: 28px;" />
+                            <ui:Label name="labelTotalBalance" text="+0" style="font-size: 28px; color: white;" />
+                            <ui:Label text=")" style="font-size: 28px;" />
+                        </ui:VisualElement>
+                        <ui:VisualElement style="flex-direction: row; align-items: center; margin-top: 5px;">
+                            <ui:Label text="総収入:" style="margin-right: 10px; font-size: 28px;" />
+                            <ui:Label name="labelTotalIncome" text="0" style="font-size: 28px; color: white;" />
+                        </ui:VisualElement>
+                        <ui:VisualElement style="flex-direction: row; align-items: center; margin-top: 5px;">
+                            <ui:Label text="総支出:" style="margin-right: 10px; font-size: 28px;" />
+                            <ui:Label name="labelTotalExpenditure" text="0" style="font-size: 28px; color: red;" />
+                        </ui:VisualElement>
+                        <ui:VisualElement style="flex-direction: row; align-items: center; margin-top: 5px;">
+                            <ui:Label text="　城数:" style="margin-right: 10px; font-size: 28px;" />
+                            <ui:Label name="labelCastleCount" text="5" style="font-size: 28px; color: cyan;" />
+                        </ui:VisualElement>
+                        <ui:VisualElement style="flex-direction: row; align-items: center; margin-top: 5px;">
+                            <ui:Label text="総兵力:" style="margin-right: 10px; font-size: 28px;" />
+                            <ui:Label name="labelTotalPower" text="88888" style="font-size: 28px; color: orange;" />
+                            <ui:Label text="将数:" style="margin-left: 15px; margin-right: 10px; font-size: 28px;" />
+                            <ui:Label name="labelTotalGeneralCount" text="88" style="font-size: 28px;" />
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                </ui:VisualElement>
+            </ui:VisualElement>
+
+        </ui:VisualElement>
+
+        <ui:VisualElement name="CountryInfoCharacterListView" style="display: none; flex: 1; margin: 10px -5px 0 -5px;">
+            <!-- 人物一覧表示 -->
+            <ui:Instance name="CharacterTable" template="CharacterTable" style="flex: 1;" />
+            <!-- キャラクターサマリー -->
+            <ui:Instance name="CharacterSummary" template="CharacterSummary" style="margin: 0 -5px 0 -5px;" />
+        </ui:VisualElement>
+
+        <!-- 目標選択表示 -->
+        <ui:VisualElement name="CountryInfoObjectiveSelectView" style="display: none; flex: 1; margin-top: 10px;">
+            <ui:Label name="labelCountryObjectiveSelectTitle" text="統一目標を選択してください" style="font-size: 28px; color: #0ff;" />
+            <ui:Instance name="CountryObjectiveSimpleTable" template="SimpleTable" style="flex: 1; margin: 10px -5px 0 -5px;" />
+            <ui:Button name="buttonBackFromCountryObjectiveSelect" text="キャンセル" style="font-size: 28px; padding: 10px; margin-top: 10px;" />
+        </ui:VisualElement>
+        
+    </ui:VisualElement>
+</ui:UXML>

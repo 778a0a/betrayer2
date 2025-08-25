@@ -15,11 +15,13 @@ public partial class SimpleTable : MainUIComponent
     {
         ListView.selectionType = SelectionType.Single;
         ListView.virtualizationMethod = CollectionVirtualizationMethod.DynamicHeight;
-        
+
+        // なぜか明示的にドラッグ禁止にしておかないと、2回目のリスト表示時にマウスオーバーで選択イベントが発生してしまう。
+        ListView.canStartDrag += (evt) => false; // ドラッグ禁止
+
         ListView.makeItem = () =>
         {
             var label = new Label();
-            label.style.paddingTop = 100; // なぜか勝手に0がセットされていてstyleで定義できないので上書きしておきます。
             label.AddToClassList("SimpleTableRowItem");
             return label;
         };
