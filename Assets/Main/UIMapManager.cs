@@ -83,16 +83,19 @@ public class UIMapManager : MonoBehaviour
         if (Mouse.current.leftButton.wasPressedThisFrame && isValidPos)
         {
             InvokeCellClickHandler(pos);
-            foreach (var item in Map.GetTile(pos).NeighborArray)
+
+            var tile = Map.GetTile(pos);
+            tile.UI.SetClickHighlight(true);
+            StartCoroutine(aaa());
+            IEnumerator aaa()
             {
-                item.UI.SetCellBorder(true);
-                StartCoroutine(aaa());
-                IEnumerator aaa()
+                while (Mouse.current.leftButton.isPressed)
                 {
-                    yield return new WaitForSeconds(0.300f);
-                    item.UI.SetCellBorder(false);
+                    yield return null;
                 }
+                tile.UI.SetClickHighlight(false);
             }
+
         }
     }
 

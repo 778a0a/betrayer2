@@ -34,6 +34,7 @@ public class HexTile : MonoBehaviour
     [SerializeField] private SpriteRenderer forceSprite;
     [SerializeField] private SpriteRenderer forceFlagSprite;
     [SerializeField] private TextMeshPro debugText;
+    [SerializeField] private SpriteRenderer clickHighlight;
 
     private void Awake()
     {
@@ -54,6 +55,11 @@ public class HexTile : MonoBehaviour
         Width = PropsOn(highlight).width;
         Color = PropsOn(highlight).color;
         lineRenderer.sortingOrder = PropsOn(highlight).order;
+    }
+
+    public void SetClickHighlight(bool on)
+    {
+        clickHighlight.gameObject.SetActive(on);
     }
 
     public void SetCastle(bool exists)
