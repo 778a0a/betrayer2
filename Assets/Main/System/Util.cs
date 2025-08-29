@@ -195,6 +195,29 @@ public static class Util
             // throw new System.Exception("Assert failed: " + message);
         }
     }
+
+    // 動的生成した要素を破棄するときのイベント解除が面倒なので自動でできるものを用意する。
+    // うまく動くかは不明。
+    public static void Register<TEventType>(this VisualElement el, EventCallback<TEventType> callback) where TEventType : EventBase<TEventType>, new ()
+    {
+        el.RegisterCallback(callback);
+        void Dispose(DetachFromPanelEvent _)
+        {
+            el.UnregisterCallback(callback);
+            el.UnregisterCallback<DetachFromPanelEvent>(Dispose);
+        }
+        el.RegisterCallback<DetachFromPanelEvent>(Dispose);
+    }
+}
+
+public class Disposable : IDisposable
+{
+    private readonly Action dispose;
+    public Disposable(Action dispose)
+    {
+        this.dispose = dispose;
+    }
+    public void Dispose() => dispose();
 }
 
 public class Defer : IDisposable

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -10,90 +11,46 @@ public partial class CastleDetailTab
     private Character characterSummaryTarget;
     private Character characterSummaryTargetDefault;
 
-    private bool isCharacterListViewVisible;
-    private bool isObjectiveSelectViewVisible;
+    private bool showMemberListIconView = true;
+    private bool showObjectiveSelection = false;
 
     public void Initialize()
     {
-        // CharacterTable初期化
-        CharacterTable.Initialize();
-        // SimpleTable初期化
-        ObjectiveSimpleTable.Initialize();
+        MemberListViewTable.Initialize();
+        ObjectiveSelectionTargetTable.Initialize();
 
-        Root.RegisterCallback<MouseLeaveEvent>(evt =>
-        {
-            CharacterSummary.SetData(characterSummaryTargetDefault);
-        });
+        //Root.RegisterCallback<MouseLeaveEvent>(evt =>
+        //{
+        //    CharacterSummary.SetData(characterSummaryTargetDefault);
+        //});
 
-        buttonCharacterList.clicked += () =>
+        // 将一覧のアイコン・リスト表示切替時
+        buttonToggleMemberListAndIcon.clicked += () =>
         {
-            if (isCharacterListViewVisible)
-            {
-                HideCharacterListView();
-                buttonCharacterList.text = "人物一覧";
-            }
-            else
-            {
-                ShowCharacterListView();
-                buttonCharacterList.text = "戻る";
-            }
+            showMemberListIconView = !showMemberListIconView;
+            Render();
         };
 
-        buttonBackFromObjectiveSelect.clicked += () =>
+        // 目標選択画面のキャンセル時
+        buttonCancelObjectiveSelection.clicked += () =>
         {
             HideObjectiveSelectView();
         };
 
-        // SimpleTableの選択イベント
-        ObjectiveSimpleTable.ItemSelected += (sender, selectedItem) =>
+        // 目標選択の選択確定時
+        ObjectiveSelectionTargetTable.ItemSelected += (sender, selectedItem) =>
         {
             OnObjectiveSelected(selectedItem);
         };
 
-        CharacterTable.RowMouseMove += (sender, chara) =>
+        // キャラリストの行マウスオーバー時
+        MemberListViewTable.RowMouseMove += (sender, chara) =>
         {
-            if (chara == characterSummaryTarget) return;
-            characterSummaryTarget = chara;
-            CharacterSummary.SetData(chara);
+            ShowCharacterSummary(chara);
         };
 
-        comboObjective.RegisterCallback<ChangeEvent<string>>(evt =>
-        {
-            Debug.Log($"Objective changed: {evt.newValue}");
-            if (targetCastle == null) return;
-            var selected = comboObjective.index;
-            switch (selected)
-            {
-                case 0:
-                    ShowObjectiveSelectView("攻略目標を選択してください", targetCastle.Neighbors
-                        .Where(c => targetCastle.IsAttackable(c))
-                        .Select(c => c.Name)
-                        .ToList());
-                    break;
-                case 1:
-                    targetCastle.Objective = new CastleObjective.Train();
-                    HideObjectiveSelectView();
-                    break;
-                case 2:
-                    targetCastle.Objective = new CastleObjective.Fortify();
-                    HideObjectiveSelectView();
-                    break;
-                case 3:
-                    targetCastle.Objective = new CastleObjective.Develop();
-                    HideObjectiveSelectView();
-                    break;
-                case 4:
-                    ShowObjectiveSelectView("輸送目標を選択してください", targetCastle.Country.Castles
-                        .Where(c => c != targetCastle)
-                        .Select(c => c.Name)
-                        .ToList());
-                    break;
-                case 5:
-                    targetCastle.Objective = new CastleObjective.None();
-                    HideObjectiveSelectView();
-                    break;
-            }
-        });
+        // 方針コンボボックス選択時
+        comboObjective.RegisterCallback<ChangeEvent<string>>(OnObjectiveComboBoxSelectionChanged);
     }
 
     public void SetData(Castle castle, Character characterSummaryTargetDefault)
@@ -101,15 +58,16 @@ public partial class CastleDetailTab
         targetCastle = castle;
         characterSummaryTarget = characterSummaryTargetDefault;
         this.characterSummaryTargetDefault = characterSummaryTargetDefault;
-        
+
+        showObjectiveSelection = false;
+
         Render();
     }
 
     public void Render()
     {
         SetCastleData(targetCastle);
-        
-        // CharacterSummary更新
+
         CharacterSummary.SetData(characterSummaryTarget);
     }
 
@@ -118,18 +76,34 @@ public partial class CastleDetailTab
     /// </summary>
     private void SetCastleData(Castle castle)
     {
-        // 城名・地域・目標関連
+        // 城名・地方・方針
         labelCastleName.text = castle.Name;
         labelCastleRegion.text = castle.Region;
-
         ObjectiveContainer.style.display = Util.Display(Core.World.Player?.Country == castle.Country);
         var canOrder = (castle.Boss?.IsPlayer ?? false) || castle.Country.Ruler.IsPlayer;
         labelObjective.style.display = Util.Display(!canOrder);
         comboObjective.style.display = Util.Display(canOrder);
 
-        SetObjectiveComboValue();
+        // 方針
+        NormalView.style.display = Util.Display(!showObjectiveSelection);
+        ObjectiveSelectionView.style.display = Util.Display(showObjectiveSelection);
+        var objectiveText = targetCastle.Objective switch
+        {
+            CastleObjective.Attack o => $"{o.TargetCastleName}攻略",
+            CastleObjective.Train => $"訓練",
+            CastleObjective.Fortify => $"防備",
+            CastleObjective.Develop => $"開発",
+            CastleObjective.Transport o => $"{o.TargetCastleName}輸送",
+            _ => "なし",
+        };
+        labelObjective.text = objectiveText;
+        // 余計な変更イベントが起きないように、目標選択中はコンボボックスの値を変更しない。
+        if (!showObjectiveSelection)
+        {
+            comboObjective.value = objectiveText;
+        }
 
-        // 城主情報
+        // 城主
         if (castle.Boss != null)
         {
             CastleBossImage.style.backgroundImage = new(Static.GetFaceImage(castle.Boss));
@@ -140,9 +114,9 @@ public partial class CastleDetailTab
         }
 
         // パラメーター等
-        labelGold.text = castle.Gold.ToString("F0");
+        labelGold.text = castle.Gold.ToString("0");
         var balance = castle.GoldBalance;
-        labelBalance.text = balance >= 0 ? $"+{(int)balance}" : $"{(int)balance}";
+        labelBalance.text = balance > 0 ? $"+{(int)balance}" : $"{(int)balance}";
         labelBalance.style.color = balance >= 0 ? Color.green : Color.red;
         labelIncome.text = $"{castle.GoldIncome:0}";
         labelMaxIncome.text = $"{castle.GoldIncomeMax:0}";
@@ -154,64 +128,91 @@ public partial class CastleDetailTab
         labelMemberCount.text = $"{castle.Members.Count}";
         
         // 収入バー
-        SetIncomeBar(castle.GoldIncome, castle.GoldIncomeMax);
-        
-        // 在城中キャラ一覧
-        var inCastle = castle.Members.Where(m => !m.IsMoving).OrderBy(c => c.OrderIndex).ToList();
-        labelInCastleMemberCount.text = $"({inCastle.Count}名)";
-        labelInCastlePower.text = $"{inCastle.Sum(c => c.Soldiers.SoldierCount):0}";
-        ShowCharacterIcons(inCastle, InCastleCharacterIcons);
-        
-        // 出撃中キャラ一覧
-        var deployed = castle.Members.Where(m => m.IsMoving).OrderBy(c => c.OrderIndex).ToList();
-        labelDeployedCount.text = $"({deployed.Count}名)";
-        labelDeployedPower.text = $"{deployed.Sum(c => c.Soldiers.SoldierCount):0}";
-        ShowCharacterIcons(deployed, DeployedCharacterIcons);
-    }
+        const float IncomeBarMax = 200f;
+        MaxIncomeBar.style.width = Length.Percent(Mathf.Clamp01(castle.GoldIncomeMax / IncomeBarMax) * 100f);
+        CurrentIncomeBar.style.width = Length.Percent(Mathf.Clamp01(castle.GoldIncome / IncomeBarMax) * 100f);
 
-    /// <summary>
-    /// キャラクター一覧表示を表示します。
-    /// </summary>
-    private void ShowCharacterListView()
-    {
-        isCharacterListViewVisible = true;
-        
-        CastleInfoNormalView.style.display = DisplayStyle.None;
-        CastleInfoCharacterListView.style.display = DisplayStyle.Flex;
-        CharacterTable.SetData(targetCastle.Members.ToList(), null);
-        
-        // 最初のキャラクターをCharacterSummaryに表示する。
-        if (targetCastle.Members.Count > 0)
+        // アイコン表示 / 一覧表示
+        MemberIconView.style.display = Util.Display(showMemberListIconView);
+        MemberListView.style.display = Util.Display(!showMemberListIconView);
+
+        // アイコン表示
+        if (showMemberListIconView)
         {
-            CharacterSummary.SetData(targetCastle.Members.First());
+            // 在城中キャラ一覧
+            var inCastle = castle.Members.Where(m => !m.IsMoving).OrderBy(c => c.OrderIndex).ToList();
+            labelInCastleMemberCount.text = $"({inCastle.Count}名)";
+            labelInCastleSoldierCount.text = $"{inCastle.Sum(c => c.Soldiers.SoldierCount):0}";
+            ShowCharacterIcons(inCastle, InCastleMemberIconsContainer);
+            // 出撃中キャラ一覧
+            var deployed = castle.Members.Where(m => m.IsMoving).OrderBy(c => c.OrderIndex).ToList();
+            labelDeployedMemberCount.text = $"({deployed.Count}名)";
+            labelDeployedSoldierCount.text = $"{deployed.Sum(c => c.Soldiers.SoldierCount):0}";
+            ShowCharacterIcons(deployed, DeployedMemberIconsContainer);
+        }
+        // リスト表示
+        else
+        {
+            MemberListViewTable.SetData(targetCastle.Members, null);
         }
     }
 
     /// <summary>
-    /// キャラクター一覧表示を非表示にして元の表示に戻します。
+    /// 方針コンボボックスの値が変更されたときに呼ばれます。
     /// </summary>
-    private void HideCharacterListView()
+    private void OnObjectiveComboBoxSelectionChanged(ChangeEvent<string> evt)
     {
-        isCharacterListViewVisible = false;
-
-        CastleInfoCharacterListView.style.display = DisplayStyle.None;
-        CastleInfoNormalView.style.display = DisplayStyle.Flex;
-        
-        CharacterSummary.SetData(characterSummaryTargetDefault);
+        Debug.Log($"Objective changed: {evt.newValue}");
+        if (targetCastle == null) return;
+        var selected = comboObjective.index;
+        switch (selected)
+        {
+            // 拠点攻略
+            case 0:
+                ShowObjectiveSelectView("攻略目標を選択してください", targetCastle.Neighbors
+                    .Where(c => targetCastle.IsAttackable(c))
+                    .Select(c => c.Name)
+                    .ToList());
+                break;
+            // 訓練
+            case 1:
+                targetCastle.Objective = new CastleObjective.Train();
+                HideObjectiveSelectView();
+                break;
+            // 防備
+            case 2:
+                targetCastle.Objective = new CastleObjective.Fortify();
+                HideObjectiveSelectView();
+                break;
+            // 開発
+            case 3:
+                targetCastle.Objective = new CastleObjective.Develop();
+                HideObjectiveSelectView();
+                break;
+            // 輸送
+            case 4:
+                ShowObjectiveSelectView("輸送目標を選択してください", targetCastle.Country.Castles
+                    .Where(c => c != targetCastle)
+                    .Select(c => c.Name)
+                    .ToList());
+                break;
+            // なし
+            case 5:
+                targetCastle.Objective = new CastleObjective.None();
+                HideObjectiveSelectView();
+                break;
+        }
     }
 
     /// <summary>
     /// 目標選択画面を表示します。
     /// </summary>
-    private void ShowObjectiveSelectView(string title, System.Collections.Generic.List<string> options)
+    private void ShowObjectiveSelectView(string title, List<string> options)
     {
-        isObjectiveSelectViewVisible = true;
-        
-        CastleInfoNormalView.style.display = DisplayStyle.None;
-        CastleInfoObjectiveSelectView.style.display = DisplayStyle.Flex;
-        
-        labelObjectiveSelectTitle.text = title;
-        ObjectiveSimpleTable.SetData(options, "対象");
+        showObjectiveSelection = true;
+        labelObjectiveSelectionTitle.text = title;
+        ObjectiveSelectionTargetTable.SetData(options, "対象");
+        Render();
     }
 
     /// <summary>
@@ -219,25 +220,20 @@ public partial class CastleDetailTab
     /// </summary>
     private void HideObjectiveSelectView()
     {
-        isObjectiveSelectViewVisible = false;
-
-        CastleInfoObjectiveSelectView.style.display = DisplayStyle.None;
-        CastleInfoNormalView.style.display = DisplayStyle.Flex;
-        
-        // ドロップダウンを元の値に戻す
-        SetObjectiveComboValue();
+        showObjectiveSelection = false;
+        Render();
     }
 
     /// <summary>
-    /// 目標が選択された時の処理。
+    /// 目標選択で目標が選択されたときに呼ばれます。
     /// </summary>
     private void OnObjectiveSelected(string selectedItem)
     {
         if (string.IsNullOrEmpty(selectedItem)) return;
 
-        var currentDropdownIndex = comboObjective.index;
-        Debug.Log($"Objective selected: {selectedItem} (dropdown index: {currentDropdownIndex})");
-        switch (currentDropdownIndex)
+        var index = comboObjective.index;
+        Debug.Log($"Objective selected: {selectedItem} (dropdown index: {index})");
+        switch (index)
         {
             case 0: // 拠点攻略
                 targetCastle.Objective = new CastleObjective.Attack() { TargetCastleName = selectedItem, };
@@ -251,25 +247,11 @@ public partial class CastleDetailTab
     }
 
     /// <summary>
-    /// 収入バーを設定します。
+    /// キャラクターのアイコンを表示します。
     /// </summary>
-    private void SetIncomeBar(float currentIncome, float maxIncome)
-    {
-        const float maxBarValue = 200f;
-        
-        // 最大収入バー（薄い黄色）の幅を設定する。
-        var maxIncomeRatio = Mathf.Clamp01(maxIncome / maxBarValue);
-        MaxIncomeBar.style.width = Length.Percent(maxIncomeRatio * 100f);
-        
-        // 現在収入バー（黄色）の幅を設定する。
-        var currentIncomeRatio = Mathf.Clamp01(currentIncome / maxBarValue);
-        CurrentIncomeBar.style.width = Length.Percent(currentIncomeRatio * 100f);
-    }
-
-    private void ShowCharacterIcons(System.Collections.Generic.IEnumerable<Character> characters, VisualElement iconContainer)
+    private void ShowCharacterIcons(IEnumerable<Character> characters, VisualElement iconContainer)
     {
         iconContainer.Clear();
-        
         foreach (var character in characters)
         {
             var icon = CreateCharacterIcon(character);
@@ -277,33 +259,22 @@ public partial class CastleDetailTab
         }
     }
 
+    /// <summary>
+    /// キャラクターのアイコンを作成します。
+    /// </summary>
     private VisualElement CreateCharacterIcon(Character character)
     {
         var faceImage = new VisualElement();
         faceImage.AddToClassList("SmallCharacterIcon");
         faceImage.style.backgroundImage = new(Static.GetFaceImage(character));
-        faceImage.RegisterCallback<MouseEnterEvent>(evt =>
-        {
-            CharacterSummary.SetData(character);
-        });
+        faceImage.Register<MouseOverEvent>(_ => ShowCharacterSummary(character));
         return faceImage;
     }
 
-    /// <summary>
-    /// 現在の目標に基づいてドロップダウンの値を設定します。
-    /// </summary>
-    private void SetObjectiveComboValue()
+    private void ShowCharacterSummary(Character character)
     {
-        var objectiveText = targetCastle.Objective switch
-        {
-            CastleObjective.Attack o => $"{o.TargetCastleName}攻略",
-            CastleObjective.Train => $"訓練",
-            CastleObjective.Fortify => $"防備",
-            CastleObjective.Develop => $"開発",
-            CastleObjective.Transport o => $"{o.TargetCastleName}輸送",
-            _ => "なし",
-        };
-        labelObjective.text = objectiveText;
-        comboObjective.value = objectiveText;
+        if (character == characterSummaryTarget) return;
+        characterSummaryTarget = character;
+        CharacterSummary.SetData(character);
     }
 }

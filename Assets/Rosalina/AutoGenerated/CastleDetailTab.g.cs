@@ -24,8 +24,6 @@ public partial class CastleDetailTab
 
     public VisualElement ObjectiveContainer { get; private set; }
 
-    public Button buttonCharacterList { get; private set; }
-
     public VisualElement CastleBossImage { get; private set; }
 
     public Label labelGold { get; private set; }
@@ -50,39 +48,41 @@ public partial class CastleDetailTab
 
     public Label labelTotalPower { get; private set; }
 
+    public Label labelCastleStrength { get; private set; }
+
     public Label labelMemberCount { get; private set; }
 
-    public Label labelCastleStrength { get; private set; }
+    public Button buttonToggleMemberListAndIcon { get; private set; }
 
     public Label labelInCastleMemberCount { get; private set; }
 
-    public Label labelInCastlePower { get; private set; }
+    public Label labelInCastleSoldierCount { get; private set; }
 
-    public VisualElement InCastleCharacterIcons { get; private set; }
+    public VisualElement InCastleMemberIconsContainer { get; private set; }
 
-    public Label labelDeployedCount { get; private set; }
+    public Label labelDeployedMemberCount { get; private set; }
 
-    public Label labelDeployedPower { get; private set; }
+    public Label labelDeployedSoldierCount { get; private set; }
 
-    public VisualElement DeployedCharacterIcons { get; private set; }
+    public VisualElement DeployedMemberIconsContainer { get; private set; }
 
-    public CharacterTable CharacterTable { get; private set; }
+    public CharacterTable MemberListViewTable { get; private set; }
 
-    public Label labelObjectiveSelectTitle { get; private set; }
+    public VisualElement MemberIconView { get; private set; }
 
-    public SimpleTable ObjectiveSimpleTable { get; private set; }
+    public VisualElement MemberListView { get; private set; }
 
-    public Button buttonBackFromObjectiveSelect { get; private set; }
+    public Label labelObjectiveSelectionTitle { get; private set; }
 
-    public VisualElement CastleInfoNormalView { get; private set; }
+    public SimpleTable ObjectiveSelectionTargetTable { get; private set; }
 
-    public VisualElement CastleInfoCharacterListView { get; private set; }
+    public Button buttonCancelObjectiveSelection { get; private set; }
 
-    public VisualElement CastleInfoObjectiveSelectView { get; private set; }
+    public VisualElement NormalView { get; private set; }
+
+    public VisualElement ObjectiveSelectionView { get; private set; }
 
     public CharacterSummary CharacterSummary { get; private set; }
-
-    public VisualElement CastleDetailTabContent { get; private set; }
 
     public VisualElement Root { get; private set; }
 
@@ -94,7 +94,6 @@ public partial class CastleDetailTab
         labelCastleName = Root?.Q<Label>("labelCastleName");
         labelCastleRegion = Root?.Q<Label>("labelCastleRegion");
         ObjectiveContainer = Root?.Q<VisualElement>("ObjectiveContainer");
-        buttonCharacterList = Root?.Q<Button>("buttonCharacterList");
         CastleBossImage = Root?.Q<VisualElement>("CastleBossImage");
         labelGold = Root?.Q<Label>("labelGold");
         labelBalance = Root?.Q<Label>("labelBalance");
@@ -107,23 +106,24 @@ public partial class CastleDetailTab
         labelDevLevel = Root?.Q<Label>("labelDevLevel");
         labelTotalInvestment = Root?.Q<Label>("labelTotalInvestment");
         labelTotalPower = Root?.Q<Label>("labelTotalPower");
-        labelMemberCount = Root?.Q<Label>("labelMemberCount");
         labelCastleStrength = Root?.Q<Label>("labelCastleStrength");
+        labelMemberCount = Root?.Q<Label>("labelMemberCount");
+        buttonToggleMemberListAndIcon = Root?.Q<Button>("buttonToggleMemberListAndIcon");
         labelInCastleMemberCount = Root?.Q<Label>("labelInCastleMemberCount");
-        labelInCastlePower = Root?.Q<Label>("labelInCastlePower");
-        InCastleCharacterIcons = Root?.Q<VisualElement>("InCastleCharacterIcons");
-        labelDeployedCount = Root?.Q<Label>("labelDeployedCount");
-        labelDeployedPower = Root?.Q<Label>("labelDeployedPower");
-        DeployedCharacterIcons = Root?.Q<VisualElement>("DeployedCharacterIcons");
-        CharacterTable = new CharacterTable(Root?.Q<VisualElement>("CharacterTable"));
-        labelObjectiveSelectTitle = Root?.Q<Label>("labelObjectiveSelectTitle");
-        ObjectiveSimpleTable = new SimpleTable(Root?.Q<VisualElement>("ObjectiveSimpleTable"));
-        buttonBackFromObjectiveSelect = Root?.Q<Button>("buttonBackFromObjectiveSelect");
-        CastleInfoNormalView = Root?.Q<VisualElement>("CastleInfoNormalView");
-        CastleInfoCharacterListView = Root?.Q<VisualElement>("CastleInfoCharacterListView");
-        CastleInfoObjectiveSelectView = Root?.Q<VisualElement>("CastleInfoObjectiveSelectView");
+        labelInCastleSoldierCount = Root?.Q<Label>("labelInCastleSoldierCount");
+        InCastleMemberIconsContainer = Root?.Q<VisualElement>("InCastleMemberIconsContainer");
+        labelDeployedMemberCount = Root?.Q<Label>("labelDeployedMemberCount");
+        labelDeployedSoldierCount = Root?.Q<Label>("labelDeployedSoldierCount");
+        DeployedMemberIconsContainer = Root?.Q<VisualElement>("DeployedMemberIconsContainer");
+        MemberListViewTable = new CharacterTable(Root?.Q<VisualElement>("MemberListViewTable"));
+        MemberIconView = Root?.Q<VisualElement>("MemberIconView");
+        MemberListView = Root?.Q<VisualElement>("MemberListView");
+        labelObjectiveSelectionTitle = Root?.Q<Label>("labelObjectiveSelectionTitle");
+        ObjectiveSelectionTargetTable = new SimpleTable(Root?.Q<VisualElement>("ObjectiveSelectionTargetTable"));
+        buttonCancelObjectiveSelection = Root?.Q<Button>("buttonCancelObjectiveSelection");
+        NormalView = Root?.Q<VisualElement>("NormalView");
+        ObjectiveSelectionView = Root?.Q<VisualElement>("ObjectiveSelectionView");
         CharacterSummary = new CharacterSummary(Root?.Q<VisualElement>("CharacterSummary"));
-        CastleDetailTabContent = Root?.Q<VisualElement>("CastleDetailTabContent");
     }
 
     public void ReinitializeComponent(VisualElement root)
@@ -134,7 +134,6 @@ public partial class CastleDetailTab
         labelCastleName = Root?.Q<Label>("labelCastleName");
         labelCastleRegion = Root?.Q<Label>("labelCastleRegion");
         ObjectiveContainer = Root?.Q<VisualElement>("ObjectiveContainer");
-        buttonCharacterList = Root?.Q<Button>("buttonCharacterList");
         CastleBossImage = Root?.Q<VisualElement>("CastleBossImage");
         labelGold = Root?.Q<Label>("labelGold");
         labelBalance = Root?.Q<Label>("labelBalance");
@@ -147,22 +146,23 @@ public partial class CastleDetailTab
         labelDevLevel = Root?.Q<Label>("labelDevLevel");
         labelTotalInvestment = Root?.Q<Label>("labelTotalInvestment");
         labelTotalPower = Root?.Q<Label>("labelTotalPower");
-        labelMemberCount = Root?.Q<Label>("labelMemberCount");
         labelCastleStrength = Root?.Q<Label>("labelCastleStrength");
+        labelMemberCount = Root?.Q<Label>("labelMemberCount");
+        buttonToggleMemberListAndIcon = Root?.Q<Button>("buttonToggleMemberListAndIcon");
         labelInCastleMemberCount = Root?.Q<Label>("labelInCastleMemberCount");
-        labelInCastlePower = Root?.Q<Label>("labelInCastlePower");
-        InCastleCharacterIcons = Root?.Q<VisualElement>("InCastleCharacterIcons");
-        labelDeployedCount = Root?.Q<Label>("labelDeployedCount");
-        labelDeployedPower = Root?.Q<Label>("labelDeployedPower");
-        DeployedCharacterIcons = Root?.Q<VisualElement>("DeployedCharacterIcons");
-        CharacterTable = new CharacterTable(Root?.Q<VisualElement>("CharacterTable"));
-        labelObjectiveSelectTitle = Root?.Q<Label>("labelObjectiveSelectTitle");
-        ObjectiveSimpleTable = new SimpleTable(Root?.Q<VisualElement>("ObjectiveSimpleTable"));
-        buttonBackFromObjectiveSelect = Root?.Q<Button>("buttonBackFromObjectiveSelect");
-        CastleInfoNormalView = Root?.Q<VisualElement>("CastleInfoNormalView");
-        CastleInfoCharacterListView = Root?.Q<VisualElement>("CastleInfoCharacterListView");
-        CastleInfoObjectiveSelectView = Root?.Q<VisualElement>("CastleInfoObjectiveSelectView");
+        labelInCastleSoldierCount = Root?.Q<Label>("labelInCastleSoldierCount");
+        InCastleMemberIconsContainer = Root?.Q<VisualElement>("InCastleMemberIconsContainer");
+        labelDeployedMemberCount = Root?.Q<Label>("labelDeployedMemberCount");
+        labelDeployedSoldierCount = Root?.Q<Label>("labelDeployedSoldierCount");
+        DeployedMemberIconsContainer = Root?.Q<VisualElement>("DeployedMemberIconsContainer");
+        MemberListViewTable = new CharacterTable(Root?.Q<VisualElement>("MemberListViewTable"));
+        MemberIconView = Root?.Q<VisualElement>("MemberIconView");
+        MemberListView = Root?.Q<VisualElement>("MemberListView");
+        labelObjectiveSelectionTitle = Root?.Q<Label>("labelObjectiveSelectionTitle");
+        ObjectiveSelectionTargetTable = new SimpleTable(Root?.Q<VisualElement>("ObjectiveSelectionTargetTable"));
+        buttonCancelObjectiveSelection = Root?.Q<Button>("buttonCancelObjectiveSelection");
+        NormalView = Root?.Q<VisualElement>("NormalView");
+        ObjectiveSelectionView = Root?.Q<VisualElement>("ObjectiveSelectionView");
         CharacterSummary = new CharacterSummary(Root?.Q<VisualElement>("CharacterSummary"));
-        CastleDetailTabContent = Root?.Q<VisualElement>("CastleDetailTabContent");
     }
 }

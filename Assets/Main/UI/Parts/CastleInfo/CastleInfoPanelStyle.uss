@@ -4,8 +4,8 @@ Button.active {
 }
 
 .MiddleCharacterIcon {
-    width: 128px;
-    height: 128px;
+    width: 162px;
+    height: 162px;
     border-width: 2px;
     border-color: #888;
     background-color: transparent;
@@ -52,8 +52,8 @@ DropdownField {
     -unity-text-align: middle-left;
 }
 
-.SimpleTableBody .unity-collection-view__item:hover {
-    /* background-color: initial; */
+.unity-collection-view__item:hover {
+    background-color: initial;
 }
 
 .SimpleTableRowItem:hover {
