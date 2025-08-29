@@ -11,9 +11,10 @@ public partial class CharacterSummary
     {
         if (chara == null)
         {
-            Root.style.visibility = Visibility.Hidden;
+            Root.style.opacity = 0;
             return;
         }
+        Root.style.opacity = 1;
 
         // 基本情報の更新
         imagePlayerFace.image = Static.GetFaceImage(chara);

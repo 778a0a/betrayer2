@@ -12,6 +12,7 @@ public partial class MainUI : MonoBehaviour
     public PersonalPhaseScreen PersonalPhaseScreen { get; set; }
     public StrategyPhaseScreen StrategyPhaseScreen { get; set; }
     public SelectCharacterScreen SelectCharacterScreen { get; set; }
+    public TileInfoScreen TileInfoScreen { get; set; }
     public IScreen[] Screens { get; set; }
 
     private bool isInitialized = false;
