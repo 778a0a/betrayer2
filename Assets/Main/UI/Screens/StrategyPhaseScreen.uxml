@@ -5,27 +5,29 @@
     <!-- StrategyPhase Panel: 戦略行動フェーズのメインパネル -->
     <ui:VisualElement class="panel">
         
-        <!-- ヘッダー: 日付・フェーズ情報 -->
+        <!-- ヘッダー -->
         <ui:VisualElement class="header-panel" style="flex-direction: row; justify-content: space-between;">
-            <ui:VisualElement style="flex-direction: row; align-items: flex-end; padding: 4px 0;">
+
+            <ui:VisualElement style="flex-direction: row; align-items: flex-end;">
                 <ui:Label text="戦略" style="font-size: 40px; font-weight: bold; color: #0ff;" />
                 <ui:Label text="フェイズ" style="font-size: 30px; font-weight: bold;" />
-            </ui:VisualElement>
-            <ui:Button text="×" style="font-size: 28px; width: 40px; height: 40px; -unity-font-style: bold;" />
-        </ui:VisualElement>
-
-        <!-- アクションボタンエリア -->
-        <ui:VisualElement name="ActionsPanel" class="actions-panel" style="margin-top: 10px; padding: 10px 5px 5px 5px; background-color: #223344;">
-            <ui:VisualElement style="flex-direction: row; align-items: center;">
-                <ui:Label text="アクション" style="font-size: 32px; margin-left: 4px" />
                 <ui:Label text="(城資金 " style="font-size: 28px; margin: 0 5px 0 10px;" />
                 <ui:Label text="8888" name="labelCurrentCastleGold" style="font-size: 28px; color: yellow;" />
                 <ui:Label text=", 采配P " style="font-size: 28px; margin: 0 5px 0 0;" />
                 <ui:Label text="88" name="labelCurrentAP" style="font-size: 28px; color: red;" />
                 <ui:Label text=")" style="font-size: 28px;" />
-                <ui:Button text="ターン終了" name="buttonTurnEnd" style="font-size: 28px; margin: -10px 0 -20px auto;" />
             </ui:VisualElement>
-            <ui:VisualElement style="flex-direction: row; align-items: flex-end; margin-top: 15px; margin-left: 5px;">
+
+            <ui:VisualElement style="flex-direction: row; align-items: flex-end; margin: 5px 0 0px 0   ">
+                <ui:Button text="ターン終了" name="buttonTurnEnd" style="font-size: 28px; padding: 5px 10px; margin: 0 10px 0 0" />
+                <ui:Button text="×" style="font-size: 28px; -unity-font-style: bold; padding: 5px 5px; margin: 0" />
+            </ui:VisualElement>
+
+        </ui:VisualElement>
+
+        <!-- アクションボタンエリア -->
+        <ui:VisualElement name="ActionsPanel" class="actions-panel" style="margin-top: 10px; padding: 10px 5px 5px 5px; background-color: #223344;">
+            <ui:VisualElement style="flex-direction: row; align-items: flex-end; margin-left: 5px;">
                 <ui:Label text="コスト:" style="margin: 0 10px 0 0px; font-size: 28px; " />
                 <ui:Label name="labelCost" text="城資金 10, 采配P 5" style="font-size: 28px;" />
             </ui:VisualElement>
