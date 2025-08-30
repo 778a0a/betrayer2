@@ -68,6 +68,13 @@ public partial class StrategyPhaseScreen : IScreen
             tile.UI.SetCellBorder(false);
         };
 
+        buttonToggleActionPanelFolding.clicked += () =>
+        {
+            var show = ActionPanelContent.style.display != DisplayStyle.Flex;
+            ActionPanelContent.style.display = Util.Display(show);
+            buttonToggleActionPanelFolding.text = show ? "-" : "+";
+        };
+
         CastleInfoPanel.Initialize();
     }
 
@@ -113,6 +120,9 @@ public partial class StrategyPhaseScreen : IScreen
         Core.MainUI.HideAllPanels();
         SetData(chara);
         Root.style.display = DisplayStyle.Flex;
+
+        ActionPanelContent.style.display = DisplayStyle.Flex;
+        buttonToggleActionPanelFolding.text = "-";
     }
 
     public void SetData(Character chara)

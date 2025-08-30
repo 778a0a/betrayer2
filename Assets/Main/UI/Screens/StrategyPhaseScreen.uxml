@@ -18,34 +18,39 @@
                 <ui:Label text=")" style="font-size: 28px;" />
             </ui:VisualElement>
 
-            <ui:VisualElement style="flex-direction: row; align-items: flex-end; margin: 5px 0 0px 0   ">
+            <ui:VisualElement style="flex-direction: row; align-items: flex-end; margin: 5px 0 0px 0; align-items: stretch;">
                 <ui:Button text="ターン終了" name="buttonTurnEnd" style="font-size: 28px; padding: 5px 10px; margin: 0 10px 0 0" />
-                <ui:Button text="×" style="font-size: 28px; -unity-font-style: bold; padding: 5px 5px; margin: 0" />
+                <ui:Button text="×" style="font-size: 28px; -unity-font-style: bold; padding: 0; width: 40px; margin: 0" />
             </ui:VisualElement>
 
         </ui:VisualElement>
 
         <!-- アクションボタンエリア -->
-        <ui:VisualElement style="margin-top: 10px; padding: 10px 5px 5px 5px; background-color: #223344; min-height: 220px">
+        <ui:VisualElement style="margin-top: 10px; padding: 10px 5px 5px 5px; background-color: #223344; min-height: 40px">
 
-            <!-- 実行可能なアクションがあるとき用 -->
-            <ui:VisualElement name="ActionPanel">
-                <ui:VisualElement style="flex-direction: row; align-items: flex-end; margin-left: 5px;">
-                    <ui:Label text="コスト:" style="margin: 0 10px 0 0px; font-size: 28px; " />
-                    <ui:Label name="labelCost" text="城資金 10, 采配P 5" style="font-size: 28px;" />
+            <ui:VisualElement name="ActionPanelContent" style="min-height: 205px;">
+                <!-- 実行可能なアクションがあるとき用 -->
+                <ui:VisualElement name="ActionPanel">
+                    <ui:VisualElement style="flex-direction: row; align-items: flex-end; margin-left: 5px;">
+                        <ui:Label text="コスト:" style="margin: 0 10px 0 0px; font-size: 28px; " />
+                        <ui:Label name="labelCost" text="城資金 10, 采配P 5" style="font-size: 28px;" />
+                    </ui:VisualElement>
+                    <ui:VisualElement style="flex-direction: row; align-items: center; min-height: 32px; margin: 15px 0 15px 5px;">
+                        <ui:Label name="labelActionDescription" text="アクションの説明がここに表示されます。" style="font-size: 28px; white-space: normal" />
+                    </ui:VisualElement>
+                    <ui:VisualElement name="ActionButtons" style="flex-wrap: wrap; flex-direction: row;">
+                        <!-- ボタンはC#で動的生成 -->
+                    </ui:VisualElement>
                 </ui:VisualElement>
-                <ui:VisualElement style="flex-direction: row; align-items: center; min-height: 32px; margin: 15px 0 15px 5px;">
-                    <ui:Label name="labelActionDescription" text="アクションの説明がここに表示されます。" style="font-size: 28px; white-space: normal" />
-                </ui:VisualElement>
-                <ui:VisualElement name="ActionButtons" style="flex-wrap: wrap; flex-direction: row;">
-                    <!-- ボタンはC#で動的生成 -->
-                </ui:VisualElement>
-            </ui:VisualElement>
             
-            <!-- 実行可能なアクションがないとき用 -->
-            <ui:VisualElement name="NoActionPanel" style="display: none">
-                <ui:Button name="buttonMoveToMyCastle" text="所属城へ移動" style="width: 200px" />
+                <!-- 実行可能なアクションがないとき用 -->
+                <ui:VisualElement name="NoActionPanel" style="display: none">
+                    <ui:Label text="ここで実行できるアクションはありません。" style="font-size: 28px; margin: 0 0 15px 5px;" />
+                    <ui:Button name="buttonMoveToMyCastle" text="所属城を表示" style="width: 200px" />
+                </ui:VisualElement>
             </ui:VisualElement>
+
+            <ui:Button name="buttonToggleActionPanelFolding" text="-" style="font-size: 40px; position: absolute; right: 0; width: 40px; height: 40px; padding: 0; margin: -10px 0 0 0" />
 
         </ui:VisualElement>
 
