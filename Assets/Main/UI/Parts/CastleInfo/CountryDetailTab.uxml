@@ -51,9 +51,9 @@
                         </ui:VisualElement>
                         <ui:VisualElement style="flex-direction: row; align-items: center; margin-top: 5px;">
                             <ui:Label text="総兵力:" style="margin-right: 10px; font-size: 28px;" />
-                            <ui:Label name="labelTotalPower" text="88888" style="font-size: 28px; color: orange;" />
+                            <ui:Label name="labelTotalPower" text="88888" style="font-size: 28px; color: orange; min-width: 65px" />
                             <ui:Label text="将数:" style="margin-left: 15px; margin-right: 10px; font-size: 28px;" />
-                            <ui:Label name="labelTotalGeneralCount" text="88" style="font-size: 28px;" />
+                            <ui:Label name="labelTotalGeneralCount" text="88" style="font-size: 28px; min-width: 40px" />
                             <ui:Button name="buttonShowCastleList" text="城一覧" style="padding: 5px; margin: -30px 0 -30px 10px; font-size: 24px;" />
                             <ui:Button name="buttonShowMemberList" text="人物一覧" style="padding: 5px; margin: -30px 0 -30px 10px; font-size: 24px;" />
                             <ui:Button name="buttonShowDiplomacy" text="外交" style="padding: 5px; margin: -30px 0 -30px 10px; font-size: 24px;" />

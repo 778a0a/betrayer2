@@ -62,12 +62,12 @@
                         </ui:VisualElement>
                         <ui:VisualElement style="flex-direction: row; align-items: center; margin-top: 5px;">
                             <ui:Label text="総兵力:" style="margin-right: 10px; font-size: 28px;" />
-                            <ui:Label name="labelTotalPower" text="88888" style="font-size: 28px; color: orange;" />
+                            <ui:Label name="labelTotalPower" text="88888" style="font-size: 28px; color: orange; min-width: 65px" />
                             <ui:Label text="城塞Lv:" style="margin-left: 15px; margin-right: 10px; font-size: 28px;" />
                             <ui:Label name="labelCastleStrength" text="888" style="font-size: 28px; color: cyan;" />
                             <ui:Label text="将数:" style="margin-left: 15px; margin-right: 10px; font-size: 28px;" />
-                            <ui:Label name="labelMemberCount" text="88" style="font-size: 28px;" />
-                            <ui:Button name="buttonToggleMemberListAndIcon" text="表示切替" style="position: relative; padding: 5px; margin: -30px 0 -30px 10px; font-size: 24px; width: 120px;" />
+                            <ui:Label name="labelMemberCount" text="88" style="font-size: 28px; min-width: 40px" />
+                            <ui:Button name="buttonToggleMemberListAndIcon" text="表示切替" style="position: relative; padding: 5px; margin: -30px 0 -30px 0; font-size: 24px; width: 120px;" />
                         </ui:VisualElement>
                     </ui:VisualElement>
                 </ui:VisualElement>
@@ -78,7 +78,7 @@
                 <!-- 在城中キャラクター -->
                 <ui:VisualElement>
                     <ui:VisualElement style="flex-direction: row; align-items: center;">
-                        <ui:Label text="在城" style="font-size: 28px; font-weight: bold; width: 85px" />
+                        <ui:Label text="在城中" style="font-size: 28px; font-weight: bold; width: 85px" />
                         <ui:Label name="labelInCastleMemberCount" text="(0名)" style="margin-left: 10px; font-size: 28px; color: silver;" />
                         <ui:Label text="兵力:" style="margin-left: 15px; margin-right: 10px; font-size: 28px;" />
                         <ui:Label name="labelInCastleSoldierCount" text="88888" style="font-size: 28px; color: orange;" />
