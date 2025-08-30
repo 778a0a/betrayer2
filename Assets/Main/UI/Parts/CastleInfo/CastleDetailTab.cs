@@ -104,6 +104,7 @@ public partial class CastleDetailTab
     private void SetCastleData(Castle castle)
     {
         // 城名・地方・方針
+        iconCountry.style.backgroundImage = new(Static.GetCountrySprite(castle.Country.ColorIndex));
         labelCastleName.text = castle.Name;
         labelCastleRegion.text = castle.Region;
         ObjectiveContainer.style.display = Util.Display(Core.World.Player?.Country == castle.Country);

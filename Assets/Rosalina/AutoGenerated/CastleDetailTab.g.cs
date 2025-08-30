@@ -18,6 +18,8 @@ public partial class CastleDetailTab
 
     public DropdownField comboObjective { get; private set; }
 
+    public VisualElement iconCountry { get; private set; }
+
     public Label labelCastleName { get; private set; }
 
     public Label labelCastleRegion { get; private set; }
@@ -91,6 +93,7 @@ public partial class CastleDetailTab
         Root = root;
         labelObjective = Root?.Q<Label>("labelObjective");
         comboObjective = Root?.Q<DropdownField>("comboObjective");
+        iconCountry = Root?.Q<VisualElement>("iconCountry");
         labelCastleName = Root?.Q<Label>("labelCastleName");
         labelCastleRegion = Root?.Q<Label>("labelCastleRegion");
         ObjectiveContainer = Root?.Q<VisualElement>("ObjectiveContainer");
@@ -131,6 +134,7 @@ public partial class CastleDetailTab
         Root = root;
         labelObjective = Root?.Q<Label>("labelObjective");
         comboObjective = Root?.Q<DropdownField>("comboObjective");
+        iconCountry = Root?.Q<VisualElement>("iconCountry");
         labelCastleName = Root?.Q<Label>("labelCastleName");
         labelCastleRegion = Root?.Q<Label>("labelCastleRegion");
         ObjectiveContainer = Root?.Q<VisualElement>("ObjectiveContainer");
