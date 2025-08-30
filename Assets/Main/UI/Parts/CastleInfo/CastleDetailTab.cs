@@ -37,6 +37,33 @@ public partial class CastleDetailTab
             HideObjectiveSelectView();
         };
 
+        // 目標選択の行マウスオーバー時
+        ObjectiveSelectionTargetTable.RowMouseEnter += (sender, index) =>
+        {
+            switch (comboObjective.index)
+            {
+                case 0: // 拠点攻略
+                case 4: // 輸送
+                    var castle = (Castle)ObjectiveSelectionTargetTable.Items[index];
+                    var tile = Core.World.Map.GetTile(castle.Position);
+                    tile.UI.SetFocusHighlight(true);
+                    break;
+            }
+        };
+        // 目標選択の行マウスリーブ時
+        ObjectiveSelectionTargetTable.RowMouseLeave += (sender, index) =>
+        {
+            switch (comboObjective.index)
+            {
+                case 0: // 拠点攻略
+                case 4: // 輸送
+                    var castle = (Castle)ObjectiveSelectionTargetTable.Items[index];
+                    var tile = Core.World.Map.GetTile(castle.Position);
+                    tile.UI.SetFocusHighlight(false);
+                    break;
+            }
+        };
+
         // 目標選択の選択確定時
         ObjectiveSelectionTargetTable.ItemSelected += (sender, selectedItem) =>
         {
@@ -169,10 +196,16 @@ public partial class CastleDetailTab
         {
             // 拠点攻略
             case 0:
-                ShowObjectiveSelectView("攻略目標を選択してください", targetCastle.Neighbors
+                var targets = targetCastle.Neighbors
                     .Where(c => targetCastle.IsAttackable(c))
-                    .Select(c => c.Name)
-                    .ToList());
+                    .ToList();
+                Core.World.Map.SetEnableHighlight(targets);
+                Core.World.Map.SetCustomEventHandler(tile =>
+                {
+                    var isInTargets = targets.Contains(tile.Castle);
+                    if (isInTargets) OnObjectiveSelected(tile.Castle);
+                });
+                ShowObjectiveSelectView("攻略目標を選択してください", targets, c => c.Name);
                 break;
             // 訓練
             case 1:
@@ -191,10 +224,16 @@ public partial class CastleDetailTab
                 break;
             // 輸送
             case 4:
-                ShowObjectiveSelectView("輸送目標を選択してください", targetCastle.Country.Castles
+                targets = targetCastle.Country.Castles
                     .Where(c => c != targetCastle)
-                    .Select(c => c.Name)
-                    .ToList());
+                    .ToList();
+                Core.World.Map.SetEnableHighlight(targets);
+                Core.World.Map.SetCustomEventHandler(tile =>
+                {
+                    var isInTargets = targets.Contains(tile.Castle);
+                    if (isInTargets) OnObjectiveSelected(tile.Castle);
+                });
+                ShowObjectiveSelectView("輸送目標を選択してください", targets, c => c.Name);
                 break;
             // なし
             case 5:
@@ -207,11 +246,11 @@ public partial class CastleDetailTab
     /// <summary>
     /// 目標選択画面を表示します。
     /// </summary>
-    private void ShowObjectiveSelectView(string title, List<string> options)
+    private void ShowObjectiveSelectView<T>(string title, IReadOnlyList<T> options, Func<T, string> toString)
     {
         showObjectiveSelection = true;
         labelObjectiveSelectionTitle.text = title;
-        ObjectiveSelectionTargetTable.SetData(options, "対象");
+        ObjectiveSelectionTargetTable.SetData(options, "対象", toString);
         Render();
     }
 
@@ -221,25 +260,35 @@ public partial class CastleDetailTab
     private void HideObjectiveSelectView()
     {
         showObjectiveSelection = false;
+        Core.World.Map.ClearAllEnableHighlight();
+        Core.World.Map.ClearCustomEventHandler();
         Render();
     }
 
     /// <summary>
     /// 目標選択で目標が選択されたときに呼ばれます。
     /// </summary>
-    private void OnObjectiveSelected(string selectedItem)
+    private void OnObjectiveSelected(object selectedItem)
     {
-        if (string.IsNullOrEmpty(selectedItem)) return;
+        if (selectedItem == null) return;
 
         var index = comboObjective.index;
         Debug.Log($"Objective selected: {selectedItem} (dropdown index: {index})");
         switch (index)
         {
             case 0: // 拠点攻略
-                targetCastle.Objective = new CastleObjective.Attack() { TargetCastleName = selectedItem, };
+                var castle = (Castle)selectedItem;
+                targetCastle.Objective = new CastleObjective.Attack() { TargetCastleName = castle.Name, };
+
+                var tile = Core.World.Map.GetTile(castle.Position);
+                tile.UI.SetFocusHighlight(false);
                 break;
             case 4: // 輸送
-                targetCastle.Objective = new CastleObjective.Transport() { TargetCastleName = selectedItem, };
+                castle = (Castle)selectedItem;
+                targetCastle.Objective = new CastleObjective.Transport() { TargetCastleName = castle.Name, };
+
+                tile = Core.World.Map.GetTile(castle.Position);
+                tile.UI.SetFocusHighlight(false);
                 break;
         }
 

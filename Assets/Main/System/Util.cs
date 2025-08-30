@@ -197,7 +197,7 @@ public static class Util
     }
 
     // 動的生成した要素を破棄するときのイベント解除が面倒なので自動でできるものを用意する。
-    // うまく動くかは不明。
+    // うまく動くかは不明。（リストビューのアイテムのように、Detachされたあとにまた再利用されるものには使えなかった）
     public static void Register<TEventType>(this VisualElement el, EventCallback<TEventType> callback) where TEventType : EventBase<TEventType>, new ()
     {
         el.RegisterCallback(callback);
@@ -207,6 +207,17 @@ public static class Util
             el.UnregisterCallback<DetachFromPanelEvent>(Dispose);
         }
         el.RegisterCallback<DetachFromPanelEvent>(Dispose);
+    }
+
+    public static int IndexOf<T>(this IEnumerable<T> source, T target)
+    {
+        var index = 0;
+        foreach (var item in source)
+        {
+            if (EqualityComparer<T>.Default.Equals(item, target)) return index;
+            index++;
+        }
+        return -1;
     }
 }
 

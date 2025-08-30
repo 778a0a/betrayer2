@@ -6,10 +6,13 @@ using UnityEngine.UIElements;
 
 public partial class SimpleTable : MainUIComponent
 {
-    public event EventHandler<string> ItemSelected;
+    public event EventHandler<object> ItemSelected;
+    public event EventHandler<int> RowMouseEnter;
+    public event EventHandler<int> RowMouseLeave;
 
-    private List<string> items;
-    private string selectedItem;
+    public IReadOnlyList<object> Items { get; private set; }
+    public Func<object, string> ItemToString { get; set; } = obj => obj?.ToString() ?? "";
+    private object selectedItem;
 
     public void Initialize()
     {
@@ -21,49 +24,62 @@ public partial class SimpleTable : MainUIComponent
 
         ListView.makeItem = () =>
         {
+            Debug.LogError($"makeItem");
             var label = new Label();
             label.AddToClassList("SimpleTableRowItem");
+            // 要素から外されたあとも使いまわしされるのでRegisterではなくRegisterCallbackを使う。
+            label.RegisterCallback<MouseEnterEvent>(ev =>
+            {
+                Debug.LogError($"Objective row mouse enter: {ev}");
+                RowMouseEnter?.Invoke(this, (int)label.userData);
+            });
+            label.RegisterCallback<MouseLeaveEvent>(ev =>
+            {
+                RowMouseLeave?.Invoke(this, (int)label.userData);
+            });
             return label;
         };
-        
+
         ListView.bindItem = (element, index) =>
         {
+            Debug.LogError($"bindItem: {index}");
             var label = (Label)element;
-            label.text = items[index];
+            label.text = ItemToString(Items[index]);
+            label.userData = index;
         };
-        
-        ListView.selectionChanged += OnSelectionChange;
-    }
 
-    private void OnSelectionChange(IEnumerable<object> selectedItems)
-    {
-        var selected = selectedItems.FirstOrDefault();
-        if (selected != null)
+        ListView.selectionChanged += selectedItems =>
         {
-            selectedItem = selected.ToString();
-            ItemSelected?.Invoke(this, selectedItem);
-        }
+            var selected = selectedItems.FirstOrDefault();
+            if (selected != null)
+            {
+                selectedItem = selected;
+                ItemSelected?.Invoke(this, selectedItem);
+            }
+        };
     }
+    
 
-    public void SetData(IEnumerable<string> items, string headerText = "項目")
+    public void SetData<T>(IReadOnlyList<T> items, string headerText = "項目", Func<T, string> toString = null)
     {
-        this.items = items?.ToList() ?? new List<string>();
+        Items = items?.Cast<object>().ToList() ?? new List<object>();
         labelHeader.text = headerText;
-        ListView.itemsSource = this.items;
+        ItemToString = obj => toString?.Invoke((T)obj) ?? obj?.ToString() ?? "";
+        ListView.itemsSource = (System.Collections.IList)Items;
         ListView.ClearSelection();
         selectedItem = null;
     }
 
-    public string GetSelectedItem()
+    public object GetSelectedItem()
     {
         return selectedItem;
     }
 
-    public void SetSelectedItem(string item)
+    public void SetSelectedItem(object item)
     {
-        if (items.Contains(item))
+        if (Items.Contains(item))
         {
-            var index = items.IndexOf(item);
+            var index = Items.IndexOf(item);
             ListView.SetSelection(index);
             selectedItem = item;
         }

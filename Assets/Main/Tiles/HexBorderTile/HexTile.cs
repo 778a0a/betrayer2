@@ -35,6 +35,8 @@ public class HexTile : MonoBehaviour
     [SerializeField] private SpriteRenderer forceFlagSprite;
     [SerializeField] private TextMeshPro debugText;
     [SerializeField] private SpriteRenderer clickHighlight;
+    [SerializeField] private SpriteRenderer focusHighlight;
+    [SerializeField] private SpriteRenderer enableHighlight;
 
     private void Awake()
     {
@@ -60,6 +62,20 @@ public class HexTile : MonoBehaviour
     public void SetClickHighlight(bool on)
     {
         clickHighlight.gameObject.SetActive(on);
+    }
+
+    public void SetFocusHighlight(bool on)
+    {
+        focusHighlight.gameObject.SetActive(on);
+    }
+
+    public void SetEnableHighlight(bool on, bool enable)
+    {
+        enableHighlight.gameObject.SetActive(on);
+        if (on)
+        {
+            enableHighlight.color = enable ? new Color(1, 1, 1, 0.2f) : new Color(0, 0, 0, 0.5f);
+        }
     }
 
     public void SetCastle(bool exists)

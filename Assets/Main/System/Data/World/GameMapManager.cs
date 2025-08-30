@@ -136,6 +136,41 @@ public class GameMapManager
         town.Castle.Towns.Remove(town);
         Debug.Log($"町({town.Position}, 城ID:{town.Castle.Id})が削除されました。");
     }
+
+    public void SetEnableHighlight<T>(List<T> targets) where T : IMapEntity
+    {
+        var set = new HashSet<GameMapTile>(targets.Select(x => GetTile(x)));
+        foreach (var tile in Tiles)
+        {
+            tile.UI.SetEnableHighlight(true, set.Contains(tile));
+        }
+    }
+
+    public void ClearAllEnableHighlight()
+    {
+        foreach (var tile in Tiles)
+        {
+            tile.UI.SetEnableHighlight(false, false);
+        }
+    }
+
+    private IDisposable customEventHandler = null;
+    public void SetCustomEventHandler(Action<GameMapTile> handler)
+    {
+        customEventHandler?.Dispose();
+        var ui = GameCore.Instance.Map;
+        customEventHandler = ui.SetCellClickHandler((sender, pos) =>
+        {
+            var tile = GetTile(pos);
+            handler(tile);
+        });
+    }
+
+    public void ClearCustomEventHandler()
+    {
+        customEventHandler?.Dispose();
+        customEventHandler = null;
+    }
 }
 
 /// <summary>

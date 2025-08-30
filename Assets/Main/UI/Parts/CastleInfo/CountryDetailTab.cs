@@ -48,7 +48,6 @@ public partial class CountryDetailTab
         // SimpleTableの選択イベント
         CountryObjectiveSimpleTable.ItemSelected += (sender, selectedItem) =>
         {
-            Debug.Log("selectedItem: " + selectedItem);
             OnCountryObjectiveSelected(selectedItem);
         };
 
@@ -197,7 +196,7 @@ public partial class CountryDetailTab
     /// <summary>
     /// 国目標選択画面を表示します。
     /// </summary>
-    private void ShowCountryObjectiveSelectView(string title, System.Collections.Generic.List<string> options)
+    private void ShowCountryObjectiveSelectView(string title, List<string> options)
     {
         isObjectiveSelectViewVisible = true;
         
@@ -225,9 +224,9 @@ public partial class CountryDetailTab
     /// <summary>
     /// 国目標が選択された時の処理。
     /// </summary>
-    private void OnCountryObjectiveSelected(string selectedItem)
+    private void OnCountryObjectiveSelected(object selectedItem)
     {
-        if (string.IsNullOrEmpty(selectedItem)) return;
+        if (selectedItem == null) return;
 
         var currentDropdownIndex = comboCountryObjective.index;
         Debug.Log($"Country Objective selected: {selectedItem} (dropdown index: {currentDropdownIndex})");
@@ -235,10 +234,10 @@ public partial class CountryDetailTab
         switch (currentDropdownIndex)
         {
             case 0: // 地方統一
-                targetCountry.Objective = new CountryObjective.RegionConquest { TargetRegionName = selectedItem };
+                targetCountry.Objective = new CountryObjective.RegionConquest { TargetRegionName = (string)selectedItem };
                 break;
             case 1: // 勢力打倒
-                targetCountry.Objective = new CountryObjective.CountryAttack { TargetRulerName = selectedItem };
+                targetCountry.Objective = new CountryObjective.CountryAttack { TargetRulerName = (string)selectedItem };
                 break;
         }
         
