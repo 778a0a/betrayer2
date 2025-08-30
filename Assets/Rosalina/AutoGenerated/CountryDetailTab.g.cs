@@ -14,15 +14,15 @@ using UnityEngine.UIElements;
 
 public partial class CountryDetailTab
 {
-    public Label labelCountryObjective { get; private set; }
+    public Label labelObjective { get; private set; }
 
-    public DropdownField comboCountryObjective { get; private set; }
+    public DropdownField comboObjective { get; private set; }
+
+    public VisualElement iconCountry { get; private set; }
 
     public Label labelCountryRulerName { get; private set; }
 
-    public VisualElement CountryObjectiveContainer { get; private set; }
-
-    public Button buttonCountryCharacterList { get; private set; }
+    public VisualElement ObjectiveContainer { get; private set; }
 
     public VisualElement CountryRulerImage { get; private set; }
 
@@ -34,84 +34,95 @@ public partial class CountryDetailTab
 
     public Label labelTotalExpenditure { get; private set; }
 
+    public Label labelCastleCount { get; private set; }
+
+    public Button buttonShowCastleList { get; private set; }
+
     public Label labelTotalPower { get; private set; }
 
     public Label labelTotalGeneralCount { get; private set; }
 
-    public Label labelCastleCount { get; private set; }
+    public Button buttonShowMemberList { get; private set; }
 
+    public Button buttonShowDiplomacy { get; private set; }
 
-    public CharacterTable CharacterTable { get; private set; }
-
-    public Label labelCountryObjectiveSelectTitle { get; private set; }
-
-    public SimpleTable CountryObjectiveSimpleTable { get; private set; }
-
-    public Button buttonBackFromCountryObjectiveSelect { get; private set; }
-
-    public VisualElement CountryInfoNormalView { get; private set; }
-
-    public VisualElement CountryInfoCharacterListView { get; private set; }
-
-    public VisualElement CountryInfoObjectiveSelectView { get; private set; }
+    public CharacterTable MemberListViewTable { get; private set; }
 
     public CharacterSummary CharacterSummary { get; private set; }
 
-    public VisualElement CountryDetailTabContent { get; private set; }
+    public VisualElement MemberListView { get; private set; }
+
+    public VisualElement DiplomacyView { get; private set; }
+
+    public Label labelObjectiveSelectionTitle { get; private set; }
+
+    public SimpleTable ObjectiveSelectionTargetTable { get; private set; }
+
+    public Button buttonCancelObjectiveSelection { get; private set; }
+
+    public VisualElement NormalView { get; private set; }
+
+    public VisualElement ObjectiveSelectionView { get; private set; }
 
     public VisualElement Root { get; private set; }
 
     public CountryDetailTab(VisualElement root)
     {
         Root = root;
-        labelCountryObjective = Root?.Q<Label>("labelCountryObjective");
-        comboCountryObjective = Root?.Q<DropdownField>("comboCountryObjective");
+        labelObjective = Root?.Q<Label>("labelObjective");
+        comboObjective = Root?.Q<DropdownField>("comboObjective");
+        iconCountry = Root?.Q<VisualElement>("iconCountry");
         labelCountryRulerName = Root?.Q<Label>("labelCountryRulerName");
-        CountryObjectiveContainer = Root?.Q<VisualElement>("CountryObjectiveContainer");
-        buttonCountryCharacterList = Root?.Q<Button>("buttonCountryCharacterList");
+        ObjectiveContainer = Root?.Q<VisualElement>("ObjectiveContainer");
         CountryRulerImage = Root?.Q<VisualElement>("CountryRulerImage");
         labelTotalGold = Root?.Q<Label>("labelTotalGold");
         labelTotalBalance = Root?.Q<Label>("labelTotalBalance");
         labelTotalIncome = Root?.Q<Label>("labelTotalIncome");
         labelTotalExpenditure = Root?.Q<Label>("labelTotalExpenditure");
+        labelCastleCount = Root?.Q<Label>("labelCastleCount");
+        buttonShowCastleList = Root?.Q<Button>("buttonShowCastleList");
         labelTotalPower = Root?.Q<Label>("labelTotalPower");
         labelTotalGeneralCount = Root?.Q<Label>("labelTotalGeneralCount");
-        labelCastleCount = Root?.Q<Label>("labelCastleCount");
-        CharacterTable = new CharacterTable(Root?.Q<VisualElement>("CharacterTable"));
-        labelCountryObjectiveSelectTitle = Root?.Q<Label>("labelCountryObjectiveSelectTitle");
-        CountryObjectiveSimpleTable = new SimpleTable(Root?.Q<VisualElement>("CountryObjectiveSimpleTable"));
-        buttonBackFromCountryObjectiveSelect = Root?.Q<Button>("buttonBackFromCountryObjectiveSelect");
-        CountryInfoNormalView = Root?.Q<VisualElement>("CountryInfoNormalView");
-        CountryInfoCharacterListView = Root?.Q<VisualElement>("CountryInfoCharacterListView");
-        CountryInfoObjectiveSelectView = Root?.Q<VisualElement>("CountryInfoObjectiveSelectView");
+        buttonShowMemberList = Root?.Q<Button>("buttonShowMemberList");
+        buttonShowDiplomacy = Root?.Q<Button>("buttonShowDiplomacy");
+        MemberListViewTable = new CharacterTable(Root?.Q<VisualElement>("MemberListViewTable"));
         CharacterSummary = new CharacterSummary(Root?.Q<VisualElement>("CharacterSummary"));
-        CountryDetailTabContent = Root?.Q<VisualElement>("CountryDetailTabContent");
+        MemberListView = Root?.Q<VisualElement>("MemberListView");
+        DiplomacyView = Root?.Q<VisualElement>("DiplomacyView");
+        labelObjectiveSelectionTitle = Root?.Q<Label>("labelObjectiveSelectionTitle");
+        ObjectiveSelectionTargetTable = new SimpleTable(Root?.Q<VisualElement>("ObjectiveSelectionTargetTable"));
+        buttonCancelObjectiveSelection = Root?.Q<Button>("buttonCancelObjectiveSelection");
+        NormalView = Root?.Q<VisualElement>("NormalView");
+        ObjectiveSelectionView = Root?.Q<VisualElement>("ObjectiveSelectionView");
     }
 
     public void ReinitializeComponent(VisualElement root)
     {
         Root = root;
-        labelCountryObjective = Root?.Q<Label>("labelCountryObjective");
-        comboCountryObjective = Root?.Q<DropdownField>("comboCountryObjective");
+        labelObjective = Root?.Q<Label>("labelObjective");
+        comboObjective = Root?.Q<DropdownField>("comboObjective");
+        iconCountry = Root?.Q<VisualElement>("iconCountry");
         labelCountryRulerName = Root?.Q<Label>("labelCountryRulerName");
-        CountryObjectiveContainer = Root?.Q<VisualElement>("CountryObjectiveContainer");
-        buttonCountryCharacterList = Root?.Q<Button>("buttonCountryCharacterList");
+        ObjectiveContainer = Root?.Q<VisualElement>("ObjectiveContainer");
         CountryRulerImage = Root?.Q<VisualElement>("CountryRulerImage");
         labelTotalGold = Root?.Q<Label>("labelTotalGold");
         labelTotalBalance = Root?.Q<Label>("labelTotalBalance");
         labelTotalIncome = Root?.Q<Label>("labelTotalIncome");
         labelTotalExpenditure = Root?.Q<Label>("labelTotalExpenditure");
+        labelCastleCount = Root?.Q<Label>("labelCastleCount");
+        buttonShowCastleList = Root?.Q<Button>("buttonShowCastleList");
         labelTotalPower = Root?.Q<Label>("labelTotalPower");
         labelTotalGeneralCount = Root?.Q<Label>("labelTotalGeneralCount");
-        labelCastleCount = Root?.Q<Label>("labelCastleCount");
-        CharacterTable = new CharacterTable(Root?.Q<VisualElement>("CharacterTable"));
-        labelCountryObjectiveSelectTitle = Root?.Q<Label>("labelCountryObjectiveSelectTitle");
-        CountryObjectiveSimpleTable = new SimpleTable(Root?.Q<VisualElement>("CountryObjectiveSimpleTable"));
-        buttonBackFromCountryObjectiveSelect = Root?.Q<Button>("buttonBackFromCountryObjectiveSelect");
-        CountryInfoNormalView = Root?.Q<VisualElement>("CountryInfoNormalView");
-        CountryInfoCharacterListView = Root?.Q<VisualElement>("CountryInfoCharacterListView");
-        CountryInfoObjectiveSelectView = Root?.Q<VisualElement>("CountryInfoObjectiveSelectView");
+        buttonShowMemberList = Root?.Q<Button>("buttonShowMemberList");
+        buttonShowDiplomacy = Root?.Q<Button>("buttonShowDiplomacy");
+        MemberListViewTable = new CharacterTable(Root?.Q<VisualElement>("MemberListViewTable"));
         CharacterSummary = new CharacterSummary(Root?.Q<VisualElement>("CharacterSummary"));
-        CountryDetailTabContent = Root?.Q<VisualElement>("CountryDetailTabContent");
+        MemberListView = Root?.Q<VisualElement>("MemberListView");
+        DiplomacyView = Root?.Q<VisualElement>("DiplomacyView");
+        labelObjectiveSelectionTitle = Root?.Q<Label>("labelObjectiveSelectionTitle");
+        ObjectiveSelectionTargetTable = new SimpleTable(Root?.Q<VisualElement>("ObjectiveSelectionTargetTable"));
+        buttonCancelObjectiveSelection = Root?.Q<Button>("buttonCancelObjectiveSelection");
+        NormalView = Root?.Q<VisualElement>("NormalView");
+        ObjectiveSelectionView = Root?.Q<VisualElement>("ObjectiveSelectionView");
     }
 }

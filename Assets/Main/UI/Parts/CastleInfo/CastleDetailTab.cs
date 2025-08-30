@@ -31,6 +31,15 @@ public partial class CastleDetailTab
             Render();
         };
 
+        // キャラリストの行マウスオーバー時
+        MemberListViewTable.RowMouseMove += (sender, chara) =>
+        {
+            ShowCharacterSummary(chara);
+        };
+
+        // 方針コンボボックス選択時
+        comboObjective.RegisterCallback<ChangeEvent<string>>(OnObjectiveComboBoxSelectionChanged);
+
         // 目標選択画面のキャンセル時
         buttonCancelObjectiveSelection.clicked += () =>
         {
@@ -69,15 +78,6 @@ public partial class CastleDetailTab
         {
             OnObjectiveSelected(selectedItem);
         };
-
-        // キャラリストの行マウスオーバー時
-        MemberListViewTable.RowMouseMove += (sender, chara) =>
-        {
-            ShowCharacterSummary(chara);
-        };
-
-        // 方針コンボボックス選択時
-        comboObjective.RegisterCallback<ChangeEvent<string>>(OnObjectiveComboBoxSelectionChanged);
     }
 
     public void SetData(Castle castle, Character characterSummaryTargetDefault)
@@ -192,8 +192,7 @@ public partial class CastleDetailTab
     {
         Debug.Log($"Objective changed: {evt.newValue}");
         if (targetCastle == null) return;
-        var selected = comboObjective.index;
-        switch (selected)
+        switch (comboObjective.index)
         {
             // 拠点攻略
             case 0:

@@ -9,238 +9,292 @@ public partial class CountryDetailTab
     private GameCore Core => GameCore.Instance;
     private Country targetCountry;
     private Character characterSummaryTarget;
-    private Character characterSummaryTargetDefault;
 
-    private bool isCharacterListViewVisible;
-    private bool isObjectiveSelectViewVisible;
+    private bool showCastleList;
+    private bool showMemberList;
+    private bool showDiplomacyList;
+    private bool showObjectiveSelection;
 
     public void Initialize()
     {
-        // CharacterTable初期化
-        CharacterTable.Initialize();
-        // SimpleTable初期化
-        CountryObjectiveSimpleTable.Initialize();
+        MemberListViewTable.Initialize();
+        ObjectiveSelectionTargetTable.Initialize();
 
-        Root.RegisterCallback<MouseLeaveEvent>(evt =>
+        // 城一覧表示ボタン押下時
+        buttonShowCastleList.clicked += () =>
         {
-            CharacterSummary.SetData(characterSummaryTargetDefault);
-        });
-
-        buttonCountryCharacterList.clicked += () =>
-        {
-            if (isCharacterListViewVisible)
-            {
-                HideCharacterListView();
-                buttonCountryCharacterList.text = "人物一覧";
-            }
-            else
-            {
-                ShowCharacterListView();
-                buttonCountryCharacterList.text = "戻る";
-            }
+            showCastleList = true;
+            showMemberList = false;
+            showDiplomacyList = false;
+            Render();
         };
 
-        buttonBackFromCountryObjectiveSelect.clicked += () =>
+        // 人物一覧表示ボタン押下時
+        buttonShowMemberList.clicked += () =>
         {
-            HideCountryObjectiveSelectView();
+            showCastleList = false;
+            showMemberList = true;
+            showDiplomacyList = false;
+            Render();
         };
 
-        // SimpleTableの選択イベント
-        CountryObjectiveSimpleTable.ItemSelected += (sender, selectedItem) =>
+        // 外交表示ボタン押下時
+        buttonShowDiplomacy.clicked += () =>
         {
-            OnCountryObjectiveSelected(selectedItem);
+            showCastleList = false;
+            showMemberList = false;
+            showDiplomacyList = true;
+            Render();
         };
 
-        CharacterTable.RowMouseMove += (sender, chara) =>
+        // キャラリストの行マウスオーバー時
+        MemberListViewTable.RowMouseMove += (sender, chara) =>
         {
             if (chara == characterSummaryTarget) return;
             characterSummaryTarget = chara;
             CharacterSummary.SetData(chara);
         };
 
-        comboCountryObjective.RegisterCallback<ChangeEvent<string>>(evt =>
+        // 方針コンボボックス選択時
+        comboObjective.RegisterCallback<ChangeEvent<string>>(OnObjectiveComboBoxSelectionChanged);
+
+        // 目標選択画面のキャンセル時
+        buttonCancelObjectiveSelection.clicked += () =>
         {
-            Debug.Log($"Country Objective changed: {evt.newValue}");
-            if (targetCountry == null) return;
-            var selected = comboCountryObjective.index;
-            
-            switch (selected)
+            HideObjectiveSelectView();
+        };
+
+        // 目標選択の行マウスオーバー時
+        ObjectiveSelectionTargetTable.RowMouseEnter += (sender, index) =>
+        {
+            switch (comboObjective.index)
             {
-                case 0: // 地方統一
-                    var regions = targetCountry.Castles
-                        .Concat(targetCountry.Castles.SelectMany(c => c.Neighbors))
-                        .Select(c => c.Region)
-                        .Distinct()
-                        .ToList();
-                    ShowCountryObjectiveSelectView("目標を選択してください", regions);
+                case 0: // 地方攻略
+                    var region = (string)ObjectiveSelectionTargetTable.Items[index];
+                    var castles = Core.World.Castles.Where(c => c.Region == region).ToList();
+                    foreach (var castle in castles)
+                    {
+                        var tile = Core.World.Map.GetTile(castle.Position);
+                        tile.UI.SetFocusHighlight(true);
+                    }
                     break;
-                case 1: // 勢力打倒
-                    var enemies = targetCountry.Neighbors
-                        .Where(n => targetCountry.IsAttackable(n))
-                        .Select(n => n.Ruler.Name)
-                        .ToList();
-                    ShowCountryObjectiveSelectView("目標を選択してください", enemies);
-                    break;
-                case 2: // 現状維持
-                    targetCountry.Objective = new CountryObjective.StatusQuo();
-                    HideCountryObjectiveSelectView();
+                case 1: // 勢力攻略
+                    var country = (Country)ObjectiveSelectionTargetTable.Items[index];
+                    foreach (var castle in country.Castles)
+                    {
+                        var tile = Core.World.Map.GetTile(castle.Position);
+                        tile.UI.SetFocusHighlight(true);
+                    }
                     break;
             }
-        });
+        };
+        // 目標選択の行マウスリーブ時
+        ObjectiveSelectionTargetTable.RowMouseLeave += (sender, index) =>
+        {
+            switch (comboObjective.index)
+            {
+                case 0: // 地方攻略
+                    var region = (string)ObjectiveSelectionTargetTable.Items[index];
+                    var castles = Core.World.Castles.Where(c => c.Region == region).ToList();
+                    foreach (var castle in castles)
+                    {
+                        var tile = Core.World.Map.GetTile(castle.Position);
+                        tile.UI.SetFocusHighlight(false);
+                    }
+                    break;
+                case 1: // 勢力攻略
+                    var country = (Country)ObjectiveSelectionTargetTable.Items[index];
+                    foreach (var castle in country.Castles)
+                    {
+                        var tile = Core.World.Map.GetTile(castle.Position);
+                        tile.UI.SetFocusHighlight(false);
+                    }
+                    break;
+            }
+        };
+
+        // 目標選択の選択確定時
+        ObjectiveSelectionTargetTable.ItemSelected += (sender, selectedItem) =>
+        {
+            OnObjectiveSelected(selectedItem);
+        };
     }
 
-    public void SetData(Country country, Character characterSummaryTargetDefault)
+    public void SetData(Country country)
     {
         targetCountry = country;
-        characterSummaryTarget = characterSummaryTargetDefault;
-        this.characterSummaryTargetDefault = characterSummaryTargetDefault;
-        
+        characterSummaryTarget = null;
         Render();
     }
 
     public void Render()
     {
-        SetCountryData(targetCountry);
-        
-        // CharacterSummary更新
-        CharacterSummary.SetData(characterSummaryTarget);
-    }
+        var country = targetCountry;
 
-    /// <summary>
-    /// 国情報を設定します。
-    /// </summary>
-    private void SetCountryData(Country country)
-    {
-        // 統治者名
+        // 統治者
+        iconCountry.style.backgroundImage = new(Static.GetCountrySprite(country.ColorIndex));
         labelCountryRulerName.text = country.Ruler.Name;
-        // 統治者の顔画像
         CountryRulerImage.style.backgroundImage = new(Static.GetFaceImage(country.Ruler));
 
-        // 国目標表示制御（プレイヤー国のみ設定可能）
-        CountryObjectiveContainer.style.display = Util.Display(Core.World.Player?.Country == country);
+        // 方針
+        NormalView.style.display = Util.Display(!showObjectiveSelection);
+        ObjectiveSelectionView.style.display = Util.Display(showObjectiveSelection);
+        // 国方針はプレイヤーが統治者の国のみ設定可能
+        ObjectiveContainer.style.display = Util.Display(Core.World.Player?.Country == country);
         var canOrder = Core.World.Player?.Country == country;
-        labelCountryObjective.style.display = Util.Display(!canOrder);
-        comboCountryObjective.style.display = Util.Display(canOrder);
-        // 国目標の値設定
-        SetObjectiveComboValue();
+        labelObjective.style.display = Util.Display(!canOrder);
+        comboObjective.style.display = Util.Display(canOrder);
+        var objectiveText = targetCountry.Objective switch
+        {
+            CountryObjective.RegionConquest co => $"{co.TargetRegionName}攻略",
+            CountryObjective.CountryAttack co => $"{co.TargetRulerName}打倒",
+            CountryObjective.StatusQuo => "現状維持",
+            _ => "現状維持",
+        };
+        labelObjective.text = objectiveText;
+        // 余計な変更イベントが起きないように、目標選択中はコンボボックスの値を変更しない。
+        if (!showObjectiveSelection)
+        {
+            comboObjective.value = objectiveText;
+        }
 
         // 総資金・総収支
         var totalGold = country.Castles.Sum(c => c.Gold);
         var totalBalance = country.Castles.Sum(c => c.GoldBalance);
         labelTotalGold.text = totalGold.ToString("F0");
-        labelTotalBalance.text = totalBalance >= 0 ? $"+{(int)totalBalance}" : $"{(int)totalBalance}";
+        labelTotalBalance.text = totalBalance > 0 ? $"+{(int)totalBalance}" : $"{(int)totalBalance}";
         labelTotalBalance.style.color = totalBalance >= 0 ? Color.green : Color.red;
-
         // 総収入・総支出
         var totalIncome = country.Castles.Sum(c => c.GoldIncome);
         var totalExpenditure = country.Castles.Sum(c => c.GoldComsumption);
         labelTotalIncome.text = $"{totalIncome:0}";
         labelTotalExpenditure.text = $"{totalExpenditure:0}";
-
         // 総兵力・総将数
         var totalPower = country.Castles.Sum(c => c.SoldierCount);
         var totalGeneralCount = country.Castles.Sum(c => c.Members.Count);
         labelTotalPower.text = $"{totalPower:0}";
         labelTotalGeneralCount.text = $"{totalGeneralCount}";
-
         // 城数
         labelCastleCount.text = $"{country.Castles.Count}";
-    }
-    
-    private void SetObjectiveComboValue()
-    {
-        var objectiveText = targetCountry.Objective switch
-        {
-            CountryObjective.RegionConquest co => $"{co.TargetRegionName}統一",
-            CountryObjective.CountryAttack co => $"{co.TargetRulerName}打倒", 
-            CountryObjective.StatusQuo => "現状維持",
-            _ => "現状維持",
-        };
-        labelCountryObjective.text = objectiveText;
-        comboCountryObjective.value = objectiveText;
-    }
 
-    /// <summary>
-    /// キャラクター一覧表示を表示します。
-    /// </summary>
-    private void ShowCharacterListView()
-    {
-        isCharacterListViewVisible = true;
-        
-        CountryInfoNormalView.style.display = DisplayStyle.None;
-        CountryInfoCharacterListView.style.display = DisplayStyle.Flex;
-        
-        var allMembers = targetCountry.Castles.SelectMany(c => c.Members).ToList();
-        CharacterTable.SetData(allMembers, null);
-        
-        // 最初のキャラクターをCharacterSummaryに表示する。
-        if (allMembers.Count > 0)
+        // 人物一覧
+        MemberListView.style.display = Util.Display(showMemberList);
+        if (showMemberList)
         {
-            CharacterSummary.SetData(allMembers.First());
+            var all = targetCountry.Castles.SelectMany(c => c.Members)
+                .OrderBy(c => c.OrderIndex)
+                .ToList();
+            MemberListViewTable.SetData(all, null);
+            characterSummaryTarget ??= all.FirstOrDefault();
+            CharacterSummary.SetData(characterSummaryTarget);
+        }
+        
+        // 外交
+        DiplomacyView.style.display = Util.Display(showDiplomacyList);
+        if (showDiplomacyList)
+        {
+            // TODO
         }
     }
 
     /// <summary>
-    /// キャラクター一覧表示を非表示にして元の表示に戻します。
+    /// 方針コンボボックスの値が変更されたときに呼ばれます。
     /// </summary>
-    private void HideCharacterListView()
+    private void OnObjectiveComboBoxSelectionChanged(ChangeEvent<string> evt)
     {
-        isCharacterListViewVisible = false;
+        Debug.Log($"Objective changed: {evt.newValue}");
+        if (targetCountry == null) return;
+        switch (comboObjective.index)
+        {
+            // 地方攻略
+            case 0:
+                var regions = targetCountry.Castles
+                    .Concat(targetCountry.Castles.SelectMany(c => c.Neighbors))
+                    .Select(c => c.Region)
+                    .Distinct()
+                    .Where(r => Core.World.Castles.Where(c => c.Region == r).Any(c => c.Country != targetCountry))
+                    .ToList();
+                var targetCastles = Core.World.Castles.Where(c => regions.Contains(c.Region)).ToList();
+                Core.World.Map.SetEnableHighlight(targetCastles);
+                Core.World.Map.SetCustomEventHandler(tile =>
+                {
+                    var isInTargets = regions.Contains(tile.Castle?.Region);
+                    if (isInTargets) OnObjectiveSelected(tile.Castle.Region);
+                });
+                ShowObjectiveSelectView("攻略目標を選択してください", regions);
+                break;
+            // 勢力攻略
+            case 1:
+                var enemies = targetCountry.Neighbors
+                    .Where(n => targetCountry.IsAttackable(n))
+                    .ToList();
+                targetCastles = enemies.SelectMany(c => c.Castles).ToList();
+                Core.World.Map.SetEnableHighlight(targetCastles);
+                Core.World.Map.SetCustomEventHandler(tile =>
+                {
+                    var isInTargets = enemies.Contains(tile.Castle?.Country);
+                    if (isInTargets) OnObjectiveSelected(tile.Castle.Country);
+                });
+                ShowObjectiveSelectView("打倒目標を選択してください", enemies, c => c.Ruler.Name);
+                break;
+            // 現状維持
+            case 2:
+                targetCountry.Objective = new CountryObjective.StatusQuo();
+                HideObjectiveSelectView();
+                break;
 
-        CountryInfoCharacterListView.style.display = DisplayStyle.None;
-        CountryInfoNormalView.style.display = DisplayStyle.Flex;
-        
-        CharacterSummary.SetData(characterSummaryTargetDefault);
+        }
     }
 
     /// <summary>
-    /// 国目標選択画面を表示します。
+    /// 目標選択画面を表示します。
     /// </summary>
-    private void ShowCountryObjectiveSelectView(string title, List<string> options)
+    private void ShowObjectiveSelectView<T>(string title, IReadOnlyList<T> options, Func<T, string> toString = null)
     {
-        isObjectiveSelectViewVisible = true;
-        
-        CountryInfoNormalView.style.display = DisplayStyle.None;
-        CountryInfoObjectiveSelectView.style.display = DisplayStyle.Flex;
-        
-        labelCountryObjectiveSelectTitle.text = title;
-        CountryObjectiveSimpleTable.SetData(options, "対象");
+        showObjectiveSelection = true;
+        labelObjectiveSelectionTitle.text = title;
+        ObjectiveSelectionTargetTable.SetData(options, "対象", toString);
+        Render();
     }
 
     /// <summary>
-    /// 国目標選択画面を非表示にします。
+    /// 目標選択画面を非表示にして元の表示に戻します。
     /// </summary>
-    private void HideCountryObjectiveSelectView()
+    private void HideObjectiveSelectView()
     {
-        isObjectiveSelectViewVisible = false;
-
-        CountryInfoObjectiveSelectView.style.display = DisplayStyle.None;
-        CountryInfoNormalView.style.display = DisplayStyle.Flex;
-        
-        // ドロップダウンを元の値に戻す
-        SetObjectiveComboValue();
+        showObjectiveSelection = false;
+        Core.World.Map.ClearAllEnableHighlight();
+        Core.World.Map.ClearCustomEventHandler();
+        Render();
     }
 
     /// <summary>
-    /// 国目標が選択された時の処理。
+    /// 目標選択で目標が選択されたときに呼ばれます。
     /// </summary>
-    private void OnCountryObjectiveSelected(object selectedItem)
+    private void OnObjectiveSelected(object selectedItem)
     {
         if (selectedItem == null) return;
 
-        var currentDropdownIndex = comboCountryObjective.index;
-        Debug.Log($"Country Objective selected: {selectedItem} (dropdown index: {currentDropdownIndex})");
-
-        switch (currentDropdownIndex)
+        var index = comboObjective.index;
+        Debug.Log($"Objective selected: {selectedItem} (dropdown index: {index})");
+        switch (index)
         {
-            case 0: // 地方統一
-                targetCountry.Objective = new CountryObjective.RegionConquest { TargetRegionName = (string)selectedItem };
+            case 0: // 地方攻略
+                var region = (string)selectedItem;
+                targetCountry.Objective = new CountryObjective.RegionConquest { TargetRegionName = region };
                 break;
             case 1: // 勢力打倒
-                targetCountry.Objective = new CountryObjective.CountryAttack { TargetRulerName = (string)selectedItem };
+                var country = (Country)selectedItem;
+                targetCountry.Objective = new CountryObjective.CountryAttack { TargetRulerName = country.Ruler.Name };
                 break;
         }
-        
-        HideCountryObjectiveSelectView();
+
+        foreach (var castle in Core.World.Castles)
+        {
+            var tile = Core.World.Map.GetTile(castle.Position);
+            tile.UI.SetFocusHighlight(false);
+        }
+
+        HideObjectiveSelectView();
     }
 }

@@ -144,7 +144,12 @@ public partial class StrategyPhaseScreen : IScreen
         
         var characterTile = Core.World.Map.GetTile(currentCharacter.Castle);
         var targetTile = currentTile ?? characterTile;
-        CastleInfoPanel.SetData(targetTile, currentCharacter);
+        var summaryDefault = currentCharacter;
+        if (targetTile != characterTile && targetTile.Castle != null)
+        {
+            summaryDefault = targetTile.Castle.Boss;
+        }
+        CastleInfoPanel.SetData(targetTile, summaryDefault);
 
         ActionPanel.style.display = Util.Display(targetTile == characterTile);
         NoActionPanel.style.display = Util.Display(targetTile != characterTile);

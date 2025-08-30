@@ -32,10 +32,7 @@ public partial class CastleInfoPanel
         TabButtonCountry.clicked += () => SwitchTab(InfoTab.Country);
         TabButtonDiplomacy.clicked += () => SwitchTab(InfoTab.Diplomacy);
 
-        // CastleDetailTab初期化
         CastleDetailTab.Initialize();
-        
-        // CountryDetailTab初期化
         CountryDetailTab.Initialize();
 
         SwitchTab(InfoTab.Castle);
@@ -63,7 +60,7 @@ public partial class CastleInfoPanel
         if (targetCastle != null)
         {
             CastleDetailTab.SetData(targetCastle, characterSummaryTargetDefault);
-            CountryDetailTab.SetData(targetCastle?.Country, characterSummaryTargetDefault);
+            CountryDetailTab.SetData(targetCastle?.Country);
         }
 
         Render();
@@ -92,7 +89,7 @@ public partial class CastleInfoPanel
     {
         var container = DiplomacyRelations;
         container.Clear();
-        
+
         // 他の国との関係を表示（TileInfoEditorWindow:309-341を参考）
         var world = Core.World;
         var otherCountries = world.Countries

@@ -24,13 +24,11 @@ public partial class SimpleTable : MainUIComponent
 
         ListView.makeItem = () =>
         {
-            Debug.LogError($"makeItem");
             var label = new Label();
             label.AddToClassList("SimpleTableRowItem");
             // 要素から外されたあとも使いまわしされるのでRegisterではなくRegisterCallbackを使う。
             label.RegisterCallback<MouseEnterEvent>(ev =>
             {
-                Debug.LogError($"Objective row mouse enter: {ev}");
                 RowMouseEnter?.Invoke(this, (int)label.userData);
             });
             label.RegisterCallback<MouseLeaveEvent>(ev =>
@@ -42,7 +40,6 @@ public partial class SimpleTable : MainUIComponent
 
         ListView.bindItem = (element, index) =>
         {
-            Debug.LogError($"bindItem: {index}");
             var label = (Label)element;
             label.text = ItemToString(Items[index]);
             label.userData = index;
