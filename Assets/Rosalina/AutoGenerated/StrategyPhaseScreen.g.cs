@@ -26,7 +26,11 @@ public partial class StrategyPhaseScreen
 
     public VisualElement ActionButtons { get; private set; }
 
-    public VisualElement ActionsPanel { get; private set; }
+    public Button buttonMoveToMyCastle { get; private set; }
+
+    public VisualElement ActionPanel { get; private set; }
+
+    public VisualElement NoActionPanel { get; private set; }
 
     public CastleInfoPanel CastleInfoPanel { get; private set; }
 
@@ -41,7 +45,9 @@ public partial class StrategyPhaseScreen
         labelCost = Root?.Q<Label>("labelCost");
         labelActionDescription = Root?.Q<Label>("labelActionDescription");
         ActionButtons = Root?.Q<VisualElement>("ActionButtons");
-        ActionsPanel = Root?.Q<VisualElement>("ActionsPanel");
+        buttonMoveToMyCastle = Root?.Q<Button>("buttonMoveToMyCastle");
+        ActionPanel = Root?.Q<VisualElement>("ActionPanel");
+        NoActionPanel = Root?.Q<VisualElement>("NoActionPanel");
         CastleInfoPanel = new CastleInfoPanel(Root?.Q<VisualElement>("CastleInfoPanel"));
     }
 
@@ -54,7 +60,9 @@ public partial class StrategyPhaseScreen
         labelCost = Root?.Q<Label>("labelCost");
         labelActionDescription = Root?.Q<Label>("labelActionDescription");
         ActionButtons = Root?.Q<VisualElement>("ActionButtons");
-        ActionsPanel = Root?.Q<VisualElement>("ActionsPanel");
+        buttonMoveToMyCastle = Root?.Q<Button>("buttonMoveToMyCastle");
+        ActionPanel = Root?.Q<VisualElement>("ActionPanel");
+        NoActionPanel = Root?.Q<VisualElement>("NoActionPanel");
         CastleInfoPanel = new CastleInfoPanel(Root?.Q<VisualElement>("CastleInfoPanel"));
     }
 }

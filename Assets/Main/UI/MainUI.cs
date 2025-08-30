@@ -17,6 +17,8 @@ public partial class MainUI : MonoBehaviour
     private bool isInitialized = false;
     private IScreen lastVisibleScreen = null;
 
+    public CameraMovement Camera { get; set; }
+
     private void OnEnable()
     {
         Debug.Log("MainUI.OnEnable");
@@ -34,8 +36,8 @@ public partial class MainUI : MonoBehaviour
         BattleWindow.Initialize();
         
         // CameraMovementAreaを初期化
-        var cameraMovement = FindObjectOfType<CameraMovement>();
-        CameraMovementArea.Initialize(cameraMovement);
+        Camera = FindObjectOfType<CameraMovement>();
+        CameraMovementArea.Initialize(Camera);
         
         Assets.InitializeScreens(this, isInitialized);
 

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -32,7 +33,6 @@ public partial class StrategyPhaseScreen : IScreen
 
         foreach (var button in buttons)
         {
-            ActionButtons.Add(button.Element);
             button.SetEventHandlers(
                 labelCost,
                 labelActionDescription,
@@ -40,12 +40,8 @@ public partial class StrategyPhaseScreen : IScreen
                 OnActionButtonClicked
             );
         }
-        buttonTurnEnd.clicked += () =>
-        {
-            OnActionButtonClicked(ActionButtonHelper.Common(a => a.FinishTurn));
-        };
 
-        CastleInfoPanel.Initialize();
+        Reinitialize();
     }
 
     public void Reinitialize()
@@ -54,10 +50,24 @@ public partial class StrategyPhaseScreen : IScreen
         {
             ActionButtons.Add(button.Element);
         }
+        
         buttonTurnEnd.clicked += () =>
         {
             OnActionButtonClicked(ActionButtonHelper.Common(a => a.FinishTurn));
         };
+
+        buttonMoveToMyCastle.clicked += async () =>
+        {
+            var map = Core.World.Map;
+            var tile = map.GetTile(currentCharacter.Castle);
+            currentTile = tile;
+            map.ScrollTo(tile);
+            Render();
+            tile.UI.SetCellBorder(true);
+            await Task.Delay(400);
+            tile.UI.SetCellBorder(false);
+        };
+
         CastleInfoPanel.Initialize();
     }
 
@@ -122,7 +132,11 @@ public partial class StrategyPhaseScreen : IScreen
             button.SetData(currentCharacter);
         }
         
-        var targetTile = currentTile ?? Core.World.Map.GetTile(currentCharacter.Castle.Position);
+        var characterTile = Core.World.Map.GetTile(currentCharacter.Castle);
+        var targetTile = currentTile ?? characterTile;
         CastleInfoPanel.SetData(targetTile, currentCharacter);
+
+        ActionPanel.style.display = Util.Display(targetTile == characterTile);
+        NoActionPanel.style.display = Util.Display(targetTile != characterTile);
     }
 }

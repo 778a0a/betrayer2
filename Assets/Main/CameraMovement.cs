@@ -1,5 +1,8 @@
+using System.Collections;
+using TreeEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering.Universal;
 
 public class CameraMovement : MonoBehaviour
 {
@@ -49,13 +52,11 @@ public class CameraMovement : MonoBehaviour
         // マウス中央ボタンのドラッグ処理
         if (Mouse.current.middleButton.wasPressedThisFrame)
         {
-            Debug.Log("middle button pressed");
             isDragging = true;
             lastMousePosition = mousePosition;
         }
         else if (Mouse.current.middleButton.wasReleasedThisFrame)
         {
-            Debug.Log("middle button released");
             isDragging = false;
         }
 
@@ -63,7 +64,6 @@ public class CameraMovement : MonoBehaviour
         if (isDragging)
         {
             Vector2 mouseDelta = lastMousePosition - mousePosition;
-            Debug.Log("dragging " + mouseDelta);
             pos += new Vector3(mouseDelta.x, mouseDelta.y, 0) / 100;
             lastMousePosition = mousePosition;
         }
@@ -185,6 +185,41 @@ public class CameraMovement : MonoBehaviour
                 Mathf.Clamp(newPos.y, panLimitDownRight.y, panLimitUpLeft.y),
                 newPos.z
             );
+        }
+    }
+
+    public void ScrollTo(Vector3 worldPosition)
+    {
+        StartCoroutine(Do());
+        IEnumerator Do()
+        {
+            const float ScreenWidth = 1920f;
+            const float UIWidth = 840f;
+            const float MapAreaWidth = ScreenWidth - UIWidth; // 1080px
+            // スクリーンの中央からマップ領域の中央までのオフセット
+            const float ScreenOffsetX = (MapAreaWidth - ScreenWidth) / 2; // -420px
+            // 現在のカメラの表示範囲（ワールド座標系）
+            float cameraWidth = camera.orthographicSize * 2f * camera.aspect;
+            // スクリーンオフセットをワールド座標系に変換
+            float worldOffsetX = ScreenOffsetX / ScreenWidth * cameraWidth;
+
+            // worldPositionがゲーム領域の中央に来るようにカメラを配置する。
+            var startPos = transform.position;
+            var targetPos = startPos;
+            targetPos.x = (worldPosition.x - worldOffsetX).Clamp(panLimitUpLeft.x, panLimitDownRight.x);
+            targetPos.y = worldPosition.y.Clamp(panLimitDownRight.y, panLimitUpLeft.y);
+
+            var duration = 0.1f;
+            var elapsed = 0f;
+            while (elapsed < duration)
+            {
+                elapsed += Time.deltaTime;
+                var t = Mathf.SmoothStep(0, 1, elapsed / duration);
+                transform.position = Vector3.Lerp(startPos, targetPos, t);
+                yield return null;
+            }
+            // 最終的にターゲット位置に合わせる。
+            transform.position = targetPos;
         }
     }
 

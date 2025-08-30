@@ -171,6 +171,11 @@ public class GameMapManager
         customEventHandler?.Dispose();
         customEventHandler = null;
     }
+
+    public void ScrollTo(GameMapTile tile)
+    {
+        GameCore.Instance.MainUI.Camera.ScrollTo(tile.UI.transform.position);
+    }
 }
 
 /// <summary>
