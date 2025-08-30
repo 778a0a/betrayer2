@@ -45,7 +45,7 @@ public class Booter : MonoBehaviour
         UpdatePlaySpeed(PlaySpeedIndex);
 
         // ワールドを作成する。
-        var world = DefaultData.Create();
+        var world = DefaultData.Create("02");
         world.Map.AttachUIMap(map);
         
         // プレーヤーをセットする。
