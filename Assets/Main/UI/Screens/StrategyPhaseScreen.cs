@@ -9,6 +9,7 @@ public partial class StrategyPhaseScreen : IScreen
     private GameCore Core => GameCore.Instance;
     private ActionButtonHelper[] buttons;
     private Character currentCharacter;
+    private GameMapTile currentTile;
 
     public void Initialize()
     {
@@ -87,6 +88,16 @@ public partial class StrategyPhaseScreen : IScreen
         Root.style.display = DisplayStyle.Flex;
     }
 
+    /// <summary>
+    /// デフォルトのセルクリック動作が行われたときに呼び出されます
+    /// </summary>
+    public void OnDefaultCellClicked(MapPosition pos)
+    {
+        Debug.Log($"DefaultClick {pos}");
+        currentTile = Core.World.Map.GetTile(pos);
+        Render();
+    }
+
     public void Show(Character chara)
     {
         Core.MainUI.HideAllPanels();
@@ -97,6 +108,7 @@ public partial class StrategyPhaseScreen : IScreen
     public void SetData(Character chara)
     {
         currentCharacter = chara;
+        currentTile = Core.World.Map.GetTile(chara.Castle.Position);
         Render();
     }
 
@@ -110,6 +122,7 @@ public partial class StrategyPhaseScreen : IScreen
             button.SetData(currentCharacter);
         }
         
-        CastleInfoPanel.SetData(currentCharacter.Castle, currentCharacter);
+        var targetTile = currentTile ?? Core.World.Map.GetTile(currentCharacter.Castle.Position);
+        CastleInfoPanel.SetData(targetTile, currentCharacter);
     }
 }

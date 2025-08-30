@@ -108,6 +108,6 @@ public partial class PersonalPhaseScreen : IScreen
             button.SetData(currentCharacter);
         }
         
-        CastleInfoPanel.SetData(currentCharacter.Castle, currentCharacter);
+        CastleInfoPanel.SetData(Core.World.Map.GetTile(currentCharacter.Castle), currentCharacter);
     }
 }

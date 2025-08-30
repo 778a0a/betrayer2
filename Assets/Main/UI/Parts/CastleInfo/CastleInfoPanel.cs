@@ -8,6 +8,7 @@ using UnityEngine.UIElements;
 public partial class CastleInfoPanel
 {
     private GameCore Core => GameCore.Instance;
+    private GameMapTile targetTile;
     private Castle targetCastle;
 
     private InfoTab currentTab;
@@ -55,17 +56,28 @@ public partial class CastleInfoPanel
         DiplomacyInfoTab.style.display = Util.Display(currentTab == InfoTab.Diplomacy);
     }
 
-    public void SetData(Castle castle, Character characterSummaryTargetDefault)
+    public void SetData(GameMapTile tile, Character characterSummaryTargetDefault)
     {
-        targetCastle = castle;
-        CastleDetailTab.SetData(targetCastle, characterSummaryTargetDefault);
-        CountryDetailTab.SetData(targetCastle.Country, characterSummaryTargetDefault);
+        targetTile = tile;
+        targetCastle = tile.Castle;
+        if (targetCastle != null)
+        {
+            CastleDetailTab.SetData(targetCastle, characterSummaryTargetDefault);
+            CountryDetailTab.SetData(targetCastle?.Country, characterSummaryTargetDefault);
+        }
 
         Render();
     }
 
     private void Render()
     {
+        if (targetCastle == null)
+        {
+            Root.style.display = DisplayStyle.None;
+            return;
+        }
+        Root.style.display = DisplayStyle.Flex;
+
         SetDiplomacyData(targetCastle.Country);
         CastleDetailTab.Render();
         CountryDetailTab.Render();
