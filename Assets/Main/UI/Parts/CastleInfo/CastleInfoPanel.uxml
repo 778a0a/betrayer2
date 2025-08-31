@@ -12,7 +12,6 @@
             <ui:Button name="TabButtonCastle" text="城情報" style="font-size: 24px; padding: 10px 12px;" />
             <ui:Button name="TabButtonCountry" text="国情報" style="font-size: 24px; padding: 10px 12px;" />
             <ui:Button name="TabButtonForce" text="軍勢情報" style="font-size: 24px; padding: 10px 12px;" />
-            <ui:Button name="TabButtonDiplomacy" text="外交情報" style="font-size: 24px; padding: 10px 12px;" />
         </ui:VisualElement>
 
         <!-- 城情報タブ -->
@@ -28,15 +27,6 @@
         <!-- 軍勢情報タブ -->
         <ui:VisualElement name="ForceInfoTab" style="display: none; flex: 1">
             <ui:Instance name="ForceDetailTab" template="ForceDetailTab" style="flex: 1;" />
-        </ui:VisualElement>
-
-        <!-- 外交情報タブ -->
-        <ui:VisualElement name="DiplomacyInfoTab" style="display: none;">
-            <ui:ScrollView name="DiplomacyScrollView" style="max-height: 400px;">
-                <ui:VisualElement name="DiplomacyRelations" style="flex-direction: column;">
-                    <!-- 外交関係は動的に生成 -->
-                </ui:VisualElement>
-            </ui:ScrollView>
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

@@ -20,25 +20,17 @@ public partial class CastleInfoPanel
 
     public Button TabButtonForce { get; private set; }
 
-    public Button TabButtonDiplomacy { get; private set; }
-
     public CastleDetailTab CastleDetailTab { get; private set; }
 
     public CountryDetailTab CountryDetailTab { get; private set; }
 
     public ForceDetailTab ForceDetailTab { get; private set; }
 
-    public VisualElement DiplomacyRelations { get; private set; }
-
-    public ScrollView DiplomacyScrollView { get; private set; }
-
     public VisualElement CastleInfoTab { get; private set; }
 
     public VisualElement CountryInfoTab { get; private set; }
 
     public VisualElement ForceInfoTab { get; private set; }
-
-    public VisualElement DiplomacyInfoTab { get; private set; }
 
     public VisualElement CastleInfo { get; private set; }
 
@@ -50,16 +42,12 @@ public partial class CastleInfoPanel
         TabButtonCastle = Root?.Q<Button>("TabButtonCastle");
         TabButtonCountry = Root?.Q<Button>("TabButtonCountry");
         TabButtonForce = Root?.Q<Button>("TabButtonForce");
-        TabButtonDiplomacy = Root?.Q<Button>("TabButtonDiplomacy");
         CastleDetailTab = new CastleDetailTab(Root?.Q<VisualElement>("CastleDetailTab"));
         CountryDetailTab = new CountryDetailTab(Root?.Q<VisualElement>("CountryDetailTab"));
         ForceDetailTab = new ForceDetailTab(Root?.Q<VisualElement>("ForceDetailTab"));
-        DiplomacyRelations = Root?.Q<VisualElement>("DiplomacyRelations");
-        DiplomacyScrollView = Root?.Q<ScrollView>("DiplomacyScrollView");
         CastleInfoTab = Root?.Q<VisualElement>("CastleInfoTab");
         CountryInfoTab = Root?.Q<VisualElement>("CountryInfoTab");
         ForceInfoTab = Root?.Q<VisualElement>("ForceInfoTab");
-        DiplomacyInfoTab = Root?.Q<VisualElement>("DiplomacyInfoTab");
         CastleInfo = Root?.Q<VisualElement>("CastleInfo");
     }
 
@@ -69,16 +57,12 @@ public partial class CastleInfoPanel
         TabButtonCastle = Root?.Q<Button>("TabButtonCastle");
         TabButtonCountry = Root?.Q<Button>("TabButtonCountry");
         TabButtonForce = Root?.Q<Button>("TabButtonForce");
-        TabButtonDiplomacy = Root?.Q<Button>("TabButtonDiplomacy");
         CastleDetailTab = new CastleDetailTab(Root?.Q<VisualElement>("CastleDetailTab"));
         CountryDetailTab = new CountryDetailTab(Root?.Q<VisualElement>("CountryDetailTab"));
         ForceDetailTab = new ForceDetailTab(Root?.Q<VisualElement>("ForceDetailTab"));
-        DiplomacyRelations = Root?.Q<VisualElement>("DiplomacyRelations");
-        DiplomacyScrollView = Root?.Q<ScrollView>("DiplomacyScrollView");
         CastleInfoTab = Root?.Q<VisualElement>("CastleInfoTab");
         CountryInfoTab = Root?.Q<VisualElement>("CountryInfoTab");
         ForceInfoTab = Root?.Q<VisualElement>("ForceInfoTab");
-        DiplomacyInfoTab = Root?.Q<VisualElement>("DiplomacyInfoTab");
         CastleInfo = Root?.Q<VisualElement>("CastleInfo");
     }
 }

@@ -58,6 +58,10 @@ public partial class CountryDetailTab
 
     public VisualElement DiplomacyView { get; private set; }
 
+    public ScrollView DiplomacyScrollView { get; private set; }
+
+    public VisualElement DiplomacyRelations { get; private set; }
+
     public Label labelObjectiveSelectionTitle { get; private set; }
 
     public SimpleTable ObjectiveSelectionTargetTable { get; private set; }
@@ -95,6 +99,8 @@ public partial class CountryDetailTab
         CharacterSummary = new CharacterSummary(Root?.Q<VisualElement>("CharacterSummary"));
         MemberListView = Root?.Q<VisualElement>("MemberListView");
         DiplomacyView = Root?.Q<VisualElement>("DiplomacyView");
+        DiplomacyScrollView = Root?.Q<ScrollView>("DiplomacyScrollView");
+        DiplomacyRelations = Root?.Q<VisualElement>("DiplomacyRelations");
         labelObjectiveSelectionTitle = Root?.Q<Label>("labelObjectiveSelectionTitle");
         ObjectiveSelectionTargetTable = new SimpleTable(Root?.Q<VisualElement>("ObjectiveSelectionTargetTable"));
         buttonCancelObjectiveSelection = Root?.Q<Button>("buttonCancelObjectiveSelection");
@@ -127,6 +133,8 @@ public partial class CountryDetailTab
         CharacterSummary = new CharacterSummary(Root?.Q<VisualElement>("CharacterSummary"));
         MemberListView = Root?.Q<VisualElement>("MemberListView");
         DiplomacyView = Root?.Q<VisualElement>("DiplomacyView");
+        DiplomacyScrollView = Root?.Q<ScrollView>("DiplomacyScrollView");
+        DiplomacyRelations = Root?.Q<VisualElement>("DiplomacyRelations");
         labelObjectiveSelectionTitle = Root?.Q<Label>("labelObjectiveSelectionTitle");
         ObjectiveSelectionTargetTable = new SimpleTable(Root?.Q<VisualElement>("ObjectiveSelectionTargetTable"));
         buttonCancelObjectiveSelection = Root?.Q<Button>("buttonCancelObjectiveSelection");
