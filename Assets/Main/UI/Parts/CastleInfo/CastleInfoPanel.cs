@@ -16,13 +16,15 @@ public partial class CastleInfoPanel
     {
         InfoTab.Castle => TabButtonCastle,
         InfoTab.Country => TabButtonCountry,
+        InfoTab.Force => TabButtonForce,
         InfoTab.Diplomacy => TabButtonDiplomacy,
         _ => throw new NotImplementedException(),
     };
     private enum InfoTab
     {
         Castle,
-        Country, 
+        Country,
+        Force,
         Diplomacy
     }
 
@@ -30,10 +32,12 @@ public partial class CastleInfoPanel
     {
         TabButtonCastle.clicked += () => SwitchTab(InfoTab.Castle);
         TabButtonCountry.clicked += () => SwitchTab(InfoTab.Country);
+        TabButtonForce.clicked += () => SwitchTab(InfoTab.Force);
         TabButtonDiplomacy.clicked += () => SwitchTab(InfoTab.Diplomacy);
 
         CastleDetailTab.Initialize();
         CountryDetailTab.Initialize();
+        ForceDetailTab.Initialize();
 
         SwitchTab(InfoTab.Castle);
     }
@@ -45,11 +49,13 @@ public partial class CastleInfoPanel
         // タブボタンの色を更新する。
         TabButtonCastle.RemoveFromClassList("active");
         TabButtonCountry.RemoveFromClassList("active");
+        TabButtonForce.RemoveFromClassList("active");
         TabButtonDiplomacy.RemoveFromClassList("active");
         CurrentTabButton.AddToClassList("active");
 
         CastleInfoTab.style.display = Util.Display(currentTab == InfoTab.Castle);
         CountryInfoTab.style.display = Util.Display(currentTab == InfoTab.Country);
+        ForceInfoTab.style.display = Util.Display(currentTab == InfoTab.Force);
         DiplomacyInfoTab.style.display = Util.Display(currentTab == InfoTab.Diplomacy);
     }
 
@@ -62,6 +68,7 @@ public partial class CastleInfoPanel
             CastleDetailTab.SetData(targetCastle, characterSummaryTargetDefault);
             CountryDetailTab.SetData(targetCastle?.Country);
         }
+        ForceDetailTab.SetData(targetTile);
 
         Render();
     }
@@ -78,6 +85,7 @@ public partial class CastleInfoPanel
         SetDiplomacyData(targetCastle.Country);
         CastleDetailTab.Render();
         CountryDetailTab.Render();
+        ForceDetailTab.Render();
     }
 
 

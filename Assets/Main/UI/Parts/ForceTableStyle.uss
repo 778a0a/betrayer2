@@ -1,0 +1,28 @@
+.ForceTable-Card {
+    color: white;
+    flex-direction: column;
+    background-color: #224;
+    border-width: 2px;
+    border-color: #444;
+    border-radius: 5px;
+    margin: 0 0 5px 0;
+    padding: 10px;
+    min-height: 140px;
+}
+
+#ForceTable .unity-collection-view__item:hover {
+    background-color: initial;
+}
+
+#ForceTableRowItemRoot:hover {
+    background-color: rgba(0, 156, 143, 0.3);
+    border-color: rgba(204, 204, 204, 0.7);
+}
+
+#ForceTableRowItemRoot.clickable:hover {
+    background-color: rgba(0, 156, 143, 0.5);
+}
+
+#ForceTableRowItemRoot.clickable:active {
+    background-color: rgba(0, 156, 143, 0.8);
+}

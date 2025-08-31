@@ -1,0 +1,56 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <engine:Template name="CharacterInfoSoldierIcon" src="project://database/Assets/Main/UI/Parts/CharacterInfoSoldierIcon.uxml" />
+    <Style src="project://database/Assets/Main/UI/MainUI.uss" />
+    <Style src="ForceTableStyle.uss" />
+    <engine:Button name="ForceTableRowItemRoot" class="ForceTable-Card">
+        <!-- 軍勢情報表示 -->
+        <engine:VisualElement style="flex-direction: row; align-items: center">
+            <engine:VisualElement style="position: relative; width: 115px; height: 115px;">
+                <engine:Image name="imageCommanderFace" style="width: 115px; height: 115px; background-color: rgba(0, 229, 255, 0.35); position: absolute; top: 0; left: 0;" />
+                <engine:Label name="labelMoving" text="出撃中" style="position: absolute; bottom: -5px; right: 0px; font-size: 16px; padding: 2px 6px; color: white; background-color: #800; border-radius: 3px;" />
+                <engine:Label name="labelMode" text="援軍" style="position: absolute; top: -5px; right: 0px; font-size: 16px; padding: 2px 6px; color: white; background-color: #080; border-radius: 3px;" />
+            </engine:VisualElement>
+            <engine:VisualElement style="flex-grow: 1; margin-left: 10px;">
+                <engine:VisualElement style="flex-direction: row; align-items: flex-end;">
+                    <engine:Label name="labelCommanderName" text="ハイペリオン" style="font-size: 28px; font-weight: bold; margin:0; min-width:200px;" />
+                    <engine:VisualElement style="flex-direction: row; margin-left: 10px;">
+                        <engine:Label text="目的地: " style="font-size: 20px; color: silver;" />
+                        <engine:Label name="labelDestination" text="クリスタルウォーター" style="font-size: 20px; color: cyan;" />
+                    </engine:VisualElement>
+                    <engine:VisualElement style="flex-direction: row; margin-left: 15px;">
+                        <engine:Label text="ETA: " style="font-size: 20px; color: silver;" />
+                        <engine:Label name="labelETA" text="5日" style="font-size: 20px; color: yellow;" />
+                    </engine:VisualElement>
+                </engine:VisualElement>
+                <!-- 指揮官能力値表示 -->
+                <engine:VisualElement style="flex-direction: row; margin-top: 5px;">
+                    <engine:Label text="攻撃:" style="font-size: 22px; margin: 0 5px 0 0; " />
+                    <engine:Label name="labelAttack" text="80" style="font-size: 22px; color: #f88; " />
+                    <engine:Label text="防衛:" style="font-size: 22px; margin: 0 5px 0 10px; " />
+                    <engine:Label name="labelDefense" text="75" style="font-size: 22px; color: #8af; " />
+                    <engine:Label text="智謀:" style="font-size: 22px; margin: 0 5px 0 10px; " />
+                    <engine:Label name="labelIntelligence" text="90" style="font-size: 22px; color: cyan; " />
+                    <engine:Label text="兵数:" style="font-size: 22px; margin: 0 5px 0 15px;" />
+                    <engine:Label name="labelSoldiers" text="8888" style="font-size: 22px; color: orange;" />
+                </engine:VisualElement>
+                <engine:VisualElement name="SoldierGrid" style="flex-direction: row; flex-wrap: wrap; margin-top: 5px;">
+                    <engine:Instance name="soldier00" template="CharacterInfoSoldierIcon" />
+                    <engine:Instance name="soldier01" template="CharacterInfoSoldierIcon" />
+                    <engine:Instance name="soldier02" template="CharacterInfoSoldierIcon" />
+                    <engine:Instance name="soldier03" template="CharacterInfoSoldierIcon" />
+                    <engine:Instance name="soldier04" template="CharacterInfoSoldierIcon" />
+                    <engine:Instance name="soldier05" template="CharacterInfoSoldierIcon" />
+                    <engine:Instance name="soldier06" template="CharacterInfoSoldierIcon" />
+                    <engine:Instance name="soldier07" template="CharacterInfoSoldierIcon" />
+                    <engine:Instance name="soldier08" template="CharacterInfoSoldierIcon" />
+                    <engine:Instance name="soldier09" template="CharacterInfoSoldierIcon" />
+                    <engine:Instance name="soldier10" template="CharacterInfoSoldierIcon" />
+                    <engine:Instance name="soldier11" template="CharacterInfoSoldierIcon" />
+                    <engine:Instance name="soldier12" template="CharacterInfoSoldierIcon" />
+                    <engine:Instance name="soldier13" template="CharacterInfoSoldierIcon" />
+                    <engine:Instance name="soldier14" template="CharacterInfoSoldierIcon" />
+                </engine:VisualElement>
+            </engine:VisualElement>
+        </engine:VisualElement>
+    </engine:Button>
+</engine:UXML>

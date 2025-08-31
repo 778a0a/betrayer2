@@ -1,0 +1,23 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Main/UI/MainUI.uss" />
+    <Style src="CastleInfoPanelStyle.uss" />
+    <ui:Template name="ForceTable" src="project://database/Assets/Main/UI/Parts/ForceTable.uxml" />
+
+    <!-- 軍勢詳細タブ -->
+    <ui:VisualElement style="flex: 1;">
+        
+        <!-- 軍勢情報タイトル -->
+        <ui:VisualElement style="margin-top: 10px; flex-direction: row; align-items: center;">
+            <ui:Label name="labelForceTitle" text="このタイルの軍勢" style="font-size: 24px; font-weight: bold;" />
+            <ui:Label text="(" style="font-size: 24px; margin-left: 5px; color: silver" />
+            <ui:Label name="labelForceCount" text="0" style="font-size: 24px; color: silver" />
+            <ui:Label text="部隊)" style="font-size: 24px; color: silver" />
+        </ui:VisualElement>
+
+        <!-- 軍勢一覧表示 -->
+        <ui:VisualElement name="ForceListView" style="flex: 1; margin: 10px -5px 0 -5px;">
+            <ui:Instance name="ForceListViewTable" template="ForceTable" style="flex: 1;" />
+        </ui:VisualElement>
+        
+    </ui:VisualElement>
+</ui:UXML>

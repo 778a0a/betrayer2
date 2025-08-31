@@ -1,6 +1,7 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <ui:Template name="CastleDetailTab" src="project://database/Assets/Main/UI/Parts/CastleInfo/CastleDetailTab.uxml" />
     <ui:Template name="CountryDetailTab" src="project://database/Assets/Main/UI/Parts/CastleInfo/CountryDetailTab.uxml" />
+    <ui:Template name="ForceDetailTab" src="project://database/Assets/Main/UI/Parts/CastleInfo/ForceDetailTab.uxml" />
     <Style src="project://database/Assets/Main/UI/MainUI.uss" />
     <Style src="CastleInfoPanelStyle.uss" />
     
@@ -10,6 +11,7 @@
         <ui:VisualElement style="flex-direction: row; margin-left: -5px;">
             <ui:Button name="TabButtonCastle" text="城情報" style="font-size: 24px; padding: 10px 12px;" />
             <ui:Button name="TabButtonCountry" text="国情報" style="font-size: 24px; padding: 10px 12px;" />
+            <ui:Button name="TabButtonForce" text="軍勢情報" style="font-size: 24px; padding: 10px 12px;" />
             <ui:Button name="TabButtonDiplomacy" text="外交情報" style="font-size: 24px; padding: 10px 12px;" />
         </ui:VisualElement>
 
@@ -21,6 +23,11 @@
         <!-- 国情報タブ -->
         <ui:VisualElement name="CountryInfoTab" style="display: none; flex: 1">
             <ui:Instance name="CountryDetailTab" template="CountryDetailTab" style="flex: 1;" />
+        </ui:VisualElement>
+
+        <!-- 軍勢情報タブ -->
+        <ui:VisualElement name="ForceInfoTab" style="display: none; flex: 1">
+            <ui:Instance name="ForceDetailTab" template="ForceDetailTab" style="flex: 1;" />
         </ui:VisualElement>
 
         <!-- 外交情報タブ -->

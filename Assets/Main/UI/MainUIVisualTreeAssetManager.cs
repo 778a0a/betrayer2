@@ -12,6 +12,7 @@ public class MainUIVisualTreeAssetManager : MonoBehaviour
     [field: SerializeField] private VisualTreeAsset[] Screens { get; set; }
     [field: SerializeField] public VisualTreeAsset CharacterTableRowItem { get; set; }
     [field: SerializeField] public VisualTreeAsset CastleTableRowItem { get; set; }
+    [field: SerializeField] public VisualTreeAsset ForceTableRowItem { get; set; }
 
     public void InitializeScreens(MainUI ui, bool reinitialize)
     {
