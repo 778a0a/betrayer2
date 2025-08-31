@@ -24,7 +24,7 @@ public partial class CharacterTable
 
     public Label labelHeaderGoverning { get; private set; }
 
-    public Label labelHeaderStatus { get; private set; }
+    public Label labelHeaderSoldiers { get; private set; }
 
     public Label labelHeaderContribution { get; private set; }
 
@@ -46,7 +46,7 @@ public partial class CharacterTable
         labelHeaderDefence = Root?.Q<Label>("labelHeaderDefence");
         labelHeaderIntelligence = Root?.Q<Label>("labelHeaderIntelligence");
         labelHeaderGoverning = Root?.Q<Label>("labelHeaderGoverning");
-        labelHeaderStatus = Root?.Q<Label>("labelHeaderStatus");
+        labelHeaderSoldiers = Root?.Q<Label>("labelHeaderSoldiers");
         labelHeaderContribution = Root?.Q<Label>("labelHeaderContribution");
         labelHeaderPrestige = Root?.Q<Label>("labelHeaderPrestige");
         labelHeaderLoyalty = Root?.Q<Label>("labelHeaderLoyalty");
@@ -62,7 +62,7 @@ public partial class CharacterTable
         labelHeaderDefence = Root?.Q<Label>("labelHeaderDefence");
         labelHeaderIntelligence = Root?.Q<Label>("labelHeaderIntelligence");
         labelHeaderGoverning = Root?.Q<Label>("labelHeaderGoverning");
-        labelHeaderStatus = Root?.Q<Label>("labelHeaderStatus");
+        labelHeaderSoldiers = Root?.Q<Label>("labelHeaderSoldiers");
         labelHeaderContribution = Root?.Q<Label>("labelHeaderContribution");
         labelHeaderPrestige = Root?.Q<Label>("labelHeaderPrestige");
         labelHeaderLoyalty = Root?.Q<Label>("labelHeaderLoyalty");
