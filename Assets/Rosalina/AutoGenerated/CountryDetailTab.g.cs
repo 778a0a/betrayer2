@@ -46,6 +46,10 @@ public partial class CountryDetailTab
 
     public Button buttonShowDiplomacy { get; private set; }
 
+    public CastleTable CastleListViewTable { get; private set; }
+
+    public VisualElement CastleListView { get; private set; }
+
     public CharacterTable MemberListViewTable { get; private set; }
 
     public CharacterSummary CharacterSummary { get; private set; }
@@ -85,6 +89,8 @@ public partial class CountryDetailTab
         labelTotalGeneralCount = Root?.Q<Label>("labelTotalGeneralCount");
         buttonShowMemberList = Root?.Q<Button>("buttonShowMemberList");
         buttonShowDiplomacy = Root?.Q<Button>("buttonShowDiplomacy");
+        CastleListViewTable = new CastleTable(Root?.Q<VisualElement>("CastleListViewTable"));
+        CastleListView = Root?.Q<VisualElement>("CastleListView");
         MemberListViewTable = new CharacterTable(Root?.Q<VisualElement>("MemberListViewTable"));
         CharacterSummary = new CharacterSummary(Root?.Q<VisualElement>("CharacterSummary"));
         MemberListView = Root?.Q<VisualElement>("MemberListView");
@@ -115,6 +121,8 @@ public partial class CountryDetailTab
         labelTotalGeneralCount = Root?.Q<Label>("labelTotalGeneralCount");
         buttonShowMemberList = Root?.Q<Button>("buttonShowMemberList");
         buttonShowDiplomacy = Root?.Q<Button>("buttonShowDiplomacy");
+        CastleListViewTable = new CastleTable(Root?.Q<VisualElement>("CastleListViewTable"));
+        CastleListView = Root?.Q<VisualElement>("CastleListView");
         MemberListViewTable = new CharacterTable(Root?.Q<VisualElement>("MemberListViewTable"));
         CharacterSummary = new CharacterSummary(Root?.Q<VisualElement>("CharacterSummary"));
         MemberListView = Root?.Q<VisualElement>("MemberListView");

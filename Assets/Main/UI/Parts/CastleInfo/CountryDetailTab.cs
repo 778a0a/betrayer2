@@ -18,6 +18,7 @@ public partial class CountryDetailTab
     public void Initialize()
     {
         MemberListViewTable.Initialize();
+        CastleListViewTable.Initialize();
         ObjectiveSelectionTargetTable.Initialize();
 
         // 城一覧表示ボタン押下時
@@ -53,6 +54,17 @@ public partial class CountryDetailTab
             if (chara == characterSummaryTarget) return;
             characterSummaryTarget = chara;
             CharacterSummary.SetData(chara);
+        };
+
+        // 城一覧のクリック時
+        CastleListViewTable.RowMouseDown += (sender, castle) =>
+        {
+            if (castle != null)
+            {
+                //// 城タイルを選択して城詳細を表示
+                //var tile = Core.World.Map.GetTile(castle.Position);
+                //Core.UIMapManager.SelectTile(tile);
+            }
         };
 
         // 方針コンボボックス選択時
@@ -176,6 +188,14 @@ public partial class CountryDetailTab
         labelTotalGeneralCount.text = $"{totalGeneralCount}";
         // 城数
         labelCastleCount.text = $"{country.Castles.Count}";
+
+        // 城一覧
+        CastleListView.style.display = Util.Display(showCastleList);
+        if (showCastleList)
+        {
+            var castles = targetCountry.Castles.ToList();
+            CastleListViewTable.SetData(castles, true);
+        }
 
         // 人物一覧
         MemberListView.style.display = Util.Display(showMemberList);

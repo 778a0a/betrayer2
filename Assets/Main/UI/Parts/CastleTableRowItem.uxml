@@ -1,0 +1,63 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Main/UI/MainUI.uss" />
+    <Style src="CastleTableStyle.uss" />
+    <engine:Button name="CastleTableRowItemRoot" class="CastleTable-Card">
+
+        <engine:VisualElement style="flex-direction: row; -unity-text-align: middle-left; align-items: center;">
+            <!-- 城主情報 -->
+            <engine:VisualElement name="CastleBossImage" class="MiddleCharacterIcon" style="background-image: url('project://database/Assets/Resources/CharacterImages/0010.jpg');" />
+
+            <engine:VisualElement style="margin-left: 10px;">
+                <!-- 城名・地方・方針 -->
+                <engine:VisualElement style="flex-direction: row; align-items: center; margin-bottom: 5px;">
+                    <engine:VisualElement name="iconCountry" style="width: 25px; height: 25px; margin-right: 5px; background-color: #088" />
+                    <engine:Label name="labelName" text="クリスタルウォーター" style="font-size: 24px; width: 300px;" />
+                    <engine:VisualElement style="display: none;">
+                        <engine:Label text="(" style="font-size: 24px; margin-left: 5px; color: silver" />
+                        <engine:Label name="labelRegion" text="中央シルヴァニア" style="font-size: 24px; color: silver" />
+                        <engine:Label text="地方)" style="font-size: 24px; color: silver" />
+                    </engine:VisualElement>
+                    <engine:Label text="方針: " style="color: #ccc; font-size: 20px; margin-left: 7px;" />
+                    <engine:Label name="labelObjective" text="開発" style="color: #ccc; font-size: 20px; margin-left: 5px;" />
+                </engine:VisualElement>
+                <!-- 城の基本情報 -->
+                <engine:VisualElement style="flex-direction: row; align-items: center;">
+                    <engine:VisualElement style="flex-direction: row; min-width: 190px;">
+                        <engine:Label text="城資金:" style="margin-right: 10px; font-size: 24px;" />
+                        <engine:Label name="labelGold" text="0" style="font-size: 24px; color: yellow;" />
+                        <engine:Label text="(" style="margin-left: 5px; font-size: 24px;" />
+                        <engine:Label name="labelBalance" text="+0" style="font-size: 24px; color: white;" />
+                        <engine:Label text=")" style="font-size: 24px;" />
+                    </engine:VisualElement>
+                    <engine:VisualElement style="flex-direction: row; min-width: 320px; align-items: center">
+                        <engine:Label text="収入:" style="margin-right: 10px; font-size: 24px;" />
+                        <engine:Label name="labelIncome" text="0" style="font-size: 24px; color: white; margin-right: 5px;" />
+                        <engine:Label text="/" style="font-size: 24px; margin-right: 5px;" />
+                        <engine:Label name="labelMaxIncome" text="0" style="font-size: 24px; color: silver; margin-right: 10px;" />
+                        <engine:VisualElement name="IncomeBar" style="width: 150px; height: 15px; background-color: gray; margin-right: 10px; border-width: 1px; border-color: white;">
+                            <engine:VisualElement name="MaxIncomeBar" style="position: absolute; top: 0; left: 0; height: 100%; background-color: rgba(255, 255, 0, 0.3);" />
+                            <engine:VisualElement name="CurrentIncomeBar" style="position: absolute; top: 0; left: 0; height: 100%; background-color: yellow;" />
+                        </engine:VisualElement>
+                    </engine:VisualElement>
+                    <engine:Label text="支出:" style="margin-right: 10px; font-size: 24px;" />
+                    <engine:Label name="labelExpenditure" text="0" style="font-size: 24px; color: red;" />
+                </engine:VisualElement>
+                <engine:VisualElement style="flex-direction: row; align-items: center; margin-top: 3px;">
+                    <engine:Label text="発展度:" style="margin-right: 10px; font-size: 24px;" />
+                    <engine:Label name="labelDevLevel" text="0" style="font-size: 24px; color: cyan;" />
+                    <engine:Label text="(総投資額:" style="margin-left: 10px; margin-right: 10px; font-size: 24px;" />
+                    <engine:Label name="labelTotalInvestment" text="0" style="font-size: 24px; color: yellow;" />
+                    <engine:Label text=")" style="font-size: 24px;" />
+                </engine:VisualElement>
+                <engine:VisualElement style="flex-direction: row; align-items: center; margin-top: 3px;">
+                    <engine:Label text="総兵力:" style="margin-right: 10px; font-size: 24px;" />
+                    <engine:Label name="labelSoldiers" text="88888" style="font-size: 24px; color: orange; min-width: 65px" />
+                    <engine:Label text="城塞Lv:" style="margin-left: 15px; margin-right: 10px; font-size: 24px;" />
+                    <engine:Label name="labelStrength" text="888" style="font-size: 24px; color: cyan;" />
+                    <engine:Label text="将数:" style="margin-left: 15px; margin-right: 10px; font-size: 24px;" />
+                    <engine:Label name="labelMembers" text="88" style="font-size: 24px; min-width: 40px" />
+                </engine:VisualElement>
+            </engine:VisualElement>
+        </engine:VisualElement>
+    </engine:Button>
+</engine:UXML>

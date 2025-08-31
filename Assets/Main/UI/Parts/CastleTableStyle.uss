@@ -1,0 +1,35 @@
+.CastleTable-Card {
+    color: white;
+    flex-direction: column;
+    background-color: #224;
+    border-width: 2px;
+    border-color: #444;
+    border-radius: 5px;
+    margin: 0 0 5px 0;
+    padding: 10px;
+    min-height: 120px;
+}
+
+.CastleTable-Card .MiddleCharacterIcon {
+    width: 115px;
+    height: 115px;
+}
+
+#CastleTable .unity-collection-view__item:hover {
+    background-color: initial;
+}
+
+#CastleTableRowItemRoot:hover {
+    background-color: rgba(0, 156, 143, 0.3);
+    border-color: rgba(204, 204, 204, 0.7);
+}
+
+#CastleTableRowItemRoot.clickable:hover {
+    background-color: rgba(0, 156, 143, 0.5);
+}
+
+#CastleTableRowItemRoot.clickable:active {
+    background-color: rgba(0, 156, 143, 0.8);
+}
+
+/* Remove table-based styles as we're now using card layout */
