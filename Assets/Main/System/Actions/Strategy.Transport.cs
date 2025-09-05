@@ -42,27 +42,26 @@ partial class StrategyActions
             // プレーヤーの場合
             if (actor.IsPlayer)
             {
-                // TODO 専用画面・マップから選択可能にする
-                args.gold = 10;
                 args.targetCastle = actor.Castle;
 
                 // 自国の他の拠点を取得する。
-                var bosses = actor.Country.Castles
-                    .Select(c => c.Boss)
-                    .Where(m => m != actor)
+                var targetCastles = actor.Country.Castles
+                    .Where(c => c != actor.Castle)
                     .ToList();
-                args.targetCastle2 = (await UI.SelectCharacterScreen.Show(
-                    "輸送先を選択してください",
-                    "キャンセル",
-                    bosses,
-                    _ => true
-                )).Castle;
 
-                if (args.targetCastle2 == null)
+                var (castle, amount) = await UI.TransportScreen.Show(
+                    targetCastles,
+                    actor.Castle.Gold.MaxWith(10), 
+                    actor.Castle.Gold);
+
+                if (castle == null)
                 {
-                    Debug.Log("キャラクター選択がキャンセルされました。");
+                    Debug.Log("輸送がキャンセルされました。");
                     return;
                 }
+
+                args.targetCastle2 = castle;
+                args.gold = amount;
             }
             Util.IsTrue(CanDo(args));
 

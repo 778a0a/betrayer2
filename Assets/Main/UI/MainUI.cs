@@ -12,6 +12,7 @@ public partial class MainUI : MonoBehaviour
     public ActionScreen ActionScreen { get; set; }
     public SelectCharacterScreen SelectCharacterScreen { get; set; }
     public SelectCastleScreen SelectCastleScreen { get; set; }
+    public TransportScreen TransportScreen { get; set; }
     public IScreen[] Screens { get; set; }
 
     private bool isInitialized = false;

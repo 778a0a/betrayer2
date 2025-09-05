@@ -1,0 +1,21 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <engine:Template name="CastleTable" src="project://database/Assets/Main/UI/Parts/CastleTable/CastleTable.uxml" />
+    <Style src="project://database/Assets/Main/UI/MainUI.uss" />
+    <engine:VisualElement class="panel">
+        <engine:Label text="輸送量を入力してください" style="font-size: 32px; margin-top: 10px;" />
+        <engine:VisualElement style="margin-top: 10px; flex-shrink: 0; padding: 10px; border-width: 1px; border-color: rgb(100, 100, 100);">
+            <engine:Label text="輸送量 (ゴールド)" style="font-size: 24px; margin-bottom: 5px;" />
+            <engine:VisualElement style="flex-direction: row; align-items: center;">
+                <engine:Slider name="sliderAmount" style="flex-grow: 1;" />
+                <engine:Button name="buttonMinus10" text="-10" style="margin-left: 10px; width: 60px;" />
+                <engine:Button name="buttonPlus10" text="+10" style="margin-left: 10px; width: 60px;" />
+                <engine:Label name="labelAmount" text="100" style="font-size: 28px; min-width: 60px; margin-left: 10px" />
+            </engine:VisualElement>
+        </engine:VisualElement>
+        <engine:Label name="labelDescription" text="輸送先の城を選択してください" style="font-size: 32px; margin-top: 15px;" />
+        <engine:Instance template="CastleTable" name="CastleTable" style="margin-top: 20px; flex-grow: 1;" />
+        <engine:VisualElement style="margin-top: 10px; flex-shrink: 0;">
+            <engine:Button name="buttonClose" text="キャンセル" />
+        </engine:VisualElement>
+    </engine:VisualElement>
+</engine:UXML>
