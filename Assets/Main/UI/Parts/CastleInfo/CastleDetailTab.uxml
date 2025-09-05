@@ -20,6 +20,10 @@
                 <ui:Label name="labelObjective" text="開発" style="font-size: 24px; margin-left: 5px;" />
                 <ui:DropdownField name="comboObjective" choices="拠点攻略,訓練,防備,開発,輸送,なし" />
             </ui:VisualElement>
+            <ui:VisualElement name="DiplomaticRelationsContainer" style="flex-direction: row;">
+                <ui:Label text="友好度: " style="font-size: 24px; margin-left: 10px;" />
+                <ui:Label name="labelDiplomaticRelations" text="" style="font-size: 24px; margin-left: 5px;" />
+            </ui:VisualElement>
         </ui:VisualElement>
 
         <ui:VisualElement name="NormalView" style="flex: 1; margin-top: 10px;">

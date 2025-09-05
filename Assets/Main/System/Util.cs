@@ -11,6 +11,7 @@ using UnityEngine.Assertions;
 using UnityEngine.TextCore.Text;
 using UnityEngine.UIElements;
 using Random = UnityEngine.Random;
+using UnityColor = UnityEngine.Color;
 
 public static class Util
 {
@@ -89,7 +90,7 @@ public static class Util
     }
 
 
-    public static Color Color(string code)
+    public static UnityColor Color(string code)
     {
         if (code[0] == '#')
         {
@@ -100,28 +101,28 @@ public static class Util
             var r = Convert.ToInt32(code[0].ToString(), 16) / 15f;
             var g = Convert.ToInt32(code[1].ToString(), 16) / 15f;
             var b = Convert.ToInt32(code[2].ToString(), 16) / 15f;
-            return new Color(r, g, b);
+            return new(r, g, b);
         }
         else
         {
             var r = Convert.ToInt32(code.Substring(0, 2), 16) / 255f;
             var g = Convert.ToInt32(code.Substring(2, 2), 16) / 255f;
             var b = Convert.ToInt32(code.Substring(4, 2), 16) / 255f;
-            return new Color(r, g, b);
+            return new(r, g, b);
         }
     }
 
-    public static Color Color(long val)
+    public static UnityColor Color(long val)
     {
         var r = (val >> 16) & 0xFF;
         var g = (val >> 8) & 0xFF;
         var b = val & 0xFF;
-        return new Color(r / 255f, g / 255f, b / 255f);
+        return new(r / 255f, g / 255f, b / 255f);
     }
 
-    public static Color Color(int r, int g, int b, int a = 255)
+    public static UnityColor Color(int r, int g, int b, int a = 255)
     {
-        return new Color(r / 255f, g / 255f, b / 255f, a / 255f);
+        return new(r / 255f, g / 255f, b / 255f, a / 255f);
     }
 
     public static DisplayStyle Display(bool on)
@@ -218,6 +219,16 @@ public static class Util
             index++;
         }
         return -1;
+    }
+
+    public static UnityColor RelationToColor(float rel)
+    {
+        var bad = UnityColor.red;
+        var good = UnityColor.green;
+        var normal = UnityColor.white;
+        return rel > 50 ? UnityColor.Lerp(normal, good, (rel - 50) / 50f) :
+            rel < 50 ? UnityColor.Lerp(bad, normal, rel / 50f) :
+            normal;
     }
 }
 

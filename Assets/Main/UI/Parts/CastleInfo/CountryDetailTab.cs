@@ -176,6 +176,9 @@ public partial class CountryDetailTab
             comboObjective.value = objectiveText;
         }
 
+        // 外交関係表示
+        SetRelation(country);
+
         // 総資金・総収支
         var totalGold = country.Castles.Sum(c => c.Gold);
         var totalBalance = country.Castles.Sum(c => c.GoldBalance);
@@ -327,6 +330,24 @@ public partial class CountryDetailTab
     }
 
     /// <summary>
+    /// 友好度を設定します。
+    /// </summary>
+    private void SetRelation(Country country)
+    {
+        // 自身の国なら表示しない。
+        var playerCountry = Core.World.Player?.Country;
+        if (playerCountry == country)
+        {
+            DiplomaticRelationsContainer.style.display = DisplayStyle.None;
+            return;
+        }
+        DiplomaticRelationsContainer.style.display = DisplayStyle.Flex;
+
+        labelDiplomaticRelations.text = Core.World.Countries.GetRelationText(playerCountry, country);
+        DiplomaticRelationsContainer.style.color = Core.World.Countries.GetRelationColor(playerCountry, country);
+    }
+
+    /// <summary>
     /// 外交関係タブを設定します。
     /// </summary>
     private void SetDiplomacyData(Country country)
@@ -402,10 +423,7 @@ public partial class CountryDetailTab
         // 関係度
         var relationLabel = new Label(relation.ToString());
         relationLabel.style.fontSize = 20;
-        relationLabel.style.color = relation > 50 ? Color.Lerp(Color.white, Color.green, (relation - 50) / 50f) :
-                                     relation < 50 ? Color.Lerp(Color.red, Color.white, relation / 50f) :
-                                     Color.gray;
-        
+        relationLabel.style.color = Util.RelationToColor(relation);
         item.Add(faceImage);
         item.Add(nameLabel);
         item.Add(statusLabel);

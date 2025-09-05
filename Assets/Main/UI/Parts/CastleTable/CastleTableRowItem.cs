@@ -53,7 +53,8 @@ public partial class CastleTableRowItem
         
         // 城名
         labelName.text = castle.Name;
-        
+        labelName.style.color = GameCore.Instance.World.Countries.GetRelationColor(castle.Country);
+
         // 国アイコン
         iconCountry.style.backgroundImage = new(Static.GetCountrySprite(castle.Country.ColorIndex));
         

@@ -321,9 +321,8 @@ public class TileInfoEditorWindow : EditorWindow
             style.normal.textColor =
                 country.IsAlly(other) ? Color.green :
                 country.IsEnemy(other) ? Color.red :
-                relation > 50 ? Color.LerpUnclamped(Color.white, Color.green, (relation-50) / 50f) :
-                relation < 50 ? Color.LerpUnclamped(Color.red, Color.white, relation / 50f) :
-                Color.gray;
+                relation == 50 ? Color.gray :
+                Util.RelationToColor(relation);
 
             Label($"国: {other.Id} {other.Ruler.Name}" +
                 $"{(country.IsAlly(other) ? "  同盟" : "")}" +

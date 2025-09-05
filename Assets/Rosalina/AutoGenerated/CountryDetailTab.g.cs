@@ -24,6 +24,10 @@ public partial class CountryDetailTab
 
     public VisualElement ObjectiveContainer { get; private set; }
 
+    public VisualElement DiplomaticRelationsContainer { get; private set; }
+
+    public Label labelDiplomaticRelations { get; private set; }
+
     public VisualElement CountryRulerImage { get; private set; }
 
     public Label labelTotalGold { get; private set; }
@@ -84,6 +88,8 @@ public partial class CountryDetailTab
         iconCountry = Root?.Q<VisualElement>("iconCountry");
         labelCountryRulerName = Root?.Q<Label>("labelCountryRulerName");
         ObjectiveContainer = Root?.Q<VisualElement>("ObjectiveContainer");
+        DiplomaticRelationsContainer = Root?.Q<VisualElement>("DiplomaticRelationsContainer");
+        labelDiplomaticRelations = Root?.Q<Label>("labelDiplomaticRelations");
         CountryRulerImage = Root?.Q<VisualElement>("CountryRulerImage");
         labelTotalGold = Root?.Q<Label>("labelTotalGold");
         labelTotalBalance = Root?.Q<Label>("labelTotalBalance");
@@ -119,6 +125,8 @@ public partial class CountryDetailTab
         iconCountry = Root?.Q<VisualElement>("iconCountry");
         labelCountryRulerName = Root?.Q<Label>("labelCountryRulerName");
         ObjectiveContainer = Root?.Q<VisualElement>("ObjectiveContainer");
+        DiplomaticRelationsContainer = Root?.Q<VisualElement>("DiplomaticRelationsContainer");
+        labelDiplomaticRelations = Root?.Q<Label>("labelDiplomaticRelations");
         CountryRulerImage = Root?.Q<VisualElement>("CountryRulerImage");
         labelTotalGold = Root?.Q<Label>("labelTotalGold");
         labelTotalBalance = Root?.Q<Label>("labelTotalBalance");

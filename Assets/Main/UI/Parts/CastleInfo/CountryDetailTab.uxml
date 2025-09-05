@@ -19,6 +19,10 @@
                 <ui:Label name="labelObjective" text="現状維持" style="font-size: 24px; margin-left: 5px;" />
                 <ui:DropdownField name="comboObjective" choices="地方攻略,勢力打倒,現状維持" />
             </ui:VisualElement>
+            <ui:VisualElement name="DiplomaticRelationsContainer" style="flex-direction: row;">
+                <ui:Label text="友好度: " style="font-size: 24px; margin-left: 10px;" />
+                <ui:Label name="labelDiplomaticRelations" text="" style="font-size: 24px; margin-left: 5px;" />
+            </ui:VisualElement>
         </ui:VisualElement>
 
         <ui:VisualElement name="NormalView" style="flex: 1; margin-top: 10px;">

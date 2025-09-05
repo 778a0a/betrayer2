@@ -113,6 +113,8 @@ public partial class CastleDetailTab
         // 城名・地方・方針
         iconCountry.style.backgroundImage = new(Static.GetCountrySprite(castle.Country.ColorIndex));
         labelCastleName.text = castle.Name;
+        SetRelation(castle.Country);
+
         labelCastleRegion.text = castle.Region;
         ObjectiveContainer.style.display = Util.Display(Core.World.Player?.Country == castle.Country);
         var canOrder = (castle.Boss?.IsPlayer ?? false) || castle.Country.Ruler.IsPlayer;
@@ -335,4 +337,23 @@ public partial class CastleDetailTab
         characterSummaryTarget = character;
         CharacterSummary.SetData(character);
     }
+
+    /// <summary>
+    /// 友好度を設定します。
+    /// </summary>
+    private void SetRelation(Country country)
+    {
+        // 自身の国なら表示しない。
+        var playerCountry = Core.World.Player?.Country;
+        if (playerCountry == country)
+        {
+            DiplomaticRelationsContainer.style.display = DisplayStyle.None;
+            return;
+        }
+        DiplomaticRelationsContainer.style.display = DisplayStyle.Flex;
+
+        labelDiplomaticRelations.text = Core.World.Countries.GetRelationText(playerCountry, country);
+        DiplomaticRelationsContainer.style.color = Core.World.Countries.GetRelationColor(playerCountry, country);
+    }
+
 }

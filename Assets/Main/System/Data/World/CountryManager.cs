@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class CountryManager : IReadOnlyList<Country>
 {
@@ -80,4 +81,38 @@ public class CountryManager : IReadOnlyList<Country>
             }
         }
     }
+
+    public Color GetRelationColor(Country a, Country b = null)
+    {
+        b ??= GameCore.Instance.World.Player?.Country;
+        if (b == null) return Color.white;
+        if (a == b) return Color.white;
+        var rel = GetRelation(a, b);
+        var color = Util.RelationToColor(rel);
+        return color;
+    }
+
+    public string GetRelationText(Country a, Country b = null)
+    {
+        b ??= GameCore.Instance.World.Player?.Country;
+        if (b == null) return "";
+
+        var relation = GetRelation(a, b);
+        var specials = new List<string>();
+        if (a.IsAlly(b))
+        {
+            specials.Add("同盟");
+        }
+        else if (a.IsEnemy(b))
+        {
+            specials.Add("敵対");
+        }
+        //if (playerCountry.Neighbors.Contains(country))
+        //{
+        //    specials.Add("隣接");
+        //}
+        var specialsText = specials.Count > 0 ? $" ({string.Join("、", specials)})" : "";
+        return $"{relation:0}{specialsText}";
+    }
+
 }

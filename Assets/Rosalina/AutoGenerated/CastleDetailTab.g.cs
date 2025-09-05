@@ -18,6 +18,8 @@ public partial class CastleDetailTab
 
     public DropdownField comboObjective { get; private set; }
 
+    public Label labelDiplomaticRelations { get; private set; }
+
     public VisualElement iconCountry { get; private set; }
 
     public Label labelCastleName { get; private set; }
@@ -25,6 +27,8 @@ public partial class CastleDetailTab
     public Label labelCastleRegion { get; private set; }
 
     public VisualElement ObjectiveContainer { get; private set; }
+
+    public VisualElement DiplomaticRelationsContainer { get; private set; }
 
     public VisualElement CastleBossImage { get; private set; }
 
@@ -97,10 +101,12 @@ public partial class CastleDetailTab
         Root = root;
         labelObjective = Root?.Q<Label>("labelObjective");
         comboObjective = Root?.Q<DropdownField>("comboObjective");
+        labelDiplomaticRelations = Root?.Q<Label>("labelDiplomaticRelations");
         iconCountry = Root?.Q<VisualElement>("iconCountry");
         labelCastleName = Root?.Q<Label>("labelCastleName");
         labelCastleRegion = Root?.Q<Label>("labelCastleRegion");
         ObjectiveContainer = Root?.Q<VisualElement>("ObjectiveContainer");
+        DiplomaticRelationsContainer = Root?.Q<VisualElement>("DiplomaticRelationsContainer");
         CastleBossImage = Root?.Q<VisualElement>("CastleBossImage");
         labelGold = Root?.Q<Label>("labelGold");
         labelBalance = Root?.Q<Label>("labelBalance");
@@ -140,10 +146,12 @@ public partial class CastleDetailTab
         Root = root;
         labelObjective = Root?.Q<Label>("labelObjective");
         comboObjective = Root?.Q<DropdownField>("comboObjective");
+        labelDiplomaticRelations = Root?.Q<Label>("labelDiplomaticRelations");
         iconCountry = Root?.Q<VisualElement>("iconCountry");
         labelCastleName = Root?.Q<Label>("labelCastleName");
         labelCastleRegion = Root?.Q<Label>("labelCastleRegion");
         ObjectiveContainer = Root?.Q<VisualElement>("ObjectiveContainer");
+        DiplomaticRelationsContainer = Root?.Q<VisualElement>("DiplomaticRelationsContainer");
         CastleBossImage = Root?.Q<VisualElement>("CastleBossImage");
         labelGold = Root?.Q<Label>("labelGold");
         labelBalance = Root?.Q<Label>("labelBalance");
