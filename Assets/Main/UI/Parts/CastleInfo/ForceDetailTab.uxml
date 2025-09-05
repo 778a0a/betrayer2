@@ -1,7 +1,7 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/Main/UI/MainUI.uss" />
     <Style src="CastleInfoPanelStyle.uss" />
-    <ui:Template name="ForceTable" src="project://database/Assets/Main/UI/Parts/ForceTable.uxml" />
+    <ui:Template name="ForceTable" src="project://database/Assets/Main/UI/Parts/ForceTable/ForceTable.uxml" />
 
     <!-- 軍勢詳細タブ -->
     <ui:VisualElement style="flex: 1;">

@@ -1,7 +1,7 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/Main/UI/MainUI.uss" />
     <Style src="CastleInfoPanelStyle.uss" />
-    <ui:Template name="CharacterTable" src="project://database/Assets/Main/UI/Parts/CharacterTable.uxml" />
+    <ui:Template name="CharacterTable" src="project://database/Assets/Main/UI/Parts/CharacterTable/CharacterTable.uxml" />
     <ui:Template name="CharacterSummary" src="project://database/Assets/Main/UI/Parts/CharacterSummary.uxml" />
     <ui:Template name="SimpleTable" src="project://database/Assets/Main/UI/Parts/SimpleTable.uxml" />
 

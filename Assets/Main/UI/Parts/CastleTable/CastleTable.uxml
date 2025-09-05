@@ -1,5 +1,5 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <engine:Template name="CastleTableRowItem" src="project://database/Assets/Main/UI/Parts/CastleTableRowItem.uxml" />
+    <engine:Template name="CastleTableRowItem" src="project://database/Assets/Main/UI/Parts/CastleTable/CastleTableRowItem.uxml" />
     <Style src="project://database/Assets/Main/UI/MainUI.uss" />
     <Style src="CastleTableStyle.uss" />
     <engine:ListView name="ListView" />
