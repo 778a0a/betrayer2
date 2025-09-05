@@ -18,13 +18,27 @@ public partial class StrategyPhaseScreen
 
     public Label labelCurrentAP { get; private set; }
 
+    public Label labelCurrentPersonalGold { get; private set; }
+
+    public Label labelPhaseTitle { get; private set; }
+
+    public Label labelPhaseSubtitle { get; private set; }
+
+    public VisualElement StrategyPhaseHeader { get; private set; }
+
+    public VisualElement PersonalPhaseHeader { get; private set; }
+
     public Button buttonTurnEnd { get; private set; }
+
+    public Button buttonClose { get; private set; }
 
     public Label labelCost { get; private set; }
 
     public Label labelActionDescription { get; private set; }
 
-    public VisualElement ActionButtons { get; private set; }
+    public VisualElement StrategyActionButtons { get; private set; }
+
+    public VisualElement PersonalActionButtons { get; private set; }
 
     public Button buttonMoveToMyCastle { get; private set; }
 
@@ -32,9 +46,9 @@ public partial class StrategyPhaseScreen
 
     public VisualElement NoActionPanel { get; private set; }
 
-    public Button buttonToggleActionPanelFolding { get; private set; }
-
     public VisualElement ActionPanelContent { get; private set; }
+
+    public Button buttonToggleActionPanelFolding { get; private set; }
 
     public CastleInfoPanel CastleInfoPanel { get; private set; }
 
@@ -45,15 +59,22 @@ public partial class StrategyPhaseScreen
         Root = root;
         labelCurrentCastleGold = Root?.Q<Label>("labelCurrentCastleGold");
         labelCurrentAP = Root?.Q<Label>("labelCurrentAP");
+        labelCurrentPersonalGold = Root?.Q<Label>("labelCurrentPersonalGold");
+        labelPhaseTitle = Root?.Q<Label>("labelPhaseTitle");
+        labelPhaseSubtitle = Root?.Q<Label>("labelPhaseSubtitle");
+        StrategyPhaseHeader = Root?.Q<VisualElement>("StrategyPhaseHeader");
+        PersonalPhaseHeader = Root?.Q<VisualElement>("PersonalPhaseHeader");
         buttonTurnEnd = Root?.Q<Button>("buttonTurnEnd");
+        buttonClose = Root?.Q<Button>("buttonClose");
         labelCost = Root?.Q<Label>("labelCost");
         labelActionDescription = Root?.Q<Label>("labelActionDescription");
-        ActionButtons = Root?.Q<VisualElement>("ActionButtons");
+        StrategyActionButtons = Root?.Q<VisualElement>("StrategyActionButtons");
+        PersonalActionButtons = Root?.Q<VisualElement>("PersonalActionButtons");
         buttonMoveToMyCastle = Root?.Q<Button>("buttonMoveToMyCastle");
         ActionPanel = Root?.Q<VisualElement>("ActionPanel");
         NoActionPanel = Root?.Q<VisualElement>("NoActionPanel");
-        buttonToggleActionPanelFolding = Root?.Q<Button>("buttonToggleActionPanelFolding");
         ActionPanelContent = Root?.Q<VisualElement>("ActionPanelContent");
+        buttonToggleActionPanelFolding = Root?.Q<Button>("buttonToggleActionPanelFolding");
         CastleInfoPanel = new CastleInfoPanel(Root?.Q<VisualElement>("CastleInfoPanel"));
     }
 
@@ -62,15 +83,22 @@ public partial class StrategyPhaseScreen
         Root = root;
         labelCurrentCastleGold = Root?.Q<Label>("labelCurrentCastleGold");
         labelCurrentAP = Root?.Q<Label>("labelCurrentAP");
+        labelCurrentPersonalGold = Root?.Q<Label>("labelCurrentPersonalGold");
+        labelPhaseTitle = Root?.Q<Label>("labelPhaseTitle");
+        labelPhaseSubtitle = Root?.Q<Label>("labelPhaseSubtitle");
+        StrategyPhaseHeader = Root?.Q<VisualElement>("StrategyPhaseHeader");
+        PersonalPhaseHeader = Root?.Q<VisualElement>("PersonalPhaseHeader");
         buttonTurnEnd = Root?.Q<Button>("buttonTurnEnd");
+        buttonClose = Root?.Q<Button>("buttonClose");
         labelCost = Root?.Q<Label>("labelCost");
         labelActionDescription = Root?.Q<Label>("labelActionDescription");
-        ActionButtons = Root?.Q<VisualElement>("ActionButtons");
+        StrategyActionButtons = Root?.Q<VisualElement>("StrategyActionButtons");
+        PersonalActionButtons = Root?.Q<VisualElement>("PersonalActionButtons");
         buttonMoveToMyCastle = Root?.Q<Button>("buttonMoveToMyCastle");
         ActionPanel = Root?.Q<VisualElement>("ActionPanel");
         NoActionPanel = Root?.Q<VisualElement>("NoActionPanel");
-        buttonToggleActionPanelFolding = Root?.Q<Button>("buttonToggleActionPanelFolding");
         ActionPanelContent = Root?.Q<VisualElement>("ActionPanelContent");
+        buttonToggleActionPanelFolding = Root?.Q<Button>("buttonToggleActionPanelFolding");
         CastleInfoPanel = new CastleInfoPanel(Root?.Q<VisualElement>("CastleInfoPanel"));
     }
 }

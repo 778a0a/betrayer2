@@ -166,7 +166,7 @@ partial class GameCore
         if (chara.IsPlayer)
         {
             Booter.hold = true;
-            MainUI.PersonalPhaseScreen.Show(chara);
+            MainUI.StrategyPhaseScreen.Show(chara, personalPhase: true);
             await Booter.HoldIfNeeded();
             return;
         }

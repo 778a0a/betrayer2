@@ -8,13 +8,15 @@ using UnityEngine.UIElements;
 public partial class StrategyPhaseScreen : IScreen
 {
     private GameCore Core => GameCore.Instance;
-    private ActionButtonHelper[] buttons;
+    private ActionButtonHelper[] strategyButtons;
+    private ActionButtonHelper[] personalButtons;
     private Character currentCharacter;
     private GameMapTile currentTile;
+    private bool isPersonalPhase = false;
 
     public void Initialize()
     {
-        buttons = new[]
+        strategyButtons = new[]
         {
             ActionButtonHelper.Strategy(a => a.Deploy),
             ActionButtonHelper.Strategy(a => a.Transport),
@@ -28,10 +30,34 @@ public partial class StrategyPhaseScreen : IScreen
             ActionButtonHelper.Strategy(a => a.DepositCastleGold),
             ActionButtonHelper.Strategy(a => a.WithdrawCastleGold),
             ActionButtonHelper.Strategy(a => a.BecomeIndependent),
-            //ActionButtonHelper.Common(a => a.FinishTurn),
+        };
+        
+        personalButtons = new[]
+        {
+            ActionButtonHelper.Personal(a => a.HireSoldier),
+            ActionButtonHelper.Personal(a => a.TrainSoldiers),
+            ActionButtonHelper.Personal(a => a.Develop),
+            ActionButtonHelper.Personal(a => a.Invest),
+            ActionButtonHelper.Personal(a => a.Fortify),
+            ActionButtonHelper.Personal(a => a.Deploy),
+            ActionButtonHelper.Personal(a => a.Rebel),
+            ActionButtonHelper.Personal(a => a.Resign),
+            ActionButtonHelper.Personal(a => a.Relocate),
+            ActionButtonHelper.Personal(a => a.Seize),
+            ActionButtonHelper.Personal(a => a.GetJob),
         };
 
-        foreach (var button in buttons)
+        foreach (var button in strategyButtons)
+        {
+            button.SetEventHandlers(
+                labelCost,
+                labelActionDescription,
+                () => currentCharacter,
+                OnActionButtonClicked
+            );
+        }
+        
+        foreach (var button in personalButtons)
         {
             button.SetEventHandlers(
                 labelCost,
@@ -46,9 +72,14 @@ public partial class StrategyPhaseScreen : IScreen
 
     public void Reinitialize()
     {
-        foreach (var button in buttons)
+        foreach (var button in strategyButtons)
         {
-            ActionButtons.Add(button.Element);
+            StrategyActionButtons.Add(button.Element);
+        }
+        
+        foreach (var button in personalButtons)
+        {
+            PersonalActionButtons.Add(button.Element);
         }
         
         buttonTurnEnd.clicked += () =>
@@ -73,6 +104,11 @@ public partial class StrategyPhaseScreen : IScreen
             var show = ActionPanelContent.style.display != DisplayStyle.Flex;
             ActionPanelContent.style.display = Util.Display(show);
             buttonToggleActionPanelFolding.text = show ? "-" : "+";
+        };
+        
+        buttonClose.clicked += () =>
+        {
+            Root.style.display = DisplayStyle.None;
         };
 
         CastleInfoPanel.Initialize();
@@ -115,9 +151,10 @@ public partial class StrategyPhaseScreen : IScreen
         Render();
     }
 
-    public void Show(Character chara)
+    public void Show(Character chara, bool personalPhase = false)
     {
         Core.MainUI.HideAllPanels();
+        isPersonalPhase = personalPhase;
         SetData(chara);
         Root.style.display = DisplayStyle.Flex;
 
@@ -134,12 +171,33 @@ public partial class StrategyPhaseScreen : IScreen
 
     public void Render()
     {
-        labelCurrentCastleGold.text = currentCharacter.Castle.Gold.ToString("0");
-        labelCurrentAP.text = currentCharacter.ActionPoints.ToString();
-
-        foreach (var button in buttons)
+        // フェーズに応じてヘッダーとボタンを切り替え
+        PersonalPhaseHeader.style.display = Util.Display(isPersonalPhase);
+        PersonalActionButtons.style.display = Util.Display(isPersonalPhase);
+        StrategyPhaseHeader.style.display = Util.Display(!isPersonalPhase);
+        StrategyActionButtons.style.display = Util.Display(!isPersonalPhase);
+        if (isPersonalPhase)
         {
-            button.SetData(currentCharacter);
+            labelPhaseTitle.text = "個人";
+            labelPhaseTitle.style.color = Color.yellow;
+            labelPhaseSubtitle.text = "フェーズ";
+            labelCurrentPersonalGold.text = currentCharacter.Gold.ToString("0");
+            foreach (var button in personalButtons)
+            {
+                button.SetData(currentCharacter);
+            }
+        }
+        else
+        {
+            labelPhaseTitle.text = "戦略";
+            labelPhaseTitle.style.color = Color.cyan;
+            labelPhaseSubtitle.text = "フェーズ";
+            labelCurrentCastleGold.text = currentCharacter.Castle.Gold.ToString("0");
+            labelCurrentAP.text = currentCharacter.ActionPoints.ToString();
+            foreach (var button in strategyButtons)
+            {
+                button.SetData(currentCharacter);
+            }
         }
         
         var characterTile = Core.World.Map.GetTile(currentCharacter.Castle);
@@ -151,7 +209,16 @@ public partial class StrategyPhaseScreen : IScreen
         }
         CastleInfoPanel.SetData(targetTile, summaryDefault);
 
-        ActionPanel.style.display = Util.Display(targetTile == characterTile);
-        NoActionPanel.style.display = Util.Display(targetTile != characterTile);
+        // 個人フェーズでは常にアクション可能、戦略フェーズでは条件付き
+        if (isPersonalPhase)
+        {
+            ActionPanel.style.display = DisplayStyle.Flex;
+            NoActionPanel.style.display = DisplayStyle.None;
+        }
+        else
+        {
+            ActionPanel.style.display = Util.Display(targetTile == characterTile);
+            NoActionPanel.style.display = Util.Display(targetTile != characterTile);
+        }
     }
 }

@@ -9,7 +9,6 @@ public partial class MainUI : MonoBehaviour
     [field: SerializeField] public MainUIVisualTreeAssetManager Assets { get; private set; }
     [field: SerializeField] public LocalizationManager L { get; private set; }
 
-    public PersonalPhaseScreen PersonalPhaseScreen { get; set; }
     public StrategyPhaseScreen StrategyPhaseScreen { get; set; }
     public SelectCharacterScreen SelectCharacterScreen { get; set; }
     public IScreen[] Screens { get; set; }
