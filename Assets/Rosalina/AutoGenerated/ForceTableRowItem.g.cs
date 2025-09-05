@@ -20,11 +20,11 @@ public partial class ForceTableRowItem
 
     public Label labelMode { get; private set; }
 
-    public Label labelCommanderName { get; private set; }
-
     public Label labelDestination { get; private set; }
 
     public Label labelETA { get; private set; }
+
+    public Label labelCommanderName { get; private set; }
 
     public Label labelAttack { get; private set; }
 
@@ -64,6 +64,8 @@ public partial class ForceTableRowItem
 
     public CharacterInfoSoldierIcon soldier14 { get; private set; }
 
+    public VisualElement SoldierGrid { get; private set; }
+
     public Button ForceTableRowItemRoot { get; private set; }
 
     public VisualElement Root { get; private set; }
@@ -74,9 +76,9 @@ public partial class ForceTableRowItem
         imageCommanderFace = Root?.Q<Image>("imageCommanderFace");
         labelMoving = Root?.Q<Label>("labelMoving");
         labelMode = Root?.Q<Label>("labelMode");
-        labelCommanderName = Root?.Q<Label>("labelCommanderName");
         labelDestination = Root?.Q<Label>("labelDestination");
         labelETA = Root?.Q<Label>("labelETA");
+        labelCommanderName = Root?.Q<Label>("labelCommanderName");
         labelAttack = Root?.Q<Label>("labelAttack");
         labelDefense = Root?.Q<Label>("labelDefense");
         labelIntelligence = Root?.Q<Label>("labelIntelligence");
@@ -96,6 +98,7 @@ public partial class ForceTableRowItem
         soldier12 = new CharacterInfoSoldierIcon(Root?.Q<VisualElement>("soldier12"));
         soldier13 = new CharacterInfoSoldierIcon(Root?.Q<VisualElement>("soldier13"));
         soldier14 = new CharacterInfoSoldierIcon(Root?.Q<VisualElement>("soldier14"));
+        SoldierGrid = Root?.Q<VisualElement>("SoldierGrid");
         ForceTableRowItemRoot = Root?.Q<Button>("ForceTableRowItemRoot");
     }
 
@@ -105,9 +108,9 @@ public partial class ForceTableRowItem
         imageCommanderFace = Root?.Q<Image>("imageCommanderFace");
         labelMoving = Root?.Q<Label>("labelMoving");
         labelMode = Root?.Q<Label>("labelMode");
-        labelCommanderName = Root?.Q<Label>("labelCommanderName");
         labelDestination = Root?.Q<Label>("labelDestination");
         labelETA = Root?.Q<Label>("labelETA");
+        labelCommanderName = Root?.Q<Label>("labelCommanderName");
         labelAttack = Root?.Q<Label>("labelAttack");
         labelDefense = Root?.Q<Label>("labelDefense");
         labelIntelligence = Root?.Q<Label>("labelIntelligence");
@@ -127,6 +130,7 @@ public partial class ForceTableRowItem
         soldier12 = new CharacterInfoSoldierIcon(Root?.Q<VisualElement>("soldier12"));
         soldier13 = new CharacterInfoSoldierIcon(Root?.Q<VisualElement>("soldier13"));
         soldier14 = new CharacterInfoSoldierIcon(Root?.Q<VisualElement>("soldier14"));
+        SoldierGrid = Root?.Q<VisualElement>("SoldierGrid");
         ForceTableRowItemRoot = Root?.Q<Button>("ForceTableRowItemRoot");
     }
 }

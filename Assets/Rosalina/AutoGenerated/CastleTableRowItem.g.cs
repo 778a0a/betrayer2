@@ -14,27 +14,27 @@ using UnityEngine.UIElements;
 
 public partial class CastleTableRowItem
 {
-    public Label labelName { get; private set; }
+    public Label labelRegion { get; private set; }
 
     public VisualElement iconCountry { get; private set; }
 
-    public Label labelRegion { get; private set; }
+    public Label labelName { get; private set; }
 
     public Label labelObjective { get; private set; }
-
-    public VisualElement CastleBossImage { get; private set; }
 
     public Label labelGold { get; private set; }
 
     public Label labelBalance { get; private set; }
 
+    public VisualElement MaxIncomeBar { get; private set; }
+
+    public VisualElement CurrentIncomeBar { get; private set; }
+
     public Label labelIncome { get; private set; }
 
     public Label labelMaxIncome { get; private set; }
 
-    public VisualElement MaxIncomeBar { get; private set; }
-
-    public VisualElement CurrentIncomeBar { get; private set; }
+    public VisualElement IncomeBar { get; private set; }
 
     public Label labelExpenditure { get; private set; }
 
@@ -44,9 +44,13 @@ public partial class CastleTableRowItem
 
     public Label labelSoldiers { get; private set; }
 
+    public Label labelSoldiersMax { get; private set; }
+
     public Label labelStrength { get; private set; }
 
     public Label labelMembers { get; private set; }
+
+    public VisualElement CastleBossImage { get; private set; }
 
     public Button CastleTableRowItemRoot { get; private set; }
 
@@ -55,46 +59,50 @@ public partial class CastleTableRowItem
     public CastleTableRowItem(VisualElement root)
     {
         Root = root;
-        labelName = Root?.Q<Label>("labelName");
-        iconCountry = Root?.Q<VisualElement>("iconCountry");
         labelRegion = Root?.Q<Label>("labelRegion");
+        iconCountry = Root?.Q<VisualElement>("iconCountry");
+        labelName = Root?.Q<Label>("labelName");
         labelObjective = Root?.Q<Label>("labelObjective");
-        CastleBossImage = Root?.Q<VisualElement>("CastleBossImage");
         labelGold = Root?.Q<Label>("labelGold");
         labelBalance = Root?.Q<Label>("labelBalance");
-        labelIncome = Root?.Q<Label>("labelIncome");
-        labelMaxIncome = Root?.Q<Label>("labelMaxIncome");
         MaxIncomeBar = Root?.Q<VisualElement>("MaxIncomeBar");
         CurrentIncomeBar = Root?.Q<VisualElement>("CurrentIncomeBar");
+        labelIncome = Root?.Q<Label>("labelIncome");
+        labelMaxIncome = Root?.Q<Label>("labelMaxIncome");
+        IncomeBar = Root?.Q<VisualElement>("IncomeBar");
         labelExpenditure = Root?.Q<Label>("labelExpenditure");
         labelDevLevel = Root?.Q<Label>("labelDevLevel");
         labelTotalInvestment = Root?.Q<Label>("labelTotalInvestment");
         labelSoldiers = Root?.Q<Label>("labelSoldiers");
+        labelSoldiersMax = Root?.Q<Label>("labelSoldiersMax");
         labelStrength = Root?.Q<Label>("labelStrength");
         labelMembers = Root?.Q<Label>("labelMembers");
+        CastleBossImage = Root?.Q<VisualElement>("CastleBossImage");
         CastleTableRowItemRoot = Root?.Q<Button>("CastleTableRowItemRoot");
     }
 
     public void ReinitializeComponent(VisualElement root)
     {
         Root = root;
-        labelName = Root?.Q<Label>("labelName");
-        iconCountry = Root?.Q<VisualElement>("iconCountry");
         labelRegion = Root?.Q<Label>("labelRegion");
+        iconCountry = Root?.Q<VisualElement>("iconCountry");
+        labelName = Root?.Q<Label>("labelName");
         labelObjective = Root?.Q<Label>("labelObjective");
-        CastleBossImage = Root?.Q<VisualElement>("CastleBossImage");
         labelGold = Root?.Q<Label>("labelGold");
         labelBalance = Root?.Q<Label>("labelBalance");
-        labelIncome = Root?.Q<Label>("labelIncome");
-        labelMaxIncome = Root?.Q<Label>("labelMaxIncome");
         MaxIncomeBar = Root?.Q<VisualElement>("MaxIncomeBar");
         CurrentIncomeBar = Root?.Q<VisualElement>("CurrentIncomeBar");
+        labelIncome = Root?.Q<Label>("labelIncome");
+        labelMaxIncome = Root?.Q<Label>("labelMaxIncome");
+        IncomeBar = Root?.Q<VisualElement>("IncomeBar");
         labelExpenditure = Root?.Q<Label>("labelExpenditure");
         labelDevLevel = Root?.Q<Label>("labelDevLevel");
         labelTotalInvestment = Root?.Q<Label>("labelTotalInvestment");
         labelSoldiers = Root?.Q<Label>("labelSoldiers");
+        labelSoldiersMax = Root?.Q<Label>("labelSoldiersMax");
         labelStrength = Root?.Q<Label>("labelStrength");
         labelMembers = Root?.Q<Label>("labelMembers");
+        CastleBossImage = Root?.Q<VisualElement>("CastleBossImage");
         CastleTableRowItemRoot = Root?.Q<Button>("CastleTableRowItemRoot");
     }
 }

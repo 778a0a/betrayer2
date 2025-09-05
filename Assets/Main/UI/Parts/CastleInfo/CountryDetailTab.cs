@@ -183,8 +183,10 @@ public partial class CountryDetailTab
         labelTotalExpenditure.text = $"{totalExpenditure:0}";
         // 総兵力・総将数
         var totalPower = country.Castles.Sum(c => c.SoldierCount);
+        var totalPowerMax = country.Castles.Sum(c => c.SoldierCountMax);
         var totalGeneralCount = country.Castles.Sum(c => c.Members.Count);
         labelTotalPower.text = $"{totalPower:0}";
+        labelTotalPowerMax.text = $"{totalPowerMax:0}";
         labelTotalGeneralCount.text = $"{totalGeneralCount}";
         // 城数
         labelCastleCount.text = $"{country.Castles.Count}";
@@ -193,7 +195,7 @@ public partial class CountryDetailTab
         CastleListView.style.display = Util.Display(showCastleList);
         if (showCastleList)
         {
-            var castles = targetCountry.Castles.ToList();
+            var castles = targetCountry.Castles.OrderBy(c => c.Boss?.OrderIndex ?? -1).ToList();
             CastleListViewTable.SetData(castles, true);
         }
 

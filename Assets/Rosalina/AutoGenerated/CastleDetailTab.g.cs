@@ -50,9 +50,9 @@ public partial class CastleDetailTab
 
     public Label labelTotalPower { get; private set; }
 
-    public Label labelCastleStrength { get; private set; }
+    public Label labelTotalPowerMax { get; private set; }
 
-    public Label labelMemberCount { get; private set; }
+    public Label labelCastleStrength { get; private set; }
 
     public Button buttonToggleMemberListAndIcon { get; private set; }
 
@@ -60,11 +60,15 @@ public partial class CastleDetailTab
 
     public Label labelInCastleSoldierCount { get; private set; }
 
+    public Label labelInCastleSoldierCountMax { get; private set; }
+
     public VisualElement InCastleMemberIconsContainer { get; private set; }
 
     public Label labelDeployedMemberCount { get; private set; }
 
     public Label labelDeployedSoldierCount { get; private set; }
+
+    public Label labelDeployedSoldierCountMax { get; private set; }
 
     public VisualElement DeployedMemberIconsContainer { get; private set; }
 
@@ -109,14 +113,16 @@ public partial class CastleDetailTab
         labelDevLevel = Root?.Q<Label>("labelDevLevel");
         labelTotalInvestment = Root?.Q<Label>("labelTotalInvestment");
         labelTotalPower = Root?.Q<Label>("labelTotalPower");
+        labelTotalPowerMax = Root?.Q<Label>("labelTotalPowerMax");
         labelCastleStrength = Root?.Q<Label>("labelCastleStrength");
-        labelMemberCount = Root?.Q<Label>("labelMemberCount");
         buttonToggleMemberListAndIcon = Root?.Q<Button>("buttonToggleMemberListAndIcon");
         labelInCastleMemberCount = Root?.Q<Label>("labelInCastleMemberCount");
         labelInCastleSoldierCount = Root?.Q<Label>("labelInCastleSoldierCount");
+        labelInCastleSoldierCountMax = Root?.Q<Label>("labelInCastleSoldierCountMax");
         InCastleMemberIconsContainer = Root?.Q<VisualElement>("InCastleMemberIconsContainer");
         labelDeployedMemberCount = Root?.Q<Label>("labelDeployedMemberCount");
         labelDeployedSoldierCount = Root?.Q<Label>("labelDeployedSoldierCount");
+        labelDeployedSoldierCountMax = Root?.Q<Label>("labelDeployedSoldierCountMax");
         DeployedMemberIconsContainer = Root?.Q<VisualElement>("DeployedMemberIconsContainer");
         MemberListViewTable = new CharacterTable(Root?.Q<VisualElement>("MemberListViewTable"));
         MemberIconView = Root?.Q<VisualElement>("MemberIconView");
@@ -150,14 +156,16 @@ public partial class CastleDetailTab
         labelDevLevel = Root?.Q<Label>("labelDevLevel");
         labelTotalInvestment = Root?.Q<Label>("labelTotalInvestment");
         labelTotalPower = Root?.Q<Label>("labelTotalPower");
+        labelTotalPowerMax = Root?.Q<Label>("labelTotalPowerMax");
         labelCastleStrength = Root?.Q<Label>("labelCastleStrength");
-        labelMemberCount = Root?.Q<Label>("labelMemberCount");
         buttonToggleMemberListAndIcon = Root?.Q<Button>("buttonToggleMemberListAndIcon");
         labelInCastleMemberCount = Root?.Q<Label>("labelInCastleMemberCount");
         labelInCastleSoldierCount = Root?.Q<Label>("labelInCastleSoldierCount");
+        labelInCastleSoldierCountMax = Root?.Q<Label>("labelInCastleSoldierCountMax");
         InCastleMemberIconsContainer = Root?.Q<VisualElement>("InCastleMemberIconsContainer");
         labelDeployedMemberCount = Root?.Q<Label>("labelDeployedMemberCount");
         labelDeployedSoldierCount = Root?.Q<Label>("labelDeployedSoldierCount");
+        labelDeployedSoldierCountMax = Root?.Q<Label>("labelDeployedSoldierCountMax");
         DeployedMemberIconsContainer = Root?.Q<VisualElement>("DeployedMemberIconsContainer");
         MemberListViewTable = new CharacterTable(Root?.Q<VisualElement>("MemberListViewTable"));
         MemberIconView = Root?.Q<VisualElement>("MemberIconView");

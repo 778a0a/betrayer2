@@ -58,21 +58,14 @@ public class Castle : ICountryEntity, IMapEntity
     public List<Character> MembersRaw { get; } = new();
 
     [JsonIgnore]
-    public int SoldierCount => Members
-        .Select(m => m.Soldiers.SoldierCount)
-        .DefaultIfEmpty(0)
-        .Sum();
+    public int SoldierCount => Members.Select(m => m.Soldiers.SoldierCount).DefaultIfEmpty(0).Sum();
     [JsonIgnore]
-    public float Power => Members
-        .Select(m => m.Power)
-        .DefaultIfEmpty(0)
-        .Sum();
+    public int SoldierCountMax => Members.Select(m => m.Soldiers.SoldierCountMax).DefaultIfEmpty(0).Sum();
     [JsonIgnore]
-    public float DefencePower => Members
-        .Where(m => m.IsDefendable)
-        .Select(m => m.Power)
-        .DefaultIfEmpty(0)
-        .Sum();
+    public float Power => Members.Select(m => m.Power).DefaultIfEmpty(0).Sum();
+    [JsonIgnore]
+    public float DefencePower => Members.Where(m => m.IsDefendable).Select(m => m.Power).DefaultIfEmpty(0).Sum();
+
     public IEnumerable<Force> ReinforcementForces(ForceManager forces) => forces
         .Where(f => this.IsSelfOrAlly(f))
         .Where(f => f.Destination.Position == Position);

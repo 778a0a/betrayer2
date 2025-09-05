@@ -153,7 +153,7 @@ public partial class CastleDetailTab
         labelTotalInvestment.text = $"{castle.TotalInvestment:0}";
         labelCastleStrength.text = $"{castle.Strength:0}";
         labelTotalPower.text = $"{castle.SoldierCount:0}";
-        labelMemberCount.text = $"{castle.Members.Count}";
+        labelTotalPowerMax.text = $"{castle.SoldierCountMax:0}";
         
         // 収入バー
         const float IncomeBarMax = 200f;
@@ -171,11 +171,13 @@ public partial class CastleDetailTab
             var inCastle = castle.Members.Where(m => !m.IsMoving).OrderBy(c => c.OrderIndex).ToList();
             labelInCastleMemberCount.text = $"({inCastle.Count}名)";
             labelInCastleSoldierCount.text = $"{inCastle.Sum(c => c.Soldiers.SoldierCount):0}";
+            labelInCastleSoldierCountMax.text = $"{inCastle.Sum(c => c.Soldiers.SoldierCountMax):0}";
             ShowCharacterIcons(inCastle, InCastleMemberIconsContainer);
             // 出撃中キャラ一覧
             var deployed = castle.Members.Where(m => m.IsMoving).OrderBy(c => c.OrderIndex).ToList();
             labelDeployedMemberCount.text = $"({deployed.Count}名)";
             labelDeployedSoldierCount.text = $"{deployed.Sum(c => c.Soldiers.SoldierCount):0}";
+            labelDeployedSoldierCountMax.text = $"{deployed.Sum(c => c.Soldiers.SoldierCountMax):0}";
             ShowCharacterIcons(deployed, DeployedMemberIconsContainer);
         }
         // リスト表示

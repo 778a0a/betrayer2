@@ -74,3 +74,11 @@ MonoBehaviour:
     _path: Assets/Main/UI/Parts/CastleInfo/CastleDetailTab.uxml
   - _type: 1
     _path: Assets/Main/UI/Parts/CastleInfo/CountryDetailTab.uxml
+  - _type: 1
+    _path: Assets/Main/UI/Parts/CastleTableRowItem.uxml
+  - _type: 1
+    _path: Assets/Main/UI/Parts/CastleTable.uxml
+  - _type: 1
+    _path: Assets/Main/UI/Parts/ForceTable.uxml
+  - _type: 1
+    _path: Assets/Main/UI/Parts/ForceTableRowItem.uxml

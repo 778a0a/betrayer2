@@ -92,7 +92,8 @@ public partial class CastleTableRowItem
         
         // 総兵力
         labelSoldiers.text = castle.SoldierCount.ToString("0");
-        
+        labelSoldiersMax.text = castle.SoldierCountMax.ToString("0");
+
         // 城塞レベル
         labelStrength.text = castle.Strength.ToString("0");
         

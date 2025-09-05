@@ -51,7 +51,9 @@
                 </engine:VisualElement>
                 <engine:VisualElement style="flex-direction: row; align-items: center; margin-top: 3px;">
                     <engine:Label text="総兵力:" style="margin-right: 10px; font-size: 24px;" />
-                    <engine:Label name="labelSoldiers" text="88888" style="font-size: 24px; color: orange; min-width: 65px" />
+                    <engine:Label name="labelSoldiers" text="88888" style="font-size: 24px; color: orange; min-width: 60px;" />
+                    <engine:Label text="/" style="font-size: 24px; margin: 0 5px 0 5px" />
+                    <engine:Label name="labelSoldiersMax" text="88888" style="font-size: 24px; color: orange; min-width: 65px" />
                     <engine:Label text="城塞Lv:" style="margin-left: 15px; margin-right: 10px; font-size: 24px;" />
                     <engine:Label name="labelStrength" text="888" style="font-size: 24px; color: cyan;" />
                     <engine:Label text="将数:" style="margin-left: 15px; margin-right: 10px; font-size: 24px;" />
