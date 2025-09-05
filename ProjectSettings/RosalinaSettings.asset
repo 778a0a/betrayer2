@@ -96,3 +96,5 @@ MonoBehaviour:
     _path: Assets/Main/UI/Parts/ForceTable/ForceTableRowItem.uxml
   - _type: 1
     _path: Assets/Main/UI/Screens/ActionScreen.uxml
+  - _type: 1
+    _path: Assets/Main/UI/Screens/SelectCastleScreen.uxml

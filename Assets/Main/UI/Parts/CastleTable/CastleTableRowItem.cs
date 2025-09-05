@@ -6,12 +6,16 @@ public partial class CastleTableRowItem
 {
     public event EventHandler<Castle> MouseMove;
     public event EventHandler<Castle> MouseDown;
+    public event EventHandler<Castle> MouseEnter;
+    public event EventHandler<Castle> MouseLeave;
 
     public Castle Castle { get; private set; }
 
     public void Initialize()
     {
         Root.RegisterCallback<MouseMoveEvent>(OnMouseMove);
+        Root.RegisterCallback<MouseEnterEvent>(OnMouseEnter);
+        Root.RegisterCallback<MouseLeaveEvent>(OnMouseLeave);
         CastleTableRowItemRoot.RegisterCallback<ClickEvent>(OnMouseDown);
     }
 
@@ -23,6 +27,16 @@ public partial class CastleTableRowItem
     private void OnMouseDown(ClickEvent evt)
     {
         MouseDown?.Invoke(this, Castle);
+    }
+
+    private void OnMouseEnter(MouseEnterEvent evt)
+    {
+        MouseEnter?.Invoke(this, Castle);
+    }
+
+    private void OnMouseLeave(MouseLeaveEvent evt)
+    {
+        MouseLeave?.Invoke(this, Castle);
     }
 
     public void SetData(Castle castle, bool isClickable)

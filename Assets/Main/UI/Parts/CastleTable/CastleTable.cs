@@ -6,8 +6,9 @@ using UnityEngine.UIElements;
 
 public partial class CastleTable : MainUIComponent
 {
-    public event EventHandler<Castle> RowMouseMove;
     public event EventHandler<Castle> RowMouseDown;
+    public event EventHandler<int> RowMouseEnter;
+    public event EventHandler<int> RowMouseLeave;
 
     private List<Castle> castles;
     private Predicate<Castle> clickable;
@@ -22,7 +23,8 @@ public partial class CastleTable : MainUIComponent
             var row = new CastleTableRowItem(element);
             row.Initialize();
             row.MouseDown += OnRowMouseDown;
-            row.MouseMove += OnRowMouseMove;
+            row.MouseEnter += OnRowMouseEnter;
+            row.MouseLeave += OnRowMouseLeave;
             element.userData = row;
             Debug.Log("makeItem: " + element.name);
             return element;
@@ -35,14 +37,27 @@ public partial class CastleTable : MainUIComponent
         };
     }
 
-    private void OnRowMouseMove(object sender, Castle e)
-    {
-        RowMouseMove?.Invoke(this, e);
-    }
-
     private void OnRowMouseDown(object sender, Castle e)
     {
         RowMouseDown?.Invoke(this, e);
+    }
+
+    private void OnRowMouseEnter(object sender, Castle e)
+    {
+        var index = castles.IndexOf(e);
+        if (index >= 0)
+        {
+            RowMouseEnter?.Invoke(this, index);
+        }
+    }
+
+    private void OnRowMouseLeave(object sender, Castle e)
+    {
+        var index = castles.IndexOf(e);
+        if (index >= 0)
+        {
+            RowMouseLeave?.Invoke(this, index);
+        }
     }
 
     public void SetData(IEnumerable<Castle> castles, bool clickable) => SetData(castles, _ => clickable);

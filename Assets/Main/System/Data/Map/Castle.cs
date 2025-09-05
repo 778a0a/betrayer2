@@ -203,6 +203,9 @@ public class Castle : ICountryEntity, IMapEntity
     /// </summary>
     public bool QuarterActionDone { get; set; } = false;
 
+    [JsonIgnore]
+    public GameMapTile Tile => GameCore.Instance.World.Map.GetTile(this);
+
     public override string ToString()
     {
         return $"城({Name} 城主: {Boss?.Name ?? "無"} - {Country.Ruler.Name}軍)";

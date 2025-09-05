@@ -137,7 +137,7 @@ public class GameMapManager
         Debug.Log($"町({town.Position}, 城ID:{town.Castle.Id})が削除されました。");
     }
 
-    public void SetEnableHighlight<T>(List<T> targets) where T : IMapEntity
+    public void SetEnableHighlight<T>(IList<T> targets) where T : IMapEntity
     {
         var set = new HashSet<GameMapTile>(targets.Select(x => GetTile(x)));
         foreach (var tile in Tiles)

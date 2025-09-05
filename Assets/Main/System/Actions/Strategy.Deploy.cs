@@ -44,6 +44,7 @@ partial class StrategyActions
         public override async ValueTask Do(ActionArgs args)
         {
             var actor = args.actor;
+            var target = (IMapEntity)args.targetCastle;
 
             // プレーヤーの場合
             if (actor.IsPlayer)
@@ -54,17 +55,28 @@ partial class StrategyActions
                 var neighborCastles = actor.Castle.Neighbors
                     .Where(c => c != actor.Castle)
                     .ToList();
-                args.targetCastle = (await UI.SelectCharacterScreen.Show(
+                target = await UI.SelectCastleScreen.SelectDeployDestination(
                     "進軍先の城を選択してください",
                     "キャンセル",
-                    neighborCastles.Select(c => c.Boss).ToList(),
-                    _ => true
-                ))?.Castle;
+                    neighborCastles,
+                    async selectedTile =>
+                    {
+                        if (!selectedTile.HasCastle)
+                        {
+                            var ok = await MessageWindow.ShowOkCancel("城が存在しない場所に進軍します。\nよろしいですか？");
+                            return ok;
+                        }
+                        return true;
+                    });
 
-                if (args.targetCastle == null)
+                if (target == null)
                 {
                     Debug.Log("城選択がキャンセルされました。");
                     return;
+                }
+                if (target is GameMapTile t && t.HasCastle)
+                {
+                    target = t.Castle;
                 }
 
                 // 進軍するキャラを選択する
@@ -85,7 +97,7 @@ partial class StrategyActions
 
             var force = new Force(World, args.targetCharacter, args.targetCharacter.Castle.Position);
 
-            force.SetDestination(args.targetCastle);
+            force.SetDestination(target);
             World.Forces.Register(force);
 
             Debug.Log($"{force} が出撃しました。");
