@@ -66,6 +66,11 @@ partial class StrategyActions
                             var ok = await MessageWindow.ShowOkCancel("城が存在しない場所に進軍します。\nよろしいですか？");
                             return ok;
                         }
+                        if (!neighborCastles.Contains(selectedTile.Castle) && selectedTile.Castle.IsAttackable(actor.Country))
+                        {
+                            var ok = await MessageWindow.ShowOkCancel("隣接していない城のため戦闘効率が落ちます。\nよろしいですか？");
+                            return ok;
+                        }
                         return true;
                     });
 
