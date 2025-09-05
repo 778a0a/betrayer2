@@ -103,6 +103,13 @@ public partial class CastleDetailTab
     /// </summary>
     private void SetCastleData(Castle castle)
     {
+        if (castle == null)
+        {
+            Root.style.display = DisplayStyle.None;
+            return;
+        }
+        Root.style.display = DisplayStyle.Flex;
+
         // 城名・地方・方針
         iconCountry.style.backgroundImage = new(Static.GetCountrySprite(castle.Country.ColorIndex));
         labelCastleName.text = castle.Name;

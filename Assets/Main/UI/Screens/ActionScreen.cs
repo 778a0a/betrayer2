@@ -147,7 +147,41 @@ public partial class ActionScreen : IScreen
     public void OnDefaultCellClicked(MapPosition pos)
     {
         Debug.Log($"DefaultClick {pos}");
+        var prevTile = currentTile;
         currentTile = Core.World.Map.GetTile(pos);
+
+        // 同じ場所のクリックの場合、タブを次に切り替える
+        if (prevTile == currentTile)
+        {
+            var currentTab = CastleInfoPanel.CurrentTab;
+
+            var nextTab = (CastleInfoTabType)(((int)currentTab + 1) % Util.EnumArray<CastleInfoTabType>().Length);
+            CastleInfoPanel.SwitchTab(nextTab);
+        }
+        else
+        {
+            switch (CastleInfoPanel.CurrentTab)
+            {
+                case CastleInfoTabType.Castle:
+                case CastleInfoTabType.Country:
+                    // 城がなく、軍勢がいるなら軍勢タブにする。
+                    if (!currentTile.HasCastle && Core.World.Forces.Any(f => f.Position == currentTile.Position))
+                    {
+                        CastleInfoPanel.SwitchTab(CastleInfoTabType.Force);
+                    }
+                    break;
+                case CastleInfoTabType.Force:
+                    // 軍勢がなく、城があるなら城タブにする。
+                    if (!Core.World.Forces.Any(f => f.Position == currentTile.Position) && currentTile.HasCastle)
+                    {
+                        CastleInfoPanel.SwitchTab(CastleInfoTabType.Castle);
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+
         Render();
     }
 

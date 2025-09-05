@@ -142,6 +142,12 @@ public partial class CountryDetailTab
     public void Render()
     {
         var country = targetCountry;
+        if (country == null)
+        {
+            Root.style.display = DisplayStyle.None;
+            return;
+        }
+        Root.style.display = DisplayStyle.Flex;
 
         // 統治者
         iconCountry.style.backgroundImage = new(Static.GetCountrySprite(country.ColorIndex));

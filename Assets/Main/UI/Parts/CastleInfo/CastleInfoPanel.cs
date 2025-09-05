@@ -11,37 +11,31 @@ public partial class CastleInfoPanel
     private GameMapTile targetTile;
     private Castle targetCastle;
 
-    private InfoTab currentTab;
-    private Button CurrentTabButton => currentTab switch
+    public CastleInfoTabType CurrentTab { get; set; }
+    private Button CurrentTabButton => CurrentTab switch
     {
-        InfoTab.Castle => TabButtonCastle,
-        InfoTab.Country => TabButtonCountry,
-        InfoTab.Force => TabButtonForce,
+        CastleInfoTabType.Castle => TabButtonCastle,
+        CastleInfoTabType.Country => TabButtonCountry,
+        CastleInfoTabType.Force => TabButtonForce,
         _ => throw new NotImplementedException(),
     };
-    private enum InfoTab
-    {
-        Castle,
-        Country,
-        Force,
-    }
 
     public void Initialize()
     {
-        TabButtonCastle.clicked += () => SwitchTab(InfoTab.Castle);
-        TabButtonCountry.clicked += () => SwitchTab(InfoTab.Country);
-        TabButtonForce.clicked += () => SwitchTab(InfoTab.Force);
+        TabButtonCastle.clicked += () => SwitchTab(CastleInfoTabType.Castle);
+        TabButtonCountry.clicked += () => SwitchTab(CastleInfoTabType.Country);
+        TabButtonForce.clicked += () => SwitchTab(CastleInfoTabType.Force);
 
         CastleDetailTab.Initialize();
         CountryDetailTab.Initialize();
         ForceDetailTab.Initialize();
 
-        SwitchTab(InfoTab.Castle);
+        SwitchTab(CastleInfoTabType.Castle);
     }
 
-    private void SwitchTab(InfoTab tab)
+    public void SwitchTab(CastleInfoTabType tab)
     {
-        currentTab = tab;
+        CurrentTab = tab;
 
         // タブボタンの色を更新する。
         TabButtonCastle.RemoveFromClassList("active");
@@ -49,20 +43,17 @@ public partial class CastleInfoPanel
         TabButtonForce.RemoveFromClassList("active");
         CurrentTabButton.AddToClassList("active");
 
-        CastleInfoTab.style.display = Util.Display(currentTab == InfoTab.Castle);
-        CountryInfoTab.style.display = Util.Display(currentTab == InfoTab.Country);
-        ForceInfoTab.style.display = Util.Display(currentTab == InfoTab.Force);
+        CastleInfoTab.style.display = Util.Display(CurrentTab == CastleInfoTabType.Castle);
+        CountryInfoTab.style.display = Util.Display(CurrentTab == CastleInfoTabType.Country);
+        ForceInfoTab.style.display = Util.Display(CurrentTab == CastleInfoTabType.Force);
     }
 
     public void SetData(GameMapTile tile, Character characterSummaryTargetDefault)
     {
         targetTile = tile;
         targetCastle = tile.Castle;
-        if (targetCastle != null)
-        {
-            CastleDetailTab.SetData(targetCastle, characterSummaryTargetDefault);
-            CountryDetailTab.SetData(targetCastle?.Country);
-        }
+        CastleDetailTab.SetData(targetCastle, characterSummaryTargetDefault);
+        CountryDetailTab.SetData(targetCastle?.Country);
         ForceDetailTab.SetData(targetTile);
 
         Render();
@@ -70,18 +61,15 @@ public partial class CastleInfoPanel
 
     private void Render()
     {
-        if (targetCastle == null)
-        {
-            Root.style.display = DisplayStyle.None;
-            return;
-        }
-        Root.style.display = DisplayStyle.Flex;
-
         CastleDetailTab.Render();
         CountryDetailTab.Render();
         ForceDetailTab.Render();
     }
+}
 
-
-
+public enum CastleInfoTabType
+{
+    Castle,
+    Country,
+    Force,
 }

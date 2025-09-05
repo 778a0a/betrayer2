@@ -287,6 +287,7 @@ public class Character
         {
             var country = Country;
             var order = country.Vassals.OrderBy(c => c.OrderIndex).ToList().IndexOf(this);
+            return "従士";
             return new[]
             {
                 "従士",
