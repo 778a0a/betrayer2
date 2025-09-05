@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public partial class StrategyPhaseScreen : IScreen
+public partial class ActionScreen : IScreen
 {
     private GameCore Core => GameCore.Instance;
     private ActionButtonHelper[] strategyButtons;

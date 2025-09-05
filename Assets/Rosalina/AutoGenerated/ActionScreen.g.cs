@@ -12,7 +12,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public partial class StrategyPhaseScreen
+public partial class ActionScreen
 {
     public Label labelCurrentCastleGold { get; private set; }
 
@@ -54,7 +54,7 @@ public partial class StrategyPhaseScreen
 
     public VisualElement Root { get; private set; }
 
-    public StrategyPhaseScreen(VisualElement root)
+    public ActionScreen(VisualElement root)
     {
         Root = root;
         labelCurrentCastleGold = Root?.Q<Label>("labelCurrentCastleGold");

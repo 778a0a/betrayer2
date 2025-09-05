@@ -44,7 +44,7 @@ partial class GameCore
         if (chara.IsPlayer)
         {
             Booter.hold = true;
-            MainUI.StrategyPhaseScreen.Show(chara);
+            MainUI.ActionScreen.Show(chara);
             await Booter.HoldIfNeeded();
             return;
         }
@@ -166,7 +166,7 @@ partial class GameCore
         if (chara.IsPlayer)
         {
             Booter.hold = true;
-            MainUI.StrategyPhaseScreen.Show(chara, personalPhase: true);
+            MainUI.ActionScreen.Show(chara, personalPhase: true);
             await Booter.HoldIfNeeded();
             return;
         }
