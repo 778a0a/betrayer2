@@ -48,12 +48,18 @@ partial class StrategyActions
             // プレイヤーの場合は君主選択画面を表示
             if (actor.IsPlayer)
             {
-                // TODO 専用画面・マップから選択可能にする
-                
                 // 自国以外の君主一覧を取得する。
                 var otherRulers = World.Countries
                     .Where(c => c != actor.Country)
-                    .Select(c => c.Ruler)
+                    .OrderByDescending(c =>
+                    {
+                        var rel = actor.Country.GetRelation(c);
+                        if (rel > 50) rel += 1000;
+                        else if (rel < 50) rel += 500;
+                        var isNeighbor = actor.Country.Neighbors.Contains(c);
+                        if (isNeighbor) rel += 200;
+                        return rel;
+                    })
                     .ToList();
 
                 if (otherRulers.Count == 0)
@@ -61,20 +67,20 @@ partial class StrategyActions
                     await MessageWindow.Show("親善を行える相手がいません。");
                     return;
                 }
-                var targetRuler = await UI.SelectCharacterScreen.Show(
+                var selectedCountry = await UI.SelectCountryScreen.Show(
                     "親善を行う相手を選択してください",
                     "キャンセル",
                     otherRulers,
                     _ => true
                 );
 
-                if (targetRuler == null)
+                if (selectedCountry == null)
                 {
                     Debug.Log("キャラクター選択がキャンセルされました。");
                     return;
                 }
 
-                args.targetCountry = targetRuler.Country;
+                args.targetCountry = selectedCountry;
             }
 
             var target = args.targetCountry;

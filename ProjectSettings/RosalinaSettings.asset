@@ -100,3 +100,9 @@ MonoBehaviour:
     _path: Assets/Main/UI/Screens/SelectCastleScreen.uxml
   - _type: 1
     _path: Assets/Main/UI/Screens/TransportScreen.uxml
+  - _type: 1
+    _path: Assets/Main/UI/Parts/CountryTable/CountryTable.uxml
+  - _type: 1
+    _path: Assets/Main/UI/Parts/CountryTable/CountryTableRowItem.uxml
+  - _type: 1
+    _path: Assets/Main/UI/Screens/SelectCountryScreen.uxml

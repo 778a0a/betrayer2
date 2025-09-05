@@ -1,0 +1,33 @@
+.CountryTable-Card {
+    color: white;
+    flex-direction: column;
+    background-color: #224;
+    border-width: 2px;
+    border-color: #444;
+    border-radius: 5px;
+    margin: 0 0 5px 0;
+    padding: 10px;
+    min-height: 120px;
+}
+
+.CountryTable-Card .MiddleCharacterIcon {
+    width: 115px;
+    height: 115px;
+}
+
+#CountryTable .unity-collection-view__item:hover {
+    background-color: initial;
+}
+
+#CountryTableRowItemRoot:hover {
+    background-color: rgba(0, 156, 143, 0.3);
+    border-color: rgba(204, 204, 204, 0.7);
+}
+
+#CountryTableRowItemRoot.clickable:hover {
+    background-color: rgba(0, 156, 143, 0.5);
+}
+
+#CountryTableRowItemRoot.clickable:active {
+    background-color: rgba(0, 156, 143, 0.8);
+}

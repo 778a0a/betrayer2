@@ -34,36 +34,44 @@ partial class StrategyActions
             Util.IsTrue(CanDo(args));
             var actor = args.actor;
 
-            // プレイヤーの場合は君主選択画面を表示
+            // プレイヤーの場合は国選択画面を表示
             if (actor.IsPlayer)
             {
-                // TODO 専用画面・マップから選択可能にする
-
-                // 自国以外の君主一覧を取得する。
-                var otherRulers = World.Countries
+                // 自国以外の国一覧を取得する。
+                var otherCountries = World.Countries
                     .Where(c => c != actor.Country)
-                    .Select(c => c.Ruler)
+                    .Where(c => !c.IsAlly(actor.Country))
+                    .OrderByDescending(c =>
+                    {
+                        var rel = actor.Country.GetRelation(c);
+                        if (rel > 50) rel += 1000;
+                        //else if (rel < 50) rel += 500;
+                        var isNeighbor = actor.Country.Neighbors.Contains(c);
+                        if (isNeighbor) rel += 200;
+                        return rel;
+                    })
                     .ToList();
 
-                if (otherRulers.Count == 0)
+                if (otherCountries.Count == 0)
                 {
                     await MessageWindow.Show("同盟を行える相手がいません。");
                     return;
                 }
-                var targetRuler = await UI.SelectCharacterScreen.Show(
+
+                var targetCountry = await UI.SelectCountryScreen.Show(
                     "同盟を行う相手を選択してください",
                     "キャンセル",
-                    otherRulers,
+                    otherCountries,
                     _ => true
                 );
 
-                if (targetRuler == null)
+                if (targetCountry == null)
                 {
-                    Debug.Log("キャラクター選択がキャンセルされました。");
+                    Debug.Log("国選択がキャンセルされました。");
                     return;
                 }
 
-                args.targetCountry = targetRuler.Country;
+                args.targetCountry = targetCountry;
             }
 
             // 成否にかかわらずコストを消費する。

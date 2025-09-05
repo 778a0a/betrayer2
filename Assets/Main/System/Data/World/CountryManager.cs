@@ -92,13 +92,17 @@ public class CountryManager : IReadOnlyList<Country>
         return color;
     }
 
-    public string GetRelationText(Country a, Country b = null)
+    public string GetRelationText(Country a, Country b = null, bool includeNeighbor = false)
     {
         b ??= GameCore.Instance.World.Player?.Country;
         if (b == null) return "";
 
         var relation = GetRelation(a, b);
         var specials = new List<string>();
+        if (includeNeighbor && a.Neighbors.Contains(b))
+        {
+            specials.Add("隣接");
+        }
         if (a.IsAlly(b))
         {
             specials.Add("同盟");
@@ -107,10 +111,6 @@ public class CountryManager : IReadOnlyList<Country>
         {
             specials.Add("敵対");
         }
-        //if (playerCountry.Neighbors.Contains(country))
-        //{
-        //    specials.Add("隣接");
-        //}
         var specialsText = specials.Count > 0 ? $" ({string.Join("、", specials)})" : "";
         return $"{relation:0}{specialsText}";
     }
