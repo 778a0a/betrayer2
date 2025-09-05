@@ -283,22 +283,24 @@ public class Character
                 _ => "君主",
             };
         }
+        else if (IsBoss)
+        {
+            return "城主";
+        }
         else if (IsVassal)
         {
-            var country = Country;
-            var order = country.Vassals.OrderBy(c => c.OrderIndex).ToList().IndexOf(this);
-            return "従士";
-            return new[]
-            {
-                "従士",
-                "従士",
-                "士長",
-                "将軍",
-                "元帥",
-                "宰相",
-                "総督",
-                "副王",
-            }[order];
+            return "一般";
+            //return new[]
+            //{
+            //    "従士",
+            //    "従士",
+            //    "士長",
+            //    "将軍",
+            //    "元帥",
+            //    "宰相",
+            //    "総督",
+            //    "副王",
+            //}[order];
         }
         else
         {

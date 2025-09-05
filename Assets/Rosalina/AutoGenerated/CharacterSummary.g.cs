@@ -18,6 +18,8 @@ public partial class CharacterSummary
 
     public Label labelMoving { get; private set; }
 
+    public Label labelIncapacitated { get; private set; }
+
     public Label traitKnight { get; private set; }
 
     public Label traitDrillmaster { get; private set; }
@@ -33,6 +35,8 @@ public partial class CharacterSummary
     public Label traitMerchant { get; private set; }
 
     public Label traitDivineSpeed { get; private set; }
+
+    public VisualElement iconCountry { get; private set; }
 
     public Label labelPlayerTitle { get; private set; }
 
@@ -107,6 +111,7 @@ public partial class CharacterSummary
         Root = root;
         imagePlayerFace = Root?.Q<Image>("imagePlayerFace");
         labelMoving = Root?.Q<Label>("labelMoving");
+        labelIncapacitated = Root?.Q<Label>("labelIncapacitated");
         traitKnight = Root?.Q<Label>("traitKnight");
         traitDrillmaster = Root?.Q<Label>("traitDrillmaster");
         traitPirate = Root?.Q<Label>("traitPirate");
@@ -115,6 +120,7 @@ public partial class CharacterSummary
         traitMountaineer = Root?.Q<Label>("traitMountaineer");
         traitMerchant = Root?.Q<Label>("traitMerchant");
         traitDivineSpeed = Root?.Q<Label>("traitDivineSpeed");
+        iconCountry = Root?.Q<VisualElement>("iconCountry");
         labelPlayerTitle = Root?.Q<Label>("labelPlayerTitle");
         labelPlayerName = Root?.Q<Label>("labelPlayerName");
         TraitContainer = Root?.Q<VisualElement>("TraitContainer");
@@ -155,6 +161,7 @@ public partial class CharacterSummary
         Root = root;
         imagePlayerFace = Root?.Q<Image>("imagePlayerFace");
         labelMoving = Root?.Q<Label>("labelMoving");
+        labelIncapacitated = Root?.Q<Label>("labelIncapacitated");
         traitKnight = Root?.Q<Label>("traitKnight");
         traitDrillmaster = Root?.Q<Label>("traitDrillmaster");
         traitPirate = Root?.Q<Label>("traitPirate");
@@ -163,6 +170,7 @@ public partial class CharacterSummary
         traitMountaineer = Root?.Q<Label>("traitMountaineer");
         traitMerchant = Root?.Q<Label>("traitMerchant");
         traitDivineSpeed = Root?.Q<Label>("traitDivineSpeed");
+        iconCountry = Root?.Q<VisualElement>("iconCountry");
         labelPlayerTitle = Root?.Q<Label>("labelPlayerTitle");
         labelPlayerName = Root?.Q<Label>("labelPlayerName");
         TraitContainer = Root?.Q<VisualElement>("TraitContainer");

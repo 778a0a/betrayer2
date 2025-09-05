@@ -21,6 +21,8 @@ public partial class CharacterSummary
         labelPlayerName.text = chara.Name;
         labelPlayerTitle.text = chara.GetTitle();
         labelMoving.visible = chara.IsMoving;
+        labelIncapacitated.visible = chara.IsIncapacitated;
+        iconCountry.style.backgroundImage = new(Static.GetCountrySprite(chara.Country.ColorIndex));
         // 能力値の更新
         labelAttack.text = chara.Attack.ToString();
         labelDefense.text = chara.Defense.ToString();
