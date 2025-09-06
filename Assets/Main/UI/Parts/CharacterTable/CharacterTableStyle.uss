@@ -24,6 +24,11 @@
     background-color: rgba(0, 156, 143, 0.8);
 }
 
+#CharacterTableRowItemRoot.selected {
+    background-color: rgba(0, 156, 143, 0.6);
+    border-color: rgba(0, 255, 255, 0.8);
+}
+
 .CharacterTable-Cell {
     font-size: 28px;
     color: rgb(221, 221, 221);

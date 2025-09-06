@@ -25,7 +25,7 @@ public partial class CharacterTableRowItem
         MouseDown?.Invoke(this, Character);
     }
 
-    public void SetData(Character chara, bool isClickable)
+    public void SetData(Character chara, bool isClickable, bool isSelected = false)
     {
         Character = chara;
         var country = chara?.Country;
@@ -37,6 +37,7 @@ public partial class CharacterTableRowItem
         Root.style.visibility = Visibility.Visible;
 
         CharacterTableRowItemRoot.EnableInClassList("clickable", isClickable);
+        CharacterTableRowItemRoot.EnableInClassList("selected", isSelected);
         
         labelName.text = chara.Name;
         labelDeployed.style.display = Util.Display(chara.IsMoving);

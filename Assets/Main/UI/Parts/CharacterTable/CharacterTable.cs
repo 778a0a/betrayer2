@@ -8,10 +8,15 @@ public partial class CharacterTable : MainUIComponent
 {
     public event EventHandler<Character> RowMouseMove;
     public event EventHandler<Character> RowMouseDown;
+    public event EventHandler<List<Character>> SelectionChanged;
 
     private List<Character> originalCharas;
     private List<Character> charas;
     private Predicate<Character> clickable;
+    
+    // 複数選択機能
+    private bool isMultiSelectMode = false;
+    private HashSet<Character> selectedCharacters = new HashSet<Character>();
 
     // ソート状態管理
     private enum SortState { None, Ascending, Descending }
@@ -38,8 +43,11 @@ public partial class CharacterTable : MainUIComponent
         ListView.bindItem = (element, index) =>
         {
             var item = (CharacterTableRowItem)element.userData;
-            item.SetData(charas[index], clickable?.Invoke(charas[index]) ?? false);
-            Debug.Log("bindItem: " + index + " -> " + charas[index]?.Name);
+            var character = charas[index];
+            var isClickable = clickable?.Invoke(character) ?? false;
+            var isSelected = selectedCharacters.Contains(character);
+            item.SetData(character, isClickable, isSelected);
+            Debug.Log("bindItem: " + index + " -> " + character?.Name);
         };
 
         // ヘッダークリック処理を設定
@@ -53,7 +61,14 @@ public partial class CharacterTable : MainUIComponent
 
     private void OnRowMouseDown(object sender, Character e)
     {
-        RowMouseDown?.Invoke(this, e);
+        if (isMultiSelectMode)
+        {
+            ToggleSelection(e);
+        }
+        else
+        {
+            RowMouseDown?.Invoke(this, e);
+        }
     }
 
     public void SetData(IEnumerable<Character> charas, bool clickable) => SetData(charas, _ => clickable);
@@ -222,5 +237,64 @@ public partial class CharacterTable : MainUIComponent
         {
             label.text = label.text.Replace("↑", "").Replace("↓", "");
         }
+    }
+
+    /// <summary>
+    /// 複数選択モードを設定
+    /// </summary>
+    public void SetMultiSelectMode(bool enabled)
+    {
+        isMultiSelectMode = enabled;
+        if (!enabled)
+        {
+            selectedCharacters.Clear();
+        }
+        RefreshDisplay();
+    }
+
+    /// <summary>
+    /// 選択状態をトグル
+    /// </summary>
+    private void ToggleSelection(Character character)
+    {
+        if (!(clickable?.Invoke(character) ?? false)) return;
+
+        if (selectedCharacters.Contains(character))
+        {
+            selectedCharacters.Remove(character);
+        }
+        else
+        {
+            selectedCharacters.Add(character);
+        }
+        
+        RefreshDisplay();
+        SelectionChanged?.Invoke(this, selectedCharacters.ToList());
+    }
+
+    /// <summary>
+    /// 選択をクリア
+    /// </summary>
+    public void ClearSelection()
+    {
+        selectedCharacters.Clear();
+        RefreshDisplay();
+        SelectionChanged?.Invoke(this, selectedCharacters.ToList());
+    }
+
+    /// <summary>
+    /// 現在の選択を取得
+    /// </summary>
+    public List<Character> GetSelectedCharacters()
+    {
+        return selectedCharacters.ToList();
+    }
+
+    /// <summary>
+    /// 表示を更新
+    /// </summary>
+    private void RefreshDisplay()
+    {
+        ListView.RefreshItems();
     }
 }

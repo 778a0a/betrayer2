@@ -6,8 +6,9 @@
         <engine:Label name="labelDescription" text="キャラクターを選択してください" style="font-size: 32px; margin-top: 10px;" />
         <engine:Instance template="CharacterTable" name="CharacterTable" style="margin-top: 20px; flex-grow: 1;" />
         <engine:Instance template="CharacterSummary" name="CharacterSummary" style="flex-shrink: 0;" />
-        <engine:VisualElement style="margin-top: 10px; flex-shrink: 0;">
-            <engine:Button name="buttonClose" text="キャンセル" />
+        <engine:VisualElement style="margin-top: 10px; flex-shrink: 0; flex-direction: row;">
+            <engine:Button name="buttonConfirm" text="決定" style="flex-grow: 1; margin-right: 10px; display: none;" />
+            <engine:Button name="buttonClose" text="キャンセル" style="flex-grow: 1;" />
         </engine:VisualElement>
     </engine:VisualElement>
 </engine:UXML>
