@@ -31,9 +31,8 @@ partial class StrategyActions
         {
             return actor.CanPay(Cost(new(actor, estimate: true))) &&
                 // 他に拠点が存在する場合のみ有効
-                actor.Country.Castles.Any(c => c.Boss != actor);
+                actor.Country.Castles.Count > 1;
         }
-
 
         public override async ValueTask Do(ActionArgs args)
         {
@@ -42,17 +41,17 @@ partial class StrategyActions
             // プレーヤーの場合
             if (actor.IsPlayer)
             {
-                args.targetCastle = actor.Castle;
+                args.targetCastle = args.selectedTile.Castle;
 
                 // 自国の他の拠点を取得する。
                 var targetCastles = actor.Country.Castles
-                    .Where(c => c != actor.Castle)
+                    .Where(c => c != args.targetCastle)
                     .ToList();
 
                 var (castle, amount) = await UI.TransportScreen.Show(
                     targetCastles,
-                    actor.Castle.Gold.MaxWith(10), 
-                    actor.Castle.Gold);
+                    args.targetCastle.Gold.MaxWith(10), 
+                    args.targetCastle.Gold);
 
                 if (castle == null)
                 {
@@ -65,6 +64,7 @@ partial class StrategyActions
             }
             Util.IsTrue(CanDo(args));
 
+            // 輸送を行う。
             args.targetCastle.Gold -= args.gold;
             args.targetCastle2.Gold += args.gold;
             if (!args.actor.IsRuler)

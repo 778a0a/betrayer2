@@ -45,10 +45,6 @@ public class ActionBase
         actor.CanPay(Cost(new(actor, estimate: true))) &&
         CanDoCore(new(actor, estimate: true));
     /// <summary>
-    /// UI上のボタンを押されたときに呼ばれ、アクションに必要な引数を準備します。
-    /// </summary>
-    public virtual ValueTask<ActionArgs> Prepare(Character actor) => new(new ActionArgs(actor));
-    /// <summary>
     /// アクションの実行に必要なコスト
     /// </summary>
     public virtual ActionCost Cost(ActionArgs args) => 0;
@@ -159,6 +155,7 @@ public struct ActionArgs
     public MapPosition? targetPosition;
     public float gold;
     public bool estimate;
+    public GameMapTile selectedTile;
 
     public ActionArgs(
         Character actor,
@@ -168,7 +165,8 @@ public struct ActionArgs
         Character targetCharacter = null,
         MapPosition? targetPosition = null,
         float gold = 0,
-        bool estimate = false)
+        bool estimate = false,
+        GameMapTile selectedTile = null)
     {
         this.actor = actor;
         this.targetCastle = targetCastle;
@@ -178,6 +176,7 @@ public struct ActionArgs
         this.targetPosition = targetPosition;
         this.gold = gold;
         this.estimate = estimate;
+        this.selectedTile = selectedTile;
     }
 
     public override readonly string ToString()
@@ -212,15 +211,5 @@ public partial class StrategyActions : ActionsBase<StrategyActionBase>
     }
 }
 public class StrategyActionBase : ActionBase
-{
-}
-
-public partial class CommonActions : ActionsBase<CommonActionBase>
-{
-    public CommonActions(GameCore core) : base(core)
-    {
-    }
-}
-public class CommonActionBase : ActionBase
 {
 }

@@ -23,8 +23,8 @@ public partial class ActionScreen : IScreen
             ActionButtonHelper.Strategy(a => a.Bonus),
             ActionButtonHelper.Strategy(a => a.HireVassal),
             ActionButtonHelper.Strategy(a => a.FireVassal),
-            ActionButtonHelper.Strategy(a => a.Ally),
             ActionButtonHelper.Strategy(a => a.Goodwill),
+            ActionButtonHelper.Strategy(a => a.Ally),
             ActionButtonHelper.Strategy(a => a.Invest),
             //ActionButtonHelper.Strategy(a => a.BuildTown),
             ActionButtonHelper.Strategy(a => a.DepositCastleGold),
@@ -84,7 +84,8 @@ public partial class ActionScreen : IScreen
         
         buttonTurnEnd.clicked += () =>
         {
-            OnActionButtonClicked(ActionButtonHelper.Common(a => a.FinishTurn));
+            // ターン終了
+            GameCore.Instance.Booter.hold = false;
         };
 
         buttonMoveToMyCastle.clicked += async () =>
@@ -120,24 +121,16 @@ public partial class ActionScreen : IScreen
         var action = button.Action;
 
         var canPrepare = action.CanUIEnable(chara);
-        if (action is CommonActionBase)
-        {
-            if (canPrepare)
-            {
-                var argsCommon = await action.Prepare(chara);
-                await action.Do(argsCommon);
-            }
-            return;
-        }
-
         if (!canPrepare)
         {
             return;
         }
 
-        var args = await action.Prepare(chara);
-        await action.Do(args);
-        SetData(chara);
+        // アクションを実行する。
+        await action.Do(new(chara, selectedTile: currentTile));
+
+        // 表示を更新する。
+        Render();
         Root.style.display = DisplayStyle.Flex;
     }
 
@@ -249,10 +242,66 @@ public partial class ActionScreen : IScreen
             ActionPanel.style.display = DisplayStyle.Flex;
             NoActionPanel.style.display = DisplayStyle.None;
         }
+        // 戦略フェーズの場合
         else
         {
-            ActionPanel.style.display = Util.Display(targetTile == characterTile);
-            NoActionPanel.style.display = Util.Display(targetTile != characterTile);
+            // 城なしの場合はアクションなし。
+            if (!targetTile.HasCastle)
+            {
+                ActionPanel.style.display = DisplayStyle.None;
+                NoActionPanel.style.display = DisplayStyle.Flex;
+                // 軍勢の指示は軍勢一覧から行ってもらう。
+                return;
+            }
+            // 自身が君主でない場合は自城以外ではアクション不可。
+            if (!currentCharacter.IsRuler && targetTile != characterTile)
+            {
+                ActionPanel.style.display = DisplayStyle.None;
+                NoActionPanel.style.display = DisplayStyle.Flex;
+                return;
+            }
+
+            // 以下は自身が君主の場合
+            ActionPanel.style.display = DisplayStyle.Flex;
+            NoActionPanel.style.display = DisplayStyle.None;
+
+            // 自城の場合は全てのアクションを実行可能
+            if (targetTile == characterTile)
+            {
+                foreach (var button in strategyButtons)
+                {
+                    button.Element.style.display = DisplayStyle.Flex;
+                }
+            }
+            // 自国の他の城の場合は、特定のアクションのみ実行可能
+            else if (targetTile.Castle.Country == currentCharacter.Country)
+            {
+                foreach (var button in strategyButtons)
+                {
+                    var show = button.Action switch
+                    {
+                        StrategyActions.DeployAction => true,
+                        StrategyActions.TranspotAction => true,
+                        StrategyActions.BonusAction => true,
+                        _ => false
+                    };
+                    button.Element.style.display = Util.Display(show);
+                }
+            }
+            // 他国の城の場合は、特定のアクションのみ実行可能
+            else
+            {
+                foreach (var button in strategyButtons)
+                {
+                    var show = button.Action switch
+                    {
+                        StrategyActions.AllyAction => true,
+                        StrategyActions.GoodwillAction => true,
+                        _ => false
+                    };
+                    button.Element.style.display = Util.Display(show);
+                }
+            }
         }
     }
 }

@@ -19,7 +19,6 @@ public partial class GameCore
 
     public PersonalActions PersonalActions { get; }
     public StrategyActions StrategyActions { get; }
-    public CommonActions CommonActions { get; }
 
     public GameDate GameDate { get; set; }
 
@@ -35,7 +34,6 @@ public partial class GameCore
         AI = new AI(this);
         PersonalActions = new(this);
         StrategyActions = new(this);
-        CommonActions = new(this);
     }
 
     public void TogglePlay()

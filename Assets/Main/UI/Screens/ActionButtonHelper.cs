@@ -36,13 +36,6 @@ public class ActionButtonHelper
         return new ActionButtonHelper(button, () => actionSelector(GameCore.Instance.StrategyActions));
     }
 
-    public static ActionButtonHelper Common(Func<CommonActions, CommonActionBase> actionSelector)
-    {
-        var button = new Button();
-        button.AddToClassList("ActionButton");
-        return new ActionButtonHelper(button, () => actionSelector(GameCore.Instance.CommonActions));
-    }
-
     public void SetEventHandlers(
         Label labelCostGold,
         Label labelDescription,

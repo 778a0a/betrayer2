@@ -28,14 +28,13 @@ partial class StrategyActions
             // プレーヤーの場合
             if (actor.IsPlayer)
             {
+                var candidateMembers = args.selectedTile.Castle.Members.Except(new[] { actor }).ToList();
+
                 // キャラ選択画面を表示する。
-                var vassals = actor.IsRuler ?
-                    actor.Country.Members.Where(m => m != actor).ToList() :
-                    actor.Castle.Members.Where(m => m != actor).ToList();
                 args.targetCharacter = await UI.SelectCharacterScreen.Show(
                     "褒賞を与えるキャラクターを選択してください",
                     "キャンセル",
-                    vassals,
+                    candidateMembers,
                     _ => true
                 );
 

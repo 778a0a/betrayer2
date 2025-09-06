@@ -33,10 +33,7 @@ partial class StrategyActions
 
         public override bool CanUIEnable(Character actor)
         {
-            
-            return actor.CanPay(Cost(new(actor, estimate: true))) &&
-                // 進軍可能なキャラがいる場合のみ有効
-                actor.Castle.Members.Any(m => m.IsDefendable);
+            return actor.CanPay(Cost(new(actor, estimate: true)));
         }
 
         public override ActionCost Cost(ActionArgs args) => ActionCost.Of(0, 1, 0);
@@ -49,11 +46,21 @@ partial class StrategyActions
             // プレーヤーの場合
             if (actor.IsPlayer)
             {
-                // TODO 専用画面・マップから選択可能にする
+                // 出撃元の城を取得する。
+                var baseCastle = args.selectedTile.Castle;
+                Assert.IsNotNull(baseCastle);
+
+                // 出撃可能なキャラクターがいるか確認する。
+                var candidateMembers = baseCastle.Members.Where(m => m.IsDefendable).ToList();
+                if (candidateMembers.Count == 0)
+                {
+                    await MessageWindow.ShowOk("出撃可能なキャラクターが存在しません。");
+                    return;
+                }
 
                 // 隣接する城を取得する。
-                var neighborCastles = actor.Castle.Neighbors
-                    .Where(c => c != actor.Castle)
+                var neighborCastles = baseCastle.Neighbors
+                    .Where(c => c != baseCastle)
                     .ToList();
                 target = await UI.SelectCastleScreen.SelectDeployDestination(
                     "進軍先の城を選択してください",
@@ -88,7 +95,7 @@ partial class StrategyActions
                 args.targetCharacter = (await UI.SelectCharacterScreen.Show(
                     "進軍するキャラクターを選択してください",
                     "キャンセル",
-                    actor.Castle.Members.Where(m => m.IsDefendable).ToList(),
+                    candidateMembers,
                     _ => true
                 ));
 
