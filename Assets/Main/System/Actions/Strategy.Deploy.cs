@@ -36,12 +36,14 @@ partial class StrategyActions
             return actor.CanPay(Cost(new(actor, estimate: true)));
         }
 
-        public override ActionCost Cost(ActionArgs args) => ActionCost.Of(0, 1, 0);
+        private const int ApCost = 2;
+        public override ActionCost Cost(ActionArgs args) => ActionCost.Of(0, ApCost, 0);
 
         public override async ValueTask Do(ActionArgs args)
         {
             var actor = args.actor;
             var target = (IMapEntity)args.targetCastle;
+            var deployMembers = new List<Character>();
 
             // プレーヤーの場合
             if (actor.IsPlayer)
@@ -91,30 +93,63 @@ partial class StrategyActions
                     target = t.Castle;
                 }
 
-                // 進軍するキャラを選択する
-                args.targetCharacter = (await UI.SelectCharacterScreen.Show(
+                // 進軍するキャラクターを複数選択する
+                deployMembers = await UI.SelectCharacterScreen.SelectMultiple(
                     "進軍するキャラクターを選択してください",
+                    "決定",
                     "キャンセル",
                     candidateMembers,
-                    _ => true
-                ));
+                    character => character.IsDefendable,
+                    selectedList =>
+                    {
+                        var apCost = selectedList.Count * ApCost;
+                        var message = $"APコスト: {apCost} / {actor.ActionPoints}";
+                        var ng = actor.ActionPoints < apCost;
+                        if (ng)
+                        {
+                            message += " <color=red>AP(行動力)不足</color>";
+                        }
+                        UI.SelectCharacterScreen.labelDescription.text = message;
+                        UI.SelectCharacterScreen.buttonConfirm.enabledSelf = !ng;
+                    }
+                );
 
-                if (args.targetCharacter == null)
+                if (deployMembers == null || deployMembers.Count == 0)
                 {
                     Debug.Log("キャラクター選択がキャンセルされました。");
                     return;
                 }
             }
-            Util.IsTrue(CanDo(args));
+            else
+            {
+                // AIの場合は従来通り単体
+                deployMembers = new List<Character> { args.targetCharacter };
+            }
 
-            var force = new Force(World, args.targetCharacter, args.targetCharacter.Castle.Position);
+            //Util.IsTrue(CanDo(args));
 
-            force.SetDestination(target);
-            World.Forces.Register(force);
+            // 各キャラクターを個別に出撃させる
+            foreach (var character in deployMembers)
+            {
+                var force = new Force(World, character, character.Castle.Position);
+                force.SetDestination(target);
+                World.Forces.Register(force);
+                Debug.Log($"{force} が出撃しました。");
 
-            Debug.Log($"{force} が出撃しました。");
+                if (character.IsPlayer && character != actor)
+                {
+                    await MessageWindow.ShowOk($"出撃命令が下りました。");
+                }
+            }
+            
+            // PayCost(args); 
+            actor.ActionPoints -= deployMembers.Count * ApCost;
 
-            PayCost(args);
+            if (actor.IsPlayer)
+            {
+                var targetName = target is Castle castle ? castle.Name : "選択地点";
+                await MessageWindow.Show($"{deployMembers.Count}名を{targetName}へ進軍させました。");
+            }
         }
     }
 }
