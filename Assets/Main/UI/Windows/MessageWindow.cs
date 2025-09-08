@@ -35,7 +35,7 @@ public partial class MessageWindow
         => Instance.Show(message, button);
     public static async ValueTask ShowOk(string message) => await Instance.Show(message);
     public static async ValueTask<bool> ShowYesNo(string message) => (await Instance.Show(message, MessageBoxButton.YesNo)) == MessageBoxResult.Yes;
-    public static async ValueTask<bool> ShowOkCancel(string message) => (await Instance.Show(message, MessageBoxButton.OkCancel)) == MessageBoxResult.Yes;
+    public static async ValueTask<bool> ShowOkCancel(string message) => (await Instance.Show(message, MessageBoxButton.OkCancel)) == MessageBoxResult.Ok;
     public static async ValueTask<bool?> ShowYesNoCancel(string message) => await Instance.Show(message, MessageBoxButton.YesNoCancel) switch
     {
         MessageBoxResult.Yes => true,
