@@ -75,34 +75,6 @@ MonoBehaviour:
   - _type: 1
     _path: Assets/Main/UI/Parts/CastleInfo/CountryDetailTab.uxml
   - _type: 1
-    _path: Assets/Main/UI/Parts/CastleTableRowItem.uxml
-  - _type: 1
-    _path: Assets/Main/UI/Parts/CastleTable.uxml
-  - _type: 1
-    _path: Assets/Main/UI/Parts/ForceTable.uxml
-  - _type: 1
-    _path: Assets/Main/UI/Parts/ForceTableRowItem.uxml
-  - _type: 1
-    _path: Assets/Main/UI/Parts/CastleTable/CastleTable.uxml
-  - _type: 1
-    _path: Assets/Main/UI/Parts/CastleTable/CastleTableRowItem.uxml
-  - _type: 1
-    _path: Assets/Main/UI/Parts/CharacterTable/CharacterTable.uxml
-  - _type: 1
-    _path: Assets/Main/UI/Parts/CharacterTable/CharacterTableRowItem.uxml
-  - _type: 1
-    _path: Assets/Main/UI/Parts/ForceTable/ForceTable.uxml
-  - _type: 1
     _path: Assets/Main/UI/Parts/ForceTable/ForceTableRowItem.uxml
   - _type: 1
-    _path: Assets/Main/UI/Screens/ActionScreen.uxml
-  - _type: 1
-    _path: Assets/Main/UI/Screens/SelectCastleScreen.uxml
-  - _type: 1
-    _path: Assets/Main/UI/Screens/TransportScreen.uxml
-  - _type: 1
-    _path: Assets/Main/UI/Parts/CountryTable/CountryTable.uxml
-  - _type: 1
-    _path: Assets/Main/UI/Parts/CountryTable/CountryTableRowItem.uxml
-  - _type: 1
-    _path: Assets/Main/UI/Screens/SelectCountryScreen.uxml
+    _path: Assets/Main/UI/Parts/ForceTable/ForceTable.uxml

@@ -12,7 +12,8 @@ public partial class ActionScreen : IScreen
     private ActionButtonHelper[] personalButtons;
     private Character currentCharacter;
     private GameMapTile currentTile;
-    private bool isPersonalPhase = false;
+    public bool IsPersonalPhase { get; set; } = false;
+    public bool IsStrategyPhase => !IsPersonalPhase;
 
     public void Initialize()
     {
@@ -34,6 +35,8 @@ public partial class ActionScreen : IScreen
         
         personalButtons = new[]
         {
+            ActionButtonHelper.Personal(a => a.ChangeDestination),
+            ActionButtonHelper.Personal(a => a.BackToCastle),
             ActionButtonHelper.Personal(a => a.HireSoldier),
             ActionButtonHelper.Personal(a => a.TrainSoldiers),
             ActionButtonHelper.Personal(a => a.Develop),
@@ -181,12 +184,18 @@ public partial class ActionScreen : IScreen
     public void Show(Character chara, bool personalPhase = false)
     {
         Core.MainUI.HideAllPanels();
-        isPersonalPhase = personalPhase;
+        IsPersonalPhase = personalPhase;
         SetData(chara);
         Root.style.display = DisplayStyle.Flex;
 
         ActionPanelContent.style.display = DisplayStyle.Flex;
         buttonToggleActionPanelFolding.text = "-";
+    }
+
+    public void Show()
+    {
+        SetData(currentCharacter);
+        Root.style.display = DisplayStyle.Flex;
     }
 
     public void SetData(Character chara)
@@ -199,11 +208,11 @@ public partial class ActionScreen : IScreen
     public void Render()
     {
         // フェーズに応じてヘッダーとボタンを切り替え
-        PersonalPhaseHeader.style.display = Util.Display(isPersonalPhase);
-        PersonalActionButtons.style.display = Util.Display(isPersonalPhase);
-        StrategyPhaseHeader.style.display = Util.Display(!isPersonalPhase);
-        StrategyActionButtons.style.display = Util.Display(!isPersonalPhase);
-        if (isPersonalPhase)
+        PersonalPhaseHeader.style.display = Util.Display(IsPersonalPhase);
+        PersonalActionButtons.style.display = Util.Display(IsPersonalPhase);
+        StrategyPhaseHeader.style.display = Util.Display(!IsPersonalPhase);
+        StrategyActionButtons.style.display = Util.Display(!IsPersonalPhase);
+        if (IsPersonalPhase)
         {
             labelPhaseTitle.text = "個人";
             labelPhaseTitle.style.color = Color.yellow;
@@ -237,7 +246,7 @@ public partial class ActionScreen : IScreen
         CastleInfoPanel.SetData(targetTile, summaryDefault);
 
         // 個人フェーズでは常にアクション可能、戦略フェーズでは条件付き
-        if (isPersonalPhase)
+        if (IsPersonalPhase)
         {
             ActionPanel.style.display = DisplayStyle.Flex;
             NoActionPanel.style.display = DisplayStyle.None;

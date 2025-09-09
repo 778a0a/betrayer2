@@ -157,6 +157,11 @@ public class Character
     public bool IsPlayer { get; set; }
 
     /// <summary>
+    /// 指示を出せるならtrue
+    /// </summary>
+    public bool CanOrder => IsPlayer || (IsVassal && (Castle.Boss.IsPlayer || Country.Ruler.IsPlayer));
+
+    /// <summary>
     /// 重臣ならtrue
     /// </summary>
     public bool IsImportant { get; set; }

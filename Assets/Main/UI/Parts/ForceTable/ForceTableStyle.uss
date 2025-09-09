@@ -8,6 +8,7 @@
     margin: 0 0 5px 0;
     padding: 10px;
     min-height: 140px;
+    -unity-text-align: initial;
 }
 
 #ForceTable .unity-collection-view__item:hover {

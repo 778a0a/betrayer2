@@ -144,12 +144,6 @@ partial class StrategyActions
             
             // PayCost(args); 
             actor.ActionPoints -= deployMembers.Count * ApCost;
-
-            if (actor.IsPlayer)
-            {
-                var targetName = target is Castle castle ? castle.Name : "選択地点";
-                await MessageWindow.Show($"{deployMembers.Count}名を{targetName}へ進軍させました。");
-            }
         }
     }
 }

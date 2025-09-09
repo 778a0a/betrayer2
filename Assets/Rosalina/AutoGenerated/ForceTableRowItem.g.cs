@@ -14,17 +14,33 @@ using UnityEngine.UIElements;
 
 public partial class ForceTableRowItem
 {
-    public Image imageCommanderFace { get; private set; }
+    public Image iconCharacter { get; private set; }
 
     public Label labelMoving { get; private set; }
 
-    public Label labelMode { get; private set; }
+    public VisualElement iconCountry { get; private set; }
+
+    public Label labelName { get; private set; }
 
     public Label labelDestination { get; private set; }
 
     public Label labelETA { get; private set; }
 
-    public Label labelCommanderName { get; private set; }
+    public Label traitKnight { get; private set; }
+
+    public Label traitDrillmaster { get; private set; }
+
+    public Label traitPirate { get; private set; }
+
+    public Label traitAdmiral { get; private set; }
+
+    public Label traitHunter { get; private set; }
+
+    public Label traitMountaineer { get; private set; }
+
+    public Label traitMerchant { get; private set; }
+
+    public Label traitDivineSpeed { get; private set; }
 
     public Label labelAttack { get; private set; }
 
@@ -33,6 +49,10 @@ public partial class ForceTableRowItem
     public Label labelIntelligence { get; private set; }
 
     public Label labelSoldiers { get; private set; }
+
+    public Label labelSoldiersMax { get; private set; }
+
+    public VisualElement TraitContainer { get; private set; }
 
     public CharacterInfoSoldierIcon soldier00 { get; private set; }
 
@@ -64,7 +84,13 @@ public partial class ForceTableRowItem
 
     public CharacterInfoSoldierIcon soldier14 { get; private set; }
 
+    public Button buttonChangeDestination { get; private set; }
+
+    public Button buttonBackToCastle { get; private set; }
+
     public VisualElement SoldierGrid { get; private set; }
+
+    public VisualElement ActionContainer { get; private set; }
 
     public Button ForceTableRowItemRoot { get; private set; }
 
@@ -73,16 +99,26 @@ public partial class ForceTableRowItem
     public ForceTableRowItem(VisualElement root)
     {
         Root = root;
-        imageCommanderFace = Root?.Q<Image>("imageCommanderFace");
+        iconCharacter = Root?.Q<Image>("iconCharacter");
         labelMoving = Root?.Q<Label>("labelMoving");
-        labelMode = Root?.Q<Label>("labelMode");
+        iconCountry = Root?.Q<VisualElement>("iconCountry");
+        labelName = Root?.Q<Label>("labelName");
         labelDestination = Root?.Q<Label>("labelDestination");
         labelETA = Root?.Q<Label>("labelETA");
-        labelCommanderName = Root?.Q<Label>("labelCommanderName");
+        traitKnight = Root?.Q<Label>("traitKnight");
+        traitDrillmaster = Root?.Q<Label>("traitDrillmaster");
+        traitPirate = Root?.Q<Label>("traitPirate");
+        traitAdmiral = Root?.Q<Label>("traitAdmiral");
+        traitHunter = Root?.Q<Label>("traitHunter");
+        traitMountaineer = Root?.Q<Label>("traitMountaineer");
+        traitMerchant = Root?.Q<Label>("traitMerchant");
+        traitDivineSpeed = Root?.Q<Label>("traitDivineSpeed");
         labelAttack = Root?.Q<Label>("labelAttack");
         labelDefense = Root?.Q<Label>("labelDefense");
         labelIntelligence = Root?.Q<Label>("labelIntelligence");
         labelSoldiers = Root?.Q<Label>("labelSoldiers");
+        labelSoldiersMax = Root?.Q<Label>("labelSoldiersMax");
+        TraitContainer = Root?.Q<VisualElement>("TraitContainer");
         soldier00 = new CharacterInfoSoldierIcon(Root?.Q<VisualElement>("soldier00"));
         soldier01 = new CharacterInfoSoldierIcon(Root?.Q<VisualElement>("soldier01"));
         soldier02 = new CharacterInfoSoldierIcon(Root?.Q<VisualElement>("soldier02"));
@@ -98,23 +134,36 @@ public partial class ForceTableRowItem
         soldier12 = new CharacterInfoSoldierIcon(Root?.Q<VisualElement>("soldier12"));
         soldier13 = new CharacterInfoSoldierIcon(Root?.Q<VisualElement>("soldier13"));
         soldier14 = new CharacterInfoSoldierIcon(Root?.Q<VisualElement>("soldier14"));
+        buttonChangeDestination = Root?.Q<Button>("buttonChangeDestination");
+        buttonBackToCastle = Root?.Q<Button>("buttonBackToCastle");
         SoldierGrid = Root?.Q<VisualElement>("SoldierGrid");
+        ActionContainer = Root?.Q<VisualElement>("ActionContainer");
         ForceTableRowItemRoot = Root?.Q<Button>("ForceTableRowItemRoot");
     }
 
     public void ReinitializeComponent(VisualElement root)
     {
         Root = root;
-        imageCommanderFace = Root?.Q<Image>("imageCommanderFace");
+        iconCharacter = Root?.Q<Image>("iconCharacter");
         labelMoving = Root?.Q<Label>("labelMoving");
-        labelMode = Root?.Q<Label>("labelMode");
+        iconCountry = Root?.Q<VisualElement>("iconCountry");
+        labelName = Root?.Q<Label>("labelName");
         labelDestination = Root?.Q<Label>("labelDestination");
         labelETA = Root?.Q<Label>("labelETA");
-        labelCommanderName = Root?.Q<Label>("labelCommanderName");
+        traitKnight = Root?.Q<Label>("traitKnight");
+        traitDrillmaster = Root?.Q<Label>("traitDrillmaster");
+        traitPirate = Root?.Q<Label>("traitPirate");
+        traitAdmiral = Root?.Q<Label>("traitAdmiral");
+        traitHunter = Root?.Q<Label>("traitHunter");
+        traitMountaineer = Root?.Q<Label>("traitMountaineer");
+        traitMerchant = Root?.Q<Label>("traitMerchant");
+        traitDivineSpeed = Root?.Q<Label>("traitDivineSpeed");
         labelAttack = Root?.Q<Label>("labelAttack");
         labelDefense = Root?.Q<Label>("labelDefense");
         labelIntelligence = Root?.Q<Label>("labelIntelligence");
         labelSoldiers = Root?.Q<Label>("labelSoldiers");
+        labelSoldiersMax = Root?.Q<Label>("labelSoldiersMax");
+        TraitContainer = Root?.Q<VisualElement>("TraitContainer");
         soldier00 = new CharacterInfoSoldierIcon(Root?.Q<VisualElement>("soldier00"));
         soldier01 = new CharacterInfoSoldierIcon(Root?.Q<VisualElement>("soldier01"));
         soldier02 = new CharacterInfoSoldierIcon(Root?.Q<VisualElement>("soldier02"));
@@ -130,7 +179,10 @@ public partial class ForceTableRowItem
         soldier12 = new CharacterInfoSoldierIcon(Root?.Q<VisualElement>("soldier12"));
         soldier13 = new CharacterInfoSoldierIcon(Root?.Q<VisualElement>("soldier13"));
         soldier14 = new CharacterInfoSoldierIcon(Root?.Q<VisualElement>("soldier14"));
+        buttonChangeDestination = Root?.Q<Button>("buttonChangeDestination");
+        buttonBackToCastle = Root?.Q<Button>("buttonBackToCastle");
         SoldierGrid = Root?.Q<VisualElement>("SoldierGrid");
+        ActionContainer = Root?.Q<VisualElement>("ActionContainer");
         ForceTableRowItemRoot = Root?.Q<Button>("ForceTableRowItemRoot");
     }
 }
