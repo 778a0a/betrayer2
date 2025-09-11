@@ -24,14 +24,14 @@ public partial class ForceTable : MainUIComponent
             row.MouseDown += OnRowMouseDown;
             row.MouseMove += OnRowMouseMove;
             element.userData = row;
-            Debug.Log("makeItem: " + element.name);
+            //Debug.Log("makeItem: " + element.name);
             return element;
         };
         ListView.bindItem = (element, index) =>
         {
             var item = (ForceTableRowItem)element.userData;
             item.SetData(forces[index], clickable?.Invoke(forces[index]) ?? false);
-            Debug.Log("bindItem: " + index + " -> " + forces[index]?.Character?.Name);
+            //Debug.Log("bindItem: " + index + " -> " + forces[index]?.Character?.Name);
         };
     }
 

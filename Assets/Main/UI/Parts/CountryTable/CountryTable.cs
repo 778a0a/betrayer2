@@ -26,14 +26,14 @@ public partial class CountryTable : MainUIComponent
             row.MouseEnter += OnRowMouseEnter;
             row.MouseLeave += OnRowMouseLeave;
             element.userData = row;
-            Debug.Log("makeItem: " + element.name);
+            //Debug.Log("makeItem: " + element.name);
             return element;
         };
         ListView.bindItem = (element, index) =>
         {
             var item = (CountryTableRowItem)element.userData;
             item.SetData(countries[index], clickable?.Invoke(countries[index]) ?? false);
-            Debug.Log("bindItem: " + index + " -> " + countries[index]?.Ruler?.Name);
+            //Debug.Log("bindItem: " + index + " -> " + countries[index]?.Ruler?.Name);
         };
     }
 

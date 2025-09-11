@@ -37,7 +37,7 @@ public partial class CharacterTable : MainUIComponent
             row.MouseDown += OnRowMouseDown;
             row.MouseMove += OnRowMouseMove;
             element.userData = row;
-            Debug.Log("makeItem: " + element.name);
+            //Debug.Log("makeItem: " + element.name);
             return element;
         };
         ListView.bindItem = (element, index) =>
@@ -47,7 +47,7 @@ public partial class CharacterTable : MainUIComponent
             var isClickable = clickable?.Invoke(character) ?? false;
             var isSelected = selectedCharacters.Contains(character);
             item.SetData(character, isClickable, isSelected);
-            Debug.Log("bindItem: " + index + " -> " + character?.Name);
+            //Debug.Log("bindItem: " + index + " -> " + character?.Name);
         };
 
         // ヘッダークリック処理を設定

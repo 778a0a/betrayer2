@@ -26,14 +26,14 @@ public partial class CastleTable : MainUIComponent
             row.MouseEnter += OnRowMouseEnter;
             row.MouseLeave += OnRowMouseLeave;
             element.userData = row;
-            Debug.Log("makeItem: " + element.name);
+            //Debug.Log("makeItem: " + element.name);
             return element;
         };
         ListView.bindItem = (element, index) =>
         {
             var item = (CastleTableRowItem)element.userData;
             item.SetData(castles[index], clickable?.Invoke(castles[index]) ?? false);
-            Debug.Log("bindItem: " + index + " -> " + castles[index]?.Name);
+            //Debug.Log("bindItem: " + index + " -> " + castles[index]?.Name);
         };
     }
 
