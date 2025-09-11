@@ -185,17 +185,21 @@ public class Character
     {
         get
         {
+            // 内政に40G使う（20回実行する≒功績値40）と1上がる感じにしてみる。
+            return 5 + (int)(Contribution / 40).MaxWith(25);
+
             //return 5 + (int)Math.Floor((-1 + Math.Sqrt(1 + 0.8 * Contribution)) / 2);
             //return 5 + (int)Math.Floor(Math.Sqrt(Contribution / 5));
-            var sum = 0;
-            var max = 100;
-            var i = 0;
-            for (; i < max; i++)
-            {
-                sum += i * (5 + i / 3);
-                if (sum > Contribution) break;
-            }
-            return i + 4;
+
+            //var sum = 0;
+            //var max = 100;
+            //var i = 0;
+            //for (; i < max; i++)
+            //{
+            //    sum += i * (5 + i / 3);
+            //    if (sum > Contribution) break;
+            //}
+            //return i + 4;
         }
     }
 

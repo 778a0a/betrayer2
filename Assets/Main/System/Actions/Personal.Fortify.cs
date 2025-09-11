@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.Rendering.Universal;
 
 partial class PersonalActions
 {
@@ -33,12 +34,11 @@ partial class PersonalActions
             var cap = chara.Intelligence.MinWith(chara.Attack).MinWith(chara.Defense);
             var adj = 1 + (cap - 50) / 100f;
             var adjDim = (castle.StrengthMax - castle.Strength) / castle.StrengthMax;
-            var adjImp = chara.IsImportant ? 1 : 0.5f;
-            var adjCount = Mathf.Pow(0.9f, (chara.Castle.Members.Count - 3).MinWith(0));
+            var adjImp = chara.IsImportant || chara.IsPlayer ? 1 : 0.5f;
+            var adjCount = chara.IsPlayer ? 1 : Mathf.Pow(0.9f, (chara.Castle.Members.Count - 3).MinWith(0));
             castle.Strength = (castle.Strength + 0.1f * adj * adjDim * adjImp * adjCount).MaxWith(castle.StrengthMax);
 
-            var contribAdj = castle.Objective is CastleObjective.Fortify ? 1.5f : 1;
-            chara.Contribution += adj * contribAdj;
+            chara.Contribution += adj * 1;
             PayCost(args);
 
             return default;

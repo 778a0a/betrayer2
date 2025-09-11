@@ -151,14 +151,12 @@ public class Castle : ICountryEntity, IMapEntity
     [JsonIgnore]
     public float GoldBalance => GoldIncome - GoldComsumption;
     [JsonIgnore]
-    public float GoldComsumption => Members.Sum(m => m.Salary);
+    public float GoldComsumption => Members.Sum(m => m.Salary * 3);
     /// <summary>
     /// 金の余剰。所持金をベースに、赤字の場合は今後1年分の赤字額を引いたもの。
     /// </summary>
     [JsonIgnore]
     public float GoldSurplus => Gold + GoldBalance.MaxWith(0) * 4;
-    [JsonIgnore] public float GoldDebtMax => -GoldIncome * 4;
-    [JsonIgnore] public float GoldDebtSalaryStopLine => GoldDebtMax / 2;
 
     public int GoldRemainingQuarters()
     {

@@ -35,6 +35,8 @@ public struct GameDate
     public readonly bool IsIncomeMonth => Month % 3 == 1;
     public readonly bool IsMidMonth => Month % 3 == 2;
     public readonly bool IsEndMonth => Month % 3 == 0;
+    
+    public readonly bool IsGameFirstDay => Year == 1 && Month == 1 && Day == 1;
 
     public override readonly string ToString()
     {

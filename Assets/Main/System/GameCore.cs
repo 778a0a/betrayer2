@@ -76,7 +76,7 @@ public partial class GameCore
                 // 序列を更新する。
                 World.Countries.UpdateRanking();
 
-                // 方針を更新する。
+                // 国の方針を更新する。
                 foreach (var country in World.Countries)
                 {
                     if (country.Ruler.IsPlayer) continue;
@@ -97,6 +97,9 @@ public partial class GameCore
             // 収入月の場合
             if (GameDate.IsIncomeMonth)
             {
+                // 城の収入処理を行う。
+                OnCastleIncome();
+
                 // 四半期の戦略行動済フラグをリセットする。
                 foreach (var country in World.Countries)
                 {
@@ -128,42 +131,47 @@ public partial class GameCore
                     }
                 }
 
-                // 収入処理を行う。
-                OnIncome();
-
-                // 忠誠を更新する。
-                foreach (var chara in World.Characters)
+                // ゲーム開始直後は忠誠・友好度の減少を行わない。
+                if (!GameDate.IsGameFirstDay)
                 {
-                    if (!chara.IsVassal) continue;
-                    chara.Loyalty = (chara.Loyalty - chara.LoyaltyDecreaseBase).MinWith(0);
-                }
 
-                // 友好度を更新する。
-                foreach (var country in World.Countries)
-                {
-                    var neighbors = country.Neighbors.ToArray();
-                    foreach (var other in World.Countries)
+                    // 忠誠を更新する。
+                    foreach (var chara in World.Characters)
                     {
-                        // 重複して減らさないようにする。
-                        if (country.Id > other.Id || country == other) continue;
+                        if (!chara.IsVassal) continue;
+                        chara.Loyalty = (chara.Loyalty - chara.LoyaltyDecreaseBase).MinWith(0);
+                    }
 
-                        var rel = country.GetRelation(other);
-                        // 同盟しているなら何もしない。
-                        if (rel == Country.AllyRelation) continue;
+                    // 友好度を更新する。
+                    foreach (var country in World.Countries)
+                    {
+                        var neighbors = country.Neighbors.ToArray();
+                        foreach (var other in World.Countries)
+                        {
+                            // 重複して減らさないようにする。
+                            if (country.Id > other.Id || country == other) continue;
 
-                        // 隣接する国は友好度を徐々に減らす。
-                        if (neighbors.Contains(other))
-                        {
-                            if (rel > 30) country.SetRelation(other, rel - 1);
-                        }
-                        // 隣接していない国は、友好度が低いなら増やす。
-                        else
-                        {
-                            if (rel < 50) country.SetRelation(other, rel + 1);
+                            var rel = country.GetRelation(other);
+                            // 同盟しているなら何もしない。
+                            if (rel == Country.AllyRelation) continue;
+
+                            // 隣接する国は友好度を徐々に減らす。
+                            if (neighbors.Contains(other))
+                            {
+                                if (rel > 30) country.SetRelation(other, rel - 1);
+                            }
+                            // 隣接していない国は、友好度が低いなら増やす。
+                            else
+                            {
+                                if (rel < 50) country.SetRelation(other, rel + 1);
+                            }
                         }
                     }
                 }
             }
+
+            // キャラへの給料支払いを行う。
+            OnCharacterIncome();
 
             // 各キャラの連戦回数を更新する。
             foreach (var chara in World.Characters)
@@ -228,15 +236,23 @@ public partial class GameCore
     }
 
     /// <summary>
-    /// 収支計算を行う。
+    /// 城の収入処理（四半期）
     /// </summary>
-    private void OnIncome()
+    private void OnCastleIncome()
     {
         foreach (var castle in World.Countries.SelectMany(c => c.Castles))
         {
-            // 収入
             castle.Gold += castle.GoldIncome;
+        }
+    }
 
+    /// <summary>
+    /// 個人の収入処理（毎月）
+    /// </summary>
+    private void OnCharacterIncome()
+    {
+        foreach (var castle in World.Countries.SelectMany(c => c.Castles))
+        {
             // キャラ・軍隊への支払い
             var reduceds = "";
             var notPaids = "";
@@ -244,35 +260,35 @@ public partial class GameCore
             {
                 // 給料支出
                 // 無借金の場合
-                if (castle.Gold > 0)
+                if (castle.Gold > chara.Salary)
                 {
                     castle.Gold -= chara.Salary;
                     chara.Gold += chara.Salary;
                     chara.IsStarving = false;
                 }
-                // 少額の借金がある場合は支払いを減らす
-                else if (castle.Gold > castle.GoldDebtSalaryStopLine)
+                // 足りない場合は支払いを減らして、忠誠も減らす。
+                else if (castle.Gold > 0)
                 {
-                    castle.Gold -= chara.Salary / 2;
-                    chara.Gold += chara.Salary / 2;
-                    chara.IsStarving = true;
-                    chara.Loyalty = (chara.Loyalty - chara.LoyaltyDecreaseBase).MinWith(0);
+                    var paid = castle.Gold;
+                    castle.Gold = 0;
+                    chara.Gold += paid;
+                    chara.IsStarving = false;
+                    var rate = 5 * (1 - (float)paid / chara.Salary);
+                    chara.Loyalty = (chara.Loyalty - rate * chara.LoyaltyDecreaseBase).MinWith(0);
                     reduceds += $"{chara.Name}, ";
                 }
-                // 借金が多い場合は完全に支払わない。
+                // 支払えない場合は忠誠を大きく減らす。
                 else
                 {
                     chara.IsStarving = true;
-                    if (!chara.IsImportant)
-                    {
-                        chara.Loyalty = (chara.Loyalty - 2 * chara.LoyaltyDecreaseBase).MinWith(0);
-                    }
+                    var rate = 5;
+                    chara.Loyalty = (chara.Loyalty - rate * chara.LoyaltyDecreaseBase).MinWith(0);
                     notPaids += $"{chara.Name}, ";
                 }
             }
             if (reduceds.Length > 0 || notPaids.Length > 0)
             {
-                //Debug.LogWarning($"{castle} 給料カット: [{reduceds}] 未払: [{notPaids}]");
+                Debug.LogWarning($"{castle} 給料カット: [{reduceds}] 未払: [{notPaids}]");
             }
         }
         // 未所属のキャラはランダムに収入を得る。
@@ -285,7 +301,7 @@ public partial class GameCore
         // 行動ポイントを補充する。
         foreach (var chara in World.Characters)
         {
-            chara.ActionPoints = (chara.ActionPoints + chara.Intelligence / 10).MaxWith(255);
+            chara.ActionPoints = (chara.ActionPoints + (chara.Intelligence + chara.Governing) / 10).MaxWith(255);
         }
     }
 }

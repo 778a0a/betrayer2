@@ -462,7 +462,7 @@ public class AI
 
         // 採用対象のキャラを決める。
         var target = castle.Frees.RandomPickWeighted(c => c.Power);
-        var salaryEstimate = target.Salary;
+        var salaryEstimate = target.Salary * 3;
 
         // 前線でないなら採用確率を下げる。
         var prob = castle.IsFrontline ? 0.8f : 0.1f;

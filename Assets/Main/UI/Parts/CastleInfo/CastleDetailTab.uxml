@@ -45,9 +45,9 @@
                         </ui:VisualElement>
                         <ui:VisualElement style="flex-direction: row; align-items: center; margin-top: 5px;">
                             <ui:Label text="　収入:" style="margin-right: 10px; font-size: 28px;" />
-                            <ui:Label name="labelIncome" text="0" style="font-size: 28px; color: white; margin-right: 5px;" />
+                            <ui:Label name="labelIncome" text="0" style="font-size: 28px; width: 46px; -unity-text-align: middle-right; color: white; margin-right: 5px;" />
                             <ui:Label text="/" style="font-size: 28px; margin-right: 5px;" />
-                            <ui:Label name="labelMaxIncome" text="0" style="font-size: 28px; color: silver; margin-right: 10px;" />
+                            <ui:Label name="labelMaxIncome" text="0" style="font-size: 28px; width: 46px; -unity-text-align: middle-right; color: silver; margin-right: 10px;" />
                             <ui:VisualElement name="IncomeBar" style="width: 200px; height: 20px; background-color: gray; margin-right: 15px; border-width: 1px; border-color: white;">
                                 <ui:VisualElement name="MaxIncomeBar" style="position: absolute; top: 0; left: 0; height: 100%; background-color: rgba(255, 255, 0, 0.3);" />
                                 <ui:VisualElement name="CurrentIncomeBar" style="position: absolute; top: 0; left: 0; height: 100%; background-color: yellow;" />
@@ -55,11 +55,11 @@
                         </ui:VisualElement>
                         <ui:VisualElement style="flex-direction: row; align-items: center; margin-top: 5px;">
                             <ui:Label text="　支出:" style="margin-right: 10px; font-size: 28px;" />
-                            <ui:Label name="labelExpenditure" text="0" style="font-size: 28px; color: red;" />
+                            <ui:Label name="labelExpenditure" text="0" style="font-size: 28px; width: 46px; -unity-text-align: middle-right; color: red;" />
                         </ui:VisualElement>
                         <ui:VisualElement style="flex-direction: row; align-items: center; margin-top: 5px;">
                             <ui:Label text="発展度:" style="margin-right: 10px; font-size: 28px;" />
-                            <ui:Label name="labelDevLevel" text="0" style="font-size: 28px; color: cyan;" />
+                            <ui:Label name="labelDevLevel" text="0" style="font-size: 28px; width: 46px; -unity-text-align: middle-right; color: cyan;" />
                             <ui:Label text="(総投資額:" style="margin-left: 10px; margin-right: 10px; font-size: 28px;" />
                             <ui:Label name="labelTotalInvestment" text="0" style="font-size: 28px; color: yellow;" />
                             <ui:Label text=")" style="font-size: 28px;" />

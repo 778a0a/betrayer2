@@ -165,7 +165,7 @@ public partial class CastleDetailTab
         labelTotalPowerMax.text = $"{castle.SoldierCountMax:0}";
         
         // 収入バー
-        const float IncomeBarMax = 200f;
+        const float IncomeBarMax = 800f;
         MaxIncomeBar.style.width = Length.Percent(Mathf.Clamp01(castle.GoldIncomeMax / IncomeBarMax) * 100f);
         CurrentIncomeBar.style.width = Length.Percent(Mathf.Clamp01(castle.GoldIncome / IncomeBarMax) * 100f);
 

@@ -31,7 +31,7 @@ public class Soldier
     public bool IsEmptySlot { get; set; }
     public bool IsAlive => !IsEmptySlot && HpFloat > 0;
 
-    public void AddExperience(Character owner, bool isTraining = false, bool drillMasterExists = false, bool isObjective = false)
+    public void AddExperience(Character owner, bool isTraining = false, bool drillMasterExists = false)
     {
         if (IsEmptySlot) return;
         
@@ -48,10 +48,6 @@ public class Soldier
             Level += 1;
             Experience = 0;
             owner.Contribution += 1;
-        }
-        if (isObjective)
-        {
-            owner.Contribution += 0.1f / 15;
         }
     }
 

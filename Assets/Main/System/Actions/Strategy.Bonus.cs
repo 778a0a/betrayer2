@@ -91,7 +91,7 @@ partial class StrategyActions
                 await MessageWindow.Show(message);
             }
 
-            actor.Contribution += 5 * targets.Count;
+            actor.Contribution += 1 * targets.Count;
         }
     }
 }

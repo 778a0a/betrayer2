@@ -36,7 +36,7 @@ partial class PersonalActions
             foreach (var soldier in chara.Soldiers)
             {
                 if (soldier.IsEmptySlot) continue;
-                soldier.AddExperience(chara, true, drillMasterExists, isObjective);
+                soldier.AddExperience(chara, true, drillMasterExists);
             }
 
             PayCost(args);
