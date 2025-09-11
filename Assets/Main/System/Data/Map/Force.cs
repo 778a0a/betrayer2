@@ -390,12 +390,12 @@ public class Force : ICountryEntity, IMapEntity
     // (現在のタイルのコスト + 移動先のタイルのコスト) が実際にかかる日数
     private static readonly Dictionary<Terrain, float> tileMoveCost = new()
     {
-        { Terrain.LargeRiver, 20 },
-        { Terrain.River,      15 },
-        { Terrain.Plain,      5 },
-        { Terrain.Hill,       8 },
-        { Terrain.Forest,     10 },
-        { Terrain.Mountain,   15 },
+        { Terrain.LargeRiver, 10.0f },
+        { Terrain.River,      7.5f },
+        { Terrain.Plain,      2.5f },
+        { Terrain.Hill,       4.0f },
+        { Terrain.Forest,     5.0f },
+        { Terrain.Mountain,   7.5f },
     };
     private static float TerrainTraitMoveAdjustment(Terrain terrain, Traits traits)
     {
