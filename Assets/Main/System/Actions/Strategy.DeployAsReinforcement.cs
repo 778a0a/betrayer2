@@ -31,7 +31,7 @@ partial class StrategyActions
             return true;
         }
 
-        public override ActionCost Cost(ActionArgs args) => ActionCost.Of(0, 1, 0);
+        public override ActionCost Cost(ActionArgs args) => ActionCost.Of(0, 3, 0);
 
         public override ValueTask Do(ActionArgs args)
         {

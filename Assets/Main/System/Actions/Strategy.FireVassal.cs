@@ -17,7 +17,7 @@ partial class StrategyActions
         public override string Label => L["解雇"];
         public override string Description => L["配下を解雇します。"];
 
-        public override ActionCost Cost(ActionArgs args) => ActionCost.Of(0, 1, 0);
+        public override ActionCost Cost(ActionArgs args) => ActionCost.Of(0, 4, 0);
 
         public ActionArgs Args(Character actor, Character target) =>
             new(actor, targetCharacter: target);

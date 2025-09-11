@@ -517,7 +517,7 @@ public class AI
         var budget = (castle.GoldIncome * 0.5f).Clamp(0, castle.Gold);
         var count = 0;
         var cost = act.Cost(args).castleGold;
-        while (budget > cost)
+        while (act.CanDo(args))
         {
             await act.Do(args);
             budget -= cost;

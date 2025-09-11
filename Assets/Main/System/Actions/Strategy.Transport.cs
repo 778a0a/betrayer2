@@ -20,7 +20,7 @@ partial class StrategyActions
         public ActionArgs Args(Character actor, Castle c, Castle c2, float gold) =>
             new(actor, targetCastle: c, targetCastle2: c2, gold: gold);
 
-        public override ActionCost Cost(ActionArgs args) => ActionCost.Of(0, 1, 0);
+        public override ActionCost Cost(ActionArgs args) => ActionCost.Of(0, 2, 0);
 
         override protected bool CanDoCore(ActionArgs args)
         {

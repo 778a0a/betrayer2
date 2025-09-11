@@ -36,7 +36,7 @@ partial class StrategyActions
             return actor.CanPay(Cost(new(actor, estimate: true)));
         }
 
-        private const int ApCost = 2;
+        private const int ApCost = 5;
         public override ActionCost Cost(ActionArgs args) => ActionCost.Of(0, ApCost, 0);
 
         public override async ValueTask Do(ActionArgs args)

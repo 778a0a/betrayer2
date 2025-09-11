@@ -17,8 +17,8 @@ partial class StrategyActions
         public override string Label => L["投資"];
         public override string Description => L["町に投資を行い、城のゴールド収入上限を増やします。"];
 
-        private const int GoldCost = 10;
-        public override ActionCost Cost(ActionArgs args) => ActionCost.Of(0, castleGold: GoldCost);
+        private const int GoldCost = 30;
+        public override ActionCost Cost(ActionArgs args) => ActionCost.Of(0, 5, GoldCost);
 
         public ActionArgs Args(Character actor) => new(actor);
 
@@ -27,7 +27,7 @@ partial class StrategyActions
         public override ValueTask Do(ActionArgs args)
         {
             // 処理は個人アクション版と共通。
-            return PersonalActions.InvestAction.DoCore(this, args);
+            return PersonalActions.InvestAction.DoCore(this, args, GoldCost);
         }
     }
 }

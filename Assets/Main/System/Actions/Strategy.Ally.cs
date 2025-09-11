@@ -20,7 +20,7 @@ partial class StrategyActions
 
         public ActionArgs Args(Character actor, Country target) => new(actor, targetCountry: target);
 
-        public override ActionCost Cost(ActionArgs args) => ActionCost.Of(0, 1, 10);
+        public override ActionCost Cost(ActionArgs args) => ActionCost.Of(0, 10, 30);
 
         public override bool CanUIEnable(Character actor)
         {

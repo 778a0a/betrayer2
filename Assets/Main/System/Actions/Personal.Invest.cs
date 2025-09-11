@@ -27,10 +27,10 @@ partial class PersonalActions
 
         public override ValueTask Do(ActionArgs args)
         {
-            return DoCore(this, args);
+            return DoCore(this, args, GoldCost);
         }
 
-        public static ValueTask DoCore(ActionBase action, ActionArgs args)
+        public static ValueTask DoCore(ActionBase action, ActionArgs args, int cost)
         {
             Util.IsTrue(action.CanDo(args));
             var chara = args.actor;
@@ -54,10 +54,10 @@ partial class PersonalActions
                 _ => 1
             };
             // 総投資額に加算する。
-            town.TotalInvestment += GoldCost * adj;
+            town.TotalInvestment += cost * adj;
 
             // 功績を加算する。
-            chara.Contribution += adj * 2;
+            chara.Contribution += cost / GoldCost * adj * 2;
 
             action.PayCost(args);
             return default;

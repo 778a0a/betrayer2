@@ -24,7 +24,7 @@ partial class StrategyActions
             if (args.estimate)
             {
                 // 推定値の場合は最低コストを返す。
-                return ActionCost.Of(0, 1, 10);
+                return ActionCost.Of(0, 5, 10);
             }
             // 自国と他国の城の数に応じて金額を計算する。
             var myCastles = args.actor.Country.Castles.Count;
