@@ -185,21 +185,22 @@ public class Character
     {
         get
         {
-            // 内政に40G使う（20回実行する≒功績値40）と1上がる感じにしてみる。
-            return 5 + (int)(Contribution / 40).MaxWith(25);
+            //// 内政に40G使う（20回実行する≒功績値40）と1上がる感じにしてみる。
+            //return 5 + (int)(Contribution / 40).MaxWith(25);
 
-            //return 5 + (int)Math.Floor((-1 + Math.Sqrt(1 + 0.8 * Contribution)) / 2);
-            //return 5 + (int)Math.Floor(Math.Sqrt(Contribution / 5));
-
-            //var sum = 0;
-            //var max = 100;
-            //var i = 0;
-            //for (; i < max; i++)
-            //{
-            //    sum += i * (5 + i / 3);
-            //    if (sum > Contribution) break;
-            //}
-            //return i + 4;
+            // 基本は上記のとおりで、
+            // 給料が1下がるごとに、0.5G(1/4回)ずつ必要功績が少なくなるようにする。
+            // 給料が30なら1.3ヶ月、給料が15なら2.2ヶ月、給料が5なら5.4ヶ月で次のレベルに到達する。
+            const int MaxLevel = 25;
+            var step = 40;
+            var levelRequirement = 0;
+            for (int level = 0; level < MaxLevel; level++)
+            {
+                levelRequirement += step - (MaxLevel - level) / 2;
+                // 功績値が基準に満たないなら終了
+                if (Contribution < levelRequirement) return level + 5;
+            }
+            return MaxLevel + 5;
         }
     }
 
