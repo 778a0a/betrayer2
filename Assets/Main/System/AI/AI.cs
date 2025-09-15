@@ -8,10 +8,14 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using Random = UnityEngine.Random;
 
-public class AI
+public partial class AI
 {
-    private GameCore core;
-    private WorldData world;
+    private readonly GameCore core;
+    private readonly WorldData world;
+
+    private StrategyActions StrategyActions => core.StrategyActions;
+    private PersonalActions PersonalActions => core.PersonalActions;
+
     public AI(GameCore core)
     {
         this.core = core;

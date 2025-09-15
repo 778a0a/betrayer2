@@ -39,6 +39,12 @@ partial class PersonalActions
             var prevDestination = force.Destination;
             force.SetDestination(target.Castle);
 
+            if (force.Position == target.Castle.Position)
+            {
+                GameCore.Instance.World.Forces.Unregister(force);
+                Debug.LogWarning($"すでに本拠地に到達しています。軍勢を削除します。");
+            }
+
             if (force.Destination != prevDestination)
             {
                 Debug.Log($"{target.Name}は{target.Castle.Name}へ撤退します。");

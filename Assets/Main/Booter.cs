@@ -50,7 +50,7 @@ public class Booter : MonoBehaviour
         
         // プレーヤーをセットする。
         var player = world.Characters.FirstOrDefault(c => c.Name == testPlayerName);
-        if (player != null) player.IsPlayer = true;
+        if (player != null) world.SetPlayer(player);
 
         // ゲームループを開始する。
         core = new GameCore(world, map, ui, this);

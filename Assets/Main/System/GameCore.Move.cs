@@ -36,14 +36,33 @@ partial class GameCore
     }
 
     /// <summary>
+    /// 個人フェーズを実行します。
+    /// </summary>
+    private async ValueTask DoPersonalAction(Character chara)
+    {
+        // AIの場合
+        if (!chara.IsPlayer)
+        {
+            await AI.DoPersonalAction(chara);
+            return;
+        }
+
+        // プレーヤーの場合
+        Pause();
+        MainUI.ActionScreen.Show(chara, personalPhase: true);
+        await Booter.HoldIfNeeded();
+        return;
+    }
+
+    /// <summary>
     /// 戦略行動を行う。
     /// </summary>
     private async ValueTask DoStrategyAction(Character chara)
     {
-        // TODO プレーヤーの場合
+        // プレーヤーの場合
         if (chara.IsPlayer)
         {
-            Booter.hold = true;
+            Pause();
             MainUI.ActionScreen.Show(chara);
             await Booter.HoldIfNeeded();
             return;
@@ -158,161 +177,6 @@ partial class GameCore
 
         // 進軍を行うか判定する。
         await AI.Deploy(castle);
-    }
-
-    private async ValueTask DoPersonalAction(Character chara)
-    {
-        // TODO プレーヤーの場合
-        if (chara.IsPlayer)
-        {
-            Booter.hold = true;
-            MainUI.ActionScreen.Show(chara, personalPhase: true);
-            await Booter.HoldIfNeeded();
-            return;
-        }
-
-        // 未所属の場合
-        if (chara.IsFree)
-        {
-            // ランダムに拠点を移動する。
-            if (0.2f.Chance())
-            {
-                var oldCastle = chara.Castle;
-                var newCastle = oldCastle.Neighbors.RandomPick();
-                chara.ChangeCastle(newCastle, true);
-                //Debug.Log($"{chara.Name}が{oldCastle}から{newCastle}に移動しました。");
-                // TODO 移動アクションを使う。
-            }
-
-            // TODO 奪取を行う。
-            // TODO 仕官を行う。
-
-            // 所持金が無くなるまで雇兵・訓練を行う。
-            var args = new ActionArgs() { actor = chara };
-            while (true)
-            {
-                var action = (ActionBase)(chara.Soldiers.HasEmptySlot ?
-                    PersonalActions.HireSoldier :
-                    PersonalActions.TrainSoldiers);
-                if (!action.CanDo(args)) break;
-                await action.Do(args);
-            }
-        }
-        // 所属ありの場合
-        else
-        {
-            // TODO 反乱を起こすか判定する。
-            // TODO 出撃中の場合
-            if (chara.IsMoving)
-            {
-                var force = chara.Force;
-
-                // 救援モードの場合
-                if (force.Mode == ForceMode.Reinforcement)
-                {
-                    // 救援が完了した場合は帰還する。
-                    if (force.Destination.Position == force.Position &&
-                        force.ReinforcementWaitDays <= 0)
-                    {
-                        // TODO 帰還アクションを使う。
-                        force.SetDestination(force.Character.Castle);
-                        Debug.Log($"軍勢 救援が完了したため帰還します。 {force}");
-                        return;
-                    }
-
-                    // 救援先が危険でなくなったら本拠地に戻る。
-                    var home = chara.Castle;
-                    var targetCastle = (Castle)force.Destination;
-                    if (!targetCastle.DangerForcesExists && targetCastle != home)
-                    {
-                        // TODO 帰還アクションを使う。
-                        force.SetDestination(home);
-                        if (force.Position == home.Position)
-                        {
-                            World.Forces.Unregister(force);
-                        }
-                        Debug.Log($"軍勢 救援先が危険でなくなったため帰還します。 {force}");
-                        return;
-                    }
-                }
-
-                return;
-            }
-
-            // 後方から移動する（適当）TODO
-            var castle = chara.Castle;
-            var isSafe = castle.Neighbors.All(n => !castle.IsAttackable(n)) && !castle.DangerForcesExists;
-            if (isSafe && castle.Members.Count > 2)
-            {
-                var cands = castle.Members
-                    .Where(m => m != chara)
-                    .Where(m => m.IsDefendable)
-                    .ToList();
-                var moveTarget = cands.RandomPickDefault();
-                var moveCastle = castle.Neighbors.Where(n => castle.IsSelf(n)).RandomPickDefault();
-                if (moveTarget != null && moveCastle != null && 0.5f.Chance())
-                {
-                    var move = StrategyActions.Deploy;
-                    var moveArgs = move.Args(chara, moveTarget, moveCastle);
-                    await move.Do(moveArgs);
-                }
-            }
-
-            // 所持金の半分までを予算とする。
-            var budget = chara.Gold / 2;
-
-            var args = new ActionArgs();
-            args.actor = chara;
-            args.targetCastle = chara.Castle;
-
-            var action = default(ActionBase);
-            // 空きスロットがあれば雇兵する。
-            if (chara.Soldiers.HasEmptySlot)
-            {
-                action = PersonalActions.HireSoldier;
-                budget = chara.Gold;
-            }
-            // 基本的には方針通りの行動を行う。
-            else if ((chara.Fealty.MinWith(chara.Ambition) / 10f - 0.1f).Chance())
-            {
-                switch (chara.Castle.Objective)
-                {
-                    case CastleObjective.Fortify:
-                        action = PersonalActions.Fortify;
-                        break;
-                    case CastleObjective.Develop:
-                        var investChance = Mathf.Pow(chara.Castle.GoldIncomeProgress, 2);
-                        action = investChance.Chance() ? PersonalActions.Invest : PersonalActions.Develop;
-                        break;
-                    case CastleObjective.Train:
-                        action = PersonalActions.TrainSoldiers;
-                        break;
-                    case CastleObjective.None:
-                    case CastleObjective.Attack:
-                    default:
-                        break;
-                }
-            }
-            // アクション未選択か、選択したアクションが実行不可ならランダムに行動する。
-            if (!action?.CanDo(args) ?? true)
-            {
-                action ??= vassalActions.Value.Where(a => a.CanDo(args)).RandomPickDefault();
-            }
-            // できることがないなら何もしない。
-            if (action == null)
-            {
-                //Debug.LogWarning($"{chara.Name} はできることがありません。");
-                return;
-            }
-
-            // 予算到達までアクションを実行する。
-            while (budget > 0)
-            {
-                if (!action.CanDo(args)) break;
-                budget -= action.Cost(args).actorGold;
-                await action.Do(args);
-            }
-        }
     }
 
     private async ValueTask Old()
@@ -435,12 +299,4 @@ partial class GameCore
     {
         Booter.hold = true;
     }
-
-    private readonly Lazy<ActionBase[]> vassalActions = new(() => new ActionBase[]
-    {
-        Instance.PersonalActions.Develop,
-        Instance.PersonalActions.Fortify,
-        Instance.PersonalActions.TrainSoldiers,
-        Instance.PersonalActions.Invest,
-    });
 }

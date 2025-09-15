@@ -134,7 +134,6 @@ public partial class GameCore
                 // ゲーム開始直後は忠誠・友好度の減少を行わない。
                 if (!GameDate.IsGameFirstDay)
                 {
-
                     // 忠誠を更新する。
                     foreach (var chara in World.Characters)
                     {
