@@ -18,13 +18,7 @@ partial class PersonalActions
         public override string Description => L["兵士を訓練します。"];
         protected override ActionRequirements Requirements => ActionRequirements.NotMoving;
 
-        public override ActionCost Cost(ActionArgs args)
-        {
-            var chara = args.actor;
-
-            var averageLevel = (float)chara.Soldiers.Average(s => s.Level);
-            return (int)(1 + averageLevel / 2);
-        }
+        public override ActionCost Cost(ActionArgs args) => 2;
 
         public override ValueTask Do(ActionArgs args)
         {
@@ -32,7 +26,6 @@ partial class PersonalActions
             var chara = args.actor;
 
             var drillMasterExists = chara.Castle.Members.Any(m => m.Traits.HasFlag(Traits.Drillmaster));
-            var isObjective = chara.Castle.Objective is CastleObjective.Train || chara.Castle.Objective is CastleObjective.Attack;
             foreach (var soldier in chara.Soldiers)
             {
                 if (soldier.IsEmptySlot) continue;

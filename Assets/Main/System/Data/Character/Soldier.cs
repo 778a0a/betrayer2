@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -35,7 +36,7 @@ public class Soldier
     {
         if (IsEmptySlot) return;
         
-        var exp = 10 + Random.Range(0, 4) + (drillMasterExists ? 3 : 0);
+        var exp = 20 + Random.Range(-5, 5) + (drillMasterExists ? Random.Range(2, 5) : 0);
         if (isTraining)
         {
             exp = (int)(exp * owner.Attack.MinWith(owner.Defense, owner.Intelligence) / 100f);
@@ -43,13 +44,42 @@ public class Soldier
         Experience += exp;
 
         // 十分経験値が貯まればレベルアップする。
-        if (Experience >= Level * 100 + Mathf.Pow(1.5f, Level) * 10)
+        if (Experience >= GetNextLevelExperience(Level))
         {
             Level += 1;
             Experience = 0;
             owner.Contribution += 1;
         }
     }
+
+    public static int GetNextLevelExperience(int currentLevel)
+    {
+        if (s_LevelUpExperienceTable.TryGetValue(currentLevel, out var nextExp))
+        {
+            return nextExp;
+        }
+        return 10000;
+    }
+
+    private static readonly Dictionary<int, int> s_LevelUpExperienceTable = new()
+    {
+        {  1,  150 },
+        {  2,  200 },
+        {  3,  250 },
+        {  4,  300 },
+        {  5,  400 },
+        {  6,  600 },
+        {  7, 1000 },
+        {  8, 1500 },
+        {  9, 3000 },
+        { 10, 4000 },
+        { 11, 5000 },
+        { 12, 6000 },
+        { 13, 7000 },
+        { 14, 8000 },
+        { 15, 9000 },
+        { 16, 10000 },
+    };
 
     [JsonIgnore]
     public Texture2D Image => Static.GetSoldierImage(Level);
