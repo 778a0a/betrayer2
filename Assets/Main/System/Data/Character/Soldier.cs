@@ -58,7 +58,7 @@ public class Soldier
         {
             return nextExp;
         }
-        return 10000;
+        return 6000;
     }
 
     private static readonly Dictionary<int, int> s_LevelUpExperienceTable = new()
@@ -75,10 +75,10 @@ public class Soldier
         { 10, 4000 },
         { 11, 5000 },
         { 12, 6000 },
-        { 13, 7000 },
-        { 14, 8000 },
-        { 15, 9000 },
-        { 16, 10000 },
+        { 13, 6000 },
+        { 14, 6000 },
+        { 15, 6000 },
+        { 16, 6000 },
     };
 
     [JsonIgnore]
