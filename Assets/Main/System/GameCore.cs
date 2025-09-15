@@ -242,6 +242,19 @@ public partial class GameCore
         foreach (var castle in World.Countries.SelectMany(c => c.Castles))
         {
             castle.Gold += castle.GoldIncome;
+            // 1000以上超えたら、投資額に加算する。
+            if (castle.Gold >= 1000)
+            {
+                var amari = castle.Gold - 1000;
+                castle.Gold = 1000;
+                var townCount = castle.Towns.Count;
+                var investPerTown = amari / townCount;
+                foreach (var town in castle.Towns)
+                {
+                    var adj = PersonalActions.InvestAction.TerrainAdjustment(town);
+                    town.TotalInvestment += adj * investPerTown * 0.2f;
+                }
+            }
         }
     }
 

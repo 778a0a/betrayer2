@@ -45,14 +45,7 @@ partial class PersonalActions
             // 特性
             if (chara.Traits.HasFlag(Traits.Merchant)) adj += 0.1f;
             // 地形
-            var adjTerrain = GameCore.Instance.World.Map.GetTile(town).Terrain switch
-            {
-                Terrain.River or Terrain.LargeRiver => 0.2f,
-                Terrain.Mountain => 0.5f,
-                Terrain.Hill => 0.8f,
-                Terrain.Forest => 0.75f,
-                _ => 1
-            };
+            var adjTerrain = TerrainAdjustment(town);
             // 総投資額に加算する。
             town.TotalInvestment += cost * adj;
 
@@ -61,6 +54,18 @@ partial class PersonalActions
 
             action.PayCost(args);
             return default;
+        }
+
+        public static float TerrainAdjustment(Town town)
+        {
+            return GameCore.Instance.World.Map.GetTile(town).Terrain switch
+            {
+                Terrain.River or Terrain.LargeRiver => 0.2f,
+                Terrain.Mountain => 0.5f,
+                Terrain.Hill => 0.8f,
+                Terrain.Forest => 0.75f,
+                _ => 1
+            };
         }
     }
 }
