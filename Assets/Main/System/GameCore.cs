@@ -250,46 +250,12 @@ public partial class GameCore
     /// </summary>
     private void OnCharacterIncome()
     {
+        // 城に所属しているキャラは給料を得る。
         foreach (var castle in World.Countries.SelectMany(c => c.Castles))
         {
-            // キャラ・軍隊への支払い
-            var reduceds = "";
-            var notPaids = "";
-            foreach (var chara in castle.Members.OrderBy(m => m.OrderIndex))
-            {
-                // 給料支出
-                // 無借金の場合
-                if (castle.Gold > chara.Salary)
-                {
-                    castle.Gold -= chara.Salary;
-                    chara.Gold += chara.Salary;
-                    chara.IsStarving = false;
-                }
-                // 足りない場合は支払いを減らして、忠誠も減らす。
-                else if (castle.Gold > 0)
-                {
-                    var paid = castle.Gold;
-                    castle.Gold = 0;
-                    chara.Gold += paid;
-                    chara.IsStarving = false;
-                    var rate = 5 * (1 - (float)paid / chara.Salary);
-                    chara.Loyalty = (chara.Loyalty - rate * chara.LoyaltyDecreaseBase).MinWith(0);
-                    reduceds += $"{chara.Name}, ";
-                }
-                // 支払えない場合は忠誠を大きく減らす。
-                else
-                {
-                    chara.IsStarving = true;
-                    var rate = 5;
-                    chara.Loyalty = (chara.Loyalty - rate * chara.LoyaltyDecreaseBase).MinWith(0);
-                    notPaids += $"{chara.Name}, ";
-                }
-            }
-            if (reduceds.Length > 0 || notPaids.Length > 0)
-            {
-                Debug.LogWarning($"{castle} 給料カット: [{reduceds}] 未払: [{notPaids}]");
-            }
+            DistributeSalary(castle);
         }
+
         // 未所属のキャラはランダムに収入を得る。
         foreach (var chara in World.Characters.Where(c => c.IsFree))
         {
@@ -301,6 +267,74 @@ public partial class GameCore
         foreach (var chara in World.Characters)
         {
             chara.ActionPoints = (chara.ActionPoints + (chara.Intelligence + chara.Governing) / 10).MaxWith(255);
+        }
+    }
+
+    /// <summary>
+    /// 城の給料支払処理
+    /// </summary>
+    private static void DistributeSalary(Castle castle)
+    {
+        var members = castle.Members.ToList();
+        if (members.Count == 0) return;
+
+        // 資金が十分ある場合は全額支払う。
+        var totalSalary = members.Sum(m => m.Salary);
+        if (castle.Gold >= totalSalary)
+        {
+            foreach (var chara in members)
+            {
+                castle.Gold -= chara.Salary;
+                chara.Gold += chara.Salary;
+                chara.IsStarving = false;
+            }
+            return;
+        }
+
+        const int HumanRate = 5;
+
+        // 全く支払えない場合
+        if (castle.Gold == 0)
+        {
+            foreach (var chara in members)
+            {
+                chara.IsStarving = true;
+                chara.Loyalty = (chara.Loyalty - HumanRate * chara.LoyaltyDecreaseBase).MinWith(0);
+            }
+            Debug.LogWarning($"{castle} 給料未払: 全員");
+            return;
+        }
+
+        // 資金不足の場合は、不足分を平等に減らす。
+        var availableGold = castle.Gold;
+        var reduceds = "";
+        var notPaids = "";
+
+        // 全体の不足額
+        var totalShortage = totalSalary - availableGold;
+        // 一人当たりの不足額
+        var shortagePerPerson = (int)Math.Ceiling((float)totalShortage / members.Count);
+
+        foreach (var chara in members)
+        {
+            var paid = (chara.Salary - shortagePerPerson).MaxWith(0);
+            chara.Gold += paid;
+            castle.Gold -= paid;
+            var unpaidRate = 1 - (float)paid / chara.Salary;
+            chara.IsStarving = unpaidRate > 0.5f;
+
+            // 給料カットによる忠誠度低下
+            if (paid < chara.Salary)
+            {
+                var rate = HumanRate * unpaidRate;
+                chara.Loyalty = (chara.Loyalty - rate * chara.LoyaltyDecreaseBase).MinWith(0);
+                reduceds += $"{chara.Name}, ";
+            }
+        }
+
+        if (reduceds.Length > 0 || notPaids.Length > 0)
+        {
+            Debug.LogWarning($"{castle} 給料カット: [{reduceds}] 未払: [{notPaids}]");
         }
     }
 }
