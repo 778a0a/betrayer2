@@ -12,6 +12,7 @@ public partial class CharacterInfoSoldierIcon
             labelLevel.text = "--";
             labelHp.text = "--";
             HPBar.style.visibility = Visibility.Hidden;
+            EXPBar.style.visibility = Visibility.Hidden;
             return;
         }
 
@@ -21,6 +22,8 @@ public partial class CharacterInfoSoldierIcon
         labelHp.text = s.Hp.ToString();
         HPBar.style.visibility = Visibility.Visible;
         HPBarValue.style.width = new Length(s.Hp * 100 / s.MaxHp, LengthUnit.Percent);
+        EXPBar.style.visibility = Visibility.Visible;
+        EXPBarValue.style.width = new Length(100f * s.Experience / Soldier.GetNextLevelExperience(s.Level), LengthUnit.Percent);
 
         //if (s == null || s.IsEmptySlot)
         //{

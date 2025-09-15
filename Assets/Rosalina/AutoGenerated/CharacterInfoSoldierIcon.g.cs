@@ -24,9 +24,15 @@ public partial class CharacterInfoSoldierIcon
 
     public VisualElement HPBarBackground { get; private set; }
 
+    public VisualElement EXPBarValue { get; private set; }
+
+    public VisualElement EXPBarBackground { get; private set; }
+
     public VisualElement panelContainer { get; private set; }
 
     public VisualElement HPBar { get; private set; }
+
+    public VisualElement EXPBar { get; private set; }
 
     public VisualElement Root { get; private set; }
 
@@ -38,8 +44,11 @@ public partial class CharacterInfoSoldierIcon
         labelHp = Root?.Q<Label>("labelHp");
         HPBarValue = Root?.Q<VisualElement>("HPBarValue");
         HPBarBackground = Root?.Q<VisualElement>("HPBarBackground");
+        EXPBarValue = Root?.Q<VisualElement>("EXPBarValue");
+        EXPBarBackground = Root?.Q<VisualElement>("EXPBarBackground");
         panelContainer = Root?.Q<VisualElement>("panelContainer");
         HPBar = Root?.Q<VisualElement>("HPBar");
+        EXPBar = Root?.Q<VisualElement>("EXPBar");
     }
 
     public void ReinitializeComponent(VisualElement root)
@@ -50,7 +59,10 @@ public partial class CharacterInfoSoldierIcon
         labelHp = Root?.Q<Label>("labelHp");
         HPBarValue = Root?.Q<VisualElement>("HPBarValue");
         HPBarBackground = Root?.Q<VisualElement>("HPBarBackground");
+        EXPBarValue = Root?.Q<VisualElement>("EXPBarValue");
+        EXPBarBackground = Root?.Q<VisualElement>("EXPBarBackground");
         panelContainer = Root?.Q<VisualElement>("panelContainer");
         HPBar = Root?.Q<VisualElement>("HPBar");
+        EXPBar = Root?.Q<VisualElement>("EXPBar");
     }
 }
