@@ -11,7 +11,7 @@ using Random = UnityEngine.Random;
 public partial class AI
 {
     private readonly GameCore core;
-    private readonly WorldData world;
+    private WorldData World { get; }
 
     private StrategyActions StrategyActions => core.StrategyActions;
     private PersonalActions PersonalActions => core.PersonalActions;
@@ -19,7 +19,7 @@ public partial class AI
     public AI(GameCore core)
     {
         this.core = core;
-        world = core.World;
+        World = core.World;
     }
 
     public CountryObjective SelectCountryObjective(Country country, CountryObjective prev)
@@ -50,7 +50,7 @@ public partial class AI
                     if (country.Neighbors.Any(c => c.IsEnemy(country))) return 1000 * sameAdj;
                     // 前回と同じ敵が候補にあれば優先する。
                     var clist = list.Cast<CountryObjective.CountryAttack>();
-                    if (clist.Any(o => o == prev && world.Countries.First(o.IsAttackTarget).GetRelation(country) < 50)) return 1000 * sameAdj;
+                    if (clist.Any(o => o == prev && World.Countries.First(o.IsAttackTarget).GetRelation(country) < 50)) return 1000 * sameAdj;
                     if (country.Neighbors.All(c => c.GetRelation(country) >= 50)) return 0;
                     var minRelAdj = (100 - country.Neighbors.Min(c => c.GetRelation(country))) * 10;
                     return minRelAdj * sameAdj;
@@ -77,7 +77,7 @@ public partial class AI
             switch (o)
             {
                 case CountryObjective.RegionConquest co:
-                    var targetCastles = world.Castles.Where(co.IsAttackTarget).ToList();
+                    var targetCastles = World.Castles.Where(co.IsAttackTarget).ToList();
                     // 統一済みなら選ばない。
                     if (targetCastles.All(country.IsSelfOrAlly)) return 0;
                     // 自国が含まれない地方の場合
@@ -85,7 +85,7 @@ public partial class AI
                     {
                         // 他の地方が未統一の場合は選ばない。
                         var countryRegions = country.Castles.Select(c => c.Region).Distinct();
-                        if (!prevIsSame && countryRegions.Any(r => world.Castles.Where(c => c.Region == r).Any(country.IsAttackable))) return 0;
+                        if (!prevIsSame && countryRegions.Any(r => World.Castles.Where(c => c.Region == r).Any(country.IsAttackable))) return 0;
                     }
                     // 未統一の地方の場合
                     var myCountAdj = targetCastles.Count(c => country.IsSelfOrAlly(c)) + 1;
@@ -94,7 +94,7 @@ public partial class AI
                     var closeAdj = country.Castles.Sum(c => c.Neighbors.Where(country.IsAttackable).Count(n => n.Region == co.TargetRegionName)) + 1;
                     return myCountAdj + enemyCountAdj * weakCountAdj * closeAdj * sameAdj;
                 case CountryObjective.CountryAttack co:
-                    var target = world.Countries.First(co.IsAttackTarget);
+                    var target = World.Countries.First(co.IsAttackTarget);
                     var enemyAdj = country.IsEnemy(target) ? 10 : 1;
                     var powerAdj = target.Power < country.Power ? 10 : 1;
                     var relAdj = Mathf.Lerp(1, 5, (100 - country.GetRelation(target)) / 100f);
@@ -126,7 +126,7 @@ public partial class AI
             switch (o)
             {
                 case CastleObjective.Attack atk:
-                    var targetCastle = world.Castles.First(atk.IsAttackTarget);
+                    var targetCastle = World.Castles.First(atk.IsAttackTarget);
                     var rel = country.GetRelation(targetCastle.Country);
                     var val = 0f;
                     var relThresh = country.Ruler.Personality switch
