@@ -28,13 +28,16 @@ partial class PersonalActions
             var chara = args.actor;
             var town = chara.Castle.Towns.Where(t => t.GoldIncome < t.GoldIncomeMax).RandomPick();
 
-            // 能力値75なら2年で回収できる程度。
+            // 25G～40G使うと1G給料が増えるので、
+            // 30G使うと1G収入改善する感じにしてみる。
+
             var adj = 1 + (chara.Governing - 75) / 100f;
-            if (chara.Traits.HasFlag(Traits.Merchant)) adj += 0.1f;
+            if (chara.Traits.HasFlag(Traits.Merchant)) adj += 0.15f;
             var adjDim = town.GoldImproveAdj;
             var adjImp = chara.IsImportant || chara.IsPlayer ? 1 : 0.5f;
             var adjCount = chara.IsPlayer ? 1 : Mathf.Pow(0.9f, (chara.Castle.Members.Count - 3).MinWith(0));
-            town.GoldIncome = (town.GoldIncome + adj * adjDim * adjImp * adjCount / 8).MaxWith(town.GoldIncomeMax);
+            var adjBase = 1f / 15;
+            town.GoldIncome = (town.GoldIncome + adj * adjDim * adjImp * adjCount * adjBase).MaxWith(town.GoldIncomeMax);
 
             // 内政は功績を貯まりやすくする。
             chara.Contribution += adj * 2;

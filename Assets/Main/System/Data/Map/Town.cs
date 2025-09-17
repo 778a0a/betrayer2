@@ -44,7 +44,7 @@ public class Town : ICountryEntity, IMapEntity
     [JsonIgnore]
     public float GoldIncomeMax => TotalInvestment / 10f;
     [JsonIgnore]
-    public float GoldImproveAdj => (GoldIncomeMax - GoldIncome) / GoldIncomeMax;
+    public float GoldImproveAdj => 1 + (GoldIncomeMax - GoldIncome) / GoldIncomeMax;
 
     //public static float Diminish(float current, float max, float maxBase)
     //{
