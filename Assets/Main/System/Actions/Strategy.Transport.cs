@@ -34,6 +34,8 @@ partial class StrategyActions
                 actor.Country.Castles.Count > 1;
         }
 
+        public bool NeedPayCost { get; set; } = true;
+
         public override async ValueTask Do(ActionArgs args)
         {
             var actor = args.actor;
@@ -81,7 +83,10 @@ partial class StrategyActions
                 await MessageWindow.Show($"{args.targetCastle.Name}から金{args.gold}が輸送されました。");
             }
 
-            PayCost(args);
+            if (NeedPayCost)
+            {
+                PayCost(args);
+            }
             Debug.Log($"{args.actor.Name} が {args.targetCastle} から {args.targetCastle2} へ {args.gold}G 運びました。");
         }
     }

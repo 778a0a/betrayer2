@@ -39,8 +39,36 @@ public partial class AI
                     if (act.CanDo(args))
                     {
                         await act.Do(args);
-                        Debug.LogError($"[輸送 - 補充] {wealthy.Boss.Name}が{castle.Name}へ{gold}G を輸送しました。");
+                        Debug.LogError($"[輸送 - 補充] {wealthy.Boss?.Name ?? wealthy.Name}が{castle.Name}へ{gold}G を輸送しました。");
                     }
+                }
+            }
+        }
+
+        // まだ物資が余っている城があれば、貧しい城へ輸送する。
+        foreach (var castle in country.Castles)
+        {
+            if (castle.Gold < 800) continue;
+            if (castle.GoldBalance < 50) continue;
+            var poorCastles = country.Castles
+                .Where(c => c != castle)
+                .Where(c => c.Gold < 300)
+                .OrderBy(c => c.Gold)
+                .FirstOrDefault();
+            if (poorCastles == null) continue;
+
+            var act = core.StrategyActions.Transport;
+            var needGold = 300 - poorCastles.Gold;
+            var gold = needGold.Clamp(0, castle.GoldAmari);
+            if (gold > 0)
+            {
+                var args = act.Args(country.Ruler, castle, poorCastles, gold);
+                if (act.CanDo(args))
+                {
+                    act.NeedPayCost = false; // コストは払わない。
+                    await act.Do(args);
+                    act.NeedPayCost = true;
+                    Debug.LogError($"[輸送 - 調整] {castle.Boss?.Name ?? castle.Name}が{poorCastles.Name}へ{gold}G を輸送しました。");
                 }
             }
         }
