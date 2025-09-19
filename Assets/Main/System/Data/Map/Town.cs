@@ -30,21 +30,22 @@ public class Town : ICountryEntity, IMapEntity
     //[JsonProperty("D")]
     //public int DevelopmentLevel { get; set; } = 0;
 
-    /// <summary>
-    /// 累計投資額
-    /// </summary>
-    [JsonProperty("I")]
-    public float TotalInvestment { get; set; } = 0;
+    ///// <summary>
+    ///// 累計投資額
+    ///// </summary>
+    //[JsonProperty("I")]
+    //public float TotalInvestment { get; set; } = 0;
 
     /// <summary>
     /// 商業
     /// </summary>
     [JsonProperty("G")]
     public float GoldIncome { get; set; }
-    [JsonIgnore]
-    public float GoldIncomeMax => TotalInvestment / 10f;
-    [JsonIgnore]
-    public float GoldImproveAdj => 1 + (GoldIncomeMax - GoldIncome) / GoldIncomeMax;
+    
+    //[JsonIgnore]
+    //public float GoldIncomeMax => TotalInvestment / 10f;
+    //[JsonIgnore]
+    //public float GoldImproveAdj => 1 + (GoldIncomeMax - GoldIncome) / GoldIncomeMax;
 
     //public static float Diminish(float current, float max, float maxBase)
     //{

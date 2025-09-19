@@ -247,13 +247,9 @@ public partial class GameCore
             {
                 var amari = castle.Gold - 1000;
                 castle.Gold = 1000;
-                var townCount = castle.Towns.Count;
-                var investPerTown = amari / townCount;
-                foreach (var town in castle.Towns)
-                {
-                    var adj = PersonalActions.InvestAction.TerrainAdjustment(town);
-                    town.TotalInvestment += adj * investPerTown * 0.2f;
-                }
+
+                var adj = PersonalActions.InvestAction.TerrainAdjustment(castle);
+                castle.TotalInvestment += adj * 0.2f;
             }
         }
     }

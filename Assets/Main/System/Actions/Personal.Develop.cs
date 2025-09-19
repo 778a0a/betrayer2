@@ -26,7 +26,7 @@ partial class PersonalActions
         {
             Util.IsTrue(CanDo(args));
             var chara = args.actor;
-            var town = chara.Castle.Towns.Where(t => t.GoldIncome < t.GoldIncomeMax).RandomPick();
+            var town = chara.Castle.Towns.RandomPickWeighted(t => chara.Castle.GoldIncomeMax - t.GoldIncome);
 
             // 25G～40G使うと1G給料(四半期で3G)が増えるので、
             // 30G/3=10G使うと1G収入改善する感じにしてみる。
@@ -34,11 +34,19 @@ partial class PersonalActions
 
             var adj = 1 + (chara.Governing - 75) / 100f;
             if (chara.Traits.HasFlag(Traits.Merchant)) adj += 0.15f;
-            var adjDim = town.GoldImproveAdj;
+            var adjDim = 1 + 0.5f * (chara.Castle.GoldIncomeMax - chara.Castle.GoldIncome) / (float)chara.Castle.GoldIncomeMax;
+            var adjDim2 = 1 + (0.5f * ((chara.Castle.GoldIncomeMax / 2) - town.GoldIncome) / (chara.Castle.GoldIncomeMax / 2f)).MinWith(0);
             var adjImp = chara.IsImportant || chara.IsPlayer ? 1 : 0.5f;
             var adjCount = chara.IsPlayer ? 1 : Mathf.Pow(0.9f, (chara.Castle.Members.Count - 3).MinWith(0));
             var adjBase = 2f / 30 * 3;
-            town.GoldIncome = (town.GoldIncome + adj * adjDim * adjImp * adjCount * adjBase).MaxWith(town.GoldIncomeMax);
+            town.GoldIncome += adj * adjDim * adjDim2 * adjImp * adjCount * adjBase;
+
+            var overAmount = chara.Castle.GoldIncome - chara.Castle.GoldIncomeMax;
+            if (overAmount > 0)
+            {
+                town.GoldIncome -= overAmount;
+                Debug.Log($"{chara.Name} の内政で {chara.Castle.Name} の収入が上限を超えたため、{overAmount} 減少しました。");
+            }
 
             // 内政は功績を貯まりやすくする。
             chara.Contribution += adj * 2;

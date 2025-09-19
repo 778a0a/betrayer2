@@ -132,7 +132,7 @@ public class Castle : ICountryEntity, IMapEntity
     /// <summary>
     /// 総投資額
     /// </summary>
-    public float TotalInvestment => Towns.Sum(t => t.TotalInvestment);
+    public float TotalInvestment { get; set; }
     /// <summary>
     /// 発展度
     /// </summary>
@@ -145,7 +145,7 @@ public class Castle : ICountryEntity, IMapEntity
     [JsonIgnore]
     public float GoldIncome => Towns.Sum(t => t.GoldIncome);
     [JsonIgnore]
-    public float GoldIncomeMax => Towns.Sum(t => t.GoldIncomeMax);
+    public float GoldIncomeMax => TotalInvestment / 10;
     [JsonIgnore]
     public float GoldIncomeProgress => GoldIncome / GoldIncomeMax;
     [JsonIgnore]

@@ -763,11 +763,6 @@ public class TileInfoEditorWindow : EditorWindow
 
             EditorGUILayout.BeginHorizontal();
             Label("金収入", 40);
-            town.GoldIncome = ParamField(town.GoldIncome, town.GoldIncomeMax, 200, Color.yellow, 20);
-            Label($"最大: {town.GoldIncomeMax:0}");
-            Label($"投資額");
-            town.TotalInvestment = EditorGUILayout.FloatField(town.TotalInvestment);
-            Label($"(効率: {town.GoldImproveAdj * 100:0}%)");
             EditorGUILayout.EndHorizontal();
 
             if (GUILayout.Button("町を削除"))
