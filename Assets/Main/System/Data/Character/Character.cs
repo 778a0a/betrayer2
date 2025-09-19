@@ -102,9 +102,9 @@ public class Character
 
     /// <summary>
     /// 忠誠減少基本値
-    /// 忠実さが5なら-1.25、6なら-1、重臣なら半分
+    /// 忠実さが5なら-1.25、6なら-1、重臣ならやや少なめ
     /// </summary>
-    [JsonIgnore] public float LoyaltyDecreaseBase => (10 - Fealty) / 4 / (IsImportant ? 2 : 1);
+    [JsonIgnore] public float LoyaltyDecreaseBase => (10 - Fealty) / 4 / (IsImportant ? 1.5f : 1);
 
     /// <summary>
     /// 個人行動ゲージ

@@ -41,6 +41,10 @@ public class Soldier
         {
             exp = (int)(exp * owner.Attack.MinWith(owner.Defense, owner.Intelligence) / 100f);
         }
+        else
+        {
+            exp /= 10;
+        }
         Experience += exp;
 
         // 十分経験値が貯まればレベルアップする。

@@ -123,6 +123,7 @@ partial class AI
                 case CastleObjective.Fortify:
                     return PersonalActions.Fortify;
                 case CastleObjective.Develop:
+                case CastleObjective.Transport:
                     var investProb = Mathf.Pow(chara.Castle.GoldIncomeProgress, 2);
                     return investProb.Chance() ? PersonalActions.Invest : PersonalActions.Develop;
                 case CastleObjective.Train:

@@ -8,6 +8,9 @@ using Random = UnityEngine.Random;
 
 public partial class AI
 {
+    /// <summary>
+    /// 国の方針を決定します。
+    /// </summary>
     public CountryObjective SelectCountryObjective(Country country, CountryObjective prev)
     {
         var candTypes = CountryObjective.Candidates(country);
@@ -148,11 +151,12 @@ public partial class AI
                         val *= countryObjectiveAdj;
                     }
                     return val;
-                case CastleObjective.Transport tran:
-                    // 物資が不足している城を優先する。
-                    targetCastle = castle.Country.Castles.FirstOrDefault(c => c.Name == tran.TargetCastleName);
-                    if (targetCastle.GoldSurplus < 0) return 300 - targetCastle.GoldSurplus;
-                    return castle.Members.Count * 10 + 50;
+                // CPUは物資輸送を行わないのでコメントアウト。
+                //case CastleObjective.Transport tran:
+                //    // 物資が不足している城を優先する。
+                //    targetCastle = castle.Country.Castles.FirstOrDefault(c => c.Name == tran.TargetCastleName);
+                //    if (targetCastle.GoldSurplus < 0) return 300 - targetCastle.GoldSurplus;
+                //    return castle.Members.Count * 10 + 50;
                 case CastleObjective.Train:
                     if (minRel <= 20) return 300;
                     if (minRel < 50) return 200;
@@ -166,8 +170,16 @@ public partial class AI
                     return 10;
 
                 case CastleObjective.Develop:
-                    if (castle.GoldIncome == castle.GoldIncomeMax) return 0;
-                    if (castle.GoldSurplus < 0) return 1000;
+                    // 国が赤字の場合
+                    if (country.GoldBalance < 0)
+                    {
+                        // 前線でないなら優先する。
+                        if (minRel > 30) return 2000;
+                        // 前線ならほどほどにする。
+                        else return 200;
+                    }
+                    // 前線なら優先しない。
+                    if (minRel <= 20) return 10;
                     return 100;
                 default:
                     return 0;

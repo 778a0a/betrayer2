@@ -30,6 +30,7 @@ partial class PersonalActions
 
             // 25G～40G使うと1G給料(四半期で3G)が増えるので、
             // 30G/3=10G使うと1G収入改善する感じにしてみる。
+            // -> 上がりすぎなので15Gぐらいにする
 
             var adj = 1 + (chara.Governing - 75) / 100f;
             if (chara.Traits.HasFlag(Traits.Merchant)) adj += 0.15f;

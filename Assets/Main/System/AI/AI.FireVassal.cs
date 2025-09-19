@@ -20,29 +20,40 @@ public partial class AI
         // 序列が下位50%のなかで、もっとも非力な配下を解雇する。
         var members = country.Members.ToList();
         var halfCount = (int)Math.Ceiling(members.Count / 2f);
-
         var candidates = members
+            .Where(m => m != ruler)
             .OrderByDescending(m => m.OrderIndex)
-            .Take(halfCount);
-
-        var target = candidates
+            .Take(halfCount)
             .Where(m => !m.IsMoving)
             .Where(m => !m.IsImportant)
-            .OrderBy(m => m.Power)
-            .FirstOrDefault();
+            .ToList();
 
-        if (target != null)
+        // 最大3人まで解雇を試みる。
+        var count = 3;
+        while (country.GoldBalance < -30 && candidates.Count > 0 && count-- > 0)
         {
-            var act = StrategyActions.FireVassal;
-            var args = act.Args(ruler, target);
-            Debug.LogError($"{country} 赤字のため、{target}を解雇します。");
-            if (act.CanDo(args))
+            var target = candidates
+                .OrderBy(m => m.Power)
+                .FirstOrDefault();
+
+            if (target == null) return;
+
+            if (target != null)
             {
-                await StrategyActions.FireVassal.Do(args);
-            }
-            else
-            {
-                Debug.LogWarning($"{country} 赤字のため、{target}を解雇しようとしましたが実行不可でした。");
+                var act = StrategyActions.FireVassal;
+                var args = act.Args(ruler, target);
+                Debug.LogError($"{country} 赤字のため、{target}を解雇します。");
+                if (act.CanDo(args))
+                {
+                    await StrategyActions.FireVassal.Do(args);
+                    // 解雇成功失敗にかかわらず対象から外す。
+                    candidates.Remove(target);
+                }
+                else
+                {
+                    Debug.LogWarning($"{country} 赤字のため、{target}を解雇しようとしましたが実行不可でした。");
+                    return;
+                }
             }
         }
     }
