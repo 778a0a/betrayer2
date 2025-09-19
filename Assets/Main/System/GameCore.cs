@@ -268,7 +268,7 @@ public partial class GameCore
         // 未所属のキャラはランダムに収入を得る。
         foreach (var chara in World.Characters.Where(c => c.IsFree))
         {
-            chara.Gold += UnityEngine.Random.Range(1, 10);
+            chara.Gold += UnityEngine.Random.Range(1, 5);
             chara.IsStarving = false;
         }
 
