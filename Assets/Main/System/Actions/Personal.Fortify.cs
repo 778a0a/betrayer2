@@ -34,11 +34,11 @@ partial class PersonalActions
             var cap = chara.Intelligence.MinWith(chara.Attack).MinWith(chara.Defense);
             var adj = 1 + (cap - 50) / 100f;
             var adjDim = (castle.StrengthMax - castle.Strength) / castle.StrengthMax;
-            var adjImp = chara.IsImportant || chara.IsPlayer ? 1 : 0.5f;
+            var adjImp = chara.IsImportant || chara.IsPlayer ? 1 : 0.8f;
             var adjCount = chara.IsPlayer ? 1 : Mathf.Pow(0.9f, (chara.Castle.Members.Count - 3).MinWith(0));
             castle.Strength = (castle.Strength + 0.1f * adj * adjDim * adjImp * adjCount).MaxWith(castle.StrengthMax);
 
-            chara.Contribution += adj * 1;
+            chara.Contribution += adjImp * adj * 1;
             PayCost(args);
 
             return default;

@@ -36,7 +36,7 @@ partial class PersonalActions
             if (chara.Traits.HasFlag(Traits.Merchant)) adj += 0.15f;
             var adjDim = 1 + 0.5f * (chara.Castle.GoldIncomeMax - chara.Castle.GoldIncome) / (float)chara.Castle.GoldIncomeMax;
             var adjDim2 = 1 + (0.5f * ((chara.Castle.GoldIncomeMax / 2) - town.GoldIncome) / (chara.Castle.GoldIncomeMax / 2f)).MinWith(0);
-            var adjImp = chara.IsImportant || chara.IsPlayer ? 1 : 0.5f;
+            var adjImp = chara.IsImportant || chara.IsPlayer ? 1 : 0.8f;
             var adjCount = chara.IsPlayer ? 1 : Mathf.Pow(0.9f, (chara.Castle.Members.Count - 3).MinWith(0));
             var adjBase = 2f / 30 * 3;
             town.GoldIncome += adj * adjDim * adjDim2 * adjImp * adjCount * adjBase;
@@ -49,7 +49,7 @@ partial class PersonalActions
             }
 
             // 内政は功績を貯まりやすくする。
-            chara.Contribution += adj * 2;
+            chara.Contribution += adjImp * adj * 2;
             PayCost(args);
 
             return default;
