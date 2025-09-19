@@ -43,7 +43,7 @@ public class Soldier
         }
         else
         {
-            exp /= 10;
+            exp /= 20;
         }
         Experience += exp;
 
@@ -52,7 +52,7 @@ public class Soldier
         {
             Level += 1;
             Experience = 0;
-            owner.Contribution += 1;
+            owner.Contribution += 0.3f;
         }
     }
 

@@ -31,7 +31,7 @@ partial class PersonalActions
             targetSlot.Level = 1;
             targetSlot.Experience = 0;
             targetSlot.Hp = targetSlot.MaxHp;
-            chara.Contribution += 0.5f;
+            chara.Contribution += 0.1f;
 
             PayCost(args);
 

@@ -67,10 +67,10 @@ partial class StrategyActions
             // 輸送を行う。
             args.targetCastle.Gold -= args.gold;
             args.targetCastle2.Gold += args.gold;
-            if (!args.actor.IsRuler)
-            {
-                args.actor.Contribution += args.gold / 10f;
-            }
+            //if (!args.actor.IsRuler)
+            //{
+            //    args.actor.Contribution += args.gold / 10f;
+            //}
 
             if (actor.IsPlayer)
             {

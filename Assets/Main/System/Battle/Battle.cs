@@ -150,8 +150,8 @@ public class Battle
         winner.Character.Prestige += 1;
 
         // 功績の処理を行う。
-        winner.Character.Contribution += 20;
-        loser.Character.Contribution += 5;
+        winner.Character.Contribution += 5;
+        loser.Character.Contribution += 1;
 
         // 攻城戦の場合は城の耐久力を減らす。
         var castle = Atk.Tile.Castle ?? Def.Tile.Castle;
