@@ -9,41 +9,12 @@ using Random = UnityEngine.Random;
 public partial class AI
 {
     /// <summary>
-    /// 輸送（上納）
-    /// </summary>
-    /// <param name="castle"></param>
-    /// <param name="boss"></param>
-    /// <returns></returns>
-    public async ValueTask TransportAsTribute(Castle castle, Character boss)
-    {
-        var ruler = castle.Country.Ruler;
-        Util.IsTrue(boss != ruler, "君主は上納できません。");
-
-        // 赤字の場合は何もしない。
-        if (castle.GoldBalance <= 0)
-        {
-            return;
-        }
-
-        // 黒字の場合は、現在の金残高の半分を上納する。
-        var gold = castle.Gold / 2;
-        if (gold > 1)
-        {
-            var act = core.StrategyActions.Transport;
-            var args = act.Args(castle.Boss, castle, ruler.Castle, gold);
-            if (act.CanDo(args))
-            {
-                await act.Do(args);
-                Debug.LogWarning($"[輸送 - 上納] {castle.Boss.Name}が{ruler.Castle}へ{gold}G を輸送しました。");
-            }
-        }
-    }
-
-    /// <summary>
     /// 輸送（君主用）
     /// </summary>
-    public async ValueTask TransportAsDistribution(Country country)
+    public async ValueTask Transport(Character ruler)
     {
+        var country = ruler.Country;
+
         // 物資が不足している城へ豊かな城から輸送する。
         foreach (var castle in country.Castles)
         {

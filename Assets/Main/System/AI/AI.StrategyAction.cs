@@ -17,34 +17,16 @@ partial class AI
         // 君主の場合
         if (chara.IsRuler)
         {
+            // 赤字の場合は不要な人員を解雇する。
+            await FireVassal(chara);
+
             // 四半期ごとの行動がまだなら行う。
             if (!country.QuarterActionDone)
             {
                 country.QuarterActionDone = true;
-            }
 
-            // 赤字で物資も乏しい場合は序列の低いメンバーを解雇する。
-            if (country.GoldBalance < -30 && country.GoldSurplus < 0)
-            {
-                var target = country.Members
-                    .Where(m => !m.IsMoving)
-                    .Where(m => !m.IsImportant)
-                    .OrderByDescending(m => m.OrderIndex)
-                    .FirstOrDefault();
-                if (target != null)
-                {
-                    var act = StrategyActions.FireVassal;
-                    var args = act.Args(chara, target);
-                    Debug.LogError($"{country} 赤字のため、{target}を解雇します。");
-                    if (act.CanDo(args))
-                    {
-                        await StrategyActions.FireVassal.Do(args);
-                    }
-                    else
-                    {
-                        Debug.LogWarning($"{country} 赤字のため、{target}を解雇しようとしましたが実行不可でした。");
-                    }
-                }
+                // 物資を輸送する。
+                await Transport(chara);
             }
 
             // 外交を行う。
@@ -62,16 +44,6 @@ partial class AI
 
             // 褒賞を与える。
             await Bonus(castle);
-
-            // 物資を輸送する。
-            if (chara.IsRuler)
-            {
-                await TransportAsDistribution(chara.Country);
-            }
-            else
-            {
-                await TransportAsTribute(castle, chara);
-            }
 
             // 採用を行う。
             await HireVassal(chara);
