@@ -346,7 +346,7 @@ public partial class CastleDetailTab
     {
         // 自身の国なら表示しない。
         var playerCountry = Core.World.Player?.Country;
-        if (playerCountry == country)
+        if (playerCountry == country || playerCountry == null)
         {
             DiplomaticRelationsContainer.style.display = DisplayStyle.None;
             return;
