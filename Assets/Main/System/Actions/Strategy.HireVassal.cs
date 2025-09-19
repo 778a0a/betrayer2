@@ -25,11 +25,20 @@ partial class StrategyActions
         public override async ValueTask Do(ActionArgs args)
         {
             Util.IsTrue(CanDo(args));
+            var actor = args.actor;
+
+            if (actor.IsPlayer)
+            {
+                if (actor.Castle.Members.Count >= 6)
+                {
+                    await MessageWindow.Show("城の所属人数の上限に達しています。");
+                    return;
+                }
+            }
 
             // 探索は成否にかかわらずコストを消費する。
             PayCost(args);
 
-            var actor = args.actor;
             if (actor.IsPlayer)
             {
                 // ランダムに所属なしのキャラを選ぶ。
