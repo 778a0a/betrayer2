@@ -273,7 +273,7 @@ public partial class GameCore
         }
 
         // 行動ポイントを補充する。
-        foreach (var chara in World.Characters)
+        foreach (var chara in World.Characters.Where(c => c.IsBoss))
         {
             chara.ActionPoints = (chara.ActionPoints + (chara.Intelligence + chara.Governing) / 10).MaxWith(255);
         }
