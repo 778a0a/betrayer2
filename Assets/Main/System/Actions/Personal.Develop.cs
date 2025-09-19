@@ -38,7 +38,7 @@ partial class PersonalActions
             var adjDim2 = 1 + (0.5f * ((chara.Castle.GoldIncomeMax / 2) - town.GoldIncome) / (chara.Castle.GoldIncomeMax / 2f)).MinWith(0);
             var adjImp = chara.IsImportant || chara.IsPlayer ? 1 : 0.8f;
             var adjCount = chara.IsPlayer ? 1 : Mathf.Pow(0.9f, (chara.Castle.Members.Count - 3).MinWith(0));
-            var adjBase = 2f / 30 * 3;
+            var adjBase = 3f / 30 * 3;
             town.GoldIncome += adj * adjDim * adjDim2 * adjImp * adjCount * adjBase;
 
             var overAmount = chara.Castle.GoldIncome - chara.Castle.GoldIncomeMax;
