@@ -18,6 +18,7 @@ public partial class CharacterSummary
 
         // 基本情報の更新
         imagePlayerFace.image = Static.GetFaceImage(chara);
+        imagePlayerFace.style.opacity = chara.IsIncapacitated ? 0.4f : 1.0f;
         labelPlayerName.text = chara.Name;
         labelPlayerTitle.text = chara.GetTitle();
         labelMoving.visible = chara.IsMoving;

@@ -6,9 +6,9 @@
     <ui:VisualElement style="padding: 10px; background-color: #224;">
         <ui:VisualElement style="flex-direction: row; align-items: center">
             <ui:VisualElement style="position: relative; width: 170px; height: 170px;">
-                <ui:Image name="imagePlayerFace" style="border-width: 2px; border-color: #888; width: 170px; height: 170px; background-color: rgba(0, 229, 255, 0.35); position: absolute; top: 0; left: 0;" />
+                <ui:Image name="imagePlayerFace" style="border-width: 2px; border-color: #888; width: 170px; height: 170px; background-color: rgba(88, 88, 88, 1); position: absolute; top: 0; left: 0;" />
                 <ui:Label name="labelMoving" text="出撃中" style="position: absolute; bottom: -5px; right: 0px; font-size: 20px; padding: 2px 6px; color: white; background-color: #800; border-radius: 3px;" />
-                <ui:Label name="labelIncapacitated" text="行動不能" style="position: absolute; bottom: -5px; right: 0px; font-size: 20px; padding: 2px 6px; color: white; background-color: #888; border-radius: 3px;" />
+                <ui:Label name="labelIncapacitated" text="行動不能" style="position: absolute; bottom: -5px; right: 0px; font-size: 20px; padding: 2px 6px; color: black; background-color: #ff0; border-radius: 3px;" />
             </ui:VisualElement>
             <ui:VisualElement style="flex-grow: 1; margin-left: 10px;">
                 <ui:VisualElement style="flex-direction: row; align-items: flex-end;">

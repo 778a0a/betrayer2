@@ -327,6 +327,7 @@ public partial class CastleDetailTab
         var faceImage = new VisualElement();
         faceImage.AddToClassList("SmallCharacterIcon");
         faceImage.style.backgroundImage = new(Static.GetFaceImage(character));
+        faceImage.style.opacity = character.IsIncapacitated ? 0.3f : 1.0f;
         faceImage.Register<MouseOverEvent>(_ => ShowCharacterSummary(character));
         return faceImage;
     }

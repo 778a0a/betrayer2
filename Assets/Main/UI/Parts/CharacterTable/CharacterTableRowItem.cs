@@ -40,7 +40,25 @@ public partial class CharacterTableRowItem
         CharacterTableRowItemRoot.EnableInClassList("selected", isSelected);
         
         labelName.text = chara.Name;
-        labelDeployed.style.display = Util.Display(chara.IsMoving);
+        labelDeployed.RemoveFromClassList("incapacitated");
+        labelName.style.color = Color.white;
+        if (chara.IsMoving)
+        {
+            labelDeployed.text = "出";
+            labelDeployed.style.display = DisplayStyle.Flex;
+            labelDeployed.style.color = Color.red;
+        }
+        else if (chara.IsIncapacitated)
+        {
+            labelDeployed.text = "不";
+            labelDeployed.style.display = DisplayStyle.Flex;
+            labelDeployed.style.color = Color.yellow;
+            labelName.style.color = Color.gray;
+        }
+        else
+        {
+            labelDeployed.style.display = DisplayStyle.None;
+        }
         labelAttack.text = chara.Attack.ToString();
         labelDefense.text = chara.Defense.ToString();
         labelIntelligence.text = chara.Intelligence.ToString();

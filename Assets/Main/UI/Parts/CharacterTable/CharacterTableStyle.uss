@@ -54,6 +54,7 @@
 .CharacterTable-Col-Name {
     width: 230px;
     -unity-text-align: middle-left;
+    color: white;
 }
 
 .CharacterTable-Col-Deployed {
