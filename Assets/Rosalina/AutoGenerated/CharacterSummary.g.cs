@@ -56,19 +56,15 @@ public partial class CharacterSummary
 
     public Label labelLoyalty { get; private set; }
 
-    public Label labelPlayerGold { get; private set; }
-
-    public Label labelPlayerAP { get; private set; }
-
     public Label labelSalary { get; private set; }
 
     public Label labelContribution { get; private set; }
 
     public Label labelPrestige { get; private set; }
 
-    public VisualElement NonPlayerInfoContainer { get; private set; }
+    public VisualElement OrderContainer { get; private set; }
 
-    public VisualElement PlayerInfoContainer { get; private set; }
+    public Label labelOrder { get; private set; }
 
     public CharacterInfoSoldierIcon soldier00 { get; private set; }
 
@@ -130,13 +126,11 @@ public partial class CharacterSummary
         labelGoverning = Root?.Q<Label>("labelGoverning");
         labelSoldiers = Root?.Q<Label>("labelSoldiers");
         labelLoyalty = Root?.Q<Label>("labelLoyalty");
-        labelPlayerGold = Root?.Q<Label>("labelPlayerGold");
-        labelPlayerAP = Root?.Q<Label>("labelPlayerAP");
         labelSalary = Root?.Q<Label>("labelSalary");
         labelContribution = Root?.Q<Label>("labelContribution");
         labelPrestige = Root?.Q<Label>("labelPrestige");
-        NonPlayerInfoContainer = Root?.Q<VisualElement>("NonPlayerInfoContainer");
-        PlayerInfoContainer = Root?.Q<VisualElement>("PlayerInfoContainer");
+        OrderContainer = Root?.Q<VisualElement>("OrderContainer");
+        labelOrder = Root?.Q<Label>("labelOrder");
         soldier00 = new CharacterInfoSoldierIcon(Root?.Q<VisualElement>("soldier00"));
         soldier01 = new CharacterInfoSoldierIcon(Root?.Q<VisualElement>("soldier01"));
         soldier02 = new CharacterInfoSoldierIcon(Root?.Q<VisualElement>("soldier02"));
@@ -180,13 +174,11 @@ public partial class CharacterSummary
         labelGoverning = Root?.Q<Label>("labelGoverning");
         labelSoldiers = Root?.Q<Label>("labelSoldiers");
         labelLoyalty = Root?.Q<Label>("labelLoyalty");
-        labelPlayerGold = Root?.Q<Label>("labelPlayerGold");
-        labelPlayerAP = Root?.Q<Label>("labelPlayerAP");
         labelSalary = Root?.Q<Label>("labelSalary");
         labelContribution = Root?.Q<Label>("labelContribution");
         labelPrestige = Root?.Q<Label>("labelPrestige");
-        NonPlayerInfoContainer = Root?.Q<VisualElement>("NonPlayerInfoContainer");
-        PlayerInfoContainer = Root?.Q<VisualElement>("PlayerInfoContainer");
+        OrderContainer = Root?.Q<VisualElement>("OrderContainer");
+        labelOrder = Root?.Q<Label>("labelOrder");
         soldier00 = new CharacterInfoSoldierIcon(Root?.Q<VisualElement>("soldier00"));
         soldier01 = new CharacterInfoSoldierIcon(Root?.Q<VisualElement>("soldier01"));
         soldier02 = new CharacterInfoSoldierIcon(Root?.Q<VisualElement>("soldier02"));

@@ -46,15 +46,11 @@
                     <ui:Label name="labelContribution" text="10000" style="font-size: 24px; color: white; min-width:50px" />
                     <ui:Label text="名声:" style="font-size: 24px; margin: 0 5px 0 10px; " />
                     <ui:Label name="labelPrestige" text="75000" style="font-size: 24px; color: white; min-width:50px" />
-                    <ui:VisualElement name="NonPlayerInfoContainer" style="flex-direction: row;">
+                    <ui:VisualElement name="OrderContainer" style="flex-direction: row;">
                         <ui:Label text="忠誠:" style="font-size: 24px; margin: 0 5px 0 10px; " />
-                        <ui:Label name="labelLoyalty" text="75000" style="font-size: 24px; color: white; " />
-                    </ui:VisualElement>
-                    <ui:VisualElement name="PlayerInfoContainer" style="flex-direction: row;">
-                        <ui:Label text="所持金:" style="font-size: 24px; margin: 0 5px 0 10px; " />
-                        <ui:Label name="labelPlayerGold" text="1,000" style="font-size: 24px; color: yellow; " />
-                        <ui:Label text="采配P:" style="font-size: 24px; margin: 0 5px 0 10px; " />
-                        <ui:Label name="labelPlayerAP" text="10" style="font-size: 24px; color: red; " />
+                        <ui:Label name="labelLoyalty" text="100" style="font-size: 24px; color: white; min-width: 40px" />
+                        <ui:Label text="序列:" style="font-size: 24px; margin: 0 5px 0 10px; " />
+                        <ui:Label name="labelOrder" text="3" style="font-size: 24px; color: white; min-width:30px" />
                     </ui:VisualElement>
                 </ui:VisualElement>
                 <ui:VisualElement name="SoldierGrid" style="flex-direction: row; flex-wrap: wrap; margin-top: 5px;">
