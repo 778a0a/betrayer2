@@ -43,11 +43,22 @@ partial class PersonalActions
             // 能力値
             var adj = 1 + (chara.Governing - 75) / 100f;
             // 特性
-            if (chara.Traits.HasFlag(Traits.Merchant)) adj += 0.1f;
+            if (chara.Traits.HasFlag(Traits.Merchant)) adj += 0.25f;
             // 地形
             var adjTerrain = TerrainAdjustment(town);
+            // 発展度（城の総投資額を使うと、町を分けている意味がもうほぼ無くなるけどとりあえず気にしない）
+            var adjLevel = chara.Castle.TotalInvestment switch
+            {
+                < 2000 => 2.0f,
+                < 3000 => 1.5f,
+                < 4000 => 1.0f,
+                < 5000 => 0.75f,
+                < 6000 => 0.5f,
+                < 7000 => 0.4f,
+                _ => 0.3f,
+            };
             // 総投資額に加算する。
-            town.TotalInvestment += cost * adj;
+            town.TotalInvestment += cost * adj * adjLevel;
 
             // 功績を加算する。
             chara.Contribution += cost / GoldCost * adj * 2;
