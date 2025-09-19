@@ -74,7 +74,7 @@ partial class AI
             }
 
             // 採用を行う。
-            await HireVassal(castle);
+            await HireVassal(chara);
 
             // 投資を行う。
             await Invest(castle);

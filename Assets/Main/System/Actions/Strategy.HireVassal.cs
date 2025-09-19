@@ -33,17 +33,7 @@ partial class StrategyActions
             if (actor.IsPlayer)
             {
                 // ランダムに所属なしのキャラを選ぶ。
-                var frees = World.Characters.Where(c => c.IsFree).ToList();
-                var candidates = new List<Character>();
-                var candCount = (int)MathF.Max(1, MathF.Ceiling(actor.Intelligence / 10) - 5);
-                for (int i = 0; i < candCount; i++)
-                {
-                    if (frees.Count == 0) break;
-                    var cand = frees.RandomPick();
-                    candidates.Add(cand);
-                    frees.Remove(cand);
-                }
-
+                var candidates = SearchCandidates(actor);
                 if (candidates.Count == 0)
                 {
                     await MessageWindow.Show("雇用可能な人材が見つかりませんでした。");
@@ -64,8 +54,21 @@ partial class StrategyActions
                     return;
                 }
             }
+            else
+            {
+                // AIの場合は、targetCharacterに指定されているので何もしない。
+            }
 
-            // TODO targetがプレーヤーの場合
+            // targetがプレーヤーの場合
+            if (args.targetCharacter.IsPlayer)
+            {
+                var yes = await MessageWindow.ShowYesNo($"{args.actor.Name} ({args.actor.Country.Ruler.Name}軍) から仕官の誘いがありました。\n受けますか？");
+                if (!yes)
+                {
+                    Debug.Log($"{args.targetCharacter.Name} は仕官の誘いを断りました。");
+                    return;
+                }
+            }
 
             var target = args.targetCharacter;
             target.IsImportant = false;
@@ -73,6 +76,22 @@ partial class StrategyActions
             target.Loyalty = 80 + target.Fealty * 2;
             target.ChangeCastle(actor.Castle, false);
             Debug.Log($"{target} が {actor.Castle} に採用されました。");
+        }
+
+        public static List<Character> SearchCandidates(Character actor)
+        {
+            // ランダムに所属なしのキャラを選ぶ。
+            var frees = GameCore.Instance.World.Characters.Where(c => c.IsFree).ToList();
+            var candidates = new List<Character>();
+            var candCount = (int)MathF.Max(1, MathF.Ceiling(actor.Intelligence / 10) - 5);
+            for (int i = 0; i < candCount; i++)
+            {
+                if (frees.Count == 0) break;
+                var cand = frees.RandomPick();
+                candidates.Add(cand);
+                frees.Remove(cand);
+            }
+            return candidates;
         }
     }
 }
