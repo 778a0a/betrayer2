@@ -104,7 +104,7 @@ public class UIMapManager : MonoBehaviour
     private EventHandler<MapPosition> cellClickHandler;
     private void DefaultCellClickHandler(object sender, MapPosition pos)
     {
-        Debug.Log($"Clicked {pos}");
+        //Debug.Log($"Clicked {pos}");
         ui.ActionScreen.OnDefaultCellClicked(pos);
     }
 

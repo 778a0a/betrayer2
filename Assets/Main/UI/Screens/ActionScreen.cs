@@ -142,7 +142,7 @@ public partial class ActionScreen : IScreen
     /// </summary>
     public void OnDefaultCellClicked(MapPosition pos)
     {
-        Debug.Log($"DefaultClick {pos}");
+        //Debug.Log($"DefaultClick {pos}");
         var prevTile = currentTile;
         currentTile = Core.World.Map.GetTile(pos);
 

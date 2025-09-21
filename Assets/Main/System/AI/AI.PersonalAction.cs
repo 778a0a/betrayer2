@@ -70,24 +70,24 @@ partial class AI
                 return;
             }
 
-            // 後方から移動する（適当）TODO
-            var castle = chara.Castle;
-            var isSafe = castle.Neighbors.All(n => !castle.IsAttackable(n)) && !castle.DangerForcesExists;
-            if (isSafe && castle.Members.Count > 2)
-            {
-                var cands = castle.Members
-                    .Where(m => m != chara)
-                    .Where(m => m.IsDefendable)
-                    .ToList();
-                var moveTarget = cands.RandomPickDefault();
-                var moveCastle = castle.Neighbors.Where(n => castle.IsSelf(n)).RandomPickDefault();
-                if (moveTarget != null && moveCastle != null && 0.5f.Chance())
-                {
-                    var move = StrategyActions.Deploy;
-                    var moveArgs = move.Args(chara, moveTarget, moveCastle);
-                    await move.Do(moveArgs);
-                }
-            }
+            //// 後方から移動する（適当）TODO
+            //var castle = chara.Castle;
+            //var isSafe = castle.Neighbors.All(n => !castle.IsAttackable(n)) && !castle.DangerForcesExists;
+            //if (isSafe && castle.Members.Count > 2)
+            //{
+            //    var cands = castle.Members
+            //        .Where(m => m != chara)
+            //        .Where(m => m.IsDefendable)
+            //        .ToList();
+            //    var moveTarget = cands.RandomPickDefault();
+            //    var moveCastle = castle.Neighbors.Where(n => castle.IsSelf(n)).RandomPickDefault();
+            //    if (moveTarget != null && moveCastle != null && 0.5f.Chance())
+            //    {
+            //        var move = StrategyActions.Deploy;
+            //        var moveArgs = move.Args(chara, moveTarget, moveCastle);
+            //        await move.Do(moveArgs);
+            //    }
+            //}
 
             var args = new ActionArgs();
             args.actor = chara;

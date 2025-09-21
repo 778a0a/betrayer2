@@ -20,6 +20,9 @@ partial class AI
             // 赤字の場合は不要な人員を解雇する。
             await FireVassal(chara);
 
+            // 人員を移動させる。
+            await MoveVassal(chara);
+
             // 四半期ごとの行動がまだなら行う。
             if (!country.QuarterActionDone)
             {
@@ -33,8 +36,6 @@ partial class AI
             await Diplomacy(country);
 
             await BonusFromRuler(country);
-
-            // TODO 人員の移動
         }
 
         // 四半期ごとの行動がまだなら行う。

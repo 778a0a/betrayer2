@@ -14,7 +14,7 @@ public partial class AI
         var country = castle.Country;
 
         // すでに所属上限なら何もしない。
-        if (castle.Members.Count >= 6)
+        if (castle.Members.Count >= castle.MaxMember)
         {
             return;
         }
@@ -24,7 +24,7 @@ public partial class AI
             .Where(f => f.Country == country)
             .Where(f => f.Destination == castle)
             .ToList();
-        if (castle.Members.Count + incomingCharacters.Count >= 6)
+        if (castle.Members.Count + incomingCharacters.Count >= castle.MaxMember)
         {
             Debug.Log($"自城に向かっている軍勢があるため、採用は行いません。 {string.Join(", ", incomingCharacters.Select(f => f.Character.Name))}");
             return;

@@ -205,6 +205,8 @@ public class Castle : ICountryEntity, IMapEntity
 
     [JsonIgnore]
     public GameMapTile Tile => GameCore.Instance.World.Map.GetTile(this);
+    [JsonIgnore]
+    public int MaxMember => 6;
 
     public override string ToString()
     {
