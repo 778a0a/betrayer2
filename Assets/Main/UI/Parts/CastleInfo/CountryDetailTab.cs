@@ -233,7 +233,7 @@ public partial class CountryDetailTab
     /// </summary>
     private void OnObjectiveComboBoxSelectionChanged(ChangeEvent<string> evt)
     {
-        Debug.Log($"Objective changed: {evt.newValue}");
+        //Debug.Log($"Objective changed: {evt.newValue}");
         if (targetCountry == null) return;
         switch (comboObjective.index)
         {
