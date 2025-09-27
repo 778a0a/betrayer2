@@ -175,6 +175,15 @@ public record CharacterInBattle(
             //// 私闘の場合は撤退しない。
             //if (battle.Type is MartialActions.PrivateFightAction) break;
 
+            // 1列目がまだ余裕なら撤退しない。
+            if (Row1.All(s => s.Hp == 0 || s.Hp > 15)) break;
+
+            // 1列目が敵の1・2列目よりも強いなら撤退しない。
+            var myRow1Power = Row1.Sum(s => s.Hp);
+            var opRow1Power = Opponent.Row1.Sum(s => s.Hp);
+            var opRow2Power = Opponent.Row2.Sum(s => s.Hp);
+            if (myRow1Power > Mathf.Max(opRow1Power, opRow2Power)) break;
+
             // まだ損耗が多くないなら撤退しない。
             // （現在の戦闘で全滅した兵士も数えるために、IsAliveではなく!IsEmptySlotを使う）
             var manyLoss = Character.Soldiers.Where(s => !s.IsEmptySlot).Count(s => s.Hp < 10) >= 3;
@@ -182,13 +191,15 @@ public record CharacterInBattle(
 
             // 兵士が十分残っている列があるなら撤退しない。
             var hasHealthyRow = new[] { Row1, Row2, Row3 }
-                .Any(row => row.All(s => s.IsAlive && s.Hp >= 25));
+                .Any(row => row.All(s => s.Hp == 0 || s.Hp >= 25));
             if (hasHealthyRow) break;
 
             // 敵よりも兵力が多いなら撤退しない。
             var myPower = Soldiers.Power;
-            var opPower = Opponent.Soldiers.Power * 1.25f;
-            if (myPower > opPower) break;
+            var opPower = Opponent.Soldiers.Power;
+            var powerAdj = IsInCastle && IsDefender ? 1.1f : 1f;
+            powerAdj += IsInCastle && IsDefender && Character.IsLoyal ? 0.1f : 0;
+            if (myPower * powerAdj > opPower) break;
 
             //// 敵に残り数の少ない兵士がいるなら撤退しない。
             //var opAboutToDie = Opponent.Soldiers.Any(s => s.IsAlive && s.Hp <= 3);

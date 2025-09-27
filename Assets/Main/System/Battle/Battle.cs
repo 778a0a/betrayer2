@@ -79,10 +79,10 @@ public class Battle
             await Tick();
 
             // ゲージを増加させる。
-            Atk.TacticsGauge = (Atk.TacticsGauge + (Atk.Strength + Atk.Intelligence * 2) / 10f).MaxWith(100);
-            Def.TacticsGauge = (Def.TacticsGauge + (Def.Strength + Def.Intelligence * 2) / 10f).MaxWith(100);
-            Atk.RetreatGauge = (Atk.RetreatGauge + (Atk.Intelligence * 3 - Def.Intelligence)).Clamp(0, 100);
-            Def.RetreatGauge = (Def.RetreatGauge + (Def.Intelligence * 3 - Atk.Intelligence)).Clamp(0, 100);
+            Atk.TacticsGauge = (Atk.TacticsGauge + (Atk.Strength + Atk.Intelligence * 2) * 0.085f).MaxWith(100);
+            Def.TacticsGauge = (Def.TacticsGauge + (Def.Strength + Def.Intelligence * 2) * 0.085f).MaxWith(100);
+            Atk.RetreatGauge = (Atk.RetreatGauge + (Atk.Intelligence * 3 - Def.Intelligence) * 0.09f).Clamp(0, 100);
+            Def.RetreatGauge = (Def.RetreatGauge + (Def.Intelligence * 3 - Atk.Intelligence) * 0.09f).Clamp(0, 100);
             // 2列目、3列目を少し回復させる。
             foreach (var sol in Atk.Row2.Concat(Def.Row2).Where(s => s.IsAlive))
             {
@@ -388,17 +388,22 @@ public class Battle
                 }
             }
 
+            if (Atk.IsPlayer || Def.IsPlayer)
+            {
+                Debug.Log($"[戦闘処理] " +
+                    $"{Atk}の総ダメージ: {attackerTotalDamage} " +
+                    $"{Def}の総ダメージ: {defenderTotalDamage}");
+            }
+
             if (NeedWatchBattle || NeedInteraction || DebugWatch)
             {
                 UI.SetData(this);
                 await Awaitable.WaitForSecondsAsync(0.15f);
             }
 
-            if (Atk.IsPlayer || Def.IsPlayer)
+            if (Atk.Row1.All(s => !s.IsAlive) || Def.Row1.All(s => !s.IsAlive))
             {
-                Debug.Log($"[戦闘処理] " +
-                    $"{Atk}の総ダメージ: {attackerTotalDamage} " +
-                    $"{Def}の総ダメージ: {defenderTotalDamage}");
+                break;
             }
         }
     }

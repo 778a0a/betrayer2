@@ -83,6 +83,22 @@
                                 <engine:Label text="地形" name="labelAttackerTerrainCaption" style="font-size: 30px; padding: 5px 5px 5px 0px;" />
                                 <engine:Label text="大河" name="labelAttackerTerrain" style="font-size: 30px; padding: 5px 0" />
                             </engine:VisualElement>
+                            <engine:VisualElement style="flex-direction: column; margin-top: 10px;">
+                                <engine:VisualElement style="flex-direction: row; margin-bottom: 5px; align-items: center;">
+                                    <engine:Label text="戦術" name="labelAttackerTacticsCaption" style="font-size: 24px; width: 80px;" />
+                                    <engine:VisualElement name="AttackerTacticsGauge" style="width: 120px; height: 20px; background-color: rgb(40, 40, 40); border-width: 1px; border-color: white;">
+                                        <engine:VisualElement name="AttackerTacticsBar1" style="position: absolute; top: 0; left: 0; height: 100%; background-color: white;" />
+                                        <engine:VisualElement name="AttackerTacticsBar2" style="position: absolute; top: 0; left: 33.33%; height: 100%; background-color: rgb(173, 216, 230);" />
+                                        <engine:VisualElement name="AttackerTacticsBar3" style="position: absolute; top: 0; left: 66.67%; height: 100%; background-color: rgb(0, 100, 200);" />
+                                    </engine:VisualElement>
+                                </engine:VisualElement>
+                                <engine:VisualElement style="flex-direction: row; align-items: center;">
+                                    <engine:Label text="撤退" name="labelAttackerRetreatCaption" style="font-size: 24px; width: 80px;" />
+                                    <engine:VisualElement name="AttackerRetreatGauge" style="width: 120px; height: 20px; background-color: rgb(40, 40, 40); border-width: 1px; border-color: white;">
+                                        <engine:VisualElement name="AttackerRetreatBar" style="position: absolute; top: 0; left: 0; height: 100%; background-color: rgb(255, 165, 0);" />
+                                    </engine:VisualElement>
+                                </engine:VisualElement>
+                            </engine:VisualElement>
                         </engine:VisualElement>
                     </engine:VisualElement>
                     <engine:VisualElement class="defender-info" style="flex-grow: 1;">
@@ -103,6 +119,22 @@
                             <engine:VisualElement style="flex-direction: row;">
                                 <engine:Label text="地形" name="labelDefenderTerrainCaption" style="font-size: 30px; padding: 5px;" />
                                 <engine:Label text="城砦" name="labelDefenderTerrain" style="font-size: 30px; padding: 5px 0px 5px 5px;" />
+                            </engine:VisualElement>
+                            <engine:VisualElement style="flex-direction: column; margin-top: 10px;">
+                                <engine:VisualElement style="flex-direction: row-reverse; margin-bottom: 5px; align-items: center;">
+                                    <engine:VisualElement name="DefenderTacticsGauge" style="width: 120px; height: 20px; background-color: rgb(40, 40, 40); border-width: 1px; border-color: white;">
+                                        <engine:VisualElement name="DefenderTacticsBar1" style="position: absolute; top: 0; left: 0; height: 100%; background-color: white;" />
+                                        <engine:VisualElement name="DefenderTacticsBar2" style="position: absolute; top: 0; left: 33.33%; height: 100%; background-color: rgb(173, 216, 230);" />
+                                        <engine:VisualElement name="DefenderTacticsBar3" style="position: absolute; top: 0; left: 66.67%; height: 100%; background-color: rgb(0, 100, 200);" />
+                                    </engine:VisualElement>
+                                    <engine:Label text="戦術" name="labelDefenderTacticsCaption" style="font-size: 24px; width: 80px; -unity-text-align: middle-right;" />
+                                </engine:VisualElement>
+                                <engine:VisualElement style="flex-direction: row-reverse; align-items: center;">
+                                    <engine:VisualElement name="DefenderRetreatGauge" style="width: 120px; height: 20px; background-color: rgb(40, 40, 40); border-width: 1px; border-color: white;">
+                                        <engine:VisualElement name="DefenderRetreatBar" style="position: absolute; top: 0; left: 0; height: 100%; background-color: rgb(255, 165, 0);" />
+                                    </engine:VisualElement>
+                                    <engine:Label text="撤退" name="labelDefenderRetreatCaption" style="font-size: 24px; width: 80px; -unity-text-align: middle-right;" />
+                                </engine:VisualElement>
                             </engine:VisualElement>
                         </engine:VisualElement>
                     </engine:VisualElement>

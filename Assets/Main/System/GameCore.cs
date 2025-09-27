@@ -67,6 +67,18 @@ public partial class GameCore
 
         var player = World.Player;
 
+        while (true)
+        {
+            UnityEngine.Random.seed = (int)DateTime.Now.Ticks;
+            var force = new Force(World, player, player.Castle.Position);
+            force.SetDestination(World.Castles.First());
+            World.Forces.Register(force);
+            var enemyChara = World.Characters.Where(c => c != player).Where(c => !c.IsFree).RandomPick();
+            var enemy = new Force(World, enemyChara, World.Castles.Last().Position);
+            var battle = BattleManager.PrepareFieldBattle(force, enemy);
+            await battle.Do();
+        }
+
         // 月初の処理
         if (GameDate.Day == 1)
         {

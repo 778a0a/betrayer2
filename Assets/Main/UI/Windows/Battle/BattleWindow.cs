@@ -101,6 +101,12 @@ public partial class BattleWindow// : IWindow
         labelDefenderDefence.text = battle.Defender.Strength.ToString();
         labelDefenderIntelligense.text = defender.Intelligence.ToString();
         labelDefenderTerrain.text = defenderTerrain.ToString();
+
+        // TacticsGaugeとRetreatGaugeの設定
+        SetTacticsGaugeValue(AttackerTacticsBar1, AttackerTacticsBar2, AttackerTacticsBar3, battle.Attacker.TacticsGauge);
+        SetRetreatGaugeValue(AttackerRetreatBar, battle.Attacker.RetreatGauge);
+        SetTacticsGaugeValue(DefenderTacticsBar1, DefenderTacticsBar2, DefenderTacticsBar3, battle.Defender.TacticsGauge);
+        SetRetreatGaugeValue(DefenderRetreatBar, battle.Defender.RetreatGauge);
     }
 
     public ValueTask<BattleAction> WaitPlayerClick()
@@ -160,6 +166,40 @@ public partial class BattleWindow// : IWindow
         }
 
         return tcs.Task;
+    }
+
+    private void SetTacticsGaugeValue(VisualElement bar1, VisualElement bar2, VisualElement bar3, float value)
+    {
+        // 0-100の値を0-33, 33-66, 66-100の3つの区間に分けて表示
+        float clampedValue = Mathf.Clamp(value, 0f, 100f);
+
+        // 第1区間 (0-33): 白色
+        if (clampedValue <= 33f)
+        {
+            bar1.style.width = Length.Percent(clampedValue / 33f * 33.33f);
+            bar2.style.width = Length.Percent(0f);
+            bar3.style.width = Length.Percent(0f);
+        }
+        // 第2区間 (33-66): 薄い水色
+        else if (clampedValue <= 66f)
+        {
+            bar1.style.width = Length.Percent(33.33f);
+            bar2.style.width = Length.Percent((clampedValue - 33f) / 33f * 33.33f);
+            bar3.style.width = Length.Percent(0f);
+        }
+        // 第3区間 (66-100): 青色
+        else
+        {
+            bar1.style.width = Length.Percent(33.33f);
+            bar2.style.width = Length.Percent(33.33f);
+            bar3.style.width = Length.Percent((clampedValue - 66f) / 34f * 33.34f);
+        }
+    }
+
+    private void SetRetreatGaugeValue(VisualElement bar, float value)
+    {
+        float clampedValue = Mathf.Clamp(value, 0f, 100f);
+        bar.style.width = Length.Percent(clampedValue);
     }
 }
 
