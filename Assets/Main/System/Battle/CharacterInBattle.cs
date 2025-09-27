@@ -153,7 +153,8 @@ public record CharacterInBattle(
     /// <summary>
     /// 戦闘に利用する戦闘能力値
     /// </summary>
-    public int Strength => IsInOwnTerritory ? Character.Defense : Character.Attack;
+    public int Strength => UseAttack ? Character.Attack : Character.Defense;
+    public bool UseAttack => !IsInOwnTerritory;
     public int Intelligence => Character.Intelligence;
 
     public IEnumerable<Soldier> OrderedSoldiers => Row1.Concat(Row2).Concat(Row3);

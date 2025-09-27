@@ -104,6 +104,10 @@
                                 <engine:VisualElement name="AttackerOwnTerritoryContainer" style="flex-grow: 0; flex-direction: row; display: none;">
                                     <engine:Label text="自国領" name="labelAttackerOwnTerritory" style="padding: 0 5px 20px 5px; color: rgb(144, 238, 144);" />
                                 </engine:VisualElement>
+                                <!-- 敵国領表示 (条件付き) -->
+                                <engine:VisualElement name="AttackerEnemyTerritoryContainer" style="flex-grow: 0; flex-direction: row; display: none;">
+                                    <engine:Label text="敵国領" name="labelAttackerEnemyTerritory" style="padding: 0 5px 20px 5px; color: rgb(255, 99, 99);" />
+                                </engine:VisualElement>
                             </engine:VisualElement>
                         </engine:VisualElement>
 
@@ -154,12 +158,16 @@
                                 </engine:VisualElement>
                                 <!-- 城レベル表示 (攻城戦時のみ) -->
                                 <engine:VisualElement name="DefenderCastleLevelContainer" style="flex-grow: 0; flex-direction: row; display: none;">
-                                    <engine:Label text="城Lv" name="labelDefenderCastleLevelCaption" style="padding: 0 5px 20px 5px;" />
-                                    <engine:Label text="5" name="labelDefenderCastleLevel" style="" />
+                                    <engine:Label text="城Lv" name="labelDefenderCastleLevelCaption" style="" />
+                                    <engine:Label text="5" name="labelDefenderCastleLevel" style="padding: 0 5px 20px 5px;" />
                                 </engine:VisualElement>
                                 <!-- 自国領表示 (条件付き) -->
                                 <engine:VisualElement name="DefenderOwnTerritoryContainer" style="flex-grow: 0; flex-direction: row; display: none;">
                                     <engine:Label text="自国領" name="labelDefenderOwnTerritory" style="padding: 0 5px 20px 5px; color: rgb(144, 238, 144);" />
+                                </engine:VisualElement>
+                                <!-- 敵国領表示 (条件付き) -->
+                                <engine:VisualElement name="DefenderEnemyTerritoryContainer" style="flex-grow: 0; flex-direction: row; display: none;">
+                                    <engine:Label text="敵国領" name="labelDefenderEnemyTerritory" style="padding: 0 5px 20px 5px; color: rgb(255, 99, 99);" />
                                 </engine:VisualElement>
                             </engine:VisualElement>
                         </engine:VisualElement>

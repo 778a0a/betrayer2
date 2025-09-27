@@ -74,8 +74,9 @@ public partial class GameCore
             force.SetDestination(World.Castles.First());
             World.Forces.Register(force);
             var enemyChara = World.Characters.Where(c => c != player).Where(c => !c.IsFree).RandomPick();
-            //var enemy = new Force(World, enemyChara, enemyChara.Castle.Position);
-            var battle = BattleManager.PrepareSiegeBattle(force, enemyChara);
+            //var battle = BattleManager.PrepareSiegeBattle(force, enemyChara);
+            var enemy = new Force(World, enemyChara, enemyChara.Castle.Position);
+            var battle = BattleManager.PrepareFieldBattle(force, enemy);
             await battle.Do();
         }
 

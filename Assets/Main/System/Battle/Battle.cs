@@ -325,14 +325,14 @@ public class Battle
             var isMarine = Util.IsMarine(chara.Terrain) || Util.IsMarine(op.Terrain);
             var adj = 1f;
             adj += Tap("戦闘差", (chara.Strength - op.Strength) / 100f);
-            adj += Tap("智謀差", (chara.Intelligence - op.Intelligence) / 100f * Mathf.Min(1, tickCount / 10f));
+            adj += Tap("智謀差", (chara.Intelligence - op.Intelligence) / 100f * Mathf.Min(1, tickCount / 5f));
             adj += Tap("地形差", TerrainAdjustment(chara.Terrain) - TerrainAdjustment(op.Terrain));
             if (Util.IsMarine(chara.Character.Traits) && isMarine) adj += Tap("自特性", +(Mathf.Max(0, TraitsAdjustment(chara.Tile, chara.Character.Traits)) + Mathf.Max(0, TraitsAdjustment(op.Tile, chara.Character.Traits))));
             else adj += Tap("自特性", +(TraitsAdjustment(chara.Tile, chara.Character.Traits) + TraitsAdjustment(op.Tile, chara.Character.Traits)));
             if (Util.IsMarine(op.Character.Traits) && isMarine) adj += Tap("敵特性", -(Mathf.Max(0, TraitsAdjustment(op.Tile, op.Character.Traits)) + Mathf.Max(0, TraitsAdjustment(chara.Tile, op.Character.Traits))));
             else adj += Tap("敵特性", -(TraitsAdjustment(op.Tile, op.Character.Traits) + TraitsAdjustment(chara.Tile, op.Character.Traits)));
-            if (chara.IsInCastle) adj += Tap("自城", +chara.Tile.Castle.Strength / 100 / 2);
-            if (op.IsInCastle) adj += Tap("敵城", -op.Tile.Castle.Strength / 100 / 2);
+            if (chara.IsInCastle) adj += Tap("自城", +chara.Tile.Castle.Strength / 100 / 1.5f);
+            if (op.IsInCastle) adj += Tap("敵城", -op.Tile.Castle.Strength / 100 / 1.5f);
             if (chara.IsInOwnTerritory) adj += Tap("自領1", +0.05f);
             if (op.IsInEnemyTerritory) adj += Tap("自領2", +0.05f);
             if (chara.IsInEnemyTerritory) adj += Tap("敵地1", -0.05f);

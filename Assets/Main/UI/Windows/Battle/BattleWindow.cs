@@ -92,11 +92,13 @@ public partial class BattleWindow// : IWindow
         }
 
         imageAttacker.style.backgroundImage = Static.GetFaceImage(attacker);
+        labelAttackerAttackCaption.text = battle.Attacker.UseAttack ? "攻撃" : "防衛";
         labelAttackerAttack.text = battle.Attacker.Strength.ToString();
         labelAttackerIntelligense.text = attacker.Intelligence.ToString();
         labelAttackerTerrain.text = attackerTerrain.ToString();
 
         imageDefender.style.backgroundImage = Static.GetFaceImage(defender);
+        labelDefenderDefenceCaption.text = battle.Defender.UseAttack ? "攻撃" : "防衛";
         labelDefenderDefence.text = battle.Defender.Strength.ToString();
         labelDefenderIntelligense.text = defender.Intelligence.ToString();
         labelDefenderTerrain.text = defenderTerrain.ToString();
@@ -115,9 +117,11 @@ public partial class BattleWindow// : IWindow
         {
             labelDefenderCastleLevel.text = battle.Defender.Tile.Castle.Strength.ToString();
         }
-        // 自国領表示
+        // 自国領・敵国領表示
         AttackerOwnTerritoryContainer.style.display = Util.Display(battle.Attacker.IsInOwnTerritory);
         DefenderOwnTerritoryContainer.style.display = Util.Display(battle.Defender.IsInOwnTerritory);
+        AttackerEnemyTerritoryContainer.style.display = Util.Display(battle.Attacker.IsInEnemyTerritory);
+        DefenderEnemyTerritoryContainer.style.display = Util.Display(battle.Defender.IsInEnemyTerritory);
     }
 
     public ValueTask<BattleAction> WaitPlayerClick()
