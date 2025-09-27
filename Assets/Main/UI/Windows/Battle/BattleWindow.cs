@@ -77,7 +77,6 @@ public partial class BattleWindow// : IWindow
 
         // デバッグ用
         buttonAttack.style.display = DisplayStyle.Flex;
-
         AttackerName.text = attacker.Name;
         DefenderName.text = defender.Name;
 
@@ -107,6 +106,8 @@ public partial class BattleWindow// : IWindow
         SetRetreatGaugeValue(AttackerRetreatBar, battle.Attacker.RetreatGauge);
         SetTacticsGaugeValue(DefenderTacticsBar1, DefenderTacticsBar2, DefenderTacticsBar3, battle.Defender.TacticsGauge);
         SetRetreatGaugeValue(DefenderRetreatBar, battle.Defender.RetreatGauge);
+
+        labelBattleType.text = battle.Type == BattleType.Field ? "野戦" : "攻城戦";
     }
 
     public ValueTask<BattleAction> WaitPlayerClick()
@@ -200,6 +201,7 @@ public partial class BattleWindow// : IWindow
     {
         float clampedValue = Mathf.Clamp(value, 0f, 100f);
         bar.style.width = Length.Percent(clampedValue);
+        bar.style.backgroundColor = clampedValue == 100f ? Color.orange : Color.darkOrange;
     }
 }
 

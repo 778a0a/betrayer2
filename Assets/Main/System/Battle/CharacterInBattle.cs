@@ -176,7 +176,7 @@ public record CharacterInBattle(
             //if (battle.Type is MartialActions.PrivateFightAction) break;
 
             // 1列目がまだ余裕なら撤退しない。
-            if (Row1.All(s => s.Hp == 0 || s.Hp > 15)) break;
+            if (Row1.All(s => s.Hp > 12)) break;
 
             // 1列目が敵の1・2列目よりも強いなら撤退しない。
             var myRow1Power = Row1.Sum(s => s.Hp);
@@ -191,7 +191,7 @@ public record CharacterInBattle(
 
             // 兵士が十分残っている列があるなら撤退しない。
             var hasHealthyRow = new[] { Row1, Row2, Row3 }
-                .Any(row => row.All(s => s.Hp == 0 || s.Hp >= 25));
+                .Any(row => row.Count(s => s.IsAlive) > 3 && row.All(s => s.Hp == 0 || s.Hp >= 25));
             if (hasHealthyRow) break;
 
             // 敵よりも兵力が多いなら撤退しない。
@@ -245,8 +245,12 @@ public record CharacterInBattle(
         // 休息の判断を行う。
         if (CanRest)
         {
-            // 体力の低い兵士がいる場合は休息する。
-            if (Soldiers.Any(s => s.IsAlive && s.Hp < s.MaxHp))
+            // 2列以上体力が減っている兵士がいる場合
+            var count = 0;
+            if (Row1.Any(s => s.IsAlive && s.Hp < s.MaxHp)) count++;
+            if (Row2.Any(s => s.IsAlive && s.Hp < s.MaxHp)) count++;
+            if (Row3.Any(s => s.IsAlive && s.Hp < s.MaxHp)) count++;
+            if (count > 1)
             {
                 return BattleAction.Rest;
             }

@@ -5,15 +5,16 @@
     <engine:VisualElement class="panel" style="justify-content: center; align-items: center;">
         <engine:VisualElement class="bg" style="flex-grow: 0; width: 840px; height: 1080px; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px; align-self: flex-end; justify-content: center;">
             <engine:VisualElement class="border" style="flex-grow: 0; height: 800px; padding: 10px;">
-                <engine:VisualElement style="flex-grow: 0; flex-direction: row;">
-                    <engine:VisualElement class="attacker-info" style="flex-grow: 1; flex-direction: row;">
+                <engine:VisualElement style="flex-grow: 0; flex-direction: row; position: relative;">
+                    <engine:VisualElement class="attacker-info" style="flex-grow: 1; flex-direction: row; justify-content: flex-start;">
                         <engine:Label text="攻撃" name="labelAttackerNameCaption" style="-unity-text-align: middle-left; margin-right: 8px; font-size: 30px;" />
                         <engine:Label text="フランチェスカ" name="AttackerName" style="-unity-text-align: middle-left;" />
                     </engine:VisualElement>
                     <engine:VisualElement class="defender-info" style="flex-grow: 1; flex-direction: row; justify-content: flex-end;">
-                        <engine:Label text="防衛" name="labelDefenderNameCaption" style="-unity-text-align: middle-left; margin-right: 8px; font-size: 30px;" />
-                        <engine:Label text="フランチェスカ" name="DefenderName" style="-unity-text-align: middle-left;" />
+                        <engine:Label text="防衛" name="labelDefenderNameCaption" style="-unity-text-align: middle-right; margin-right: 8px; font-size: 30px;" />
+                        <engine:Label text="フランチェスカ" name="DefenderName" style="-unity-text-align: middle-right;" />
                     </engine:VisualElement>
+                    <engine:Label text="野戦" name="labelBattleType" style=" font-size: 30px; position: absolute; left: 50%; top: 50%; translate: -50% -50%; -unity-text-align: middle-center; font-weight: bold;" />
                 </engine:VisualElement>
                 <engine:VisualElement style="flex-grow: 0; flex-direction: row; margin-top: 5px;">
                     <engine:VisualElement name="AttackerSoldiers" style="flex-grow: 1; flex-direction: row;">
@@ -83,9 +84,9 @@
                                 <engine:Label text="地形" name="labelAttackerTerrainCaption" style="font-size: 30px; padding: 5px 5px 5px 0px;" />
                                 <engine:Label text="大河" name="labelAttackerTerrain" style="font-size: 30px; padding: 5px 0" />
                             </engine:VisualElement>
-                            <engine:VisualElement style="flex-direction: column; margin-top: 10px;">
+                            <engine:VisualElement style="flex-direction: column; margin-top: 5px;">
                                 <engine:VisualElement style="flex-direction: row; margin-bottom: 5px; align-items: center;">
-                                    <engine:Label text="戦術" name="labelAttackerTacticsCaption" style="font-size: 24px; width: 80px;" />
+                                    <engine:Label text="戦術P" name="labelAttackerTacticsCaption" style="font-size: 24px; width: 80px;" />
                                     <engine:VisualElement name="AttackerTacticsGauge" style="width: 120px; height: 20px; background-color: rgb(40, 40, 40); border-width: 1px; border-color: white;">
                                         <engine:VisualElement name="AttackerTacticsBar1" style="position: absolute; top: 0; left: 0; height: 100%; background-color: white;" />
                                         <engine:VisualElement name="AttackerTacticsBar2" style="position: absolute; top: 0; left: 33.33%; height: 100%; background-color: rgb(173, 216, 230);" />
@@ -93,7 +94,7 @@
                                     </engine:VisualElement>
                                 </engine:VisualElement>
                                 <engine:VisualElement style="flex-direction: row; align-items: center;">
-                                    <engine:Label text="撤退" name="labelAttackerRetreatCaption" style="font-size: 24px; width: 80px;" />
+                                    <engine:Label text="撤退P" name="labelAttackerRetreatCaption" style="font-size: 24px; width: 80px;" />
                                     <engine:VisualElement name="AttackerRetreatGauge" style="width: 120px; height: 20px; background-color: rgb(40, 40, 40); border-width: 1px; border-color: white;">
                                         <engine:VisualElement name="AttackerRetreatBar" style="position: absolute; top: 0; left: 0; height: 100%; background-color: rgb(255, 165, 0);" />
                                     </engine:VisualElement>
@@ -117,23 +118,23 @@
                         </engine:VisualElement>
                         <engine:VisualElement style="align-self: flex-end;">
                             <engine:VisualElement style="flex-direction: row;">
-                                <engine:Label text="地形" name="labelDefenderTerrainCaption" style="font-size: 30px; padding: 5px;" />
+                                <engine:Label text="地形" name="labelDefenderTerrainCaption" style="font-size: 30px; padding: 5px 5px 5px 0;" />
                                 <engine:Label text="城砦" name="labelDefenderTerrain" style="font-size: 30px; padding: 5px 0px 5px 5px;" />
                             </engine:VisualElement>
-                            <engine:VisualElement style="flex-direction: column; margin-top: 10px;">
-                                <engine:VisualElement style="flex-direction: row-reverse; margin-bottom: 5px; align-items: center;">
+                            <engine:VisualElement style="flex-direction: column; margin-top: 5px;">
+                                <engine:VisualElement style="flex-direction: row; margin-bottom: 5px; align-items: center;">
+                                    <engine:Label text="戦術P" name="labelDefenderTacticsCaption" style="font-size: 24px; width: 80px; -unity-text-align: middle-left;" />
                                     <engine:VisualElement name="DefenderTacticsGauge" style="width: 120px; height: 20px; background-color: rgb(40, 40, 40); border-width: 1px; border-color: white;">
                                         <engine:VisualElement name="DefenderTacticsBar1" style="position: absolute; top: 0; left: 0; height: 100%; background-color: white;" />
                                         <engine:VisualElement name="DefenderTacticsBar2" style="position: absolute; top: 0; left: 33.33%; height: 100%; background-color: rgb(173, 216, 230);" />
                                         <engine:VisualElement name="DefenderTacticsBar3" style="position: absolute; top: 0; left: 66.67%; height: 100%; background-color: rgb(0, 100, 200);" />
                                     </engine:VisualElement>
-                                    <engine:Label text="戦術" name="labelDefenderTacticsCaption" style="font-size: 24px; width: 80px; -unity-text-align: middle-right;" />
                                 </engine:VisualElement>
-                                <engine:VisualElement style="flex-direction: row-reverse; align-items: center;">
+                                <engine:VisualElement style="flex-direction: row; align-items: center;">
+                                    <engine:Label text="撤退P" name="labelDefenderRetreatCaption" style="font-size: 24px; width: 80px; -unity-text-align: middle-left;" />
                                     <engine:VisualElement name="DefenderRetreatGauge" style="width: 120px; height: 20px; background-color: rgb(40, 40, 40); border-width: 1px; border-color: white;">
                                         <engine:VisualElement name="DefenderRetreatBar" style="position: absolute; top: 0; left: 0; height: 100%; background-color: rgb(255, 165, 0);" />
                                     </engine:VisualElement>
-                                    <engine:Label text="撤退" name="labelDefenderRetreatCaption" style="font-size: 24px; width: 80px; -unity-text-align: middle-right;" />
                                 </engine:VisualElement>
                             </engine:VisualElement>
                         </engine:VisualElement>

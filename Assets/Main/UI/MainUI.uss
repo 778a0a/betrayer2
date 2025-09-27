@@ -66,11 +66,11 @@ Label {
 }
 
 #imageAttacker {
-    background-color: rgba(28, 255, 229, 0.33);
+    /* background-color: rgba(28, 255, 229, 0.33); */
 }
 
 #imageDefender {
-    background-color: rgba(28, 255, 229, 0.33);
+    /* background-color: rgba(28, 255, 229, 0.33); */
 }
 
 .attacker-lose #imageAttacker {

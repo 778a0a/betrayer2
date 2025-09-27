@@ -22,6 +22,8 @@ public partial class BattleWindow
 
     public Label DefenderName { get; private set; }
 
+    public Label labelBattleType { get; private set; }
+
     public BattleSoldierIconAttackSide AttackerSoldier10 { get; private set; }
 
     public BattleSoldierIconAttackSide AttackerSoldier11 { get; private set; }
@@ -100,21 +102,21 @@ public partial class BattleWindow
 
     public Label labelAttackerTerrain { get; private set; }
 
-    public Label labelAttackerTacticsCaption { get; private set; }
-
-    public VisualElement AttackerTacticsGauge { get; private set; }
-
     public VisualElement AttackerTacticsBar1 { get; private set; }
 
     public VisualElement AttackerTacticsBar2 { get; private set; }
 
     public VisualElement AttackerTacticsBar3 { get; private set; }
 
+    public Label labelAttackerTacticsCaption { get; private set; }
+
+    public VisualElement AttackerTacticsGauge { get; private set; }
+
+    public VisualElement AttackerRetreatBar { get; private set; }
+
     public Label labelAttackerRetreatCaption { get; private set; }
 
     public VisualElement AttackerRetreatGauge { get; private set; }
-
-    public VisualElement AttackerRetreatBar { get; private set; }
 
     public Label labelDefenderDefenceCaption { get; private set; }
 
@@ -130,19 +132,19 @@ public partial class BattleWindow
 
     public Label labelDefenderTerrain { get; private set; }
 
-    public VisualElement DefenderTacticsGauge { get; private set; }
-
     public VisualElement DefenderTacticsBar1 { get; private set; }
 
     public VisualElement DefenderTacticsBar2 { get; private set; }
 
     public VisualElement DefenderTacticsBar3 { get; private set; }
 
+    public VisualElement DefenderTacticsGauge { get; private set; }
+
     public Label labelDefenderTacticsCaption { get; private set; }
 
-    public VisualElement DefenderRetreatGauge { get; private set; }
-
     public VisualElement DefenderRetreatBar { get; private set; }
+
+    public VisualElement DefenderRetreatGauge { get; private set; }
 
     public Label labelDefenderRetreatCaption { get; private set; }
 
@@ -167,6 +169,7 @@ public partial class BattleWindow
         AttackerName = Root?.Q<Label>("AttackerName");
         labelDefenderNameCaption = Root?.Q<Label>("labelDefenderNameCaption");
         DefenderName = Root?.Q<Label>("DefenderName");
+        labelBattleType = Root?.Q<Label>("labelBattleType");
         AttackerSoldier10 = new BattleSoldierIconAttackSide(Root?.Q<VisualElement>("AttackerSoldier10"));
         AttackerSoldier11 = new BattleSoldierIconAttackSide(Root?.Q<VisualElement>("AttackerSoldier11"));
         AttackerSoldier12 = new BattleSoldierIconAttackSide(Root?.Q<VisualElement>("AttackerSoldier12"));
@@ -206,14 +209,14 @@ public partial class BattleWindow
         imageAttacker = Root?.Q<VisualElement>("imageAttacker");
         labelAttackerTerrainCaption = Root?.Q<Label>("labelAttackerTerrainCaption");
         labelAttackerTerrain = Root?.Q<Label>("labelAttackerTerrain");
-        labelAttackerTacticsCaption = Root?.Q<Label>("labelAttackerTacticsCaption");
-        AttackerTacticsGauge = Root?.Q<VisualElement>("AttackerTacticsGauge");
         AttackerTacticsBar1 = Root?.Q<VisualElement>("AttackerTacticsBar1");
         AttackerTacticsBar2 = Root?.Q<VisualElement>("AttackerTacticsBar2");
         AttackerTacticsBar3 = Root?.Q<VisualElement>("AttackerTacticsBar3");
+        labelAttackerTacticsCaption = Root?.Q<Label>("labelAttackerTacticsCaption");
+        AttackerTacticsGauge = Root?.Q<VisualElement>("AttackerTacticsGauge");
+        AttackerRetreatBar = Root?.Q<VisualElement>("AttackerRetreatBar");
         labelAttackerRetreatCaption = Root?.Q<Label>("labelAttackerRetreatCaption");
         AttackerRetreatGauge = Root?.Q<VisualElement>("AttackerRetreatGauge");
-        AttackerRetreatBar = Root?.Q<VisualElement>("AttackerRetreatBar");
         labelDefenderDefenceCaption = Root?.Q<Label>("labelDefenderDefenceCaption");
         labelDefenderDefence = Root?.Q<Label>("labelDefenderDefence");
         labelDefenderIntelligenseCaption = Root?.Q<Label>("labelDefenderIntelligenseCaption");
@@ -221,13 +224,13 @@ public partial class BattleWindow
         imageDefender = Root?.Q<VisualElement>("imageDefender");
         labelDefenderTerrainCaption = Root?.Q<Label>("labelDefenderTerrainCaption");
         labelDefenderTerrain = Root?.Q<Label>("labelDefenderTerrain");
-        DefenderTacticsGauge = Root?.Q<VisualElement>("DefenderTacticsGauge");
         DefenderTacticsBar1 = Root?.Q<VisualElement>("DefenderTacticsBar1");
         DefenderTacticsBar2 = Root?.Q<VisualElement>("DefenderTacticsBar2");
         DefenderTacticsBar3 = Root?.Q<VisualElement>("DefenderTacticsBar3");
+        DefenderTacticsGauge = Root?.Q<VisualElement>("DefenderTacticsGauge");
         labelDefenderTacticsCaption = Root?.Q<Label>("labelDefenderTacticsCaption");
-        DefenderRetreatGauge = Root?.Q<VisualElement>("DefenderRetreatGauge");
         DefenderRetreatBar = Root?.Q<VisualElement>("DefenderRetreatBar");
+        DefenderRetreatGauge = Root?.Q<VisualElement>("DefenderRetreatGauge");
         labelDefenderRetreatCaption = Root?.Q<Label>("labelDefenderRetreatCaption");
         buttonAttack = Root?.Q<Button>("buttonAttack");
         buttonSwap12 = Root?.Q<Button>("buttonSwap12");
@@ -244,6 +247,7 @@ public partial class BattleWindow
         AttackerName = Root?.Q<Label>("AttackerName");
         labelDefenderNameCaption = Root?.Q<Label>("labelDefenderNameCaption");
         DefenderName = Root?.Q<Label>("DefenderName");
+        labelBattleType = Root?.Q<Label>("labelBattleType");
         AttackerSoldier10 = new BattleSoldierIconAttackSide(Root?.Q<VisualElement>("AttackerSoldier10"));
         AttackerSoldier11 = new BattleSoldierIconAttackSide(Root?.Q<VisualElement>("AttackerSoldier11"));
         AttackerSoldier12 = new BattleSoldierIconAttackSide(Root?.Q<VisualElement>("AttackerSoldier12"));
@@ -283,14 +287,14 @@ public partial class BattleWindow
         imageAttacker = Root?.Q<VisualElement>("imageAttacker");
         labelAttackerTerrainCaption = Root?.Q<Label>("labelAttackerTerrainCaption");
         labelAttackerTerrain = Root?.Q<Label>("labelAttackerTerrain");
-        labelAttackerTacticsCaption = Root?.Q<Label>("labelAttackerTacticsCaption");
-        AttackerTacticsGauge = Root?.Q<VisualElement>("AttackerTacticsGauge");
         AttackerTacticsBar1 = Root?.Q<VisualElement>("AttackerTacticsBar1");
         AttackerTacticsBar2 = Root?.Q<VisualElement>("AttackerTacticsBar2");
         AttackerTacticsBar3 = Root?.Q<VisualElement>("AttackerTacticsBar3");
+        labelAttackerTacticsCaption = Root?.Q<Label>("labelAttackerTacticsCaption");
+        AttackerTacticsGauge = Root?.Q<VisualElement>("AttackerTacticsGauge");
+        AttackerRetreatBar = Root?.Q<VisualElement>("AttackerRetreatBar");
         labelAttackerRetreatCaption = Root?.Q<Label>("labelAttackerRetreatCaption");
         AttackerRetreatGauge = Root?.Q<VisualElement>("AttackerRetreatGauge");
-        AttackerRetreatBar = Root?.Q<VisualElement>("AttackerRetreatBar");
         labelDefenderDefenceCaption = Root?.Q<Label>("labelDefenderDefenceCaption");
         labelDefenderDefence = Root?.Q<Label>("labelDefenderDefence");
         labelDefenderIntelligenseCaption = Root?.Q<Label>("labelDefenderIntelligenseCaption");
@@ -298,13 +302,13 @@ public partial class BattleWindow
         imageDefender = Root?.Q<VisualElement>("imageDefender");
         labelDefenderTerrainCaption = Root?.Q<Label>("labelDefenderTerrainCaption");
         labelDefenderTerrain = Root?.Q<Label>("labelDefenderTerrain");
-        DefenderTacticsGauge = Root?.Q<VisualElement>("DefenderTacticsGauge");
         DefenderTacticsBar1 = Root?.Q<VisualElement>("DefenderTacticsBar1");
         DefenderTacticsBar2 = Root?.Q<VisualElement>("DefenderTacticsBar2");
         DefenderTacticsBar3 = Root?.Q<VisualElement>("DefenderTacticsBar3");
+        DefenderTacticsGauge = Root?.Q<VisualElement>("DefenderTacticsGauge");
         labelDefenderTacticsCaption = Root?.Q<Label>("labelDefenderTacticsCaption");
-        DefenderRetreatGauge = Root?.Q<VisualElement>("DefenderRetreatGauge");
         DefenderRetreatBar = Root?.Q<VisualElement>("DefenderRetreatBar");
+        DefenderRetreatGauge = Root?.Q<VisualElement>("DefenderRetreatGauge");
         labelDefenderRetreatCaption = Root?.Q<Label>("labelDefenderRetreatCaption");
         buttonAttack = Root?.Q<Button>("buttonAttack");
         buttonSwap12 = Root?.Q<Button>("buttonSwap12");
