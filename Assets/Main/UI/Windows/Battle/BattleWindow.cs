@@ -108,6 +108,16 @@ public partial class BattleWindow// : IWindow
         SetRetreatGaugeValue(DefenderRetreatBar, battle.Defender.RetreatGauge);
 
         labelBattleType.text = battle.Type == BattleType.Field ? "野戦" : "攻城戦";
+
+        // 城レベル表示 (攻城戦時のみ)
+        DefenderCastleLevelContainer.style.display = Util.Display(battle.Type == BattleType.Siege);
+        if (battle.Type == BattleType.Siege)
+        {
+            labelDefenderCastleLevel.text = battle.Defender.Tile.Castle.Strength.ToString();
+        }
+        // 自国領表示
+        AttackerOwnTerritoryContainer.style.display = Util.Display(battle.Attacker.IsInOwnTerritory);
+        DefenderOwnTerritoryContainer.style.display = Util.Display(battle.Defender.IsInOwnTerritory);
     }
 
     public ValueTask<BattleAction> WaitPlayerClick()

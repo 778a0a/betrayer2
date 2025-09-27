@@ -100,6 +100,10 @@
                                     <engine:Label text="智謀" name="labelAttackerIntelligenseCaption" style="padding: 0 5px 20px 5px;" />
                                     <engine:Label text="99" name="labelAttackerIntelligense" style="" />
                                 </engine:VisualElement>
+                                <!-- 自国領表示 (条件付き) -->
+                                <engine:VisualElement name="AttackerOwnTerritoryContainer" style="flex-grow: 0; flex-direction: row; display: none;">
+                                    <engine:Label text="自国領" name="labelAttackerOwnTerritory" style="padding: 0 5px 20px 5px; color: rgb(144, 238, 144);" />
+                                </engine:VisualElement>
                             </engine:VisualElement>
                         </engine:VisualElement>
 
@@ -148,9 +152,18 @@
                                     <engine:Label text="智謀" name="labelDefenderIntelligenseCaption" style="" />
                                     <engine:Label text="99" name="labelDefenderIntelligense" style="padding: 0 5px 20px 5px;" />
                                 </engine:VisualElement>
+                                <!-- 城レベル表示 (攻城戦時のみ) -->
+                                <engine:VisualElement name="DefenderCastleLevelContainer" style="flex-grow: 0; flex-direction: row; display: none;">
+                                    <engine:Label text="城Lv" name="labelDefenderCastleLevelCaption" style="padding: 0 5px 20px 5px;" />
+                                    <engine:Label text="5" name="labelDefenderCastleLevel" style="" />
+                                </engine:VisualElement>
+                                <!-- 自国領表示 (条件付き) -->
+                                <engine:VisualElement name="DefenderOwnTerritoryContainer" style="flex-grow: 0; flex-direction: row; display: none;">
+                                    <engine:Label text="自国領" name="labelDefenderOwnTerritory" style="padding: 0 5px 20px 5px; color: rgb(144, 238, 144);" />
+                                </engine:VisualElement>
                             </engine:VisualElement>
                         </engine:VisualElement>
-                        
+
                         <!-- 防衛側: 地形・戦術P・撤退P -->
                         <engine:VisualElement style="align-self: flex-end;">
                             <!-- 地形情報 -->
