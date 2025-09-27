@@ -16,11 +16,16 @@ public class Battle
 
     private CharacterInBattle Atk => Attacker;
     private CharacterInBattle Def => Defender;
+    
+    public CharacterInBattle Player =>
+        Attacker.IsPlayer ? Attacker :
+        Defender.IsPlayer ? Defender :
+        null;
 
     private BattleWindow UI => GameCore.Instance.MainUI.BattleWindow;
-    public bool NeedInteraction => false; // Attacker.IsPlayer || Defender.IsPlayer;
+    public bool NeedInteraction => Attacker.IsPlayer || Defender.IsPlayer;
     private bool NeedWatchBattle => false;
-    private bool DebugWatch => false && Watch("カリオペ");
+    private bool DebugWatch => Watch("アーサー");
     private bool Watch(string name) =>
         Atk.Country.Ruler.Name == name || Def.Country.Ruler.Name == name ||
         Atk.Character.Name == name || Def.Character.Name == name;
@@ -37,6 +42,13 @@ public class Battle
     {
         //Debug.Log($"[戦闘処理] {Atk}) -> {Def} ({Type}) 攻撃側地形: {Atk.Terrain} 防御側地形: {Def.Terrain}");
 
+        // ゲージをセットする。
+        Atk.TacticsGauge = Random.Range(0, 100);
+        Def.TacticsGauge = Random.Range(0, 100);
+        Atk.RetreatGauge = Random.Range(0, 100);
+        Def.RetreatGauge = Random.Range(0, 100);
+
+        // 戦闘開始前
         if (NeedWatchBattle || NeedInteraction || DebugWatch)
         {
             UI.Root.style.display = DisplayStyle.Flex;
@@ -48,44 +60,42 @@ public class Battle
             }
         }
 
+        // 戦闘ループ
         var result = default(BattleResult);
         while (!Atk.AllSoldiersDead && !Def.AllSoldiersDead)
         {
-            // 撤退判断を行う。
-            if (NeedWatchBattle || NeedInteraction || DebugWatch)
-            {
-                UI.SetData(this);
-            }
-            if (NeedInteraction)
-            {
-                var shouldContinue = await UI.WaitPlayerClick();
-                if (!shouldContinue)
-                {
-                    result = Atk.IsPlayer ?
-                        BattleResult.DefenderWin :
-                        BattleResult.AttackerWin;
-                    break;
-                }
-            }
-            else if (NeedWatchBattle || DebugWatch)
-            {
-                await Awaitable.WaitForSecondsAsync(0.025f);
-            }
+            // 全滅している列を詰める。
+            Atk.CompactSoldierRows();
+            Def.CompactSoldierRows();
 
-            if (Atk.ShouldRetreat(TickCount, this))
+            // 戦術行動を選択して実行する。
+            result = await DoTacticAction();
+            if (result != BattleResult.None)
             {
-                result = BattleResult.DefenderWin;
-                break;
-            }
-            if (Def.ShouldRetreat(TickCount, this))
-            { 
-                result = BattleResult.AttackerWin;
                 break;
             }
 
-            Tick();
+            // 戦闘を実行する。
+            await Tick();
+
+            // ゲージを増加させる。
+            Atk.TacticsGauge = (Atk.TacticsGauge + (Atk.Strength + Atk.Intelligence * 2) / 10f).MaxWith(100);
+            Def.TacticsGauge = (Def.TacticsGauge + (Def.Strength + Def.Intelligence * 2) / 10f).MaxWith(100);
+            Atk.RetreatGauge = (Atk.RetreatGauge + (Atk.Intelligence * 3 - Def.Intelligence)).Clamp(0, 100);
+            Def.RetreatGauge = (Def.RetreatGauge + (Def.Intelligence * 3 - Atk.Intelligence)).Clamp(0, 100);
+            // 2列目、3列目を少し回復させる。
+            foreach (var sol in Atk.Row2.Concat(Def.Row2).Where(s => s.IsAlive))
+            {
+                sol.HpFloat = (sol.HpFloat + Random.value * 0.5f).MaxWith(sol.MaxHp);
+            }
+            foreach (var sol in Atk.Row3.Concat(Def.Row3).Where(s => s.IsAlive))
+            {
+                sol.HpFloat = (sol.HpFloat + Random.value * 0.9f).MaxWith(sol.MaxHp);
+            }
         }
 
+        // 戦闘終了
+        // 全滅で終了した場合
         if (result == BattleResult.None)
         {
             result = Atk.AllSoldiersDead ?
@@ -178,6 +188,69 @@ public class Battle
         return result;
     }
 
+
+    private async ValueTask<BattleResult> DoTacticAction()
+    {
+        if (NeedWatchBattle || NeedInteraction || DebugWatch)
+        {
+            UI.SetData(this);
+        }
+
+        var atkAction = await SelectActionIndiv(Atk);
+        var defAction = await SelectActionIndiv(Def);
+
+        if (atkAction == BattleAction.Retreat)
+        {
+            return BattleResult.DefenderWin;
+        }
+        if (defAction == BattleAction.Retreat)
+        {
+            return BattleResult.AttackerWin;
+        }
+        var atkNeedWait = DoActionIndiv(Atk, atkAction);
+        var defNeedWait = DoActionIndiv(Def, defAction);
+        if (NeedWatchBattle || NeedInteraction || DebugWatch)
+        {
+            if (atkNeedWait || defNeedWait)
+            {
+                UI.SetData(this);
+                await Awaitable.WaitForSecondsAsync(0.3f);
+            }
+        }
+
+        return BattleResult.None;
+    }
+
+    private async ValueTask<BattleAction> SelectActionIndiv(CharacterInBattle chara)
+    {
+        if (chara.IsPlayer)
+        {
+            return await UI.WaitPlayerClick();
+        }
+        return  chara.SelectAction(TickCount, this);
+    }
+
+    private bool DoActionIndiv(CharacterInBattle chara, BattleAction action)
+    {
+        var needWait = false;
+        switch (action)
+        {
+            case BattleAction.Swap12:
+                chara.Swap12();
+                break;
+            case BattleAction.Swap23:
+                chara.Swap23();
+                break;
+            case BattleAction.Rest:
+                chara.Rest();
+                break;
+            default:
+                needWait = true;
+                break;
+        }
+        return needWait;
+    }
+
     public static float TerrainAdjustment(Terrain t) => t switch
     {
         Terrain.LargeRiver => -0.25f,
@@ -236,16 +309,9 @@ public class Battle
         }
     }
 
-    private void Tick()
+    private async ValueTask Tick()
     {
         TickCount += 1;
-
-        // 両方の兵士をランダムな順番の配列にいれる。
-        var all = Atk.Soldiers.Select(s => (soldier: s, owner: Attacker))
-            .Concat(Def.Soldiers.Select(s => (soldier: s, owner: Defender)))
-            .Where(x => x.soldier.IsAlive)
-            .ToArray()
-            .ShuffleInPlace();
 
         var baseAdjustment = new Dictionary<Character, (float, string)>
         {
@@ -282,38 +348,58 @@ public class Battle
         //Debug.Log($"[戦闘処理] 基本調整値: atk:{baseAdjustment[Attacker].Item1:0.00} def:{baseAdjustment[Defender].Item1:0.00}"
         //    + $"\n{baseAdjustment[Attacker].Item2}\n{baseAdjustment[Defender].Item2}");
 
-        var attackerTotalDamage = 0f;
-        var defenderTotalDamage = 0f;
-        foreach (var (soldier, owner) in all)
+        // 攻撃回数
+        var attackCount = Random.Range(5, 10);
+        // 両方の1列目の兵士
+        var all = Atk.Row1.Select(s => (soldier: s, owner: Attacker))
+            .Concat(Def.Row1.Select(s => (soldier: s, owner: Defender)))
+            .Where(x => x.soldier.IsAlive)
+            .ToArray();
+
+        for (int i = 0; i < attackCount; i++)
         {
-            var opponent = owner.Opponent;
-            if (!soldier.IsAlive) continue;
-            var target = opponent.Soldiers.Where(s => s.IsAlive).RandomPickDefault();
-            if (target == null) continue;
+            // 攻撃順番をランダムにする。
+            all.ShuffleInPlace();
 
-            var adj = baseAdjustment[owner].Item1;
-            adj += Random.Range(-0.2f, 0.2f);
-            adj += soldier.Level / 10f;
-
-            var damage = Math.Max(0, adj);
-            target.HpFloat = (int)Math.Max(0, target.HpFloat - damage);
-            soldier.AddExperience(owner.Character);
-
-            if (owner.IsAttacker)
+            var attackerTotalDamage = 0f;
+            var defenderTotalDamage = 0f;
+            foreach (var (soldier, owner) in all)
             {
-                attackerTotalDamage += damage;
-            }
-            else
-            {
-                defenderTotalDamage += damage;
-            }
-        }
+                var opponent = owner.Opponent;
+                if (!soldier.IsAlive) continue;
+                var target = opponent.Row1.Where(s => s.IsAlive).RandomPickDefault();
+                if (target == null) break;
 
-        if (Atk.IsPlayer || Def.IsPlayer)
-        {
-            Debug.Log($"[戦闘処理] " +
-                $"{Atk}の総ダメージ: {attackerTotalDamage} " +
-                $"{Def}の総ダメージ: {defenderTotalDamage}");
+                var adj = baseAdjustment[owner].Item1;
+                adj += Random.Range(-0.2f, 0.2f);
+                adj += soldier.Level / 10f;
+
+                var damage = Math.Max(0, adj);
+                target.HpFloat = (int)Math.Max(0, target.HpFloat - damage);
+                soldier.AddExperience(owner.Character);
+
+                if (owner.IsAttacker)
+                {
+                    attackerTotalDamage += damage;
+                }
+                else
+                {
+                    defenderTotalDamage += damage;
+                }
+            }
+
+            if (NeedWatchBattle || NeedInteraction || DebugWatch)
+            {
+                UI.SetData(this);
+                await Awaitable.WaitForSecondsAsync(0.15f);
+            }
+
+            if (Atk.IsPlayer || Def.IsPlayer)
+            {
+                Debug.Log($"[戦闘処理] " +
+                    $"{Atk}の総ダメージ: {attackerTotalDamage} " +
+                    $"{Def}の総ダメージ: {defenderTotalDamage}");
+            }
         }
     }
 }

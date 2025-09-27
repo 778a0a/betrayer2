@@ -108,7 +108,10 @@
                     </engine:VisualElement>
                 </engine:VisualElement>
                 <engine:VisualElement style="flex-grow: 0; flex-direction: row; align-items: center; justify-content: center;">
-                    <engine:Button text="攻撃" name="buttonAttack" />
+                    <engine:Button text="続行" name="buttonAttack" />
+                    <engine:Button text="1列⇔2列" name="buttonSwap12" />
+                    <engine:Button text="2列⇔3列" name="buttonSwap23" />
+                    <engine:Button text="休息" name="buttonRest" />
                     <engine:Button text="撤退" name="buttonRetreat" />
                     <engine:Button text="攻撃側の勝利" name="buttonResult" />
                 </engine:VisualElement>

@@ -116,6 +116,12 @@ public partial class BattleWindow
 
     public Button buttonAttack { get; private set; }
 
+    public Button buttonSwap12 { get; private set; }
+
+    public Button buttonSwap23 { get; private set; }
+
+    public Button buttonRest { get; private set; }
+
     public Button buttonRetreat { get; private set; }
 
     public Button buttonResult { get; private set; }
@@ -176,6 +182,9 @@ public partial class BattleWindow
         labelDefenderTerrainCaption = Root?.Q<Label>("labelDefenderTerrainCaption");
         labelDefenderTerrain = Root?.Q<Label>("labelDefenderTerrain");
         buttonAttack = Root?.Q<Button>("buttonAttack");
+        buttonSwap12 = Root?.Q<Button>("buttonSwap12");
+        buttonSwap23 = Root?.Q<Button>("buttonSwap23");
+        buttonRest = Root?.Q<Button>("buttonRest");
         buttonRetreat = Root?.Q<Button>("buttonRetreat");
         buttonResult = Root?.Q<Button>("buttonResult");
     }
@@ -234,6 +243,9 @@ public partial class BattleWindow
         labelDefenderTerrainCaption = Root?.Q<Label>("labelDefenderTerrainCaption");
         labelDefenderTerrain = Root?.Q<Label>("labelDefenderTerrain");
         buttonAttack = Root?.Q<Button>("buttonAttack");
+        buttonSwap12 = Root?.Q<Button>("buttonSwap12");
+        buttonSwap23 = Root?.Q<Button>("buttonSwap23");
+        buttonRest = Root?.Q<Button>("buttonRest");
         buttonRetreat = Root?.Q<Button>("buttonRetreat");
         buttonResult = Root?.Q<Button>("buttonResult");
     }

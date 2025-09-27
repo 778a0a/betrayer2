@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -29,9 +31,13 @@ public partial class BattleWindow// : IWindow
         var attackerTerrain = battle.Attacker.Terrain;
         var defenderTerrain = battle.Defender.Terrain;
 
+        // 戦闘終了後の場合
         if (result != null)
         {
             buttonAttack.style.display = DisplayStyle.None;
+            buttonSwap12.style.display = DisplayStyle.None;
+            buttonSwap23.style.display = DisplayStyle.None;
+            buttonRest.style.display = DisplayStyle.None;
             buttonRetreat.style.display = DisplayStyle.None;
             buttonResult.style.display = DisplayStyle.Flex;
             buttonResult.text = result == BattleResult.AttackerWin ? "攻撃側の勝利" : "防衛側の勝利";
@@ -46,11 +52,23 @@ public partial class BattleWindow// : IWindow
                 Root.AddToClassList("defender-win");
             }
         }
+        // 戦闘中の場合
         else
         {
             buttonAttack.style.display = Util.Display(battle.NeedInteraction);
+            buttonSwap12.style.display = Util.Display(battle.NeedInteraction);
+            buttonSwap23.style.display = Util.Display(battle.NeedInteraction);
+            buttonRest.style.display = Util.Display(battle.NeedInteraction);
             buttonRetreat.style.display = Util.Display(battle.NeedInteraction);
             buttonResult.style.display = DisplayStyle.None;
+            if (battle.NeedInteraction)
+            {
+                buttonSwap12.enabledSelf = battle.Player.CanSwap12;
+                buttonSwap23.enabledSelf = battle.Player.CanSwap23;
+                buttonRest.enabledSelf = battle.Player.CanRest;
+                buttonRetreat.enabledSelf = battle.Player.CanRetreat;
+            }
+
             Root.RemoveFromClassList("attacker-win");
             Root.RemoveFromClassList("attacker-lose");
             Root.RemoveFromClassList("defender-win");
@@ -63,15 +81,15 @@ public partial class BattleWindow// : IWindow
         AttackerName.text = attacker.Name;
         DefenderName.text = defender.Name;
 
-        for (var i = 0; i < attacker.Soldiers.Count; i++)
+        var asols = battle.Attacker.OrderedSoldiers.Select((s, i) => (s, i));
+        foreach (var (sol, index) in asols)
         {
-            var soldier = attacker.Soldiers[i];
-            _attackerSoldiers[i].SetData(soldier);
+            _attackerSoldiers[index].SetData(sol);
         }
-        for (var i = 0; i < defender.Soldiers.Count; i++)
+        var dsols = battle.Defender.OrderedSoldiers.Select((s, i) => (s, i));
+        foreach (var (sol, index) in dsols)
         {
-            var soldier = defender.Soldiers[i];
-            _defenderSoldiers[i].SetData(soldier);
+            _defenderSoldiers[index].SetData(sol);
         }
 
         imageAttacker.style.backgroundImage = Static.GetFaceImage(attacker);
@@ -85,37 +103,72 @@ public partial class BattleWindow// : IWindow
         labelDefenderTerrain.text = defenderTerrain.ToString();
     }
 
-    public ValueTask<bool> WaitPlayerClick()
+    public ValueTask<BattleAction> WaitPlayerClick()
     {
-        var tcs = new ValueTaskCompletionSource<bool>();
+        var tcs = new ValueTaskCompletionSource<BattleAction>();
+
+        void RemoveAllHandlers()
+        {
+            buttonAttack.clicked -= buttonAttackClicked;
+            buttonSwap12.clicked -= buttonSwap12Clicked;
+            buttonSwap23.clicked -= buttonSwap23Clicked;
+            buttonRest.clicked -= buttonRestClicked;
+            buttonRetreat.clicked -= buttonRetreatClicked;
+            buttonResult.clicked -= buttonResultClicked;
+        }
 
         buttonAttack.clicked += buttonAttackClicked;
         void buttonAttackClicked()
         {
-            tcs.SetResult(true);
-            buttonAttack.clicked -= buttonAttackClicked;
-            buttonRetreat.clicked -= buttonRetreatClicked;
-            buttonResult.clicked -= buttonResultClicked;
+            tcs.SetResult(BattleAction.Attack);
+            RemoveAllHandlers();
+        }
+
+        buttonSwap12.clicked += buttonSwap12Clicked;
+        void buttonSwap12Clicked()
+        {
+            tcs.SetResult(BattleAction.Swap12);
+            RemoveAllHandlers();
+        }
+
+        buttonSwap23.clicked += buttonSwap23Clicked;
+        void buttonSwap23Clicked()
+        {
+            tcs.SetResult(BattleAction.Swap23);
+            RemoveAllHandlers();
+        }
+
+        buttonRest.clicked += buttonRestClicked;
+        void buttonRestClicked()
+        {
+            tcs.SetResult(BattleAction.Rest);
+            RemoveAllHandlers();
         }
 
         buttonRetreat.clicked += buttonRetreatClicked;
         void buttonRetreatClicked()
         {
-            tcs.SetResult(false);
-            buttonAttack.clicked -= buttonAttackClicked;
-            buttonRetreat.clicked -= buttonRetreatClicked;
-            buttonResult.clicked -= buttonResultClicked;
+            tcs.SetResult(BattleAction.Retreat);
+            RemoveAllHandlers();
         }
 
         buttonResult.clicked += buttonResultClicked;
         void buttonResultClicked()
         {
-            tcs.SetResult(true);
-            buttonAttack.clicked -= buttonAttackClicked;
-            buttonRetreat.clicked -= buttonRetreatClicked;
-            buttonResult.clicked -= buttonResultClicked;
+            tcs.SetResult(BattleAction.Result);
+            RemoveAllHandlers();
         }
 
         return tcs.Task;
     }
+}
+
+public enum BattleAction
+{
+    Attack,
+    Swap12,
+    Swap23,
+    Rest,
+    Retreat,
+    Result,
 }
