@@ -154,7 +154,10 @@ public partial class GameCore
                     foreach (var chara in World.Characters)
                     {
                         if (!chara.IsVassal) continue;
-                        chara.Loyalty = (chara.Loyalty - chara.LoyaltyDecreaseBase).MinWith(0);
+                        var val = chara.LoyaltyDecreaseBase;
+                        // 城のメンバーが多すぎるなら減少量を増やす。
+                        if (chara.Castle.IsMemberOver) val *= 2;
+                        chara.Loyalty = (chara.Loyalty - val).MinWith(0);
                     }
 
                     // 友好度を更新する。
@@ -203,6 +206,7 @@ public partial class GameCore
             var rate = 0.01f;
             if (chara.IsMoving) rate = 0.003f;
             if (chara.IsStarving) rate *= 0.1f;
+            if (!chara.IsFree && chara.Castle.IsMemberOver) rate *= 0.5f;
             foreach (var s in chara.Soldiers)
             {
                 if (s.IsEmptySlot) continue;
