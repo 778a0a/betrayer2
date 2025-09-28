@@ -27,17 +27,19 @@
                     </ui:VisualElement>
                 </ui:VisualElement>
                 <!-- 能力値表示 -->
-                <ui:VisualElement name="StatsPanel" style="flex-direction: row; margin-top: 10px;">
-                    <ui:Label text="攻撃:" style="font-size: 28px; margin: 0 5px 0 0; " />
+                <ui:VisualElement name="StatsPanel" style="flex-direction: row; margin-top: 10px;align-items: flex-end">
+                    <ui:Label text="攻撃:" style="font-size: 26px; margin: 0 5px 0 0; " />
                     <ui:Label name="labelAttack" text="80" style="font-size: 28px; color: #f88; " />
-                    <ui:Label text="防衛:" style="font-size: 28px; margin: 0 5px 0 10px; " />
+                    <ui:Label text="防衛:" style="font-size: 26px; margin: 0 5px 0 8px; " />
                     <ui:Label name="labelDefense" text="75" style="font-size: 28px; color: #8af; " />
-                    <ui:Label text="智謀:" style="font-size: 28px; margin: 0 5px 0 10px; " />
+                    <ui:Label text="智謀:" style="font-size: 26px; margin: 0 5px 0 8px; " />
                     <ui:Label name="labelIntelligence" text="90" style="font-size: 28px; color: cyan; " />
-                    <ui:Label text="統治:" style="font-size: 28px; margin: 0 5px 0 10px; " />
+                    <ui:Label text="統治:" style="font-size: 26px; margin: 0 5px 0 8px; " />
                     <ui:Label name="labelGoverning" text="85" style="font-size: 28px; color: #8f8; " />
-                    <ui:Label text="兵数:" style="font-size: 28px; margin: 0 5px 0 10px;" />
+                    <ui:Label text="兵数:" style="font-size: 26px; margin: 0 5px 0 8px;" />
                     <ui:Label name="labelSoldiers" text="8888" style="font-size: 28px; color: orange;" />
+                    <ui:Label text="/" style="font-size: 26px; margin: 0 2px 0 2px;" />
+                    <ui:Label name="labelSoldiersMax" text="8888" style="font-size: 28px; color: orange;" />
                 </ui:VisualElement>
                 <ui:VisualElement style="flex-direction: row; margin-top: 10px;">
                     <ui:Label text="給料:" style="font-size: 24px; margin: 0 5px 0 0;" />

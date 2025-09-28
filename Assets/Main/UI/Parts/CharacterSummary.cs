@@ -33,10 +33,11 @@ public partial class CharacterSummary
         labelDefense.text = chara.Defense.ToString();
         labelIntelligence.text = chara.Intelligence.ToString();
         labelGoverning.text = chara.Governing.ToString();
+        labelSoldiers.text = chara.Soldiers.SoldierCount.ToString();
+        labelSoldiersMax.text = chara.Soldiers.SoldierCountMax.ToString();
         // 資産情報の更新
         labelSalary.text = chara.Salary.ToString("0");
         labelContribution.text = chara.Contribution.ToString("0");
-        labelSoldiers.text = chara.Soldiers.SoldierCount.ToString();
         labelPrestige.text = chara.Prestige.ToString("0");
         OrderContainer.style.display = Util.Display(!chara.IsFree);
         labelOrder.text = (chara.OrderIndex + 1).ToString();

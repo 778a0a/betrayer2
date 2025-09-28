@@ -54,6 +54,8 @@ public partial class CharacterSummary
 
     public Label labelSoldiers { get; private set; }
 
+    public Label labelSoldiersMax { get; private set; }
+
     public Label labelLoyalty { get; private set; }
 
     public Label labelSalary { get; private set; }
@@ -125,6 +127,7 @@ public partial class CharacterSummary
         labelIntelligence = Root?.Q<Label>("labelIntelligence");
         labelGoverning = Root?.Q<Label>("labelGoverning");
         labelSoldiers = Root?.Q<Label>("labelSoldiers");
+        labelSoldiersMax = Root?.Q<Label>("labelSoldiersMax");
         labelLoyalty = Root?.Q<Label>("labelLoyalty");
         labelSalary = Root?.Q<Label>("labelSalary");
         labelContribution = Root?.Q<Label>("labelContribution");
@@ -173,6 +176,7 @@ public partial class CharacterSummary
         labelIntelligence = Root?.Q<Label>("labelIntelligence");
         labelGoverning = Root?.Q<Label>("labelGoverning");
         labelSoldiers = Root?.Q<Label>("labelSoldiers");
+        labelSoldiersMax = Root?.Q<Label>("labelSoldiersMax");
         labelLoyalty = Root?.Q<Label>("labelLoyalty");
         labelSalary = Root?.Q<Label>("labelSalary");
         labelContribution = Root?.Q<Label>("labelContribution");
