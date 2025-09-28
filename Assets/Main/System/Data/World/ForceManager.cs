@@ -372,10 +372,48 @@ public class ForceManager : IReadOnlyList<Force>
             .DefaultIfEmpty(0)
             .Max();
 
+        // 占領された城を目標にしている城の方針をリセットする。
+        foreach (var c in world.Castles)
+        {
+            switch (c.Objective)
+            {
+                case CastleObjective.Attack o:
+                    if (o.TargetCastleName == c.Name)
+                    {
+                        c.Objective = new CastleObjective.None();
+                        Debug.Log($"城の方針をリセットしました。{c}");
+                    }
+                    break;
+                case CastleObjective.Transport o:
+                    if (o.TargetCastleName == c.Name)
+                    {
+                        c.Objective = new CastleObjective.None();
+                        Debug.Log($"城の方針をリセットしました。{c}");
+                    }
+                    break;
+            }
+        }
+
         // 全ての城を失った場合は国を消滅させる。
         if (oldCountry.Castles.Count == 0)
         {
             Debug.LogWarning($"滅亡処理 {oldCountry}");
+
+            // 滅亡した国を目標にしている国の方針をリセットする。
+            foreach (var c in world.Countries)
+            {
+                switch (c.Objective)
+                {
+                    case CountryObjective.CountryAttack o:
+                        if (o.TargetRulerName == oldCountry.Ruler.Name)
+                        {
+                            c.Objective = new CountryObjective.StatusQuo();
+                            Debug.Log($"国の方針をリセットしました。{c}");
+                        }
+                        break;
+                }
+            }
+
             world.Countries.Remove(oldCountry);
             var forcesToRemove = forces.Where(f => f.Country == oldCountry).ToArray();
             foreach (var f in forcesToRemove)
