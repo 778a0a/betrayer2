@@ -77,6 +77,15 @@ public partial class AI
             .OrderBy(m => m.Power)
             .ToList();
 
+        // 軍事能力の優れた君主が前線にいない場合は移動候補に含める。
+        if (!ruler.IsMoving && ruler.Power > powerAverage && dangerCastles.All(c => c.castle != ruler.Castle))
+        {
+            if (ruler.Attack > 70 || ruler.Defense > 70)
+            {
+                moveCandsFromSafe.Add(ruler);
+            }
+        }
+
         Debug.LogWarning($"[AI] Ruler: {ruler.Name}" +
             $" Safe Castles: {string.Join(", ", safeCastles.Select(cr => cr.castle.Name))}" +
             $" Danger Castles: {string.Join(", ", dangerCastles.Select(cr => cr.castle.Name))}");
@@ -177,6 +186,42 @@ public partial class AI
                 {
                     Debug.Log($"[AI] Move to Neighbor Failed: {cand} -> {nearDanger}");
                 }
+            }
+        }
+
+        // 危険城以外で、所属が0人の城があれば、近隣の城から1人移動させる。
+        var emptyCastles = ruler.Country.Castles
+            .Except(dangerCastles.Select(c => c.castle))
+            .Where(c => c.Members.Count == 0 || c.Members.All(m => m.IsMoving));
+        foreach (var castle in emptyCastles)
+        {
+            // 既に向かっている軍勢があればスキップ。
+            var incomingCount = World.Forces
+                .Where(f => f.Country == castle.Country)
+                .Where(f => f.Destination == castle)
+                .Count();
+            if (incomingCount > 0) continue;
+
+            var candidates = castle.Neighbors
+                .Where(n => n.Country == castle.Country)
+                .Where(n => n.Members.Count(m => !m.IsMoving) >= 2)
+                .SelectMany(n => n.Members)
+                .Where(m => !m.IsMoving && !m.IsBoss)
+                .ToList();
+            var cand = candidates
+                .OrderByDescending(m => m.Power)
+                .FirstOrDefault();
+            if (cand == null) continue;
+            var act = core.StrategyActions.Deploy;
+            var args = act.Args(ruler, cand, castle);
+            if (act.CanDo(args))
+            {
+                await act.Do(args);
+                Debug.Log($"[AI] Move to Empty: {cand} -> {castle}");
+            }
+            else
+            {
+                Debug.Log($"[AI] Move to Empty Failed: {cand} -> {castle}");
             }
         }
     }
