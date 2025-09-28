@@ -136,7 +136,13 @@ public class Castle : ICountryEntity, IMapEntity
     /// <summary>
     /// 発展度
     /// </summary>
+    [JsonIgnore]
     public int DevLevel => (int)(TotalInvestment / 100f);
+    /// <summary>
+    /// 最大許容所属人数
+    /// </summary>
+    [JsonIgnore]
+    public int MaxMember => 3 + DevLevel / 10;
 
     /// <summary>
     /// 金
@@ -205,8 +211,6 @@ public class Castle : ICountryEntity, IMapEntity
 
     [JsonIgnore]
     public GameMapTile Tile => GameCore.Instance.World.Map.GetTile(this);
-    [JsonIgnore]
-    public int MaxMember => 6;
 
     public override string ToString()
     {
