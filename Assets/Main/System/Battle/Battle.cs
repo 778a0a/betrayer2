@@ -9,6 +9,7 @@ using Random = UnityEngine.Random;
 
 public class Battle
 {
+    public string Title { get; set; } = "";
     public CharacterInBattle Attacker { get; set; }
     public CharacterInBattle Defender { get; set; }
     public BattleType Type { get; set; }
@@ -205,7 +206,7 @@ public class Battle
             if (needWait)
             {
                 UI.SetData(this);
-                var waitTime = atkAction == BattleAction.Rest || defAction == BattleAction.Rest ? 0.8f : 0.3f;
+                var waitTime = atkAction == BattleAction.Rest || defAction == BattleAction.Rest ? 0.5f : 0.3f;
                 await Awaitable.WaitForSecondsAsync(waitTime);
             }
         }

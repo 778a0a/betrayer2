@@ -80,6 +80,18 @@ public partial class BattleWindow// : IWindow
         AttackerName.text = attacker.Name;
         DefenderName.text = defender.Name;
 
+        // 国アイコン表示
+        iconAttackerCountry.visible = !attacker.IsFree;
+        if (!attacker.IsFree)
+        {
+            iconAttackerCountry.style.backgroundImage = new(Static.GetCountrySprite(attacker.Country.ColorIndex));
+        }
+        iconDefenderCountry.visible = !defender.IsFree;
+        if (!defender.IsFree)
+        {
+            iconDefenderCountry.style.backgroundImage = new(Static.GetCountrySprite(defender.Country.ColorIndex));
+        }
+
         var asols = battle.Attacker.OrderedSoldiers.Select((s, i) => (s, i));
         foreach (var (sol, index) in asols)
         {
@@ -109,7 +121,7 @@ public partial class BattleWindow// : IWindow
         SetTacticsGaugeValue(DefenderTacticsBar1, DefenderTacticsBar2, DefenderTacticsBar3, battle.Defender.TacticsGauge);
         SetRetreatGaugeValue(DefenderRetreatBar, battle.Defender.RetreatGauge);
 
-        labelBattleType.text = battle.Type == BattleType.Field ? "野戦" : "攻城戦";
+        labelBattleType.text = battle.Title;
 
         // 城レベル表示 (攻城戦時のみ)
         DefenderCastleLevelContainer.style.display = Util.Display(battle.Type == BattleType.Siege);

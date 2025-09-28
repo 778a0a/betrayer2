@@ -27,6 +27,11 @@ public class BattleManager
         def.IsRemote = defHome.DistanceTo(defender) > 5 && defHome.DistanceTo(attacker) > 5;
 
         var battle = new Battle(atk, def, BattleType.Field);
+
+        // 最寄りの城を探す。
+        var tile = map.GetTile(defender);
+        var nearCastle = GameCore.Instance.World.Castles.OrderBy(c => c.Position.DistanceTo(tile.Position)).First();
+        battle.Title = $"{nearCastle.Name}近郊の戦い";
         return battle;
     }
 
@@ -45,6 +50,7 @@ public class BattleManager
         atk.IsRemote = atkHome.DistanceTo(attacker) > 5 && atkHome.DistanceTo(defender.Castle.Position) > 5;
 
         var battle = new Battle(atk, def, BattleType.Siege);
+        battle.Title = $"{defender.Castle.Name}攻防戦";
         return battle;
     }
 }

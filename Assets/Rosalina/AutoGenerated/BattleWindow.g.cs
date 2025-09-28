@@ -22,6 +22,10 @@ public partial class BattleWindow
 
     public Label DefenderName { get; private set; }
 
+    public VisualElement iconAttackerCountry { get; private set; }
+
+    public VisualElement iconDefenderCountry { get; private set; }
+
     public Label labelBattleType { get; private set; }
 
     public BattleSoldierIconAttackSide AttackerSoldier10 { get; private set; }
@@ -189,6 +193,8 @@ public partial class BattleWindow
         AttackerName = Root?.Q<Label>("AttackerName");
         labelDefenderNameCaption = Root?.Q<Label>("labelDefenderNameCaption");
         DefenderName = Root?.Q<Label>("DefenderName");
+        iconAttackerCountry = Root?.Q<VisualElement>("iconAttackerCountry");
+        iconDefenderCountry = Root?.Q<VisualElement>("iconDefenderCountry");
         labelBattleType = Root?.Q<Label>("labelBattleType");
         AttackerSoldier10 = new BattleSoldierIconAttackSide(Root?.Q<VisualElement>("AttackerSoldier10"));
         AttackerSoldier11 = new BattleSoldierIconAttackSide(Root?.Q<VisualElement>("AttackerSoldier11"));
@@ -277,6 +283,8 @@ public partial class BattleWindow
         AttackerName = Root?.Q<Label>("AttackerName");
         labelDefenderNameCaption = Root?.Q<Label>("labelDefenderNameCaption");
         DefenderName = Root?.Q<Label>("DefenderName");
+        iconAttackerCountry = Root?.Q<VisualElement>("iconAttackerCountry");
+        iconDefenderCountry = Root?.Q<VisualElement>("iconDefenderCountry");
         labelBattleType = Root?.Q<Label>("labelBattleType");
         AttackerSoldier10 = new BattleSoldierIconAttackSide(Root?.Q<VisualElement>("AttackerSoldier10"));
         AttackerSoldier11 = new BattleSoldierIconAttackSide(Root?.Q<VisualElement>("AttackerSoldier11"));

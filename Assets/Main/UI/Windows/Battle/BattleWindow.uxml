@@ -7,24 +7,28 @@
         <engine:VisualElement class="bg" style="flex-grow: 0; width: 840px; height: 1080px; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px; align-self: flex-end; justify-content: center;">
             <engine:VisualElement class="border" style="flex-grow: 0; height: 800px; padding: 10px;">
 
-                <!-- ヘッダー部分: 攻撃側・防衛側キャラ名と戦闘タイプ -->
-                <engine:VisualElement style="flex-grow: 0; flex-direction: row; position: relative;">
+                <!-- ヘッダー部分 -->
+                <engine:VisualElement style="flex-grow: 0; flex-direction: row;">
+                    <!-- 戦闘タイプ -->
+                    <engine:Label text="野戦" name="labelBattleType" style="font-size: 30px; -unity-text-align: middle-center; font-weight: bold; flex-grow: 1;" />
+                </engine:VisualElement>
+                <engine:VisualElement style="flex-grow: 0; flex-direction: row; margin-top: 10px;">
                     <!-- 攻撃側キャラ名 -->
-                    <engine:VisualElement class="attacker-info" style="flex-grow: 1; flex-direction: row; justify-content: flex-start;">
-                        <engine:Label text="攻撃" name="labelAttackerNameCaption" style="-unity-text-align: middle-left; margin-right: 8px; font-size: 30px;" />
-                        <engine:Label text="フランチェスカ" name="AttackerName" style="-unity-text-align: middle-left;" />
+                    <engine:VisualElement class="attacker-info" style="flex-grow: 1; flex-direction: row; justify-content: flex-start; align-items: center;">
+                        <engine:VisualElement name="iconAttackerCountry" style="width: 25px; height: 25px; margin-top: 2px; margin-right: 5px; background-color: #088" />
+                        <engine:Label text="攻撃" name="labelAttackerNameCaption" style="-unity-text-align: middle-left; margin-right: 8px; font-size: 28px;" />
+                        <engine:Label text="フランチェスカ" name="AttackerName" style="-unity-text-align: middle-left; font-size: 28px;" />
                     </engine:VisualElement>
                     <!-- 防衛側キャラ名 -->
-                    <engine:VisualElement class="defender-info" style="flex-grow: 1; flex-direction: row; justify-content: flex-end;">
-                        <engine:Label text="防衛" name="labelDefenderNameCaption" style="-unity-text-align: middle-right; margin-right: 8px; font-size: 30px;" />
-                        <engine:Label text="フランチェスカ" name="DefenderName" style="-unity-text-align: middle-right;" />
+                    <engine:VisualElement class="defender-info" style="flex-grow: 1; flex-direction: row; justify-content: flex-end; align-items: center;">
+                        <engine:VisualElement name="iconDefenderCountry" style="width: 25px; height: 25px; margin-top: 2px; margin-right: 5px; background-color: #088" />
+                        <engine:Label text="防衛" name="labelDefenderNameCaption" style="-unity-text-align: middle-right; margin-right: 8px; font-size: 28px;" />
+                        <engine:Label text="フランチェスカ" name="DefenderName" style="-unity-text-align: middle-right; font-size: 28px;" />
                     </engine:VisualElement>
-                    <!-- 戦闘タイプ -->
-                    <engine:Label text="野戦" name="labelBattleType" style=" font-size: 30px; position: absolute; left: 50%; top: 50%; translate: -50% -50%; -unity-text-align: middle-center; font-weight: bold;" />
                 </engine:VisualElement>
 
                 <!-- 兵士アイコン配置エリア -->
-                <engine:VisualElement style="flex-grow: 0; flex-direction: row; margin-top: 5px;">
+                <engine:VisualElement style="flex-grow: 0; flex-direction: row;">
 
                     <!-- 攻撃側兵士配置 (3列編成: 後列→中列→前列) -->
                     <engine:VisualElement name="AttackerSoldiers" style="flex-grow: 1; flex-direction: row;">
