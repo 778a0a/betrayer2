@@ -70,7 +70,7 @@ public class CountryManager : IReadOnlyList<Country>
     {
         foreach (var country in countries)
         {
-            var members = country.Members.OrderByDescending(m => m.Contribution).ToList();
+            var members = country.Members.OrderByDescending(m => m.Importance).ToList();
             members.Remove(country.Ruler);
             country.Ruler.OrderIndex = 0;
             country.Ruler.IsImportant = true;

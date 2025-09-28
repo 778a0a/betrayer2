@@ -96,6 +96,12 @@ public class Character
     /// </summary>
     public int Prestige { get; set; }
     /// <summary>
+    /// 序列を決定する指標
+    /// </summary>
+    [JsonIgnore]
+    public float Importance => Contribution / 10 + Prestige + Soldiers.Sum(s => !s.IsAlive ? 0 : s.Level);
+
+    /// <summary>
     /// 忠誠
     /// </summary>
     public float Loyalty { get; set; }
