@@ -136,14 +136,13 @@ public partial class BattleWindow
 
     public Label labelDefenderCastleLevel { get; private set; }
 
+    public VisualElement DefenderCastleLevelContainer { get; private set; }
+
     public Label labelDefenderOwnTerritory { get; private set; }
 
     public Label labelDefenderEnemyTerritory { get; private set; }
 
     public Label labelDefenderRemote { get; private set; }
-
-    public VisualElement DefenderCastleLevelContainer { get; private set; }
-
 
     public VisualElement imageDefender { get; private set; }
 
@@ -178,6 +177,8 @@ public partial class BattleWindow
     public Button buttonRetreat { get; private set; }
 
     public Button buttonResult { get; private set; }
+
+    public VisualElement ButtonContainer { get; private set; }
 
     public VisualElement Root { get; private set; }
 
@@ -245,10 +246,10 @@ public partial class BattleWindow
         labelDefenderIntelligense = Root?.Q<Label>("labelDefenderIntelligense");
         labelDefenderCastleLevelCaption = Root?.Q<Label>("labelDefenderCastleLevelCaption");
         labelDefenderCastleLevel = Root?.Q<Label>("labelDefenderCastleLevel");
+        DefenderCastleLevelContainer = Root?.Q<VisualElement>("DefenderCastleLevelContainer");
         labelDefenderOwnTerritory = Root?.Q<Label>("labelDefenderOwnTerritory");
         labelDefenderEnemyTerritory = Root?.Q<Label>("labelDefenderEnemyTerritory");
         labelDefenderRemote = Root?.Q<Label>("labelDefenderRemote");
-        DefenderCastleLevelContainer = Root?.Q<VisualElement>("DefenderCastleLevelContainer");
         imageDefender = Root?.Q<VisualElement>("imageDefender");
         labelDefenderTerrainCaption = Root?.Q<Label>("labelDefenderTerrainCaption");
         labelDefenderTerrain = Root?.Q<Label>("labelDefenderTerrain");
@@ -266,6 +267,7 @@ public partial class BattleWindow
         buttonRest = Root?.Q<Button>("buttonRest");
         buttonRetreat = Root?.Q<Button>("buttonRetreat");
         buttonResult = Root?.Q<Button>("buttonResult");
+        ButtonContainer = Root?.Q<VisualElement>("ButtonContainer");
     }
 
     public void ReinitializeComponent(VisualElement root)
@@ -332,10 +334,10 @@ public partial class BattleWindow
         labelDefenderIntelligense = Root?.Q<Label>("labelDefenderIntelligense");
         labelDefenderCastleLevelCaption = Root?.Q<Label>("labelDefenderCastleLevelCaption");
         labelDefenderCastleLevel = Root?.Q<Label>("labelDefenderCastleLevel");
+        DefenderCastleLevelContainer = Root?.Q<VisualElement>("DefenderCastleLevelContainer");
         labelDefenderOwnTerritory = Root?.Q<Label>("labelDefenderOwnTerritory");
         labelDefenderEnemyTerritory = Root?.Q<Label>("labelDefenderEnemyTerritory");
         labelDefenderRemote = Root?.Q<Label>("labelDefenderRemote");
-        DefenderCastleLevelContainer = Root?.Q<VisualElement>("DefenderCastleLevelContainer");
         imageDefender = Root?.Q<VisualElement>("imageDefender");
         labelDefenderTerrainCaption = Root?.Q<Label>("labelDefenderTerrainCaption");
         labelDefenderTerrain = Root?.Q<Label>("labelDefenderTerrain");
@@ -353,5 +355,6 @@ public partial class BattleWindow
         buttonRest = Root?.Q<Button>("buttonRest");
         buttonRetreat = Root?.Q<Button>("buttonRetreat");
         buttonResult = Root?.Q<Button>("buttonResult");
+        ButtonContainer = Root?.Q<VisualElement>("ButtonContainer");
     }
 }

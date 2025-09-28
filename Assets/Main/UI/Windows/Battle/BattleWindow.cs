@@ -115,7 +115,7 @@ public partial class BattleWindow// : IWindow
         DefenderCastleLevelContainer.style.display = Util.Display(battle.Type == BattleType.Siege);
         if (battle.Type == BattleType.Siege)
         {
-            labelDefenderCastleLevel.text = battle.Defender.Tile.Castle.Strength.ToString();
+            labelDefenderCastleLevel.text = battle.Defender.Tile.Castle.Strength.ToString("0");
         }
         // 自国領・敵国領・遠征表示
         labelAttackerOwnTerritory.style.display = Util.Display(battle.Attacker.IsInOwnTerritory);
@@ -126,9 +126,15 @@ public partial class BattleWindow// : IWindow
         labelDefenderRemote.style.display = Util.Display(battle.Defender.IsRemote);
     }
 
+    public void DisableButtons()
+    {
+        ButtonContainer.enabledSelf = false;
+    }
+
     public ValueTask<BattleAction> WaitPlayerClick()
     {
         var tcs = new ValueTaskCompletionSource<BattleAction>();
+        ButtonContainer.enabledSelf = true;
 
         void RemoveAllHandlers()
         {

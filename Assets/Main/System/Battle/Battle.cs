@@ -187,6 +187,7 @@ public class Battle
 
         var atkAction = await SelectActionIndiv(Atk);
         var defAction = await SelectActionIndiv(Def);
+        UI.DisableButtons();
 
         if (atkAction == BattleAction.Retreat)
         {
@@ -196,14 +197,16 @@ public class Battle
         {
             return BattleResult.AttackerWin;
         }
-        var atkNeedWait = DoActionIndiv(Atk, atkAction);
-        var defNeedWait = DoActionIndiv(Def, defAction);
+        DoActionIndiv(Atk, atkAction);
+        DoActionIndiv(Def, defAction);
         if (NeedWatchBattle || NeedInteraction || DebugWatch)
         {
-            if (atkNeedWait || defNeedWait)
+            var needWait = atkAction != BattleAction.Attack || defAction != BattleAction.Attack;
+            if (needWait)
             {
                 UI.SetData(this);
-                await Awaitable.WaitForSecondsAsync(0.3f);
+                var waitTime = atkAction == BattleAction.Rest || defAction == BattleAction.Rest ? 0.8f : 0.3f;
+                await Awaitable.WaitForSecondsAsync(waitTime);
             }
         }
 
@@ -219,9 +222,8 @@ public class Battle
         return  chara.SelectAction(TickCount, this);
     }
 
-    private bool DoActionIndiv(CharacterInBattle chara, BattleAction action)
+    private void DoActionIndiv(CharacterInBattle chara, BattleAction action)
     {
-        var needWait = false;
         switch (action)
         {
             case BattleAction.Swap12:
@@ -234,10 +236,8 @@ public class Battle
                 chara.Rest();
                 break;
             default:
-                needWait = true;
                 break;
         }
-        return needWait;
     }
 
     public static float TerrainAdjustment(Terrain t) => t switch

@@ -196,7 +196,7 @@
                 </engine:VisualElement>
 
                 <!-- アクションボタン群 -->
-                <engine:VisualElement style="flex-grow: 0; flex-direction: row; align-items: center; justify-content: center;">
+                <engine:VisualElement name="ButtonContainer" style="flex-grow: 0; flex-direction: row; align-items: center; justify-content: center;">
                     <engine:Button text="続行" name="buttonAttack" />
                     <engine:Button text="1列⇔2列" name="buttonSwap12" />
                     <engine:Button text="2列⇔3列" name="buttonSwap23" />
