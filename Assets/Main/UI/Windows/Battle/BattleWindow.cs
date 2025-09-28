@@ -75,8 +75,8 @@ public partial class BattleWindow// : IWindow
             Root.RemoveFromClassList("defender-lose");
         }
 
-        // デバッグ用
-        buttonAttack.style.display = DisplayStyle.Flex;
+        //// デバッグ用
+        //buttonAttack.style.display = DisplayStyle.Flex;
         AttackerName.text = attacker.Name;
         DefenderName.text = defender.Name;
 

@@ -24,19 +24,40 @@ public class Battle
         null;
 
     private BattleWindow UI => GameCore.Instance.MainUI.BattleWindow;
-    public bool NeedInteraction => Attacker.IsPlayer || Defender.IsPlayer;
-    private bool NeedWatchBattle => false;
-    private bool DebugWatch => Watch("アーサー");
-    private bool Watch(string name) =>
-        Atk.Country.Ruler.Name == name || Def.Country.Ruler.Name == name ||
-        Atk.Character.Name == name || Def.Character.Name == name;
-
-
+    public bool NeedInteraction { get; set; } = false;
+    private bool NeedWatchBattle { get; set; } = false;
+    
     public Battle(CharacterInBattle atk, CharacterInBattle def, BattleType type)
     {
         Attacker = atk;
         Defender = def;
         Type = type;
+
+        // プレーヤーの戦闘は操作する。
+        if (Atk.IsPlayer || Def.IsPlayer)
+        {
+            NeedInteraction = true;
+            NeedWatchBattle = true;
+        }
+        // プレーヤーの戦闘でない場合
+        else
+        {
+            var playerCountry = GameCore.Instance.World.Player?.Country;
+            if (playerCountry != null)
+            {
+                // プレーヤーの国の戦闘は観戦する。
+                if (Atk.Country == playerCountry || Def.Country == playerCountry)
+                {
+                    NeedWatchBattle = true;
+                }
+                // プレーヤーの近隣国同士の戦闘も観戦する。
+                else
+                {
+                    var neighbors = playerCountry.Neighbors.ToArray();
+                    NeedWatchBattle = neighbors.Contains(Atk.Country) || neighbors.Contains(Def.Country);
+                }
+            }
+        }
     }
 
     public async ValueTask<BattleResult> Do()
@@ -50,15 +71,14 @@ public class Battle
         Def.RetreatGauge = Random.Range(0, 100);
 
         // 戦闘開始前
-        if (NeedWatchBattle || NeedInteraction || DebugWatch)
+        if (NeedWatchBattle)
         {
             UI.Root.style.display = DisplayStyle.Flex;
             UI.SetData(this);
-
-            if (DebugWatch)
-            {
-                await UI.WaitPlayerClick();
-            }
+            //if (DebugWatch)
+            //{
+            //    await UI.WaitPlayerClick();
+            //}
         }
 
         // 戦闘ループ
@@ -106,22 +126,24 @@ public class Battle
         //Debug.Log($"[戦闘処理] {Atk}) -> {Def} ({Type}) 攻撃側地形: {Atk.Terrain} 防御側地形: {Def.Terrain} 結果: {result}");
 
         // 画面を更新する。
-        if (NeedWatchBattle || NeedInteraction || DebugWatch)
+        if (NeedWatchBattle)
         {
             UI.SetData(this, result);
+            var player = GameCore.Instance.World.Player;
             if (NeedInteraction)
             {
                 await UI.WaitPlayerClick();
             }
-            // 自分が君主で配下の戦闘の場合もボタンクリックを待つ。
-            else if (Atk.Country.Ruler.IsPlayer || Def.Country.Ruler.IsPlayer)
+            // 配下の戦闘の場合はクリックで終わらせる。
+            else if ((player?.IsBoss ?? false) &&
+                (Atk.Character.Castle.Boss == player || Atk.Country.Ruler == player || 
+                 Def.Character.Castle.Boss == player || Def.Country.Ruler == player))
             {
                 await UI.WaitPlayerClick();
             }
             else
             {
-                if (DebugWatch) await UI.WaitPlayerClick();
-                else await Awaitable.WaitForSecondsAsync(0.45f);
+                await Awaitable.WaitForSecondsAsync(0.6f);
             }
             UI.Root.style.display = DisplayStyle.None;
         }
@@ -135,13 +157,13 @@ public class Battle
         CharacterInBattle.Recover(loser, false, loser.InitialSoldierCounts);
 
         // 回復処理確認用
-        if (true || DebugWatch)
-        {
-            UI.Root.style.display = DisplayStyle.Flex;
-            UI.SetData(this, result);
-            await UI.WaitPlayerClick();
-            UI.Root.style.display = DisplayStyle.None;
-        }
+        //if (DebugWatch)
+        //{
+        //    UI.Root.style.display = DisplayStyle.Flex;
+        //    UI.SetData(this, result);
+        //    await UI.WaitPlayerClick();
+        //    UI.Root.style.display = DisplayStyle.None;
+        //}
 
         // 名声の処理を行う。
         var loserPrestigeLoss = loser.Character.Prestige / 3;
@@ -181,14 +203,13 @@ public class Battle
 
     private async ValueTask<BattleResult> DoTacticAction()
     {
-        if (NeedWatchBattle || NeedInteraction || DebugWatch)
+        if (NeedWatchBattle)
         {
             UI.SetData(this);
         }
 
         var atkAction = await SelectActionIndiv(Atk);
         var defAction = await SelectActionIndiv(Def);
-        UI.DisableButtons();
 
         if (atkAction == BattleAction.Retreat)
         {
@@ -200,13 +221,14 @@ public class Battle
         }
         DoActionIndiv(Atk, atkAction);
         DoActionIndiv(Def, defAction);
-        if (NeedWatchBattle || NeedInteraction || DebugWatch)
+        if (NeedWatchBattle)
         {
             var needWait = atkAction != BattleAction.Attack || defAction != BattleAction.Attack;
             if (needWait)
             {
                 UI.SetData(this);
                 var waitTime = atkAction == BattleAction.Rest || defAction == BattleAction.Rest ? 0.5f : 0.3f;
+                if (!NeedInteraction) waitTime *= 0.2f;
                 await Awaitable.WaitForSecondsAsync(waitTime);
             }
         }
@@ -218,9 +240,11 @@ public class Battle
     {
         if (chara.IsPlayer)
         {
-            return await UI.WaitPlayerClick();
+            var selection = await UI.WaitPlayerClick();
+            UI.DisableButtons();
+            return selection;
         }
-        return  chara.SelectAction(TickCount, this);
+        return chara.SelectAction(TickCount, this);
     }
 
     private void DoActionIndiv(CharacterInBattle chara, BattleAction action)
@@ -337,7 +361,7 @@ public class Battle
                 return v;
             }
         }
-        if (NeedWatchBattle || NeedInteraction || DebugWatch)
+        if (NeedWatchBattle)
         {
             Debug.Log($"[戦闘処理] 基本調整値: atk:{baseAdjustment[Attacker].Item1:0.00} def:{baseAdjustment[Defender].Item1:0.00}"
                 + $"\n{baseAdjustment[Attacker].Item2}\n{baseAdjustment[Defender].Item2}");
@@ -390,17 +414,18 @@ public class Battle
                 }
             }
 
-            if (Atk.IsPlayer || Def.IsPlayer)
+            if (NeedWatchBattle)
             {
                 Debug.Log($"[戦闘処理] " +
                     $"{Atk}の総ダメージ: {attackerTotalDamage} " +
                     $"{Def}の総ダメージ: {defenderTotalDamage}");
-            }
 
-            if (NeedWatchBattle || NeedInteraction || DebugWatch)
-            {
-                UI.SetData(this);
-                await Awaitable.WaitForSecondsAsync(0.15f);
+                //if (NeedInteraction)
+                {
+                    UI.SetData(this);
+                    var wait = NeedInteraction ? 0.1f : 0.02f;
+                    await Awaitable.WaitForSecondsAsync(wait);
+                }
             }
 
             if (Atk.Row1.All(s => !s.IsAlive) || Def.Row1.All(s => !s.IsAlive))
