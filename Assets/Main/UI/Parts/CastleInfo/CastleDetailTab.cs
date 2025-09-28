@@ -78,6 +78,19 @@ public partial class CastleDetailTab
         {
             OnObjectiveSelected(selectedItem);
         };
+
+        // 所属人数ラベルのマウスオーバーイベント
+        labelMemberCount.RegisterCallback<MouseEnterEvent>(evt =>
+        {
+            if (targetCastle?.IsMemberOver == true)
+            {
+                labelMemberCountTooltip.style.display = DisplayStyle.Flex;
+            }
+        });
+        labelMemberCount.RegisterCallback<MouseLeaveEvent>(evt =>
+        {
+            labelMemberCountTooltip.style.display = DisplayStyle.None;
+        });
     }
 
     public void SetData(Castle castle, Character characterSummaryTargetDefault)
@@ -161,6 +174,8 @@ public partial class CastleDetailTab
         labelDevLevel.text = $"{castle.DevLevel}";
         labelTotalInvestment.text = $"{castle.TotalInvestment:0}";
         labelCastleStrength.text = $"{castle.Strength:0}";
+        labelMemberCount.text = $"{castle.Members.Count}/{castle.MaxMember}";
+        labelMemberCount.style.color = castle.IsMemberOver ? Color.red : Color.white;
         labelTotalPower.text = $"{castle.SoldierCount:0}";
         labelTotalPowerMax.text = $"{castle.SoldierCountMax:0}";
         

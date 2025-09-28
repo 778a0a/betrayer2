@@ -52,6 +52,12 @@ public partial class CastleDetailTab
 
     public Label labelTotalInvestment { get; private set; }
 
+    public Label labelMemberCount { get; private set; }
+
+    public VisualElement MemberCountTooltipContainer { get; private set; }
+
+    public Label labelMemberCountTooltip { get; private set; }
+
     public Label labelTotalPower { get; private set; }
 
     public Label labelTotalPowerMax { get; private set; }
@@ -118,6 +124,9 @@ public partial class CastleDetailTab
         labelExpenditure = Root?.Q<Label>("labelExpenditure");
         labelDevLevel = Root?.Q<Label>("labelDevLevel");
         labelTotalInvestment = Root?.Q<Label>("labelTotalInvestment");
+        labelMemberCount = Root?.Q<Label>("labelMemberCount");
+        MemberCountTooltipContainer = Root?.Q<VisualElement>("MemberCountTooltipContainer");
+        labelMemberCountTooltip = Root?.Q<Label>("labelMemberCountTooltip");
         labelTotalPower = Root?.Q<Label>("labelTotalPower");
         labelTotalPowerMax = Root?.Q<Label>("labelTotalPowerMax");
         labelCastleStrength = Root?.Q<Label>("labelCastleStrength");
@@ -163,6 +172,9 @@ public partial class CastleDetailTab
         labelExpenditure = Root?.Q<Label>("labelExpenditure");
         labelDevLevel = Root?.Q<Label>("labelDevLevel");
         labelTotalInvestment = Root?.Q<Label>("labelTotalInvestment");
+        labelMemberCount = Root?.Q<Label>("labelMemberCount");
+        MemberCountTooltipContainer = Root?.Q<VisualElement>("MemberCountTooltipContainer");
+        labelMemberCountTooltip = Root?.Q<Label>("labelMemberCountTooltip");
         labelTotalPower = Root?.Q<Label>("labelTotalPower");
         labelTotalPowerMax = Root?.Q<Label>("labelTotalPowerMax");
         labelCastleStrength = Root?.Q<Label>("labelCastleStrength");

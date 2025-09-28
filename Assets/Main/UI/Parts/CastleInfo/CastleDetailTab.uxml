@@ -63,6 +63,11 @@
                             <ui:Label text="(総投資額:" style="margin-left: 10px; margin-right: 10px; font-size: 28px;" />
                             <ui:Label name="labelTotalInvestment" text="0" style="font-size: 28px; color: yellow;" />
                             <ui:Label text=")" style="font-size: 28px;" />
+                            <ui:Label text="所属人数:" style="margin-left: 15px; margin-right: 10px; font-size: 28px;" />
+                            <ui:Label name="labelMemberCount" text="0/0" style="font-size: 28px; color: white;" />
+                            <ui:VisualElement name="MemberCountTooltipContainer" style="position: relative;">
+                                <ui:Label name="labelMemberCountTooltip" text="所属人数オーバーのため、兵士の回復速度が下がり、家臣の不満が溜まりやすくなります。" style="display: none; position: absolute; margin-left: -400px; margin-top: -120px; border-color: red; border-width: 1px; background-color: rgba(0, 0, 0, 1); color: white; font-size: 25px; padding: 5px; border-radius: 3px; white-space: normal; max-width: 400px; z-index: 1000; top: 5px; left: 0;" />
+                            </ui:VisualElement>
                         </ui:VisualElement>
                         <ui:VisualElement style="flex-direction: row; align-items: center; margin-top: 5px;">
                             <ui:Label text="総兵力:" style="margin-right: 10px; font-size: 28px;" />
