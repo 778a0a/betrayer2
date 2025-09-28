@@ -67,19 +67,21 @@ public partial class GameCore
 
         var player = World.Player;
 
-        while (true)
-        {
-            UnityEngine.Random.seed = (int)DateTime.Now.Ticks;
-            var force = new Force(World, player, player.Castle.Position);
-            force.SetDestination(World.Castles.First());
-            World.Forces.Register(force);
-            var enemyChara = World.Characters.Where(c => c != player).Where(c => !c.IsFree).RandomPick();
-            //var battle = BattleManager.PrepareSiegeBattle(force, enemyChara);
-            var enemy = new Force(World, enemyChara, enemyChara.Castle.Position);
-            force.UpdatePosition(World.Map.GetTile(enemy).Neighbors.RandomPick().Position);
-            var battle = BattleManager.PrepareFieldBattle(force, enemy);
-            await battle.Do();
-        }
+        // 戦闘の検証用
+        //while (true)
+        //{
+        //    UnityEngine.Random.seed = (int)DateTime.Now.Ticks;
+        //    var force = new Force(World, player, player.Castle.Position);
+        //    force.SetDestination(World.Castles.First());
+        //    World.Forces.Register(force);
+        //    var enemyChara = World.Characters.Where(c => c != player).Where(c => !c.IsFree).RandomPick();
+        //    force.UpdatePosition(World.Map.GetTile(enemyChara.Castle).Neighbors.RandomPick().Position);
+        //    var battle = BattleManager.PrepareSiegeBattle(force, enemyChara);
+        //    //var enemy = new Force(World, enemyChara, enemyChara.Castle.Position);
+        //    //force.UpdatePosition(World.Map.GetTile(enemy).Neighbors.RandomPick().Position);
+        //    //var battle = BattleManager.PrepareFieldBattle(force, enemy);
+        //    await battle.Do();
+        //}
 
         // 月初の処理
         if (GameDate.Day == 1)
