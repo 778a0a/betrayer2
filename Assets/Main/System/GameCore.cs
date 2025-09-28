@@ -329,7 +329,7 @@ public partial class GameCore
 
         foreach (var chara in members)
         {
-            var paid = (chara.Salary - shortagePerPerson).MaxWith(0);
+            var paid = (chara.Salary - shortagePerPerson).MinWith(0);
             chara.Gold += paid;
             castle.Gold -= paid;
             var unpaidRate = 1 - (float)paid / chara.Salary;
@@ -343,6 +343,7 @@ public partial class GameCore
                 reduceds += $"{chara.Name}, ";
             }
         }
+        castle.Gold = 0;
 
         if (reduceds.Length > 0 || notPaids.Length > 0)
         {
