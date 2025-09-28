@@ -2,7 +2,7 @@
     <ui:Template name="CastleInfoPanel" src="project://database/Assets/Main/UI/Parts/CastleInfo/CastleInfoPanel.uxml" />
     <Style src="project://database/Assets/Main/UI/MainUI.uss" />
     
-    <!-- StrategyPhase Panel: 戦略行動フェーズのメインパネル -->
+    <!-- StrategyPhase Panel: 戦略行動フェイズのメインパネル -->
     <ui:VisualElement class="panel">
         
         <!-- ヘッダー -->
@@ -12,7 +12,7 @@
                 <ui:Label name="labelPhaseTitle" text="戦略" style="font-size: 40px; font-weight: bold; color: #0ff;" />
                 <ui:Label name="labelPhaseSubtitle" text="フェイズ" style="font-size: 30px; font-weight: bold;" />
                 
-                <!-- 戦略フェーズ用ヘッダー -->
+                <!-- 戦略フェイズ用ヘッダー -->
                 <ui:VisualElement name="StrategyPhaseHeader" style="flex-direction: row; align-items: flex-end;">
                     <ui:Label text="(城資金 " style="font-size: 28px; margin: 0 5px 0 10px;" />
                     <ui:Label text="8888" name="labelCurrentCastleGold" style="font-size: 28px; color: yellow;" />
@@ -21,7 +21,7 @@
                     <ui:Label text=")" style="font-size: 28px;" />
                 </ui:VisualElement>
                 
-                <!-- 個人フェーズ用ヘッダー -->
+                <!-- 個人フェイズ用ヘッダー -->
                 <ui:VisualElement name="PersonalPhaseHeader" style="flex-direction: row; align-items: flex-end; display: none;">
                     <ui:Label text="(所持金 " style="font-size: 28px; margin: 0 5px 0 10px;" />
                     <ui:Label text="8888" name="labelCurrentPersonalGold" style="font-size: 28px; color: yellow;" />
@@ -49,11 +49,11 @@
                     <ui:VisualElement style="flex-direction: row; align-items: center; min-height: 32px; margin: 15px 0 15px 5px;">
                         <ui:Label name="labelActionDescription" text="アクションの説明がここに表示されます。" style="font-size: 28px; white-space: normal" />
                     </ui:VisualElement>
-                    <!-- 戦略フェーズ用ボタン -->
+                    <!-- 戦略フェイズ用ボタン -->
                     <ui:VisualElement name="StrategyActionButtons" style="flex-wrap: wrap; flex-direction: row;">
                         <!-- 戦略ボタンはC#で動的生成 -->
                     </ui:VisualElement>
-                    <!-- 個人フェーズ用ボタン -->
+                    <!-- 個人フェイズ用ボタン -->
                     <ui:VisualElement name="PersonalActionButtons" style="flex-wrap: wrap; flex-direction: row; display: none;">
                         <!-- 個人ボタンはC#で動的生成 -->
                     </ui:VisualElement>

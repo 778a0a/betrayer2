@@ -17,7 +17,6 @@ public partial class CharacterInfoSoldierIcon
         }
 
         imageSoldier.image = Static.GetSoldierImage(s.Level);
-        imageSoldier.tooltip = s.ToString();
         labelLevel.text = s.Level.ToString();
         labelHp.text = s.Hp.ToString();
         HPBar.style.visibility = Visibility.Visible;

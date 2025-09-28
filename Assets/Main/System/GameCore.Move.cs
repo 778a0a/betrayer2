@@ -36,7 +36,7 @@ partial class GameCore
     }
 
     /// <summary>
-    /// 個人フェーズを実行します。
+    /// 個人フェイズを実行します。
     /// </summary>
     private async ValueTask DoPersonalAction(Character chara)
     {

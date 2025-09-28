@@ -207,7 +207,7 @@ public partial class ActionScreen : IScreen
 
     public void Render()
     {
-        // フェーズに応じてヘッダーとボタンを切り替え
+        // フェイズに応じてヘッダーとボタンを切り替え
         PersonalPhaseHeader.style.display = Util.Display(IsPersonalPhase);
         PersonalActionButtons.style.display = Util.Display(IsPersonalPhase);
         StrategyPhaseHeader.style.display = Util.Display(!IsPersonalPhase);
@@ -216,7 +216,7 @@ public partial class ActionScreen : IScreen
         {
             labelPhaseTitle.text = "個人";
             labelPhaseTitle.style.color = Color.yellow;
-            labelPhaseSubtitle.text = "フェーズ";
+            labelPhaseSubtitle.text = "フェイズ";
             labelCurrentPersonalGold.text = currentCharacter.Gold.ToString("0");
             foreach (var button in personalButtons)
             {
@@ -227,7 +227,7 @@ public partial class ActionScreen : IScreen
         {
             labelPhaseTitle.text = "戦略";
             labelPhaseTitle.style.color = Color.cyan;
-            labelPhaseSubtitle.text = "フェーズ";
+            labelPhaseSubtitle.text = "フェイズ";
             labelCurrentCastleGold.text = currentCharacter.Castle.Gold.ToString("0");
             labelCurrentAP.text = currentCharacter.ActionPoints.ToString();
             foreach (var button in strategyButtons)
@@ -245,13 +245,13 @@ public partial class ActionScreen : IScreen
         }
         CastleInfoPanel.SetData(targetTile, summaryDefault);
 
-        // 個人フェーズでは常にアクション可能、戦略フェーズでは条件付き
+        // 個人フェイズでは常にアクション可能、戦略フェイズでは条件付き
         if (IsPersonalPhase)
         {
             ActionPanel.style.display = DisplayStyle.Flex;
             NoActionPanel.style.display = DisplayStyle.None;
         }
-        // 戦略フェーズの場合
+        // 戦略フェイズの場合
         else
         {
             // 城なしの場合はアクションなし。
