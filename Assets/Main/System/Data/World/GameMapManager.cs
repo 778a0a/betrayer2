@@ -172,9 +172,9 @@ public class GameMapManager
         customEventHandler = null;
     }
 
-    public void ScrollTo(GameMapTile tile)
+    public ValueTask ScrollTo(GameMapTile tile, float duration = 0.1f, float? speed = null)
     {
-        GameCore.Instance.MainUI.Camera.ScrollTo(tile.UI.transform.position);
+        return GameCore.Instance.MainUI.Camera.ScrollTo(tile.UI.transform.position, duration, speed);
     }
 }
 

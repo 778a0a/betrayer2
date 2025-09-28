@@ -54,7 +54,7 @@ public class Battle
                 else
                 {
                     var neighbors = playerCountry.Neighbors.ToArray();
-                    NeedWatchBattle = neighbors.Contains(Atk.Country) || neighbors.Contains(Def.Country);
+                    NeedWatchBattle = neighbors.Contains(Atk.Country) && neighbors.Contains(Def.Country);
                 }
             }
         }
@@ -75,6 +75,11 @@ public class Battle
         {
             UI.Root.style.display = DisplayStyle.Flex;
             UI.SetData(this);
+
+            GameCore.Instance.World.Map.SetEnableHighlight(new[] { Atk.Tile, Def.Tile });
+            await GameCore.Instance.World.Map.ScrollTo(Def.Tile, speed: 20);
+            await Awaitable.WaitForSecondsAsync(0.4f);
+
             //if (DebugWatch)
             //{
             //    await UI.WaitPlayerClick();
@@ -146,6 +151,7 @@ public class Battle
                 await Awaitable.WaitForSecondsAsync(0.6f);
             }
             UI.Root.style.display = DisplayStyle.None;
+            GameCore.Instance.World.Map.ClearAllEnableHighlight();
         }
 
         var (winner, loser) = result == BattleResult.AttackerWin ?

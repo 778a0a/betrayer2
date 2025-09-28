@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Threading.Tasks;
 using TreeEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -188,8 +189,9 @@ public class CameraMovement : MonoBehaviour
         }
     }
 
-    public void ScrollTo(Vector3 worldPosition)
+    public ValueTask ScrollTo(Vector3 worldPosition, float duration = 0.1f, float? speed = null)
     {
+        var tcs = new ValueTaskCompletionSource();
         StartCoroutine(Do());
         IEnumerator Do()
         {
@@ -209,7 +211,12 @@ public class CameraMovement : MonoBehaviour
             targetPos.x = (worldPosition.x - worldOffsetX).Clamp(panLimitUpLeft.x, panLimitDownRight.x);
             targetPos.y = worldPosition.y.Clamp(panLimitDownRight.y, panLimitUpLeft.y);
 
-            var duration = 0.1f;
+            if (speed.HasValue)
+            {
+                var distance = Vector3.Distance(startPos, targetPos);
+                duration = distance / speed.Value;
+            }
+
             var elapsed = 0f;
             while (elapsed < duration)
             {
@@ -220,7 +227,10 @@ public class CameraMovement : MonoBehaviour
             }
             // 最終的にターゲット位置に合わせる。
             transform.position = targetPos;
+
+            tcs.SetResult();
         }
+        return tcs.Task;
     }
 
     public void StartUIScroll(Vector2 direction)
