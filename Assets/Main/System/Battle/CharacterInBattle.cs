@@ -19,6 +19,11 @@ public record CharacterInBattle(
     public bool IsInOwnTerritory = Tile.Country == Character.Country;
     public bool IsInEnemyTerritory => Tile.Country == Opponent.Country;
     public Terrain Terrain = Tile.Terrain;
+    
+    /// <summary>
+    /// 遠方での戦闘ならtrue
+    /// </summary>
+    public bool IsRemote { get; set; } 
 
     /// <summary>
     /// 戦術ゲージ（0～100）

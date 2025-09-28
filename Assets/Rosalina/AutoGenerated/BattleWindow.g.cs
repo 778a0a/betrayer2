@@ -100,9 +100,7 @@ public partial class BattleWindow
 
     public Label labelAttackerEnemyTerritory { get; private set; }
 
-    public VisualElement AttackerOwnTerritoryContainer { get; private set; }
-
-    public VisualElement AttackerEnemyTerritoryContainer { get; private set; }
+    public Label labelAttackerRemote { get; private set; }
 
     public VisualElement imageAttacker { get; private set; }
 
@@ -142,11 +140,10 @@ public partial class BattleWindow
 
     public Label labelDefenderEnemyTerritory { get; private set; }
 
+    public Label labelDefenderRemote { get; private set; }
+
     public VisualElement DefenderCastleLevelContainer { get; private set; }
 
-    public VisualElement DefenderOwnTerritoryContainer { get; private set; }
-
-    public VisualElement DefenderEnemyTerritoryContainer { get; private set; }
 
     public VisualElement imageDefender { get; private set; }
 
@@ -230,8 +227,7 @@ public partial class BattleWindow
         labelAttackerIntelligense = Root?.Q<Label>("labelAttackerIntelligense");
         labelAttackerOwnTerritory = Root?.Q<Label>("labelAttackerOwnTerritory");
         labelAttackerEnemyTerritory = Root?.Q<Label>("labelAttackerEnemyTerritory");
-        AttackerOwnTerritoryContainer = Root?.Q<VisualElement>("AttackerOwnTerritoryContainer");
-        AttackerEnemyTerritoryContainer = Root?.Q<VisualElement>("AttackerEnemyTerritoryContainer");
+        labelAttackerRemote = Root?.Q<Label>("labelAttackerRemote");
         imageAttacker = Root?.Q<VisualElement>("imageAttacker");
         labelAttackerTerrainCaption = Root?.Q<Label>("labelAttackerTerrainCaption");
         labelAttackerTerrain = Root?.Q<Label>("labelAttackerTerrain");
@@ -251,9 +247,8 @@ public partial class BattleWindow
         labelDefenderCastleLevel = Root?.Q<Label>("labelDefenderCastleLevel");
         labelDefenderOwnTerritory = Root?.Q<Label>("labelDefenderOwnTerritory");
         labelDefenderEnemyTerritory = Root?.Q<Label>("labelDefenderEnemyTerritory");
+        labelDefenderRemote = Root?.Q<Label>("labelDefenderRemote");
         DefenderCastleLevelContainer = Root?.Q<VisualElement>("DefenderCastleLevelContainer");
-        DefenderOwnTerritoryContainer = Root?.Q<VisualElement>("DefenderOwnTerritoryContainer");
-        DefenderEnemyTerritoryContainer = Root?.Q<VisualElement>("DefenderEnemyTerritoryContainer");
         imageDefender = Root?.Q<VisualElement>("imageDefender");
         labelDefenderTerrainCaption = Root?.Q<Label>("labelDefenderTerrainCaption");
         labelDefenderTerrain = Root?.Q<Label>("labelDefenderTerrain");
@@ -319,8 +314,7 @@ public partial class BattleWindow
         labelAttackerIntelligense = Root?.Q<Label>("labelAttackerIntelligense");
         labelAttackerOwnTerritory = Root?.Q<Label>("labelAttackerOwnTerritory");
         labelAttackerEnemyTerritory = Root?.Q<Label>("labelAttackerEnemyTerritory");
-        AttackerOwnTerritoryContainer = Root?.Q<VisualElement>("AttackerOwnTerritoryContainer");
-        AttackerEnemyTerritoryContainer = Root?.Q<VisualElement>("AttackerEnemyTerritoryContainer");
+        labelAttackerRemote = Root?.Q<Label>("labelAttackerRemote");
         imageAttacker = Root?.Q<VisualElement>("imageAttacker");
         labelAttackerTerrainCaption = Root?.Q<Label>("labelAttackerTerrainCaption");
         labelAttackerTerrain = Root?.Q<Label>("labelAttackerTerrain");
@@ -340,9 +334,8 @@ public partial class BattleWindow
         labelDefenderCastleLevel = Root?.Q<Label>("labelDefenderCastleLevel");
         labelDefenderOwnTerritory = Root?.Q<Label>("labelDefenderOwnTerritory");
         labelDefenderEnemyTerritory = Root?.Q<Label>("labelDefenderEnemyTerritory");
+        labelDefenderRemote = Root?.Q<Label>("labelDefenderRemote");
         DefenderCastleLevelContainer = Root?.Q<VisualElement>("DefenderCastleLevelContainer");
-        DefenderOwnTerritoryContainer = Root?.Q<VisualElement>("DefenderOwnTerritoryContainer");
-        DefenderEnemyTerritoryContainer = Root?.Q<VisualElement>("DefenderEnemyTerritoryContainer");
         imageDefender = Root?.Q<VisualElement>("imageDefender");
         labelDefenderTerrainCaption = Root?.Q<Label>("labelDefenderTerrainCaption");
         labelDefenderTerrain = Root?.Q<Label>("labelDefenderTerrain");

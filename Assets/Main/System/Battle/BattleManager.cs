@@ -19,6 +19,12 @@ public class BattleManager
         var def = new CharacterInBattle(defender.Character, map.GetTile(defender), false, false);
         atk.Opponent = def;
         def.Opponent = atk;
+        
+        // 遠方での戦闘かどうかをセットする。
+        var atkHome = attacker.Character.Castle.Position;
+        atk.IsRemote = atkHome.DistanceTo(attacker) > 5 && atkHome.DistanceTo(defender) > 5;
+        var defHome = defender.Character.Castle.Position;
+        def.IsRemote = defHome.DistanceTo(defender) > 5 && defHome.DistanceTo(attacker) > 5;
 
         var battle = new Battle(atk, def, BattleType.Field);
         return battle;
@@ -33,6 +39,10 @@ public class BattleManager
         var def = new CharacterInBattle(defender, map.GetTile(defender.Castle), false, true);
         atk.Opponent = def;
         def.Opponent = atk;
+
+        // 遠方での戦闘かどうかをセットする。
+        var atkHome = attacker.Character.Castle.Position;
+        atk.IsRemote = atkHome.DistanceTo(attacker) > 5 && atkHome.DistanceTo(defender.Castle.Position) > 5;
 
         var battle = new Battle(atk, def, BattleType.Siege);
         return battle;

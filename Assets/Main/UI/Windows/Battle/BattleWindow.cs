@@ -117,11 +117,13 @@ public partial class BattleWindow// : IWindow
         {
             labelDefenderCastleLevel.text = battle.Defender.Tile.Castle.Strength.ToString();
         }
-        // 自国領・敵国領表示
-        AttackerOwnTerritoryContainer.style.display = Util.Display(battle.Attacker.IsInOwnTerritory);
-        DefenderOwnTerritoryContainer.style.display = Util.Display(battle.Defender.IsInOwnTerritory);
-        AttackerEnemyTerritoryContainer.style.display = Util.Display(battle.Attacker.IsInEnemyTerritory);
-        DefenderEnemyTerritoryContainer.style.display = Util.Display(battle.Defender.IsInEnemyTerritory);
+        // 自国領・敵国領・遠征表示
+        labelAttackerOwnTerritory.style.display = Util.Display(battle.Attacker.IsInOwnTerritory);
+        labelDefenderOwnTerritory.style.display = Util.Display(battle.Defender.IsInOwnTerritory);
+        labelAttackerEnemyTerritory.style.display = Util.Display(!battle.Attacker.IsInOwnTerritory);
+        labelDefenderEnemyTerritory.style.display = Util.Display(!battle.Defender.IsInOwnTerritory);
+        labelAttackerRemote.style.display = Util.Display(battle.Attacker.IsRemote);
+        labelDefenderRemote.style.display = Util.Display(battle.Defender.IsRemote);
     }
 
     public ValueTask<BattleAction> WaitPlayerClick()
