@@ -147,11 +147,6 @@ public class Character
     public Soldiers Soldiers { get; set; }
 
     /// <summary>
-    /// 連戦回数
-    /// </summary>
-    public int ConsecutiveBattleCount { get; set; }
-
-    /// <summary>
     /// プレーヤーならtrue
     /// </summary>
     public bool IsPlayer { get; set; }
@@ -321,5 +316,5 @@ public class Character
     public string csvDebugData { get; set; } = "";
     public string csvDebugMemo { get; set; } = "";
 
-    public override string ToString() => $"{Name} O:{OrderIndex}{(IsImportant ? "!" : "")} G:{Gold} P:{Power} T:{ConsecutiveBattleCount} L:{Loyalty:0.0}";
+    public override string ToString() => $"{Name} O:{OrderIndex}{(IsImportant ? "!" : "")} G:{Gold} P:{Power} L:{Loyalty:0.0}";
 }

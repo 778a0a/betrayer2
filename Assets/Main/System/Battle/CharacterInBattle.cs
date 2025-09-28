@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NUnit.Framework.Constraints;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -130,25 +131,33 @@ public record CharacterInBattle(
         // 1列目
         if (Row1.All(s => !s.IsAlive))
         {
-            Swap12(false);
-            Swap23(false);
-            // 2列目も全滅しているかもしれないので、その場合はもう一度行う。
-            if (Row1.All(s => !s.IsAlive))
+            // 2列目が生きていれば交代する。
+            if (Row2.Any(s => s.IsAlive))
             {
+                Swap12(false);
+            }
+            // 2列目が全滅していて、3列目が生きていれば2・3列目を交代してから1・2列目を交代する。
+            else if (Row3.Any(s => s.IsAlive))
+            {
+                Swap23(false);
                 Swap12(false);
             }
         }
         // 2列目
-        else if (Row2.All(s => !s.IsAlive))
+        if (Row2.All(s => !s.IsAlive))
         {
-            Swap23(false);
+            // 3列目が生きていれば交代する。
+            if (Row3.Any(s => s.IsAlive))
+            {
+                Swap23(false);
+            }
         }
     }
 
     /// <summary>
     /// 戦闘前の兵士数
     /// </summary>
-    public float[] InitialSoldierCounts = Character.Soldiers.Select(s => s.HpFloat).ToArray();
+    public float[] InitialSoldierCounts { get; set; } = Character.Soldiers.Select(s => s.HpFloat).ToArray();
 
     /// <summary>
     /// 戦闘に利用する戦闘能力値
@@ -264,22 +273,35 @@ public record CharacterInBattle(
     /// <summary>
     /// 戦闘後の回復処理
     /// </summary>
-    public static void Recover(Character chara, bool win, float winRate, float loseRate, float[] maxRecoveryCounts)
+    public static void Recover(Character chara, bool win, float[] maxRecoveryCounts)
     {
         if (chara == null) return;
 
-        var tiredAdj = Mathf.Pow(0.8f, chara.ConsecutiveBattleCount + 1);
-        var intelliAdj = Mathf.Max(0, (chara.Intelligence - 80) / 100f / 2) * (win ? 1 : 0.5f);
-        var winAdj = win ? winRate : loseRate;
-        var adj = (winAdj + intelliAdj) * tiredAdj;
+        var intelliAdj = Mathf.Max(0, (chara.Intelligence - 80) * 0.002f) * (win ? 1 : 0.5f);
+        var adj = intelliAdj + (win ? 0.04f : 0.01f);
         for (int i = 0; i < chara.Soldiers.Count; i++)
         {
             var s = chara.Soldiers[i];
-            if (!s.IsAlive) continue;
-            var baseAmount = maxRecoveryCounts[i];
-            var newHp = s.HpFloat + (baseAmount * adj);
-            newHp = Mathf.Min(maxRecoveryCounts[i], newHp);
-            s.HpFloat = Mathf.Min(s.MaxHp, newHp);
+            var baseHp = maxRecoveryCounts[i];
+            // 戦闘中に力尽きた場合
+            if (!s.IsAlive && baseHp > 0)
+            {
+                // 死亡扱いなら空きスロットにする。
+                if (s.IsDeadInBattle)
+                {
+                    s.IsDeadInBattle = false;
+                    s.IsEmptySlot = true;
+                }
+                // 生存扱いならHP5で復活させる。
+                else
+                {
+                    s.HpFloat = 5;
+                }
+                continue;
+            }
+
+            var newHp = s.HpFloat + (baseHp * adj);
+            s.HpFloat = newHp.MaxWith(baseHp);
         }
         //Debug.Log($"{chara.Name} adj:{adj} win:{winAdj} intelli:{intelliAdj} tired: {tiredAdj} ({chara.ConsecutiveBattleCount})");
     }

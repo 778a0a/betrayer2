@@ -31,6 +31,7 @@ public class Soldier
 
     public bool IsEmptySlot { get; set; }
     public bool IsAlive => !IsEmptySlot && HpFloat > 0;
+    public bool IsDeadInBattle { get; set; }
 
     public void AddExperience(Character owner, bool isTraining = false, bool drillMasterExists = false)
     {

@@ -125,27 +125,16 @@ public class Battle
             UI.Root.style.display = DisplayStyle.None;
         }
 
-        // 死んだ兵士のスロットを空にする。
-        foreach (var sol in Atk.Soldiers.Concat(Def.Soldiers))
-        {
-            if (sol.Hp == 0)
-            {
-                sol.IsEmptySlot = true;
-            }
-        }
-
         var (winner, loser) = result == BattleResult.AttackerWin ?
             (Atk, Def) :
             (Def, Atk);
 
         // 兵士の回復処理を行う。
-        CharacterInBattle.Recover(winner, true, 0.5f, 0.15f, winner.InitialSoldierCounts);
-        CharacterInBattle.Recover(loser, false, 0.5f, 0.15f, loser.InitialSoldierCounts);
-        winner.Character.ConsecutiveBattleCount++;
-        loser.Character.ConsecutiveBattleCount++;
+        CharacterInBattle.Recover(winner, true, winner.InitialSoldierCounts);
+        CharacterInBattle.Recover(loser, false, loser.InitialSoldierCounts);
 
         // 回復処理確認用
-        if (DebugWatch)
+        if (true || DebugWatch)
         {
             UI.Root.style.display = DisplayStyle.Flex;
             UI.SetData(this, result);
@@ -375,7 +364,14 @@ public class Battle
                 adj += soldier.Level / 10f;
 
                 var damage = Math.Max(0, adj);
-                target.HpFloat = (int)Math.Max(0, target.HpFloat - damage);
+                target.HpFloat = (target.HpFloat - damage).MinWith(0);
+                // 力尽きた場合
+                if (target.HpFloat == 0)
+                {
+                    // 45%の確率で死亡扱いにする。
+                    target.IsDeadInBattle = 0.45f.Chance();
+                }
+
                 soldier.AddExperience(owner.Character);
 
                 if (owner.IsAttacker)

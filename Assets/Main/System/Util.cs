@@ -125,10 +125,8 @@ public static class Util
         return new(r / 255f, g / 255f, b / 255f, a / 255f);
     }
 
-    public static DisplayStyle Display(bool on)
-    {
-        return on ? DisplayStyle.Flex : DisplayStyle.None;
-    }
+    public static DisplayStyle Display(bool on) => on ? DisplayStyle.Flex : DisplayStyle.None;
+    public static Visibility Visible(bool on) => on ? Visibility.Visible : Visibility.Hidden;
 
     public static IDisposable Defer(Action act)
     {

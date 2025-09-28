@@ -184,25 +184,6 @@ public partial class GameCore
 
             // キャラへの給料支払いを行う。
             OnCharacterIncome();
-
-            // 各キャラの連戦回数を更新する。
-            foreach (var chara in World.Characters)
-            {
-                var count = chara.ConsecutiveBattleCount;
-                if (chara.IsMoving)
-                {
-                    // 根拠地から離れている場合は連戦回数を増やす。
-                    if (chara.Force.Position.DistanceTo(chara.Castle) > 5)
-                    {
-                        chara.ConsecutiveBattleCount++;
-                    }
-                }
-                // 出撃中でないキャラは連戦回数を減らす。
-                else
-                {
-                    chara.ConsecutiveBattleCount = Mathf.Max(0, count - 1);
-                }
-            }
         }
 
         // 行動不能状態の更新・兵士の回復・行動ゲージの更新を行う。
@@ -218,7 +199,6 @@ public partial class GameCore
             // 兵士を回復させる。
             var rate = 0.01f;
             if (chara.IsMoving) rate = 0.003f;
-            rate *= Mathf.Pow(0.95f, chara.ConsecutiveBattleCount);
             if (chara.IsStarving) rate *= 0.1f;
             foreach (var s in chara.Soldiers)
             {
@@ -230,7 +210,10 @@ public partial class GameCore
 
             // 行動ゲージを貯める。
             chara.PersonalActionGauge += chara.PersonalActionGaugeStep;
-            chara.StrategyActionGauge += chara.StrategyActionGaugeStep;
+            if (chara.IsBoss)
+            {
+                chara.StrategyActionGauge += chara.StrategyActionGaugeStep;
+            }
         }
 
         // 軍勢関連の処理を行う。
