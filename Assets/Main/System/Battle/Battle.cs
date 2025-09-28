@@ -140,9 +140,7 @@ public class Battle
                 await UI.WaitPlayerClick();
             }
             // 配下の戦闘の場合はクリックで終わらせる。
-            else if ((player?.IsBoss ?? false) &&
-                (Atk.Character.Castle.Boss == player || Atk.Country.Ruler == player || 
-                 Def.Character.Castle.Boss == player || Def.Country.Ruler == player))
+            else if (Atk.Character.CanOrder || Def.Character.CanOrder)
             {
                 await UI.WaitPlayerClick();
             }
