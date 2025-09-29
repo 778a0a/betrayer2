@@ -233,12 +233,9 @@ public partial class CountryDetailTab
         }
 
         // ボタンのハイライト状態を更新する。
-        buttonShowCastleList.RemoveFromClassList("active");
-        buttonShowMemberList.RemoveFromClassList("active");
-        buttonShowDiplomacy.RemoveFromClassList("active");
-        if (showCastleList) buttonShowCastleList.AddToClassList("active");
-        else if (showMemberList) buttonShowMemberList.AddToClassList("active");
-        else if (showDiplomacyList) buttonShowDiplomacy.AddToClassList("active");
+        buttonShowCastleList.EnableInClassList("active", showCastleList);
+        buttonShowMemberList.EnableInClassList("active", showMemberList);
+        buttonShowDiplomacy.EnableInClassList("active", showDiplomacyList);
     }
 
     /// <summary>
