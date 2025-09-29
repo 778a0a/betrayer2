@@ -56,15 +56,20 @@ public partial class CountryDetailTab
             CharacterSummary.SetData(chara);
         };
 
+        // キャラリストの行クリック時
+        MemberListViewTable.RowMouseDown += (sender, chara) =>
+        {
+            // 所属城へスクロールする。
+            var tile = Core.World.Map.GetTile(chara.Castle);
+            Core.World.Map.ScrollTo(tile);
+        };
+
         // 城一覧のクリック時
         CastleListViewTable.RowMouseDown += (sender, castle) =>
         {
-            if (castle != null)
-            {
-                //// 城タイルを選択して城詳細を表示
-                //var tile = Core.World.Map.GetTile(castle.Position);
-                //Core.UIMapManager.SelectTile(tile);
-            }
+            // 城タイルへスクロールする。
+            var tile = Core.World.Map.GetTile(castle.Position);
+            Core.World.Map.ScrollTo(tile);
         };
 
         // 方針コンボボックス選択時

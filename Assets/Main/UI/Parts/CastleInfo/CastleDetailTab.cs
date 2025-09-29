@@ -344,6 +344,15 @@ public partial class CastleDetailTab
         faceImage.style.backgroundImage = new(Static.GetFaceImage(character));
         faceImage.style.opacity = character.IsIncapacitated ? 0.3f : 1.0f;
         faceImage.Register<MouseOverEvent>(_ => ShowCharacterSummary(character));
+        faceImage.Register<MouseDownEvent>(_ =>
+        {
+            var force = Core.World.Forces.FirstOrDefault(f => f.Character == character);
+            if (force != null)
+            {
+                var tile = Core.World.Map.GetTile(force);
+                Core.World.Map.ScrollTo(tile);
+            }
+        });
         return faceImage;
     }
 
