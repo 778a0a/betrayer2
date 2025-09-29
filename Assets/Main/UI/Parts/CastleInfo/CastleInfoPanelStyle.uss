@@ -60,3 +60,49 @@ DropdownField {
     background-color: rgba(0, 156, 143, 0.3);
     border-color: rgba(204, 204, 204, 0.7);
 }
+
+/* 外交関係アイテム */
+.DiplomacyRelationItem {
+    flex-direction: row;
+    align-items: center;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    border-bottom-width: 1px;
+    border-bottom-color: rgba(77, 77, 77, 1);
+}
+
+.DiplomacyFaceImage {
+    width: 70px;
+    height: 70px;
+    margin-right: 10px;
+    border-width: 2px;
+    border-color: #888;
+    background-color: transparent;
+}
+
+.DiplomacyNameLabel {
+    font-size: 27px;
+    color: white;
+    flex-grow: 1;
+    margin-right: 10px;
+}
+
+.DiplomacyStatusLabel {
+    font-size: 27px;
+    margin-right: 10px;
+    width: 55px;
+}
+
+.DiplomacyNeighborLabel {
+    font-size: 27px;
+    margin-right: 10px;
+    width: 55px;
+    color: #ffff00;
+}
+
+.DiplomacyRelationLabel {
+    font-size: 28px;
+    width: 45px;
+    -unity-text-align: middle-right;
+    margin-right: 10px;
+}

@@ -135,6 +135,8 @@ public partial class CountryDetailTab
         {
             OnObjectiveSelected(selectedItem);
         };
+
+        DiplomacyScrollView.verticalScrollerVisibility = ScrollerVisibility.AlwaysVisible;
     }
 
     public void SetData(Country country)
@@ -367,10 +369,11 @@ public partial class CountryDetailTab
 
         // 他の国との関係を表示（TileInfoEditorWindow:309-341を参考）
         var world = Core.World;
+        var neighbors = country.Neighbors.ToArray();
         var otherCountries = world.Countries
             .Where(c => c != country)
-            .Where(o => o.GetRelation(country) != 50)
-            .OrderBy(o => o.GetRelation(country));
+            .Where(c => c.GetRelation(country) != 50 || neighbors.Contains(c))
+            .OrderBy(c => c.GetRelation(country));
             
         foreach (var other in otherCountries)
         {
@@ -383,33 +386,20 @@ public partial class CountryDetailTab
     private VisualElement CreateDiplomacyRelationItem(Country other, float relation, Country myCountry)
     {
         var item = new VisualElement();
-        item.style.flexDirection = FlexDirection.Row;
-        item.style.alignItems = Align.Center;
-        item.style.marginBottom = 5;
-        item.style.paddingTop = 5;
-        item.style.paddingBottom = 5;
-        item.style.borderBottomWidth = 1;
-        item.style.borderBottomColor = new Color(0.3f, 0.3f, 0.3f);
-        
+        item.AddToClassList("DiplomacyRelationItem");
+
         // 統治者の顔画像
         var faceImage = new VisualElement();
-        faceImage.style.width = 40;
-        faceImage.style.height = 40;
-        faceImage.style.marginRight = 10;
+        faceImage.AddToClassList("DiplomacyFaceImage");
         faceImage.style.backgroundImage = new StyleBackground(Static.GetFaceImage(other.Ruler));
-        
+
         // 国名と統治者名
         var nameLabel = new Label($"{other.Ruler.Name}");
-        nameLabel.style.fontSize = 20;
-        nameLabel.style.color = Color.white;
-        nameLabel.style.flexGrow = 1;
-        nameLabel.style.marginRight = 10;
-        
-        // 関係性ラベル
+        nameLabel.AddToClassList("DiplomacyNameLabel");
+
+        // 関係性ラベル（同盟・敵対）
         var statusLabel = new Label();
-        statusLabel.style.fontSize = 18;
-        statusLabel.style.marginRight = 10;
-        
+        statusLabel.AddToClassList("DiplomacyStatusLabel");
         if (myCountry.IsAlly(other))
         {
             statusLabel.text = "同盟";
@@ -420,25 +410,35 @@ public partial class CountryDetailTab
             statusLabel.text = "敵対";
             statusLabel.style.color = Color.red;
         }
-        else if (myCountry.Neighbors.Contains(other))
-        {
-            statusLabel.text = "隣接";
-            statusLabel.style.color = Color.yellow;
-        }
         else
         {
             statusLabel.text = "";
         }
+
+        // 隣接ラベル（独立）
+        var neighborLabel = new Label();
+        neighborLabel.AddToClassList("DiplomacyNeighborLabel");
+        if (myCountry.Neighbors.Contains(other))
+        {
+            neighborLabel.text = "隣接";
+        }
+        else
+        {
+            neighborLabel.text = "";
+        }
         
         // 関係度
         var relationLabel = new Label(relation.ToString());
-        relationLabel.style.fontSize = 20;
+        relationLabel.AddToClassList("DiplomacyRelationLabel");
         relationLabel.style.color = Util.RelationToColor(relation);
+        nameLabel.style.color = relationLabel.style.color;
+
         item.Add(faceImage);
         item.Add(nameLabel);
+        item.Add(neighborLabel);
         item.Add(statusLabel);
         item.Add(relationLabel);
-        
+
         return item;
     }
 }
