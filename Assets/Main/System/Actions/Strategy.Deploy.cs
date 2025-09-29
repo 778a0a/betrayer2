@@ -77,7 +77,7 @@ partial class StrategyActions
                         }
                         if (!neighborCastles.Contains(selectedTile.Castle) && selectedTile.Castle.IsAttackable(actor.Country))
                         {
-                            var ok = await MessageWindow.ShowOkCancel("隣接していない城のため戦闘効率が落ちます。\nよろしいですか？");
+                            var ok = await MessageWindow.ShowOkCancel("遠方の城のため戦闘効率が落ちます。\nよろしいですか？");
                             return ok;
                         }
                         return true;
