@@ -226,6 +226,14 @@ public partial class CountryDetailTab
         {
             SetDiplomacyData(targetCountry);
         }
+
+        // ボタンのハイライト状態を更新する。
+        buttonShowCastleList.RemoveFromClassList("active");
+        buttonShowMemberList.RemoveFromClassList("active");
+        buttonShowDiplomacy.RemoveFromClassList("active");
+        if (showCastleList) buttonShowCastleList.AddToClassList("active");
+        else if (showMemberList) buttonShowMemberList.AddToClassList("active");
+        else if (showDiplomacyList) buttonShowDiplomacy.AddToClassList("active");
     }
 
     /// <summary>
