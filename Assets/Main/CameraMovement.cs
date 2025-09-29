@@ -72,12 +72,17 @@ public class CameraMovement : MonoBehaviour
         // 画面端でのカメラ移動処理
         if (true)
         {
-            if (mousePosition.y >= topPanBorder)
+            // 右側のUI領域（画面幅の約44%）にマウスがある場合は上下スクロールを無効化
+            // フルHD(1920x1080)での840px ≈ 43.75%
+            const float UIAreaRatio = 0.4375f; // 840/1920
+            bool isInUIArea = mousePosition.x >= Screen.width * (1f - UIAreaRatio);
+
+            if (!isInUIArea && mousePosition.y >= topPanBorder)
             {
                 vAccelaration = Mathf.Min(1, vAccelaration + Time.deltaTime * accelerationMultiplier);
 
             }
-            else if (mousePosition.y <= bottomPanBorder)
+            else if (!isInUIArea && mousePosition.y <= bottomPanBorder)
             {
                 vAccelaration = Mathf.Max(-1, vAccelaration - Time.deltaTime * accelerationMultiplier);
             }
