@@ -41,7 +41,7 @@ partial class PersonalActions
             if (actor.IsPlayer)
             {
                 // 自身の城も含めて選択可能にする。
-                var cands = actor.Castle.Neighbors.Concat(new[] { actor.Castle }).ToList();
+                var cands = targetCharactor.Castle.Neighbors.Concat(new[] { targetCharactor.Castle }).ToList();
                 target = await GameCore.Instance.MainUI.SelectCastleScreen.SelectDeployDestination(
                     "新しい進軍先を選択してください（必要AP: 1）",
                     "キャンセル",
