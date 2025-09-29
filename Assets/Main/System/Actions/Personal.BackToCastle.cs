@@ -37,6 +37,7 @@ partial class PersonalActions
             var world = GameCore.Instance.World;
             var force = world.Forces.First(f => f.Character == target);
             var prevDestination = force.Destination;
+            force.IsPlayerDirected = actor.IsPlayer;
             force.SetDestination(target.Castle);
 
             if (force.Position == target.Castle.Position)

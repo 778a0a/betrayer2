@@ -132,6 +132,7 @@ partial class StrategyActions
             foreach (var character in deployMembers)
             {
                 var force = new Force(World, character, character.Castle.Position);
+                force.IsPlayerDirected = actor.IsPlayer;
                 force.SetDestination(target);
                 World.Forces.Register(force);
                 Debug.Log($"{force} が出撃しました。");

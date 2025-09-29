@@ -67,6 +67,7 @@ partial class AI
                     .Where(m => m.IsMoving)
                     .Select(m => m.Force)
                     .Where(f => f.Destination.Position != castle.Position)
+                    .Where(f => !f.IsPlayerDirected)
                     .ShuffleAsArray();
                 foreach (var myForce in castleForces)
                 {
@@ -124,6 +125,7 @@ partial class AI
                         .SelectMany(n => n.Members)
                         // 帰還中
                         .Where(m =>
+                            // TODO IsPlayerDirected の扱い
                             m.IsMoving &&
                             m.Force.Mode == ForceMode.Reinforcement &&
                             m.Force.Destination.Position == m.Castle.Position)

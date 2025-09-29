@@ -79,6 +79,7 @@ partial class PersonalActions
             if (target != null)
             {
                 // 目的地を変更する。
+                force.IsPlayerDirected = actor.IsPlayer;
                 force.SetDestination(target);
                 Debug.Log($"{force}の目的地を{target}に変更しました。");
             }

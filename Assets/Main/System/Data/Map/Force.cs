@@ -25,6 +25,12 @@ public class Force : ICountryEntity, IMapEntity
     public ForceMode Mode { get; set; }
 
     /// <summary>
+    /// プレーヤーの指示ならtrue
+    /// （trueの場合は例えば配下の城主のAIが勝手に指示を変更しないようにする）
+    /// </summary>
+    public bool IsPlayerDirected { get; set; }
+
+    /// <summary>
     /// 軍勢の所属国
     /// </summary>
     [JsonIgnore]

@@ -71,6 +71,7 @@ partial class PersonalActions
 
             // 出撃処理
             var force = new Force(World, actor, actor.Castle.Position);
+            force.IsPlayerDirected = actor.IsPlayer;
             force.SetDestination(target);
             World.Forces.Register(force);
             

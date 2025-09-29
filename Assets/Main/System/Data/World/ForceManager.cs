@@ -45,6 +45,7 @@ public class ForceManager : IReadOnlyList<Force>
         {
             f.SetDestination(f.Position);
             Debug.Log($"{f} 目的の軍勢が消えたため目的地をリセットしました。");
+            // TODO 自身の城などにセットしなくて問題ない？
         }
 
         ShouldCheckDefenceStatus = true;
