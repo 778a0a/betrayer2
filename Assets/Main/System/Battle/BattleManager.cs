@@ -22,9 +22,9 @@ public class BattleManager
         
         // 遠方での戦闘かどうかをセットする。
         var atkHome = attacker.Character.Castle.Position;
-        atk.IsRemote = atkHome.DistanceTo(attacker) > 5 && atkHome.DistanceTo(defender) > 5;
+        atk.IsRemote = atkHome.DistanceTo(attacker) > 5 || atkHome.DistanceTo(defender) > 5;
         var defHome = defender.Character.Castle.Position;
-        def.IsRemote = defHome.DistanceTo(defender) > 5 && defHome.DistanceTo(attacker) > 5;
+        def.IsRemote = defHome.DistanceTo(defender) > 5 || defHome.DistanceTo(attacker) > 5;
 
         var battle = new Battle(atk, def, BattleType.Field);
 
