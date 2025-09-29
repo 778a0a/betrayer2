@@ -277,7 +277,7 @@ public class ForceManager : IReadOnlyList<Force>
                 return;
             }
             // 防衛可能な敵が残っていない場合は城を占領する。
-            OnCastleFall(world, force, nextTile.Castle);
+            await OnCastleFall(world, force, nextTile.Castle);
             return;
         }
         // 移動先が自分の城の場合は入城する（ありえる？）
@@ -348,10 +348,10 @@ public class ForceManager : IReadOnlyList<Force>
         }
 
         // 防衛可能な敵が残っていない場合は城を占領する。
-        OnCastleFall(world, force, castle);
+        await OnCastleFall(world, force, castle);
     }
 
-    private void OnCastleFall(WorldData world, Force force, Castle castle)
+    private async Task OnCastleFall(WorldData world, Force force, Castle castle)
     {
         // 駐在キャラの行動不能日数を再セットする。
         foreach (var e in castle.Members.Where(e => !e.IsMoving))
@@ -423,14 +423,15 @@ public class ForceManager : IReadOnlyList<Force>
 
             foreach (var m in castle.Members.ToList())
             {
-                // TODO ランダムに散らす。
                 m.ChangeCastle(castle, true);
                 m.Contribution /= 2;
                 m.IsImportant = false;
                 m.OrderIndex = -1;
                 m.Loyalty = 0;
             }
-            // TODO 他に必要な処理が色々ありそう。
+
+            // 滅亡メッセージを表示する。
+            await MessageWindow.Show($"{oldCountry.Ruler.Name}軍が\n{force.Country.Ruler.Name}軍によって滅ぼされました。");
         }
         // まだ他の城がある場合は、一番近くの城に所属を移動する。
         else
@@ -446,6 +447,13 @@ public class ForceManager : IReadOnlyList<Force>
                     e.ChangeCastle(c, false);
                 }
                 else e.ChangeCastle(nearEnemyCastle, false);
+            }
+
+            // 自勢力の城が落とされた場合、自勢力が城を落とした場合はメッセージを表示する。
+            if (oldCountry == world.Player?.Country ||
+                force.Country == world.Player?.Country)
+            {
+                await MessageWindow.Show($"{castle.Name}を\n{force.Country.Ruler.Name}軍が占領しました。");
             }
         }
 

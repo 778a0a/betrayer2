@@ -343,7 +343,7 @@ public class Battle
             var isMarine = Util.IsMarine(chara.Terrain) || Util.IsMarine(op.Terrain);
             var adj = 1f;
             adj += Tap("戦闘差", (chara.Strength - op.Strength) / 100f);
-            adj += Tap("智謀差", (chara.Intelligence - op.Intelligence) / 100f * (tickCount / 5f).MaxWith(2));
+            adj += Tap("智謀差", (chara.Intelligence - op.Intelligence) / 100f * (tickCount / 5f).MaxWith(1));
             adj += Tap("地形差", TerrainAdjustment(chara.Terrain) - TerrainAdjustment(op.Terrain));
             if (Util.IsMarine(chara.Character.Traits) && isMarine) adj += Tap("自特性", +(Mathf.Max(0, TraitsAdjustment(chara.Tile, chara.Character.Traits)) + Mathf.Max(0, TraitsAdjustment(op.Tile, chara.Character.Traits))));
             else adj += Tap("自特性", +(TraitsAdjustment(chara.Tile, chara.Character.Traits) + TraitsAdjustment(op.Tile, chara.Character.Traits)));
