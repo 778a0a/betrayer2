@@ -26,7 +26,8 @@ public partial class ForceTableRowItem
             if (!canOrder) return;
             var args = new ActionArgs(GameCore.Instance.World.Player, targetCharacter: Force.Character);
             await GameCore.Instance.StrategyActions.ChangeDestination.Do(args);
-            GameCore.Instance.MainUI.ActionScreen.Show();
+            GameCore.Instance.MainUI.ActionScreen.Root.style.display = DisplayStyle.Flex;
+            GameCore.Instance.MainUI.ActionScreen.Render();
         };
 
         // 撤退ボタン
@@ -37,7 +38,8 @@ public partial class ForceTableRowItem
             if (!canOrder) return;
             var args = new ActionArgs(GameCore.Instance.World.Player, targetCharacter: Force.Character);
             await GameCore.Instance.StrategyActions.BackToCastle.Do(args);
-            GameCore.Instance.MainUI.ActionScreen.Show();
+            GameCore.Instance.MainUI.ActionScreen.Root.style.display = DisplayStyle.Flex;
+            GameCore.Instance.MainUI.ActionScreen.Render();
         };
     }
 
