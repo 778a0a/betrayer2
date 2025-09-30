@@ -83,7 +83,7 @@ public partial class AI
                     // 自城が豊かなら+
                     prob += probGold ? 0.1f : 0;
                     // 敵対国と敵対しているなら+
-                    prob += probEnemyEnemy ? 0.2f : 0;
+                    prob += probEnemyEnemy ? 0.25f : 0;
                     // 友好度40以上なら+
                     if (rel < 40) continue;
                     // 友好度が高すぎるなら-
@@ -93,15 +93,15 @@ public partial class AI
                     break;
                 case Personality.Pacifist:
                     // 自城が豊かなら+
-                    prob += probGold ? 0.1f : 0;
+                    prob += probGold ? 0.2f : 0;
                     // 友好度30以上で友好度が高いほど+
-                    prob += Mathf.Lerp(0.1f, 0.2f, (rel - 30) / 70f);
+                    prob += Mathf.Lerp(0.1f, 0.3f, (rel - 30) / 70f);
                     // 敵対国と敵対しているなら+
                     prob += probEnemyEnemy ? 0.1f : 0;
                     // 相手が強いほど+
                     prob += probTargetStrong ? 0.1f : 0;
-                    // 友好度40以上なら+
-                    if (rel < 40) continue;
+                    // 友好度35以上なら+
+                    if (rel < 35) continue;
                     break;
                 case Personality.Merchant:
                     // 自城が豊かなら+
@@ -112,8 +112,8 @@ public partial class AI
                     if (rel < 55) prob += 0.2f;
                     // 敵対国と敵対しているなら+
                     prob += probEnemyEnemy ? 0.2f : 0;
-                    // 友好度40以上なら+
-                    if (rel < 40) continue;
+                    // 友好度35以上なら+
+                    if (rel < 35) continue;
                     // 友好度が高すぎるなら-
                     if (rel >= 80) prob *= 0.4f;
                     // 隣接国なら+
