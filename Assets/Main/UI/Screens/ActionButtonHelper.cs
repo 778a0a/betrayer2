@@ -13,7 +13,7 @@ public class ActionButtonHelper
     private Label labelCostGold;
     private Label labelDescription;
     private Func<Character> currentCharacterGetter;
-    private Action<ActionButtonHelper> clickHandler;
+    private Action<ActionButtonHelper, EventBase> clickHandler;
     private bool IsMouseOver;
 
     private ActionButtonHelper(Button el, Func<ActionBase> actionGetter)
@@ -40,14 +40,16 @@ public class ActionButtonHelper
         Label labelCostGold,
         Label labelDescription,
         Func<Character> currentCharacterGetter,
-        Action<ActionButtonHelper> clickHandler)
+        Action<ActionButtonHelper, EventBase> clickHandler)
     {
         this.labelCostGold = labelCostGold;
         this.labelDescription = labelDescription;
         this.currentCharacterGetter = currentCharacterGetter;
         this.clickHandler = clickHandler;
-        
-        Element.RegisterCallback<ClickEvent>(OnActionButtonClicked);
+
+        // なぜかMouseDownEventだと左クリックが受け取れないのでClickEventも購読する。
+        Element.RegisterCallback<MouseDownEvent>(OnActionButtonMouseDown);
+        Element.RegisterCallback<ClickEvent>(OnActionButtonMouseDown);
         Element.RegisterCallback<PointerEnterEvent>(OnActionButtonPointerEnter);
         Element.RegisterCallback<PointerLeaveEvent>(OnActionButtonPointerLeave);
     }
@@ -93,9 +95,10 @@ public class ActionButtonHelper
         labelCostGold.text = "";
     }
 
-    private void OnActionButtonClicked(ClickEvent ev)
+    private void OnActionButtonMouseDown(EventBase evt)
     {
-        clickHandler(this);
+        clickHandler(this, evt);
+        evt.StopPropagation();
     }
 
     public void SetData(Character chara)

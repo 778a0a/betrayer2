@@ -118,19 +118,47 @@ public partial class ActionScreen : IScreen
         CastleInfoPanel.Initialize();
     }
 
-    private async void OnActionButtonClicked(ActionButtonHelper button)
+    private bool IsRightClickEnabledAction(ActionBase action)
+    {
+        return action switch
+        {
+            PersonalActions.DevelopAction => true,
+            PersonalActions.FortifyAction => true,
+            PersonalActions.HireSoldierAction => true,
+            PersonalActions.InvestAction => true,
+            PersonalActions.TrainSoldiersAction => true,
+            _ => false,
+        };
+    }
+
+    private async void OnActionButtonClicked(ActionButtonHelper button, EventBase evt)
     {
         var chara = currentCharacter;
         var action = button.Action;
 
-        var canPrepare = action.CanUIEnable(chara);
-        if (!canPrepare)
+        ValueTask DoAction()
         {
-            return;
+            var canPrepare = action.CanUIEnable(chara);
+            if (!canPrepare)
+            {
+                return default;
+            }
+            return action.Do(new(chara, selectedTile: currentTile));
         }
 
-        // アクションを実行する。
-        await action.Do(new(chara, selectedTile: currentTile));
+        // 連打が多いアクションは右クリックで10回実行できるようにする。
+        var isRightClick = ((evt as MouseDownEvent)?.button ?? (evt as ClickEvent)?.button ?? 0) == 1;
+        if (isRightClick && IsRightClickEnabledAction(action))
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                await DoAction();
+            }
+        }
+        else
+        {
+            await DoAction();
+        }
 
         // 表示を更新する。
         Render();
