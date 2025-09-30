@@ -170,11 +170,15 @@ public partial class BattleWindow
 
     public VisualElement DefenderRetreatGauge { get; private set; }
 
+    public Button buttonSwap23Attacker { get; private set; }
+
+    public Button buttonSwap12Attacker { get; private set; }
+
+    public Button buttonSwap12Defender { get; private set; }
+
+    public Button buttonSwap23Defender { get; private set; }
+
     public Button buttonAttack { get; private set; }
-
-    public Button buttonSwap12 { get; private set; }
-
-    public Button buttonSwap23 { get; private set; }
 
     public Button buttonRest { get; private set; }
 
@@ -267,9 +271,11 @@ public partial class BattleWindow
         DefenderRetreatBar = Root?.Q<VisualElement>("DefenderRetreatBar");
         labelDefenderRetreatCaption = Root?.Q<Label>("labelDefenderRetreatCaption");
         DefenderRetreatGauge = Root?.Q<VisualElement>("DefenderRetreatGauge");
+        buttonSwap23Attacker = Root?.Q<Button>("buttonSwap23Attacker");
+        buttonSwap12Attacker = Root?.Q<Button>("buttonSwap12Attacker");
+        buttonSwap12Defender = Root?.Q<Button>("buttonSwap12Defender");
+        buttonSwap23Defender = Root?.Q<Button>("buttonSwap23Defender");
         buttonAttack = Root?.Q<Button>("buttonAttack");
-        buttonSwap12 = Root?.Q<Button>("buttonSwap12");
-        buttonSwap23 = Root?.Q<Button>("buttonSwap23");
         buttonRest = Root?.Q<Button>("buttonRest");
         buttonRetreat = Root?.Q<Button>("buttonRetreat");
         buttonResult = Root?.Q<Button>("buttonResult");
@@ -357,9 +363,11 @@ public partial class BattleWindow
         DefenderRetreatBar = Root?.Q<VisualElement>("DefenderRetreatBar");
         labelDefenderRetreatCaption = Root?.Q<Label>("labelDefenderRetreatCaption");
         DefenderRetreatGauge = Root?.Q<VisualElement>("DefenderRetreatGauge");
+        buttonSwap23Attacker = Root?.Q<Button>("buttonSwap23Attacker");
+        buttonSwap12Attacker = Root?.Q<Button>("buttonSwap12Attacker");
+        buttonSwap12Defender = Root?.Q<Button>("buttonSwap12Defender");
+        buttonSwap23Defender = Root?.Q<Button>("buttonSwap23Defender");
         buttonAttack = Root?.Q<Button>("buttonAttack");
-        buttonSwap12 = Root?.Q<Button>("buttonSwap12");
-        buttonSwap23 = Root?.Q<Button>("buttonSwap23");
         buttonRest = Root?.Q<Button>("buttonRest");
         buttonRetreat = Root?.Q<Button>("buttonRetreat");
         buttonResult = Root?.Q<Button>("buttonResult");

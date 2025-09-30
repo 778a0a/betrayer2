@@ -8,9 +8,23 @@
             <engine:VisualElement class="border" style="flex-grow: 0; height: 800px; padding: 10px;">
 
                 <!-- ヘッダー部分 -->
-                <engine:VisualElement style="flex-grow: 0; flex-direction: row;">
+                <engine:VisualElement style="position: relative; height: 40px;">
+                    <!-- 攻撃側地形 -->
+                    <engine:VisualElement style="position: absolute; left: 0; top: 0; flex-direction: row;">
+                        <engine:Label text="地形" name="labelAttackerTerrainCaption" style="font-size: 25px; padding: 5px 5px 5px 0px;" />
+                        <engine:Label text="大河" name="labelAttackerTerrain" style="font-size: 25px; padding: 5px 0" />
+                    </engine:VisualElement>
+
                     <!-- 戦闘タイプ -->
-                    <engine:Label text="野戦" name="labelBattleType" style="font-size: 30px; -unity-text-align: middle-center; font-weight: bold; flex-grow: 1;" />
+                    <engine:VisualElement style="position: absolute; left: 50%; top: 0; translate: -50% 0;">
+                        <engine:Label text="野戦" name="labelBattleType" style="font-size: 30px; -unity-text-align: middle-center; font-weight: bold;" />
+                    </engine:VisualElement>
+
+                    <!-- 防衛側地形 -->
+                    <engine:VisualElement style="position: absolute; right: 0; top: 0; flex-direction: row;">
+                        <engine:Label text="地形" name="labelDefenderTerrainCaption" style="font-size: 25px; padding: 5px 5px 5px 0;" />
+                        <engine:Label text="城砦" name="labelDefenderTerrain" style="font-size: 25px; padding: 5px 0px 5px 5px;" />
+                    </engine:VisualElement>
                 </engine:VisualElement>
                 <engine:VisualElement style="flex-grow: 0; flex-direction: row; margin-top: 10px;">
                     <!-- 攻撃側キャラ名 -->
@@ -31,70 +45,103 @@
                 <engine:VisualElement style="flex-grow: 0; flex-direction: row;">
 
                     <!-- 攻撃側兵士配置 (3列編成: 後列→中列→前列) -->
-                    <engine:VisualElement name="AttackerSoldiers" style="flex-grow: 1; flex-direction: row;">
-                        <!-- 後列 (10-14番) -->
-                        <engine:VisualElement style="flex-grow: 1;">
-                            <engine:Instance template="BattleSoldierIconAttackSide" name="AttackerSoldier10" />
-                            <engine:Instance template="BattleSoldierIconAttackSide" name="AttackerSoldier11" />
-                            <engine:Instance template="BattleSoldierIconAttackSide" name="AttackerSoldier12" />
-                            <engine:Instance template="BattleSoldierIconAttackSide" name="AttackerSoldier13" />
-                            <engine:Instance template="BattleSoldierIconAttackSide" name="AttackerSoldier14" />
-                        </engine:VisualElement>
-                        <!-- 中列 (05-09番) -->
-                        <engine:VisualElement style="flex-grow: 1;">
-                            <engine:Instance template="BattleSoldierIconAttackSide" name="AttackerSoldier05" />
-                            <engine:Instance template="BattleSoldierIconAttackSide" name="AttackerSoldier06" />
-                            <engine:Instance template="BattleSoldierIconAttackSide" name="AttackerSoldier07" />
-                            <engine:Instance template="BattleSoldierIconAttackSide" name="AttackerSoldier08" />
-                            <engine:Instance template="BattleSoldierIconAttackSide" name="AttackerSoldier09" />
-                        </engine:VisualElement>
-                        <!-- 前列 (00-04番) -->
-                        <engine:VisualElement style="flex-grow: 1;">
-                            <engine:Instance template="BattleSoldierIconAttackSide" name="AttackerSoldier00" />
-                            <engine:Instance template="BattleSoldierIconAttackSide" name="AttackerSoldier01" />
-                            <engine:Instance template="BattleSoldierIconAttackSide" name="AttackerSoldier02" />
-                            <engine:Instance template="BattleSoldierIconAttackSide" name="AttackerSoldier03" />
-                            <engine:Instance template="BattleSoldierIconAttackSide" name="AttackerSoldier04" />
+                    <engine:VisualElement name="AttackerSoldiers" style="flex-grow: 1;">
+                        <!-- 兵士アイコン -->
+                        <engine:VisualElement style="flex-direction: row;">
+                            <!-- 後列 (10-14番) -->
+                            <engine:VisualElement style="flex-grow: 1;">
+                                <engine:Instance template="BattleSoldierIconAttackSide" name="AttackerSoldier10" />
+                                <engine:Instance template="BattleSoldierIconAttackSide" name="AttackerSoldier11" />
+                                <engine:Instance template="BattleSoldierIconAttackSide" name="AttackerSoldier12" />
+                                <engine:Instance template="BattleSoldierIconAttackSide" name="AttackerSoldier13" />
+                                <engine:Instance template="BattleSoldierIconAttackSide" name="AttackerSoldier14" />
+                            </engine:VisualElement>
+                            <!-- 中列 (05-09番) -->
+                            <engine:VisualElement style="flex-grow: 1;">
+                                <engine:Instance template="BattleSoldierIconAttackSide" name="AttackerSoldier05" />
+                                <engine:Instance template="BattleSoldierIconAttackSide" name="AttackerSoldier06" />
+                                <engine:Instance template="BattleSoldierIconAttackSide" name="AttackerSoldier07" />
+                                <engine:Instance template="BattleSoldierIconAttackSide" name="AttackerSoldier08" />
+                                <engine:Instance template="BattleSoldierIconAttackSide" name="AttackerSoldier09" />
+                            </engine:VisualElement>
+                            <!-- 前列 (00-04番) -->
+                            <engine:VisualElement style="flex-grow: 1;">
+                                <engine:Instance template="BattleSoldierIconAttackSide" name="AttackerSoldier00" />
+                                <engine:Instance template="BattleSoldierIconAttackSide" name="AttackerSoldier01" />
+                                <engine:Instance template="BattleSoldierIconAttackSide" name="AttackerSoldier02" />
+                                <engine:Instance template="BattleSoldierIconAttackSide" name="AttackerSoldier03" />
+                                <engine:Instance template="BattleSoldierIconAttackSide" name="AttackerSoldier04" />
+                            </engine:VisualElement>
                         </engine:VisualElement>
                     </engine:VisualElement>
 
                     <!-- 防衛側兵士配置 (3列編成: 前列→中列→後列) -->
-                    <engine:VisualElement name="DefenderSoldiers" style="flex-grow: 1; flex-direction: row;">
-                        <!-- 前列 (00-04番) -->
-                        <engine:VisualElement style="flex-grow: 1;">
-                            <engine:Instance template="BattleSoldierIconDefenceSide" name="DefenderSoldier00" />
-                            <engine:Instance template="BattleSoldierIconDefenceSide" name="DefenderSoldier01" />
-                            <engine:Instance template="BattleSoldierIconDefenceSide" name="DefenderSoldier02" />
-                            <engine:Instance template="BattleSoldierIconDefenceSide" name="DefenderSoldier03" />
-                            <engine:Instance template="BattleSoldierIconDefenceSide" name="DefenderSoldier04" />
-                        </engine:VisualElement>
-                        <!-- 中列 (05-09番) -->
-                        <engine:VisualElement style="flex-grow: 1;">
-                            <engine:Instance template="BattleSoldierIconDefenceSide" name="DefenderSoldier05" />
-                            <engine:Instance template="BattleSoldierIconDefenceSide" name="DefenderSoldier06" />
-                            <engine:Instance template="BattleSoldierIconDefenceSide" name="DefenderSoldier07" />
-                            <engine:Instance template="BattleSoldierIconDefenceSide" name="DefenderSoldier08" />
-                            <engine:Instance template="BattleSoldierIconDefenceSide" name="DefenderSoldier09" />
-                        </engine:VisualElement>
-                        <!-- 後列 (10-14番) -->
-                        <engine:VisualElement style="flex-grow: 1;">
-                            <engine:Instance template="BattleSoldierIconDefenceSide" name="DefenderSoldier10" />
-                            <engine:Instance template="BattleSoldierIconDefenceSide" name="DefenderSoldier11" />
-                            <engine:Instance template="BattleSoldierIconDefenceSide" name="DefenderSoldier12" />
-                            <engine:Instance template="BattleSoldierIconDefenceSide" name="DefenderSoldier13" />
-                            <engine:Instance template="BattleSoldierIconDefenceSide" name="DefenderSoldier14" />
+                    <engine:VisualElement name="DefenderSoldiers" style="flex-grow: 1;">
+                        <!-- 兵士アイコン -->
+                        <engine:VisualElement style="flex-direction: row;">
+                            <!-- 前列 (00-04番) -->
+                            <engine:VisualElement style="flex-grow: 1;">
+                                <engine:Instance template="BattleSoldierIconDefenceSide" name="DefenderSoldier00" />
+                                <engine:Instance template="BattleSoldierIconDefenceSide" name="DefenderSoldier01" />
+                                <engine:Instance template="BattleSoldierIconDefenceSide" name="DefenderSoldier02" />
+                                <engine:Instance template="BattleSoldierIconDefenceSide" name="DefenderSoldier03" />
+                                <engine:Instance template="BattleSoldierIconDefenceSide" name="DefenderSoldier04" />
+                            </engine:VisualElement>
+                            <!-- 中列 (05-09番) -->
+                            <engine:VisualElement style="flex-grow: 1;">
+                                <engine:Instance template="BattleSoldierIconDefenceSide" name="DefenderSoldier05" />
+                                <engine:Instance template="BattleSoldierIconDefenceSide" name="DefenderSoldier06" />
+                                <engine:Instance template="BattleSoldierIconDefenceSide" name="DefenderSoldier07" />
+                                <engine:Instance template="BattleSoldierIconDefenceSide" name="DefenderSoldier08" />
+                                <engine:Instance template="BattleSoldierIconDefenceSide" name="DefenderSoldier09" />
+                            </engine:VisualElement>
+                            <!-- 後列 (10-14番) -->
+                            <engine:VisualElement style="flex-grow: 1;">
+                                <engine:Instance template="BattleSoldierIconDefenceSide" name="DefenderSoldier10" />
+                                <engine:Instance template="BattleSoldierIconDefenceSide" name="DefenderSoldier11" />
+                                <engine:Instance template="BattleSoldierIconDefenceSide" name="DefenderSoldier12" />
+                                <engine:Instance template="BattleSoldierIconDefenceSide" name="DefenderSoldier13" />
+                                <engine:Instance template="BattleSoldierIconDefenceSide" name="DefenderSoldier14" />
+                            </engine:VisualElement>
                         </engine:VisualElement>
                     </engine:VisualElement>
                 </engine:VisualElement>
 
+                <!-- アクションボタン用の余白 -->
+                <engine:VisualElement style="height: 55px; margin-top: 15px;">
+                </engine:VisualElement>
+
                 <!-- キャラクター詳細情報エリア -->
-                <engine:VisualElement style="flex-grow: 1; flex-direction: row; margin-top: 20px;">
+                <engine:VisualElement style="flex-direction: row; margin-top: 10px; height: 280px;">
 
                     <!-- 攻撃側キャラクター情報 -->
                     <engine:VisualElement class="attacker-info" style="flex-grow: 1;">
+                        <!-- 攻撃側: 戦術P・撤退P -->
+                        <engine:VisualElement>
+                            <!-- ゲージ類 -->
+                            <engine:VisualElement style="flex-direction: column;">
+                                <!-- 戦術ポイント -->
+                                <engine:VisualElement style="flex-direction: row; margin-bottom: 5px; align-items: center;">
+                                    <engine:Label text="戦術P" name="labelAttackerTacticsCaption" style="font-size: 24px; width: 80px;" />
+                                    <engine:VisualElement name="AttackerTacticsGauge" style="width: 220px; height: 20px; background-color: rgb(40, 40, 40); border-width: 1px; border-color: white;">
+                                        <engine:VisualElement name="AttackerTacticsBar1" style="position: absolute; top: 0; left: 0; height: 100%; background-color: white;" />
+                                        <engine:VisualElement name="AttackerTacticsBar2" style="position: absolute; top: 0; left: 33.33%; height: 100%; background-color: rgb(173, 216, 230);" />
+                                        <engine:VisualElement name="AttackerTacticsBar3" style="position: absolute; top: 0; left: 66.67%; height: 100%; background-color: rgb(0, 100, 200);" />
+                                    </engine:VisualElement>
+                                </engine:VisualElement>
+                                <!-- 撤退ポイント -->
+                                <engine:VisualElement style="flex-direction: row; align-items: center;">
+                                    <engine:Label text="撤退P" name="labelAttackerRetreatCaption" style="font-size: 24px; width: 80px;" />
+                                    <engine:VisualElement name="AttackerRetreatGauge" style="width: 220px; height: 20px; background-color: rgb(40, 40, 40); border-width: 1px; border-color: white;">
+                                        <engine:VisualElement name="AttackerRetreatBar" style="position: absolute; top: 0; left: 0; height: 100%; background-color: rgb(255, 99, 99);" />
+                                    </engine:VisualElement>
+                                </engine:VisualElement>
+                            </engine:VisualElement>
+                        </engine:VisualElement>
+
                         <!-- 攻撃側: 顔画像とステータス -->
-                        <engine:VisualElement style="flex-grow: 0; flex-direction: row;">
-                            <engine:VisualElement name="imageAttacker" style="flex-grow: 0; width: 200px; height: 200px;" />
+                        <engine:VisualElement style="flex-grow: 0; flex-direction: row; margin-top: 10px">
+                            <engine:VisualElement name="imageAttacker" style="flex-grow: 0; width: 200px; height: 200px; border-width: 2px; border-color: #888;" />
                             <engine:VisualElement style="flex-grow: 0; flex-direction: column;">
                                 <engine:VisualElement style="flex-grow: 0; flex-direction: row;">
                                     <engine:Label text="攻撃" name="labelAttackerAttackCaption" style="padding: 0 5px 20px 5px;" />
@@ -111,42 +158,36 @@
                             </engine:VisualElement>
                         </engine:VisualElement>
 
-                        <!-- 攻撃側: 地形・戦術P・撤退P -->
-                        <engine:VisualElement>
-                            <!-- 地形情報 -->
-                            <engine:VisualElement style="flex-direction: row;">
-                                <engine:Label text="地形" name="labelAttackerTerrainCaption" style="font-size: 30px; padding: 5px 5px 5px 0px;" />
-                                <engine:Label text="大河" name="labelAttackerTerrain" style="font-size: 30px; padding: 5px 0" />
-                            </engine:VisualElement>
-                            <!-- ゲージ類 -->
-                            <engine:VisualElement style="flex-direction: column; margin-top: 5px;">
-                                <!-- 戦術ポイント -->
-                                <engine:VisualElement style="flex-direction: row; margin-bottom: 5px; align-items: center;">
-                                    <engine:Label text="戦術P" name="labelAttackerTacticsCaption" style="font-size: 24px; width: 80px;" />
-                                    <engine:VisualElement name="AttackerTacticsGauge" style="width: 120px; height: 20px; background-color: rgb(40, 40, 40); border-width: 1px; border-color: white;">
-                                        <engine:VisualElement name="AttackerTacticsBar1" style="position: absolute; top: 0; left: 0; height: 100%; background-color: white;" />
-                                        <engine:VisualElement name="AttackerTacticsBar2" style="position: absolute; top: 0; left: 33.33%; height: 100%; background-color: rgb(173, 216, 230);" />
-                                        <engine:VisualElement name="AttackerTacticsBar3" style="position: absolute; top: 0; left: 66.67%; height: 100%; background-color: rgb(0, 100, 200);" />
-                                    </engine:VisualElement>
-                                </engine:VisualElement>
-                                <!-- 撤退ポイント -->
-                                <engine:VisualElement style="flex-direction: row; align-items: center;">
-                                    <engine:Label text="撤退P" name="labelAttackerRetreatCaption" style="font-size: 24px; width: 80px;" />
-                                    <engine:VisualElement name="AttackerRetreatGauge" style="width: 120px; height: 20px; background-color: rgb(40, 40, 40); border-width: 1px; border-color: white;">
-                                        <engine:VisualElement name="AttackerRetreatBar" style="position: absolute; top: 0; left: 0; height: 100%; background-color: rgb(255, 99, 99);" />
-                                    </engine:VisualElement>
-                                </engine:VisualElement>
-                            </engine:VisualElement>
-                        </engine:VisualElement>
-
                     </engine:VisualElement>
 
                     <!-- 防衛側キャラクター情報 -->
                     <engine:VisualElement class="defender-info" style="flex-grow: 1;">
+                        <!-- 防衛側: 戦術P・撤退P -->
+                        <engine:VisualElement style="align-self: flex-end;">
+                            <!-- ゲージ類 -->
+                            <engine:VisualElement style="flex-direction: column;">
+                                <!-- 戦術ポイント -->
+                                <engine:VisualElement style="flex-direction: row; margin-bottom: 5px; align-items: center;">
+                                    <engine:VisualElement name="DefenderTacticsGauge" style="width: 220px; height: 20px; background-color: rgb(40, 40, 40); border-width: 1px; border-color: white;">
+                                        <engine:VisualElement name="DefenderTacticsBar1" style="position: absolute; top: 0; left: 0; height: 100%; background-color: white;" />
+                                        <engine:VisualElement name="DefenderTacticsBar2" style="position: absolute; top: 0; left: 33.33%; height: 100%; background-color: rgb(173, 216, 230);" />
+                                        <engine:VisualElement name="DefenderTacticsBar3" style="position: absolute; top: 0; left: 66.67%; height: 100%; background-color: rgb(0, 100, 200);" />
+                                    </engine:VisualElement>
+                                    <engine:Label text="戦術P" name="labelDefenderTacticsCaption" style="font-size: 24px; width: 80px; -unity-text-align: middle-right;" />
+                                </engine:VisualElement>
+                                <!-- 撤退ポイント -->
+                                <engine:VisualElement style="flex-direction: row; align-items: center;">
+                                    <engine:VisualElement name="DefenderRetreatGauge" style="width: 220px; height: 20px; background-color: rgb(40, 40, 40); border-width: 1px; border-color: white;">
+                                        <engine:VisualElement name="DefenderRetreatBar" style="position: absolute; top: 0; left: 0; height: 100%; background-color: rgb(255, 165, 0);" />
+                                    </engine:VisualElement>
+                                    <engine:Label text="撤退P" name="labelDefenderRetreatCaption" style="font-size: 24px; width: 80px; -unity-text-align: middle-right;" />
+                                </engine:VisualElement>
+                            </engine:VisualElement>
+                        </engine:VisualElement>
 
                         <!-- 防衛側: 顔画像とステータス (右寄せレイアウト) -->
-                        <engine:VisualElement style="flex-grow: 0; flex-direction: row-reverse;">
-                            <engine:VisualElement name="imageDefender" style="flex-grow: 0; width: 200px; height: 200px;" />
+                        <engine:VisualElement style="flex-grow: 0; flex-direction: row-reverse; margin-top: 10px;">
+                            <engine:VisualElement name="imageDefender" style="flex-grow: 0; width: 200px; height: 200px; border-width: 2px; border-color: #888;" />
                             <engine:VisualElement style="flex-grow: 0; flex-direction: column;">
                                 <engine:VisualElement style="flex-grow: 0; flex-direction: row;">
                                     <engine:Label text="防衛" name="labelDefenderDefenceCaption" style="" />
@@ -168,45 +209,24 @@
                             </engine:VisualElement>
                         </engine:VisualElement>
 
-                        <!-- 防衛側: 地形・戦術P・撤退P -->
-                        <engine:VisualElement style="align-self: flex-end;">
-                            <!-- 地形情報 -->
-                            <engine:VisualElement style="flex-direction: row;">
-                                <engine:Label text="地形" name="labelDefenderTerrainCaption" style="font-size: 30px; padding: 5px 5px 5px 0;" />
-                                <engine:Label text="城砦" name="labelDefenderTerrain" style="font-size: 30px; padding: 5px 0px 5px 5px;" />
-                            </engine:VisualElement>
-                            <!-- ゲージ類 -->
-                            <engine:VisualElement style="flex-direction: column; margin-top: 5px;">
-                                <!-- 戦術ポイント -->
-                                <engine:VisualElement style="flex-direction: row; margin-bottom: 5px; align-items: center;">
-                                    <engine:Label text="戦術P" name="labelDefenderTacticsCaption" style="font-size: 24px; width: 80px; -unity-text-align: middle-left;" />
-                                    <engine:VisualElement name="DefenderTacticsGauge" style="width: 120px; height: 20px; background-color: rgb(40, 40, 40); border-width: 1px; border-color: white;">
-                                        <engine:VisualElement name="DefenderTacticsBar1" style="position: absolute; top: 0; left: 0; height: 100%; background-color: white;" />
-                                        <engine:VisualElement name="DefenderTacticsBar2" style="position: absolute; top: 0; left: 33.33%; height: 100%; background-color: rgb(173, 216, 230);" />
-                                        <engine:VisualElement name="DefenderTacticsBar3" style="position: absolute; top: 0; left: 66.67%; height: 100%; background-color: rgb(0, 100, 200);" />
-                                    </engine:VisualElement>
-                                </engine:VisualElement>
-                                <!-- 撤退ポイント -->
-                                <engine:VisualElement style="flex-direction: row; align-items: center;">
-                                    <engine:Label text="撤退P" name="labelDefenderRetreatCaption" style="font-size: 24px; width: 80px; -unity-text-align: middle-left;" />
-                                    <engine:VisualElement name="DefenderRetreatGauge" style="width: 120px; height: 20px; background-color: rgb(40, 40, 40); border-width: 1px; border-color: white;">
-                                        <engine:VisualElement name="DefenderRetreatBar" style="position: absolute; top: 0; left: 0; height: 100%; background-color: rgb(255, 165, 0);" />
-                                    </engine:VisualElement>
-                                </engine:VisualElement>
-                            </engine:VisualElement>
-                        </engine:VisualElement>
-
                     </engine:VisualElement>
                 </engine:VisualElement>
 
                 <!-- アクションボタン群 -->
-                <engine:VisualElement name="ButtonContainer" style="flex-grow: 0; flex-direction: row; align-items: center; justify-content: center;">
-                    <engine:Button text="続行" name="buttonAttack" />
-                    <engine:Button text="1列⇔2列" name="buttonSwap12" />
-                    <engine:Button text="2列⇔3列" name="buttonSwap23" />
-                    <engine:Button text="休息" name="buttonRest" />
-                    <engine:Button text="撤退" name="buttonRetreat" />
-                    <engine:Button text="攻撃側の勝利" name="buttonResult" />
+                <engine:VisualElement name="ButtonContainer" style="position: relative; top: -345px;">
+                    <!-- 攻撃側隊列入れ替え -->
+                    <engine:Button text="列入替" name="buttonSwap23Attacker" style="margin: 0; height: 55px; width: 100px; position: absolute; top: 0; left: 50px;" />
+                    <engine:Button text="列入替" name="buttonSwap12Attacker" style="margin: 0; height: 55px; width: 100px; position: absolute; top: 0; left: 200px;" />
+                    <!-- 防衛側隊列入れ替え -->
+                    <engine:Button text="列入替" name="buttonSwap12Defender" style="margin: 0; height: 55px; width: 100px; position: absolute; top: 0; right: 50px;" />
+                    <engine:Button text="列入替" name="buttonSwap23Defender" style="margin: 0; height: 55px; width: 100px; position: absolute; top: 0; right: 200px;" />
+                    
+                    <engine:VisualElement style="position: absolute; align-self: center; align-items: center;">
+                        <engine:Button text="続行" name="buttonAttack" style="margin: 0; height: 55px; width: 100px;" />
+                        <engine:Button text="休息" name="buttonRest" style="margin: 10px 0 0 0; height: 55px; width: 100px;" />
+                        <engine:Button text="撤退" name="buttonRetreat" style="margin: 10px 0 0 0; height: 55px; width: 100px;" />
+                        <engine:Button text="攻撃側の勝利" name="buttonResult" style="margin: 0; height: 55px;" />
+                    </engine:VisualElement>
                 </engine:VisualElement>
 
             </engine:VisualElement>

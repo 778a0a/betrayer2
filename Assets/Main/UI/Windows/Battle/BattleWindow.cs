@@ -35,8 +35,10 @@ public partial class BattleWindow// : IWindow
         if (result != null)
         {
             buttonAttack.style.display = DisplayStyle.None;
-            buttonSwap12.style.display = DisplayStyle.None;
-            buttonSwap23.style.display = DisplayStyle.None;
+            buttonSwap12Attacker.style.display = DisplayStyle.None;
+            buttonSwap23Attacker.style.display = DisplayStyle.None;
+            buttonSwap12Defender.style.display = DisplayStyle.None;
+            buttonSwap23Defender.style.display = DisplayStyle.None;
             buttonRest.style.display = DisplayStyle.None;
             buttonRetreat.style.display = DisplayStyle.None;
             buttonResult.style.display = DisplayStyle.Flex;
@@ -56,15 +58,32 @@ public partial class BattleWindow// : IWindow
         else
         {
             buttonAttack.style.display = Util.Display(battle.NeedInteraction);
-            buttonSwap12.style.display = Util.Display(battle.NeedInteraction);
-            buttonSwap23.style.display = Util.Display(battle.NeedInteraction);
             buttonRest.style.display = Util.Display(battle.NeedInteraction);
             buttonRetreat.style.display = Util.Display(battle.NeedInteraction);
             buttonResult.style.display = DisplayStyle.None;
+
+            // 攻撃側のボタン表示
+            bool isPlayerAttacker = battle.Player == battle.Attacker;
+            buttonSwap12Attacker.style.display = Util.Display(battle.NeedInteraction && isPlayerAttacker);
+            buttonSwap23Attacker.style.display = Util.Display(battle.NeedInteraction && isPlayerAttacker);
+
+            // 防衛側のボタン表示
+            bool isPlayerDefender = battle.Player == battle.Defender;
+            buttonSwap12Defender.style.display = Util.Display(battle.NeedInteraction && isPlayerDefender);
+            buttonSwap23Defender.style.display = Util.Display(battle.NeedInteraction && isPlayerDefender);
+
             if (battle.NeedInteraction)
             {
-                buttonSwap12.enabledSelf = battle.Player.CanSwap12;
-                buttonSwap23.enabledSelf = battle.Player.CanSwap23;
+                if (isPlayerAttacker)
+                {
+                    buttonSwap12Attacker.enabledSelf = battle.Player.CanSwap12;
+                    buttonSwap23Attacker.enabledSelf = battle.Player.CanSwap23;
+                }
+                if (isPlayerDefender)
+                {
+                    buttonSwap12Defender.enabledSelf = battle.Player.CanSwap12;
+                    buttonSwap23Defender.enabledSelf = battle.Player.CanSwap23;
+                }
                 buttonRest.enabledSelf = battle.Player.CanRest;
                 buttonRetreat.enabledSelf = battle.Player.CanRetreat;
             }
@@ -151,8 +170,10 @@ public partial class BattleWindow// : IWindow
         void RemoveAllHandlers()
         {
             buttonAttack.clicked -= buttonAttackClicked;
-            buttonSwap12.clicked -= buttonSwap12Clicked;
-            buttonSwap23.clicked -= buttonSwap23Clicked;
+            buttonSwap12Attacker.clicked -= buttonSwap12AttackerClicked;
+            buttonSwap23Attacker.clicked -= buttonSwap23AttackerClicked;
+            buttonSwap12Defender.clicked -= buttonSwap12DefenderClicked;
+            buttonSwap23Defender.clicked -= buttonSwap23DefenderClicked;
             buttonRest.clicked -= buttonRestClicked;
             buttonRetreat.clicked -= buttonRetreatClicked;
             buttonResult.clicked -= buttonResultClicked;
@@ -165,15 +186,29 @@ public partial class BattleWindow// : IWindow
             RemoveAllHandlers();
         }
 
-        buttonSwap12.clicked += buttonSwap12Clicked;
-        void buttonSwap12Clicked()
+        buttonSwap12Attacker.clicked += buttonSwap12AttackerClicked;
+        void buttonSwap12AttackerClicked()
         {
             tcs.SetResult(BattleAction.Swap12);
             RemoveAllHandlers();
         }
 
-        buttonSwap23.clicked += buttonSwap23Clicked;
-        void buttonSwap23Clicked()
+        buttonSwap23Attacker.clicked += buttonSwap23AttackerClicked;
+        void buttonSwap23AttackerClicked()
+        {
+            tcs.SetResult(BattleAction.Swap23);
+            RemoveAllHandlers();
+        }
+
+        buttonSwap12Defender.clicked += buttonSwap12DefenderClicked;
+        void buttonSwap12DefenderClicked()
+        {
+            tcs.SetResult(BattleAction.Swap12);
+            RemoveAllHandlers();
+        }
+
+        buttonSwap23Defender.clicked += buttonSwap23DefenderClicked;
+        void buttonSwap23DefenderClicked()
         {
             tcs.SetResult(BattleAction.Swap23);
             RemoveAllHandlers();
