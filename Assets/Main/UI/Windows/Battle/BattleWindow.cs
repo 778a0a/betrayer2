@@ -126,13 +126,13 @@ public partial class BattleWindow// : IWindow
         labelAttackerAttackCaption.text = battle.Attacker.UseAttack ? "攻撃" : "防衛";
         labelAttackerAttack.text = battle.Attacker.Strength.ToString();
         labelAttackerIntelligense.text = attacker.Intelligence.ToString();
-        labelAttackerTerrain.text = attackerTerrain.ToString();
+        labelAttackerTerrain.text = TerrainToString(attackerTerrain);
 
         imageDefender.style.backgroundImage = Static.GetFaceImage(defender);
         labelDefenderDefenceCaption.text = battle.Defender.UseAttack ? "攻撃" : "防衛";
         labelDefenderDefence.text = battle.Defender.Strength.ToString();
         labelDefenderIntelligense.text = defender.Intelligence.ToString();
-        labelDefenderTerrain.text = defenderTerrain.ToString();
+        labelDefenderTerrain.text = TerrainToString(defenderTerrain);
 
         // TacticsGaugeとRetreatGaugeの設定
         SetTacticsGaugeValue(AttackerTacticsBar1, AttackerTacticsBar2, AttackerTacticsBar3, battle.Attacker.TacticsGauge);
@@ -156,6 +156,17 @@ public partial class BattleWindow// : IWindow
         labelAttackerRemote.style.display = Util.Display(battle.Attacker.IsRemote);
         labelDefenderRemote.style.display = Util.Display(battle.Defender.IsRemote);
     }
+
+    private string TerrainToString(Terrain terrain) => terrain switch
+    {
+        Terrain.LargeRiver => "大河",
+        Terrain.River => "川",
+        Terrain.Plain => "平地",
+        Terrain.Hill => "丘陵",
+        Terrain.Forest => "森林",
+        Terrain.Mountain => "山岳",
+        _ => throw new System.NotImplementedException(),
+    };
 
     public void DisableButtons()
     {
