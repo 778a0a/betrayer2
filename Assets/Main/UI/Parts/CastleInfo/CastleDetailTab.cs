@@ -227,7 +227,7 @@ public partial class CastleDetailTab
         // リスト表示
         else
         {
-            MemberListViewTable.SetData(targetCastle.Members, null);
+            MemberListViewTable.SetData(targetCastle.Members.OrderBy(c => c.OrderIndex), null);
         }
     }
 
