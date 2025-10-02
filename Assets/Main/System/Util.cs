@@ -228,6 +228,30 @@ public static class Util
             rel < 50 ? UnityColor.Lerp(bad, normal, rel / 50f) :
             normal;
     }
+
+    public static UnityColor LoyaltyToColor(float loyalty)
+    {
+        var bad = UnityColor.red;
+        var good = UnityColor.green;
+        var normal = UnityColor.white;
+        return loyalty > 90 ? UnityColor.Lerp(normal, good, (loyalty - 90) / 10f) :
+            loyalty < 90 ? UnityColor.Lerp(bad, normal, (loyalty - 60).MinWith(0) / 30f) :
+            normal;
+    }
+
+    public static void SetLoyalty(Label label, Character chara)
+    {
+        if (chara.IsPlayer || chara.IsRuler || chara.IsFree)
+        {
+            label.text = "--";
+            label.style.color = UnityColor.white;
+        }
+        else
+        {
+            label.text = chara.Loyalty.MaxWith(100).ToString("0");
+            label.style.color = LoyaltyToColor(chara.Loyalty);
+        }
+    }
 }
 
 public class Disposable : IDisposable

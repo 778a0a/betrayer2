@@ -35,14 +35,15 @@ public partial class CharacterSummary
         labelGoverning.text = chara.Governing.ToString();
         labelSoldiers.text = chara.Soldiers.SoldierCount.ToString();
         labelSoldiersMax.text = chara.Soldiers.SoldierCountMax.ToString();
-        // 資産情報の更新
+        // その他の更新
         labelSalary.text = chara.Salary.ToString("0");
         labelContribution.text = chara.Contribution.ToString("0");
         labelPrestige.text = chara.Prestige.ToString("0");
         OrderContainer.style.display = Util.Display(!chara.IsFree);
         labelOrder.text = (chara.OrderIndex + 1).ToString();
-        labelLoyalty.text = (chara.IsPlayer || chara.IsRuler || chara.IsFree) ? "--" : chara.Loyalty.MaxWith(100).ToString("0");
-        // 特性情報の更新
+        Util.SetLoyalty(labelLoyalty, chara);
+
+        // 特性の更新
         traitKnight.style.display = Util.Display(chara.Traits.HasFlag(Traits.Knight));
         traitDrillmaster.style.display = Util.Display(chara.Traits.HasFlag(Traits.Drillmaster));
         traitPirate.style.display = Util.Display(chara.Traits.HasFlag(Traits.Pirate));
