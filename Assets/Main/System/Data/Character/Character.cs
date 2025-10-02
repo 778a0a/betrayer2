@@ -99,7 +99,7 @@ public class Character
     /// 序列を決定する指標
     /// </summary>
     [JsonIgnore]
-    public float Importance => Contribution / 10 + Prestige + Soldiers.Sum(s => !s.IsAlive ? 0 : s.Level);
+    public float Importance => Contribution + Prestige + Soldiers.Sum(s => !s.IsAlive ? 0 : s.Level);
 
     /// <summary>
     /// 忠誠
