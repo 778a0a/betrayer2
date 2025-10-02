@@ -202,6 +202,10 @@ public class Castle : ICountryEntity, IMapEntity
     /// </summary>
     public CastleObjective Objective { get; set; } = new CastleObjective.None();
     /// <summary>
+    /// 出撃方針
+    /// </summary>
+    public CastleDeployPolicy DeployPolicy { get; set; } = CastleDeployPolicy.Allow;
+    /// <summary>
     /// 指定した城が攻撃目標に合致しているならtrue
     /// </summary>
     public bool IsAttackTarget(Castle target) => Objective.IsAttackTarget(target) || Country.Objective.IsAttackTarget(target);
@@ -218,6 +222,13 @@ public class Castle : ICountryEntity, IMapEntity
     {
         return $"城({Name} 城主: {Boss?.Name ?? "無"} - {Country.Ruler.Name}軍)";
     }
+}
+
+public enum CastleDeployPolicy
+{
+    Allow,
+    InterceptOnly,
+    Prohibited,
 }
 
 [JsonObject(ItemTypeNameHandling = TypeNameHandling.Auto)]

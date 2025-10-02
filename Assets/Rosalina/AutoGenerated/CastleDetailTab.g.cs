@@ -32,9 +32,13 @@ public partial class CastleDetailTab
 
     public VisualElement CastleBossImage { get; private set; }
 
+    public DropdownField comboDeployPolicy { get; private set; }
+
     public Label labelGold { get; private set; }
 
     public Label labelBalance { get; private set; }
+
+    public VisualElement DeployPolicyContainer { get; private set; }
 
     public VisualElement MaxIncomeBar { get; private set; }
 
@@ -48,6 +52,8 @@ public partial class CastleDetailTab
 
     public Label labelExpenditure { get; private set; }
 
+    public Label labelMemberCountTooltip { get; private set; }
+
     public Label labelDevLevel { get; private set; }
 
     public Label labelTotalInvestment { get; private set; }
@@ -55,8 +61,6 @@ public partial class CastleDetailTab
     public Label labelMemberCount { get; private set; }
 
     public VisualElement MemberCountTooltipContainer { get; private set; }
-
-    public Label labelMemberCountTooltip { get; private set; }
 
     public Label labelTotalPower { get; private set; }
 
@@ -114,19 +118,21 @@ public partial class CastleDetailTab
         ObjectiveContainer = Root?.Q<VisualElement>("ObjectiveContainer");
         DiplomaticRelationsContainer = Root?.Q<VisualElement>("DiplomaticRelationsContainer");
         CastleBossImage = Root?.Q<VisualElement>("CastleBossImage");
+        comboDeployPolicy = Root?.Q<DropdownField>("comboDeployPolicy");
         labelGold = Root?.Q<Label>("labelGold");
         labelBalance = Root?.Q<Label>("labelBalance");
+        DeployPolicyContainer = Root?.Q<VisualElement>("DeployPolicyContainer");
         MaxIncomeBar = Root?.Q<VisualElement>("MaxIncomeBar");
         CurrentIncomeBar = Root?.Q<VisualElement>("CurrentIncomeBar");
         labelIncome = Root?.Q<Label>("labelIncome");
         labelMaxIncome = Root?.Q<Label>("labelMaxIncome");
         IncomeBar = Root?.Q<VisualElement>("IncomeBar");
         labelExpenditure = Root?.Q<Label>("labelExpenditure");
+        labelMemberCountTooltip = Root?.Q<Label>("labelMemberCountTooltip");
         labelDevLevel = Root?.Q<Label>("labelDevLevel");
         labelTotalInvestment = Root?.Q<Label>("labelTotalInvestment");
         labelMemberCount = Root?.Q<Label>("labelMemberCount");
         MemberCountTooltipContainer = Root?.Q<VisualElement>("MemberCountTooltipContainer");
-        labelMemberCountTooltip = Root?.Q<Label>("labelMemberCountTooltip");
         labelTotalPower = Root?.Q<Label>("labelTotalPower");
         labelTotalPowerMax = Root?.Q<Label>("labelTotalPowerMax");
         labelCastleStrength = Root?.Q<Label>("labelCastleStrength");
@@ -162,19 +168,21 @@ public partial class CastleDetailTab
         ObjectiveContainer = Root?.Q<VisualElement>("ObjectiveContainer");
         DiplomaticRelationsContainer = Root?.Q<VisualElement>("DiplomaticRelationsContainer");
         CastleBossImage = Root?.Q<VisualElement>("CastleBossImage");
+        comboDeployPolicy = Root?.Q<DropdownField>("comboDeployPolicy");
         labelGold = Root?.Q<Label>("labelGold");
         labelBalance = Root?.Q<Label>("labelBalance");
+        DeployPolicyContainer = Root?.Q<VisualElement>("DeployPolicyContainer");
         MaxIncomeBar = Root?.Q<VisualElement>("MaxIncomeBar");
         CurrentIncomeBar = Root?.Q<VisualElement>("CurrentIncomeBar");
         labelIncome = Root?.Q<Label>("labelIncome");
         labelMaxIncome = Root?.Q<Label>("labelMaxIncome");
         IncomeBar = Root?.Q<VisualElement>("IncomeBar");
         labelExpenditure = Root?.Q<Label>("labelExpenditure");
+        labelMemberCountTooltip = Root?.Q<Label>("labelMemberCountTooltip");
         labelDevLevel = Root?.Q<Label>("labelDevLevel");
         labelTotalInvestment = Root?.Q<Label>("labelTotalInvestment");
         labelMemberCount = Root?.Q<Label>("labelMemberCount");
         MemberCountTooltipContainer = Root?.Q<VisualElement>("MemberCountTooltipContainer");
-        labelMemberCountTooltip = Root?.Q<Label>("labelMemberCountTooltip");
         labelTotalPower = Root?.Q<Label>("labelTotalPower");
         labelTotalPowerMax = Root?.Q<Label>("labelTotalPowerMax");
         labelCastleStrength = Root?.Q<Label>("labelCastleStrength");

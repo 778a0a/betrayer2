@@ -373,6 +373,10 @@ public class ForceManager : IReadOnlyList<Force>
             .DefaultIfEmpty(0)
             .Max();
 
+        // 占領された城の目標・出撃方針をリセットする。
+        castle.Objective = new CastleObjective.None();
+        castle.DeployPolicy = CastleDeployPolicy.Allow;
+
         // 占領された城を目標にしている城の方針をリセットする。
         foreach (var c in world.Castles)
         {

@@ -40,6 +40,9 @@ public partial class CastleDetailTab
         // 方針コンボボックス選択時
         comboObjective.RegisterCallback<ChangeEvent<string>>(OnObjectiveComboBoxSelectionChanged);
 
+        // 出撃方針コンボボックス選択時
+        comboDeployPolicy?.RegisterCallback<ChangeEvent<string>>(OnDeployPolicySelectionChanged);
+
         // 目標選択画面のキャンセル時
         buttonCancelObjectiveSelection.clicked += () =>
         {
@@ -151,6 +154,23 @@ public partial class CastleDetailTab
         if (!showObjectiveSelection)
         {
             comboObjective.value = objectiveText;
+        }
+
+        // 出撃方針
+        var shouldShowDeployPolicy =
+            castle.Country?.Ruler == Core.World.Player &&
+            castle.Boss != Core.World.Player;
+        DeployPolicyContainer.style.display = Util.Display(shouldShowDeployPolicy);
+        if (shouldShowDeployPolicy)
+        {
+            var policyText = castle.DeployPolicy switch
+            {
+                CastleDeployPolicy.Allow => "許可",
+                CastleDeployPolicy.InterceptOnly => "迎撃のみ",
+                CastleDeployPolicy.Prohibited => "禁止",
+                _ => "不明",
+            };
+            comboDeployPolicy.SetValueWithoutNotify(policyText);
         }
 
         // 城主
@@ -267,6 +287,19 @@ public partial class CastleDetailTab
                 HideObjectiveSelectView();
                 break;
         }
+    }
+
+    private void OnDeployPolicySelectionChanged(ChangeEvent<string> evt)
+    {
+        if (targetCastle == null) return;
+        var policy = comboDeployPolicy.index switch
+        {
+            0 => CastleDeployPolicy.Allow,
+            1 => CastleDeployPolicy.InterceptOnly,
+            2 => CastleDeployPolicy.Prohibited,
+            _ => CastleDeployPolicy.Allow,
+        };
+        targetCastle.DeployPolicy = policy;
     }
 
     /// <summary>

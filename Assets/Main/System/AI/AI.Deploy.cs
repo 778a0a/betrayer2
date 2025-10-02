@@ -14,6 +14,7 @@ public partial class AI
     public async ValueTask Deploy(Castle castle)
     {
         if (castle.DangerForcesExists) return;
+        if (castle.Country.Ruler.IsPlayer && castle.DeployPolicy != CastleDeployPolicy.Allow) return;
 
         var boss = castle.Boss;
         var neighbors = castle.Neighbors.Where(c => c.Country != castle.Country).ToList();
