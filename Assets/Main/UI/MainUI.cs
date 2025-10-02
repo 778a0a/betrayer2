@@ -11,6 +11,7 @@ public partial class MainUI : MonoBehaviour
 
     public ActionScreen ActionScreen { get; set; }
     public SelectCharacterScreen SelectCharacterScreen { get; set; }
+    public BonusScreen BonusScreen { get; set; }
     public SelectCastleScreen SelectCastleScreen { get; set; }
     public SelectCountryScreen SelectCountryScreen { get; set; }
     public TransportScreen TransportScreen { get; set; }

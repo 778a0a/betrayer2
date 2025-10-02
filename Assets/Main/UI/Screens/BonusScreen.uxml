@@ -1,0 +1,15 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <engine:Template name="CharacterTable" src="project://database/Assets/Main/UI/Parts/CharacterTable/CharacterTable.uxml" />
+    <engine:Template name="CharacterSummary" src="project://database/Assets/Main/UI/Parts/CharacterSummary.uxml" />
+    <Style src="project://database/Assets/Main/UI/MainUI.uss" />
+    <engine:VisualElement class="panel">
+        <engine:Label name="labelDescription" text="褒賞を与えるキャラクターを選択してください" style="font-size: 32px; margin-top: 10px;" />
+        <engine:Instance template="CharacterTable" name="CharacterTable" style="margin-top: 20px; flex-grow: 1;" />
+        <engine:Instance template="CharacterSummary" name="CharacterSummary" style="flex-shrink: 0;" />
+        <engine:Button name="buttonSelectLowestLoyalty" text="忠誠下位5人を選択" style="margin-top: 10px;" />
+        <engine:VisualElement style="margin-top: 10px; flex-shrink: 0; flex-direction: row;">
+            <engine:Button name="buttonConfirm" text="実行" style="flex-grow: 1; margin-right: 10px;" />
+            <engine:Button name="buttonClose" text="閉じる" style="flex-grow: 1;" />
+        </engine:VisualElement>
+    </engine:VisualElement>
+</engine:UXML>

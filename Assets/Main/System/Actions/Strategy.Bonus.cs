@@ -19,8 +19,8 @@ partial class StrategyActions
 
         public ActionArgs Args(Character actor, Character target) => new(actor, targetCharacter: target);
 
-        private const int GoldCostPerTarget = 10;
-        public override ActionCost Cost(ActionArgs args) => ActionCost.Of(0, 1, GoldCostPerTarget);
+        public static readonly int APCostUnit = 2;
+        public override ActionCost Cost(ActionArgs args) => ActionCost.Of(0, APCostUnit, 0);
         public override async ValueTask Do(ActionArgs args)
         {
             Util.IsTrue(CanDo(args));
@@ -31,28 +31,41 @@ partial class StrategyActions
             // プレーヤーの場合
             if (actor.IsPlayer)
             {
-                var candidateMembers = args.selectedTile.Castle.Members.Except(new[] { actor }).ToList();
+                var selectedCastle = args.selectedTile?.Castle ?? actor.Castle;
+
+                // プレーヤーが君主で、本拠地で褒賞を実行しているなら、全臣下をリスト化する。
+                // そうでないなら、対象の城のメンバーをリスト化する。
+                var cands = actor.IsRuler && selectedCastle == actor.Castle ?
+                    actor.Country.Members.Where(c => c != actor) :
+                    selectedCastle.Members.Where(c => c != actor);
+                var candList = cands
+                    .OrderBy(c => c.Loyalty)
+                    .ThenByDescending(c => c.Contribution)
+                    .ToList();
 
                 // 複数キャラ選択画面を表示する。
-                targets = await UI.SelectCharacterScreen.SelectMultiple(
-                    "褒賞を与えるキャラクターを選択してください",
-                    "決定",
-                    "キャンセル",
-                    candidateMembers,
-                    _ => true,
+                await UI.BonusScreen.Show(
+                    actor,
+                    candList,
+                    // 選択変更時
                     selectedList =>
                     {
-                        var goldCost = selectedList.Count * GoldCostPerTarget;
-                        var message = $"コスト: {goldCost} / {actor.Castle.Gold}";
-                        var ng = actor.Castle.Gold < goldCost;
+                        var apCost = APCostUnit * selectedList.Count;
+                        var message = $"APコスト: {apCost} / {actor.ActionPoints}";
+                        var ng = apCost > actor.ActionPoints;
                         if (ng)
                         {
-                            message += " <color=red>資金不足</color>";
+                            message += " <color=red>AP不足</color>";
                         }
-                        UI.SelectCharacterScreen.labelDescription.text = message;
-                        UI.SelectCharacterScreen.buttonConfirm.enabledSelf = !ng;
-                    }
-                );
+                        UI.BonusScreen.labelDescription.text = message;
+                        UI.BonusScreen.buttonConfirm.enabledSelf = !ng && selectedList.Count > 0;
+                    },
+                    // 実行ボタン押下時
+                    async selectedList =>
+                    {
+                        if (selectedList.Count == 0) return;
+                        await SendBonus(selectedList);
+                    });
 
                 if (targets == null || targets.Count == 0)
                 {
@@ -60,38 +73,32 @@ partial class StrategyActions
                     return;
                 }
             }
-
-            var messages = new List<string>();
-            foreach (var target in targets)
+            else
             {
-                if (target == null) continue;
-                
-                var oldLoyalty = target.Loyalty;
-                target.Gold += GoldCostPerTarget;
-                target.Contribution += 5;
-                target.Loyalty = (target.Loyalty + 10).MaxWith(110);
+                await SendBonus(targets);
+            }
 
-                Debug.Log($"{args.actor.Name} が {target} に褒賞を与えました。(忠誠 {oldLoyalty} -> {target.Loyalty})");
-                
-                messages.Add($"{target.Name}: 忠誠度 {oldLoyalty.MaxWith(100)} → {target.Loyalty.MaxWith(100)}");
-                
-                if (target.IsPlayer)
+            async ValueTask SendBonus(List<Character> targets)
+            {
+                foreach (var target in targets)
                 {
-                    await MessageWindow.Show($"{actor.Name} から褒賞を貰いました！\n所持金 +{GoldCostPerTarget}");
+                    if (target == null) continue;
+                    if (actor.ActionPoints < APCostUnit) break;
+
+                    var oldLoyalty = target.Loyalty;
+                    //target.Contribution += 5;
+                    target.Loyalty = (target.Loyalty + 5).MaxWith(110);
+
+                    Debug.Log($"{args.actor.Name} が {target} に褒賞を与えました。(忠誠 {oldLoyalty} -> {target.Loyalty})");
+
+                    actor.ActionPoints -= APCostUnit;
+
+                    if (target.IsPlayer)
+                    {
+                        await MessageWindow.Show($"{actor.Name} から褒賞を貰いました！");
+                    }
                 }
             }
-
-            // PayCost(args); が使えないので自前で処理を行う。
-            actor.Castle.Gold -= GoldCostPerTarget * targets.Count;
-            actor.ActionPoints -= 1;
-
-            if (actor.IsPlayer && messages.Count > 0)
-            {
-                var message = $"{targets.Count}名に褒賞を与えました。\n\n" + string.Join("\n", messages);
-                await MessageWindow.Show(message);
-            }
-
-            actor.Contribution += 1 * targets.Count;
         }
     }
 }

@@ -291,6 +291,20 @@ public partial class CharacterTable : MainUIComponent
     }
 
     /// <summary>
+    /// 選択を設定
+    /// </summary>
+    public void SetSelection(IEnumerable<Character> characters)
+    {
+        selectedCharacters.Clear();
+        foreach (var character in characters)
+        {
+            selectedCharacters.Add(character);
+        }
+        RefreshDisplay();
+        SelectionChanged?.Invoke(this, selectedCharacters.ToList());
+    }
+
+    /// <summary>
     /// 表示を更新
     /// </summary>
     private void RefreshDisplay()
