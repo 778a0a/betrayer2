@@ -213,7 +213,14 @@ public partial class ActionScreen : IScreen
     {
         Core.MainUI.HideAllPanels();
         IsPersonalPhase = personalPhase;
-        SetData(chara);
+        if (currentCharacter != chara)
+        {
+            SetData(chara);
+        }
+        else
+        {
+            Render();
+        }
         Root.style.display = DisplayStyle.Flex;
 
         ActionPanelContent.style.display = DisplayStyle.Flex;
