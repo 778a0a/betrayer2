@@ -109,8 +109,10 @@ public class Character
     /// <summary>
     /// 忠誠減少基本値
     /// 忠実さが5なら-1.25、6なら-1、重臣ならやや少なめ
+    /// 城主の場合は、野心に比例して0.0～0.5増加する
     /// </summary>
-    [JsonIgnore] public float LoyaltyDecreaseBase => (10 - Fealty) / 4 / (IsImportant ? 1.5f : 1);
+    [JsonIgnore] public float LoyaltyDecreaseBase =>
+        (0.1f + (10f - Fealty) / 4 + (IsBoss ? 0.5f * Ambition / 10f : 0)) / (IsImportant ? 1.5f : 1);
 
     /// <summary>
     /// 個人行動ゲージ
