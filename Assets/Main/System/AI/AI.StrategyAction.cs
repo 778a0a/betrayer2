@@ -37,6 +37,17 @@ partial class AI
 
             await BonusFromRuler(country);
         }
+        // 城主の場合
+        else
+        {
+            // 低確率で反乱を起こす。
+            var betrayed = await BetrayOnStrategyPhase(chara);
+            if (betrayed)
+            {
+                // 反乱を起こしたら行動終了。
+                return;
+            }
+        }
 
         // 四半期ごとの行動がまだなら行う。
         if (!castle.QuarterActionDone)

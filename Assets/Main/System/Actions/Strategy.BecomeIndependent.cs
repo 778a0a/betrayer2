@@ -19,6 +19,11 @@ partial class StrategyActions
 
         public override ActionCost Cost(ActionArgs args) => ActionCost.Of(0, 10, 0);
 
+        public ActionArgs Args(Character chara)
+        {
+            return new ActionArgs(chara);
+        }
+
         public override ValueTask Do(ActionArgs args)
         {
             Util.IsTrue(CanDo(args));

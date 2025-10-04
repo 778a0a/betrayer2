@@ -18,7 +18,13 @@ partial class PersonalActions
         public override string Description => L["反乱を起こします。"];
         protected override ActionRequirements Requirements => ActionRequirements.NotMovingAndVassalNotBoss;
 
-        public override ActionCost Cost(ActionArgs args) => 5;
+        public int GoldCost => 5;
+        public override ActionCost Cost(ActionArgs args) => GoldCost;
+
+        public ActionArgs Args(Character chara)
+        {
+            return new ActionArgs(chara);
+        }
 
         public override ValueTask Do(ActionArgs args)
         {

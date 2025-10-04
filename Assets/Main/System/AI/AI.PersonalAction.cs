@@ -37,8 +37,6 @@ partial class AI
         // 所属ありの場合
         else
         {
-            // TODO 反乱を起こすか判定する。
-
             // 出撃中の場合
             if (chara.IsMoving)
             {
@@ -88,6 +86,14 @@ partial class AI
             //        await move.Do(moveArgs);
             //    }
             //}
+
+            // 低確率で反乱を起こす。
+            var betrayed = await BetrayOnPersonalPhase(chara);
+            if (betrayed)
+            {
+                // 反乱を起こしたら行動終了。
+                return;
+            }
 
             var args = new ActionArgs();
             args.actor = chara;
