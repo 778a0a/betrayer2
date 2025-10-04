@@ -25,14 +25,38 @@ partial class PersonalActions
             return new ActionArgs(chara);
         }
 
-        public override ValueTask Do(ActionArgs args)
+        public override async ValueTask Do(ActionArgs args)
         {
             Util.IsTrue(CanDo(args));
 
-            PayCost(args);
+            var actor = args.actor;
 
-            return default;
+            if (actor.IsPlayer)
+            {
+                // 確認する。
+                var ok = await MessageWindow.ShowOkCancel("勢力を捨てて放浪します。\nよろしいですか？");
+                if (!ok) return;
+            }
+
+            // キャラを浪士にする。
+            var oldCountry = actor.Country;
+            actor.ChangeCastle(actor.Castle, true);
+            actor.Contribution /= 2;
+            actor.IsImportant = false;
+            actor.OrderIndex = -1;
+            actor.Loyalty = 0;
+
+            Debug.Log($"{actor.Name}が{oldCountry.Ruler.Name}軍を去りました。");
+            if (actor.IsPlayer)
+            {
+                await MessageWindow.Show($"浪士になりました。");
+            }
+            if (actor.Castle.Boss.IsPlayer || oldCountry.Ruler.IsPlayer)
+            {
+                await MessageWindow.Show($"{actor.Name}が勢力を去りました。");
+            }
+
+            PayCost(args);
         }
     }
-
 }
