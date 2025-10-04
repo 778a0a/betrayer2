@@ -54,7 +54,7 @@ public class Booter : MonoBehaviour
 
         // ゲームループを開始する。
         core = new GameCore(world, map, ui, this);
-        core.DoMainLoop().Foreget();
+        core.DoMainLoop().Forget();
     }
 
     /// <summary>

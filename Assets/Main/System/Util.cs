@@ -136,11 +136,11 @@ public static class Util
     /// <summary>
     /// awaitしない非同期メソッド呼び出しの警告を抑制するためのメソッド。
     /// </summary>
-    public static void Foreget(this Awaitable _) { }
+    public static void Forget(this Awaitable _) { }
     /// <summary>
     /// awaitしない非同期メソッド呼び出しの警告を抑制するためのメソッド。
     /// </summary>
-    public static void Foreget(this ValueTask _) { }
+    public static void Forget(this ValueTask _) { }
 
     [Obsolete("TODO", false)]
     public static void Todo(string memo = "")
