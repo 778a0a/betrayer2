@@ -62,24 +62,7 @@ partial class PersonalActions
                     continue;
                 }
 
-                var prob = 0.5f;
-                // 忠誠90以上なら1あたり20%減少
-                if (member.Loyalty >= 90) prob -= (member.Loyalty - 90) * 0.2f;
-                // 忠誠90以下なら1あたり4%増加
-                if (member.Loyalty < 90) prob += (90 - member.Loyalty) * 0.04f;
-
-                // 首謀者が強いなら確率を上げる。
-                prob += actor.Power > member.Power ? 0.1f : -0.05f;
-                prob += actor.Power > actor.Country.Ruler.Power ? 0.2f : -0.05f;
-                prob += actor.TotalCapability > member.TotalCapability ? 0.1f : -0.05f;
-                prob += actor.TotalCapability > actor.Country.Ruler.TotalCapability ? 0.2f : -0.05f;
-
-                // 忠実さ
-                if (member.Fealty > 7) prob *= 1 / (member.Fealty - 6);
-                if (member.Fealty < 7) prob *= 1 + (7 - member.Fealty) * 0.1f;
-                // 野心
-                if (member.Ambition >= 7) prob *= 1 + (member.Ambition - 6) * 0.1f;
-
+                var prob = BetrayalProbability(actor, member);
                 Debug.Log($"反乱参加判定 {member.Name} | 忠誠 {member.Loyalty:0} | 参加確率 {prob:0.00}");
                 if (prob.Chance())
                 {
@@ -95,19 +78,11 @@ partial class PersonalActions
             // メッセージを表示する。他国でも通知を受け取る。
             if (!asked)
             {
-                await MessageWindow.Show($"{actor.Name}が{actor.Country.Ruler.Name}に対して反乱を起こしました！");
+                await MessageWindow.Show($"{actor.Castle.Name}で{actor.Name}が\n{actor.Country.Ruler.Name}に対して反乱を起こしました！");
             }
 
             var oldCountry = actor.Country;
-            var newCountry = new Country
-            {
-                Id = World.Countries.Max(c => c.Id) + 1,
-                Ruler = actor,
-                Objective = new CountryObjective.StatusQuo(),
-                ColorIndex = Enumerable.Range(0, Static.CountrySpriteCount).Except(World.Countries.Select(c => c.ColorIndex)).RandomPick(),
-            };
-            actor.Country = newCountry;
-            World.Countries.Add(newCountry);
+            Country newCountry = CreateNewCountry(actor, World);
 
             // 全員が裏切った場合は反乱成功。
             var rebellionSucceeded = opponents.Count == 0;
@@ -148,34 +123,11 @@ partial class PersonalActions
                     else
                     {
                         betrayers.Add(chara);
-                        chara.Force.Country = chara.Country;
                     }
                 }
-                // 所属を変更する。
-                foreach (var chara in betrayers)
-                {
-                    chara.Country = newCountry;
-                }
-                // 序列を更新する。
-                World.Countries.UpdateRanking(newCountry);
 
-                // 落城処理との共通化のために簡易的に軍勢を作る。
-                var castle = actor.Castle;
-                var force = new Force(World, actor, castle.Tile.Neighbors.RandomPick().Position);
-                force.SetDestination(castle);
-                force.TileMoveRemainingDays = 0;
-                World.Forces.Register(force);
-                // 落城処理で問題になるため、一度反乱側のキャラを城から離す。
-                foreach (var chara in betrayers.ToList())
-                {
-                    chara.ChangeCastle(castle.Neighbors.First(), false);
-                }
-                await World.Forces.OnCastleFall(World, force, castle);
-                // 所属をもとに戻す。
-                foreach (var chara in betrayers.ToList())
-                {
-                    chara.ChangeCastle(castle, false);
-                }
+                // 反乱成功の処理を行う。
+                await IndependenceSucceeded(actor.Castle, betrayers, newCountry, oldCountry, World);
 
                 // 元の国のキャラの忠誠を5下げる。
                 foreach (var chara in oldCountry.Members)
@@ -188,30 +140,6 @@ partial class PersonalActions
                 {
                     if (chara.IsRuler) continue;
                     chara.Loyalty = (chara.Loyalty + 5).MaxWith(110);
-                }
-                // 反乱側の外交関係を設定する。
-                foreach (var c in World.Countries.Where(c => c != newCountry))
-                {
-                    // 旧国とは敵対関係にする。
-                    if (c == oldCountry)
-                    {
-                        newCountry.SetEnemy(c);
-                        continue;
-                    }
-
-                    // 他は旧国の関係値をベースとする。
-                    var rel = oldCountry.GetRelation(c);
-                    // 50以上なら反転させる。
-                    if (rel >= 50)
-                    {
-                        rel = 100 - rel;
-                    }
-                    // 50未満なら10だけ改善する。
-                    else
-                    {
-                        rel = (rel + 10).MaxWith(50);
-                    }
-                    newCountry.SetRelation(c, rel);
                 }
 
                 if (actor.IsPlayer)
@@ -230,7 +158,7 @@ partial class PersonalActions
                     chara.IsImportant = false;
                     chara.OrderIndex = -1;
                     chara.Loyalty = 0;
-                    
+
                     if (chara.IsPlayer)
                     {
                         await MessageWindow.Show($"反乱は失敗し、勢力を追放されました。");
@@ -238,7 +166,109 @@ partial class PersonalActions
                 }
             }
 
-            // TODO IsMovingの所属変更処理、同じ場所に旧国の軍勢がいた場合どうなる？
+        }
+
+        public static async ValueTask IndependenceSucceeded(
+            Castle castle,
+            List<Character> betrayers,
+            Country newCountry,
+            Country oldCountry,
+            WorldData world)
+        {
+            // 所属を変更する。
+            foreach (var chara in betrayers)
+            {
+                chara.Country = newCountry;
+                if (chara.Force != null)
+                {
+                    chara.Force.Country = chara.Country;
+                    world.Map.GetTile(chara.Force).Refresh();
+                }
+            }
+            // 序列を更新する。
+            world.Countries.UpdateRanking(newCountry);
+
+            // 落城処理との共通化のために簡易的に軍勢を作る。
+            var force = new Force(world, betrayers.First(), castle.Tile.Neighbors.RandomPick().Position);
+            force.SetDestination(castle);
+            force.TileMoveRemainingDays = 0;
+            world.Forces.Register(force);
+
+            // 落城処理で問題になるため、一度反乱側のキャラを城から離す。
+            foreach (var chara in betrayers.ToList())
+            {
+                chara.ChangeCastle(castle.Neighbors.First(), false);
+            }
+
+            // 落城処理を実行する。
+            await world.Forces.OnCastleFall(world, force, castle);
+            
+            // 所属をもとに戻す。
+            foreach (var chara in betrayers.ToList())
+            {
+                chara.ChangeCastle(castle, false);
+            }
+
+            // 反乱側の外交関係を設定する。
+            foreach (var c in world.Countries.Where(c => c != newCountry))
+            {
+                // 旧国とは敵対関係にする。
+                if (c == oldCountry)
+                {
+                    newCountry.SetEnemy(c);
+                    continue;
+                }
+
+                // 他は旧国の関係値をベースとする。
+                var rel = oldCountry.GetRelation(c);
+                // 50以上なら反転させる。
+                if (rel >= 50)
+                {
+                    rel = 100 - rel;
+                }
+                // 50未満なら10だけ改善する。
+                else
+                {
+                    rel = (rel + 10).MaxWith(50);
+                }
+                newCountry.SetRelation(c, rel);
+            }
+        }
+
+        public static Country CreateNewCountry(Character actor, WorldData world)
+        {
+            var newCountry = new Country
+            {
+                Id = world.Countries.Max(c => c.Id) + 1,
+                Ruler = actor,
+                Objective = new CountryObjective.StatusQuo(),
+                ColorIndex = Enumerable.Range(0, Static.CountrySpriteCount).Except(world.Countries.Select(c => c.ColorIndex)).RandomPick(),
+            };
+            actor.Country = newCountry;
+            world.Countries.Add(newCountry);
+            return newCountry;
+        }
+
+        public static float BetrayalProbability(Character actor, Character member)
+        {
+            var prob = 0.5f;
+            // 忠誠90以上なら1あたり20%減少
+            if (member.Loyalty >= 90) prob -= (member.Loyalty - 90) * 0.2f;
+            // 忠誠90以下なら1あたり4%増加
+            if (member.Loyalty < 90) prob += (90 - member.Loyalty) * 0.04f;
+
+            // 首謀者が強いなら確率を上げる。
+            prob += actor.Power > member.Power ? 0.1f : -0.05f;
+            prob += actor.Power > actor.Country.Ruler.Power ? 0.2f : -0.05f;
+            prob += actor.TotalCapability > member.TotalCapability ? 0.1f : -0.05f;
+            prob += actor.TotalCapability > actor.Country.Ruler.TotalCapability ? 0.2f : -0.05f;
+
+            // 忠実さ
+            if (member.Fealty > 7) prob *= 1 / (member.Fealty - 6);
+            if (member.Fealty < 7) prob *= 1 + (7 - member.Fealty) * 0.1f;
+            // 野心
+            if (member.Ambition >= 7) prob *= 1 + (member.Ambition - 6) * 0.1f;
+            return prob;
         }
     }
 }

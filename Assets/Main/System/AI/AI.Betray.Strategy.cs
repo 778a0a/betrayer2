@@ -15,6 +15,8 @@ public partial class AI
     {
         // 城主のみ実行可能
         if (chara.IsRuler || !chara.IsBoss) return false;
+        // 移動中も不可。
+        if (chara.IsMoving) return false;
         // 忠誠90以上は裏切らない。
         if (chara.Loyalty >= 90) return false;
 
