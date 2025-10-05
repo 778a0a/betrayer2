@@ -352,7 +352,7 @@ public class ForceManager : IReadOnlyList<Force>
         await OnCastleFall(world, force, castle);
     }
 
-    private async Task OnCastleFall(WorldData world, Force force, Castle castle)
+    public async Task OnCastleFall(WorldData world, Force force, Castle castle)
     {
         // 駐在キャラの行動不能日数を再セットする。
         foreach (var e in castle.Members.Where(e => !e.IsMoving))

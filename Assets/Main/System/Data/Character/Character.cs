@@ -44,6 +44,11 @@ public class Character
     /// 統治
     /// </summary>
     public int Governing { get; set; }
+    /// <summary>
+    /// 全能力の合計
+    /// </summary>
+    [JsonIgnore]
+    public int TotalCapability => Attack + Defense + Intelligence + Governing;
 
     /// <summary>
     /// 性格
@@ -245,7 +250,7 @@ public class Character
     [JsonIgnore]
     public Force Force { get; set; } // メモ ForceManagerと二重管理
     [JsonIgnore]
-    public Country Country { get; private set; } // メモ Castle.Countryと二重管理
+    public Country Country { get; set; } // メモ Castle.Countryと二重管理
     [JsonIgnore]
     public bool IsRuler => Country?.Ruler == this;
     [JsonIgnore]

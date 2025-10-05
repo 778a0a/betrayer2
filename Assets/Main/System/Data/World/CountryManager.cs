@@ -31,6 +31,12 @@ public class CountryManager : IReadOnlyList<Country>
         }
     }
 
+    public void Add(Country newCountry)
+    {
+        countries.Add(newCountry);
+        newCountry.manager = this;
+    }
+
     public void Remove(Country oldCountry)
     {
         // TODO 滅亡処理を整理する。
@@ -42,7 +48,7 @@ public class CountryManager : IReadOnlyList<Country>
     {
         if (a == null) throw new ArgumentNullException(nameof(a));
         if (b == null) throw new ArgumentNullException(nameof(b));
-        if (a == b) throw new ArgumentException("GetRelation a == b");
+        if (a == b) throw new ArgumentException($"GetRelation a == b ({a.Ruler.Name})");
         if (a.Id > b.Id) (a, b) = (b, a);
 
         var key = (a, b);
@@ -66,10 +72,12 @@ public class CountryManager : IReadOnlyList<Country>
     /// <summary>
     /// 勢力の序列を更新します。
     /// </summary>
-    public void UpdateRanking()
+    public void UpdateRanking(Country target = null)
     {
         foreach (var country in countries)
         {
+            if (target != null && country != target) continue;
+
             var members = country.Members.OrderByDescending(m => m.Importance).ToList();
             members.Remove(country.Ruler);
             country.Ruler.OrderIndex = 0;

@@ -57,8 +57,8 @@ partial class StrategyActions
                 var newRuler = oldCountry.Members.OrderBy(m => m.OrderIndex).First();
                 oldCountry.Ruler = newRuler;
 
-                var actorCap = (actor.Attack + actor.Defense + actor.Intelligence + actor.Governing) / 4;
-                var newRulerCap = (newRuler.Attack + newRuler.Defense + newRuler.Intelligence + newRuler.Governing) / 4;
+                var actorCap = actor.TotalCapability / 4;
+                var newRulerCap = newRuler.TotalCapability / 4;
                 // 能力差に応じて忠誠度ペナルティを与える。
                 var loyaltyPenaltyBase = actorCap - newRulerCap;
                 foreach (var member in oldCountry.Members)
@@ -66,7 +66,7 @@ partial class StrategyActions
                     var penalty = loyaltyPenaltyBase;
                     
                     // 自分より能力が低い君主になった場合はさらに5減らす。
-                    var memberCap = (member.Attack + member.Defense + member.Intelligence + member.Governing) / 4;
+                    var memberCap = member.TotalCapability / 4;
                     if (memberCap > newRulerCap) penalty += 5;
                     // 戦力が低い場合もさらに5減らす。
                     if (member.Power > newRuler.Power) penalty += 5;

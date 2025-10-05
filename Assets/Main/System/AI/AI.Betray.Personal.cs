@@ -19,10 +19,10 @@ public partial class AI
         if (chara.Loyalty >= 90) return false;
 
         // 忠誠度に応じた確率で裏切る。野心も加味する。
-        var betrayProb = (90 - chara.Loyalty + chara.Ambition) * 0.01f;
-        if (!betrayProb.Chance()) return false;
+        var betrayProb = (90 - chara.Loyalty + chara.Ambition / 2f) * 0.01f;
+        if (!(betrayProb / 12).Chance()) return false;
 
-        Debug.LogWarning($"{chara.Name} 裏切り処理開始 loyalty: {chara.Loyalty}");
+        Debug.LogWarning($"{chara.Name} 裏切り処理開始({betrayProb:0.00}) loyalty: {chara.Loyalty}");
 
         // 反乱確率（放浪確率の逆）
         var rebelProb = 0.5f;
@@ -41,7 +41,11 @@ public partial class AI
         }
 
         // 他のメンバーの忠誠度も低いなら反乱確率を上げる。
-        var averageLoyalty = chara.Castle.Members.Where(c => c != chara).Average(c => c.Loyalty);
+        var averageLoyalty = chara.Castle.Members
+            .Where(c => c != chara && !c.IsRuler && !c.IsPlayer)
+            .Select(c => c.Loyalty)
+            .DefaultIfEmpty(90)
+            .Average();
         rebelProb += (90 - averageLoyalty) * 0.01f;
 
         var shouldRebel = rebelProb.Chance();

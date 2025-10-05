@@ -22,7 +22,11 @@ public partial class AI
         var rebelProb = (90 - chara.Loyalty + chara.Ambition) * 0.01f;
 
         // 他のメンバーの忠誠度も低いなら独立確率を上げる。
-        var averageLoyalty = chara.Castle.Members.Where(c => c != chara).Average(c => c.Loyalty);
+        var averageLoyalty = chara.Castle.Members
+            .Where(c => c != chara && !c.IsRuler && !c.IsPlayer)
+            .Select(c => c.Loyalty)
+            .DefaultIfEmpty(90)
+            .Average();
         rebelProb += (90 - averageLoyalty) * 0.01f;
 
         // 君主が弱いなら独立確率を上げる。
@@ -32,7 +36,7 @@ public partial class AI
         if (chara.Country.Ruler.Intelligence < chara.Intelligence) rebelProb *= 1.1f;
         if (chara.Country.Ruler.Governing < chara.Governing) rebelProb *= 1.1f;
 
-        var shouldRebel = rebelProb.Chance();
+        var shouldRebel = (rebelProb / 12f).Chance();
         Debug.LogWarning($"{chara.Name} 独立判定: {shouldRebel} ({rebelProb:0.00})");
         if (shouldRebel)
         {

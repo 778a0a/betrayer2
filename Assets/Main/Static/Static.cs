@@ -31,6 +31,8 @@ public class Static : MonoBehaviour
         soldiers = new SoldierImageManager(soldierTexture);
     }
 
+    public static int CountrySpriteCount => Instance.countrySprites.Length;
+
     public static Sprite GetCountrySprite(int countryIndex)
     {
         return Instance.countrySprites[countryIndex];
