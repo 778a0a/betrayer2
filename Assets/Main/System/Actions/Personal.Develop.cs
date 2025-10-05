@@ -49,7 +49,8 @@ partial class PersonalActions
             }
 
             // 内政は功績を貯まりやすくする。
-            chara.Contribution += adjImp * adj * 2;
+            var contribAdj = chara.Salary < 30 ? 2 : 0.5f;
+            chara.Contribution += adjImp * adj * contribAdj;
             PayCost(args);
 
             return default;

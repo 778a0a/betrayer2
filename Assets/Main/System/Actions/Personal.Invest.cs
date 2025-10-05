@@ -58,7 +58,8 @@ partial class PersonalActions
             chara.Castle.TotalInvestment += cost * adj * adjTerrain * adjLevel;
 
             // 功績を加算する。
-            chara.Contribution += cost / GoldCost * adj * 2;
+            var contribAdj = chara.Salary < 30 ? 2 : 0.5f;
+            chara.Contribution += cost / GoldCost * adj * contribAdj;
 
             action.PayCost(args);
             return default;
