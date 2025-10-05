@@ -232,8 +232,10 @@ public class Battle
             if (needWait)
             {
                 UI.SetData(this);
-                var waitTime = atkAction == BattleAction.Rest || defAction == BattleAction.Rest ? 0.5f : 0.3f;
-                if (!NeedInteraction) waitTime *= 0.2f;
+                var waitTime =
+                    (Atk.IsPlayer && atkAction == BattleAction.Rest)
+                    || (Def.IsPlayer && defAction == BattleAction.Rest) ? 0.5f : 0.3f;
+                if (!NeedInteraction) waitTime *= 0.1f;
                 await Awaitable.WaitForSecondsAsync(waitTime);
             }
         }
@@ -428,7 +430,7 @@ public class Battle
                 //if (NeedInteraction)
                 {
                     UI.SetData(this);
-                    var wait = NeedInteraction ? 0.1f : 0.02f;
+                    var wait = NeedInteraction ? 0.08f : 0.02f;
                     await Awaitable.WaitForSecondsAsync(wait);
                 }
             }

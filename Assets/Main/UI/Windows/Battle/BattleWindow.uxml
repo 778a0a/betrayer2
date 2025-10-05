@@ -218,8 +218,8 @@
                     <engine:Button text="列入替" name="buttonSwap23Attacker" style="margin: 0; height: 55px; width: 100px; position: absolute; top: 0; left: 50px;" />
                     <engine:Button text="列入替" name="buttonSwap12Attacker" style="margin: 0; height: 55px; width: 100px; position: absolute; top: 0; left: 200px;" />
                     <!-- 防衛側隊列入れ替え -->
-                    <engine:Button text="列入替" name="buttonSwap12Defender" style="margin: 0; height: 55px; width: 100px; position: absolute; top: 0; right: 50px;" />
-                    <engine:Button text="列入替" name="buttonSwap23Defender" style="margin: 0; height: 55px; width: 100px; position: absolute; top: 0; right: 200px;" />
+                    <engine:Button text="列入替" name="buttonSwap12Defender" style="margin: 0; height: 55px; width: 100px; position: absolute; top: 0; right: 200px;" />
+                    <engine:Button text="列入替" name="buttonSwap23Defender" style="margin: 0; height: 55px; width: 100px; position: absolute; top: 0; right: 50px;" />
                     
                     <engine:VisualElement style="position: absolute; align-self: center; align-items: center;">
                         <engine:Button text="続行" name="buttonAttack" style="margin: 0; height: 55px; width: 100px;" />
