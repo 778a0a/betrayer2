@@ -30,12 +30,13 @@ partial class AI
 
                 // 物資を輸送する。
                 await Transport(chara);
+
+                // 褒賞を与える。
+                await Bonus(country);
             }
 
             // 外交を行う。
             await Diplomacy(country);
-
-            await BonusFromRuler(country);
         }
         // 城主の場合
         else
@@ -55,7 +56,7 @@ partial class AI
             castle.QuarterActionDone = true;
 
             // 褒賞を与える。
-            await Bonus(castle);
+            await BonusFromBoss(chara);
 
             // 採用を行う。
             await HireVassal(chara);
