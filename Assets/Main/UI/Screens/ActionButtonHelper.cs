@@ -101,14 +101,13 @@ public class ActionButtonHelper
         evt.StopPropagation();
     }
 
-    public void SetData(Character chara)
+    public void SetData(Character chara, GameMapTile tile)
     {
-        var canSelect = Action.CanUISelect(chara);
         Element.text = Action.Label;
-        Element.style.display = Util.Display(canSelect);
+        Element.style.display = Util.Display(Action.Visible(chara, tile));
         try
         {
-            Element.SetEnabled(Action.CanUIEnable(chara));
+            Element.SetEnabled(Action.Enabled(chara, tile));
         }
         catch (Exception ex)
         {

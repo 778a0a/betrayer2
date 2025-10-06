@@ -17,6 +17,11 @@ partial class StrategyActions
         public override string Label => L["褒賞"];
         public override string Description => L["臣下に褒賞を与えます。"];
 
+        // 君主なら自国の城、城主なら自分の城でのみ表示する。
+        protected override bool VisibleCore(Character actor, GameMapTile tile) =>
+            (actor.IsRuler && actor.Country == tile.Castle?.Country) ||
+            (actor.IsBoss && actor.Castle.Tile == tile);
+
         public ActionArgs Args(Character actor, Character target) => new(actor, targetCharacter: target);
 
         public static readonly int APCostUnit = 2;

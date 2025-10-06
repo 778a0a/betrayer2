@@ -17,12 +17,18 @@ partial class StrategyActions
     {
         public override string Label => L["破棄"];
         public override string Description => L["他勢力との同盟を破棄します。"];
+        protected override ActionRequirements Requirements => ActionRequirements.Ruler;
+
+        // 同盟を結んでいる他国の城でのみ表示する。
+        protected override bool VisibleCore(Character actor, GameMapTile tile) =>
+            actor.Country != tile.Castle?.Country && actor.Country.IsAlly(tile.Castle?.Country);
+
 
         public ActionArgs Args(Character actor, Country target) => new(actor, targetCountry: target);
 
         public override ActionCost Cost(ActionArgs args) => ActionCost.Of(0, 5, 0);
 
-        public override bool CanUIEnable(Character actor)
+        public override bool Enabled(Character actor, GameMapTile tile)
         {
             return actor.CanPay(Cost(new(actor, estimate: true))) &&
                 // 他国が存在する場合のみ有効

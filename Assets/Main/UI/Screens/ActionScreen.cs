@@ -140,7 +140,7 @@ public partial class ActionScreen : IScreen
 
         ValueTask DoAction()
         {
-            var canPrepare = action.CanUIEnable(chara);
+            var canPrepare = action.Enabled(chara, currentTile);
             if (!canPrepare)
             {
                 return default;
@@ -247,7 +247,10 @@ public partial class ActionScreen : IScreen
         currentCharacter ??= Core.World.Characters.First();
         Root.style.display = DisplayStyle.Flex;
 
-        // フェイズに応じてヘッダーとボタンを切り替え
+        var characterTile = Core.World.Map.GetTile(currentCharacter.Castle);
+        var targetTile = currentTile ?? characterTile;
+
+        // フェイズに応じてヘッダーとボタンを切り替える。
         PersonalPhaseHeader.style.display = Util.Display(IsPersonalPhase);
         PersonalActionButtons.style.display = Util.Display(IsPersonalPhase);
         StrategyPhaseHeader.style.display = Util.Display(!IsPersonalPhase);
@@ -256,28 +259,24 @@ public partial class ActionScreen : IScreen
         {
             labelPhaseTitle.text = "個人";
             labelPhaseTitle.style.color = Color.yellow;
-            labelPhaseSubtitle.text = "フェイズ";
             labelCurrentPersonalGold.text = currentCharacter.Gold.ToString("0");
             foreach (var button in personalButtons)
             {
-                button.SetData(currentCharacter);
+                button.SetData(currentCharacter, targetTile);
             }
         }
         else
         {
             labelPhaseTitle.text = "戦略";
             labelPhaseTitle.style.color = Color.cyan;
-            labelPhaseSubtitle.text = "フェイズ";
             labelCurrentCastleGold.text = currentCharacter.Castle.Gold.ToString("0");
             labelCurrentAP.text = currentCharacter.ActionPoints.ToString();
             foreach (var button in strategyButtons)
             {
-                button.SetData(currentCharacter);
+                button.SetData(currentCharacter, targetTile);
             }
         }
         
-        var characterTile = Core.World.Map.GetTile(currentCharacter.Castle);
-        var targetTile = currentTile ?? characterTile;
         var summaryDefault = currentCharacter;
         if (targetTile != characterTile && targetTile.Castle != null)
         {
@@ -313,52 +312,6 @@ public partial class ActionScreen : IScreen
             // 以下は自身が君主の場合
             ActionPanel.style.display = DisplayStyle.Flex;
             NoActionPanel.style.display = DisplayStyle.None;
-
-            // 自城の場合
-            if (targetTile == characterTile)
-            {
-                foreach (var button in strategyButtons)
-                {
-                    var show = button.Action switch
-                    {
-                        StrategyActions.AllyAction => false,
-                        StrategyActions.BreakAllianceAction => false,
-                        StrategyActions.GoodwillAction => false,
-                        _ => true
-                    };
-                    button.Element.style.display = Util.Display(show);
-                }
-            }
-            // 自国の他の城の場合
-            else if (targetTile.Castle.Country == currentCharacter.Country)
-            {
-                foreach (var button in strategyButtons)
-                {
-                    var show = button.Action switch
-                    {
-                        StrategyActions.DeployAction => true,
-                        StrategyActions.TranspotAction => true,
-                        StrategyActions.BonusAction => true,
-                        _ => false
-                    };
-                    button.Element.style.display = Util.Display(show);
-                }
-            }
-            // 他国の城の場合
-            else
-            {
-                foreach (var button in strategyButtons)
-                {
-                    var show = button.Action switch
-                    {
-                        StrategyActions.AllyAction => true,
-                        StrategyActions.BreakAllianceAction => true,
-                        StrategyActions.GoodwillAction => true,
-                        _ => false
-                    };
-                    button.Element.style.display = Util.Display(show);
-                }
-            }
         }
     }
 }

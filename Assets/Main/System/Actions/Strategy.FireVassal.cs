@@ -22,7 +22,7 @@ partial class StrategyActions
         public ActionArgs Args(Character actor, Character target) =>
             new(actor, targetCharacter: target);
 
-        public override bool CanUIEnable(Character actor)
+        public override bool Enabled(Character actor, GameMapTile tile)
         {
             return actor.CanPay(Cost(new(actor, estimate: true))) &&
                 // 配下がいる場合のみ有効

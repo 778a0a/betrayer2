@@ -36,12 +36,13 @@ public class ActionBase
     /// <summary>
     /// UI上に選択肢として表示可能ならtrue
     /// </summary>
-    public virtual bool CanUISelect(Character actor) => Requirements.IsOK(actor);
+    public bool Visible(Character actor, GameMapTile tile) => Requirements.IsOK(actor) && VisibleCore(actor, tile);
+    protected virtual bool VisibleCore(Character actor, GameMapTile tile) => actor.Castle.Tile == tile;
     /// <summary>
     /// UI上のボタンを有効状態として表示するならtrue
     /// </summary>
-    public virtual bool CanUIEnable(Character actor) =>
-        CanUISelect(actor) &&
+    public virtual bool Enabled(Character actor, GameMapTile tile) =>
+        Visible(actor, tile) &&
         actor.CanPay(Cost(new(actor, estimate: true))) &&
         CanDoCore(new(actor, estimate: true));
     /// <summary>
@@ -90,7 +91,8 @@ public enum ActionRequirements
     Boss = Vassal << 1,
     Ruler = Boss << 1,
     VassalNotBoss = Ruler << 1,
-
+    
+    BossNotRuler = Boss | Vassal,
     NotMovingAndVassalNotBoss = NotMoving | VassalNotBoss,
     NotMovingAndNotFree = NotMoving | NotFree,
 }
