@@ -34,55 +34,16 @@ partial class StrategyActions
             Util.IsTrue(CanDo(args));
             var actor = args.actor;
 
-            // プレイヤーの場合は国選択画面を表示
+            // プレイヤーの場合
             if (actor.IsPlayer)
             {
-                // 自城で実行された場合は、まず国を選択してもらう。
-                if (args.selectedTile.Castle == actor.Castle)
+                // 対象の国がセットされているのでその国を取得する。
+                args.targetCountry = args.selectedTile.Castle.Country;
+                var ok = await MessageWindow.ShowOkCancel($"{args.targetCountry.Ruler.Name}に同盟を申し込みます。\nよろしいですか？");
+                if (!ok)
                 {
-                    // 自国以外の国一覧を取得する。
-                    var otherCountries = World.Countries
-                        .Where(c => c != actor.Country)
-                        .Where(c => !c.IsAlly(actor.Country))
-                        .OrderByDescending(c =>
-                        {
-                            var rel = actor.Country.GetRelation(c);
-                            if (rel > 50) rel += 1000;
-                            //else if (rel < 50) rel += 500;
-                            var isNeighbor = actor.Country.Neighbors.Contains(c);
-                            if (isNeighbor) rel += 200;
-                            return rel;
-                        })
-                        .ToList();
-
-                    if (otherCountries.Count == 0)
-                    {
-                        await MessageWindow.Show("同盟を行える相手がいません。");
-                        return;
-                    }
-
-                    args.targetCountry = await UI.SelectCountryScreen.Show(
-                        "同盟を行う相手を選択してください",
-                        "キャンセル",
-                        otherCountries,
-                        _ => true
-                    );
-                    if (args.targetCountry == null)
-                    {
-                        Debug.Log("国選択がキャンセルされました。");
-                        return;
-                    }
-                }
-                // 他国の城で実行された場合はその国を対象とする。
-                else
-                {
-                    args.targetCountry = args.selectedTile.Castle.Country;
-                    var ok = await MessageWindow.ShowOkCancel($"{args.targetCountry.Ruler.Name} に同盟を申し込みます。\nよろしいですか？");
-                    if (!ok)
-                    {
-                        Debug.Log("同盟がキャンセルされました。");
-                        return;
-                    }
+                    Debug.Log("同盟がキャンセルされました。");
+                    return;
                 }
             }
 
@@ -96,7 +57,7 @@ partial class StrategyActions
             if (target.Ruler.IsPlayer)
             {
                 // プレイヤーに選択させる。
-                var message = $"{actor.Name} から同盟を申し込まれました。\n受諾しますか？";
+                var message = $"{actor.Name}から同盟を申し込まれました。\n受諾しますか？";
                 accepted = await MessageWindow.ShowYesNo(message);
             }
             // AIの場合
@@ -130,7 +91,7 @@ partial class StrategyActions
             Debug.Log($"{args.actor.Country} と {target} が同盟しました。");
             if (actor.IsPlayer)
             {
-                await MessageWindow.Show($"{target.Ruler.Name} と同盟を結びました。");
+                await MessageWindow.Show($"{target.Ruler.Name}と同盟を結びました。");
             }
         }
     }

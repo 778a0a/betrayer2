@@ -26,6 +26,7 @@ public partial class ActionScreen : IScreen
             ActionButtonHelper.Strategy(a => a.FireVassal),
             ActionButtonHelper.Strategy(a => a.Goodwill),
             ActionButtonHelper.Strategy(a => a.Ally),
+            ActionButtonHelper.Strategy(a => a.BreakAlliance),
             ActionButtonHelper.Strategy(a => a.Invest),
             //ActionButtonHelper.Strategy(a => a.BuildTown),
             ActionButtonHelper.Strategy(a => a.DepositCastleGold),
@@ -243,6 +244,9 @@ public partial class ActionScreen : IScreen
 
     public void Render()
     {
+        currentCharacter ??= Core.World.Characters.First();
+        Root.style.display = DisplayStyle.Flex;
+
         // フェイズに応じてヘッダーとボタンを切り替え
         PersonalPhaseHeader.style.display = Util.Display(IsPersonalPhase);
         PersonalActionButtons.style.display = Util.Display(IsPersonalPhase);
@@ -310,15 +314,22 @@ public partial class ActionScreen : IScreen
             ActionPanel.style.display = DisplayStyle.Flex;
             NoActionPanel.style.display = DisplayStyle.None;
 
-            // 自城の場合は全てのアクションを実行可能
+            // 自城の場合
             if (targetTile == characterTile)
             {
                 foreach (var button in strategyButtons)
                 {
-                    button.Element.style.display = DisplayStyle.Flex;
+                    var show = button.Action switch
+                    {
+                        StrategyActions.AllyAction => false,
+                        StrategyActions.BreakAllianceAction => false,
+                        StrategyActions.GoodwillAction => false,
+                        _ => true
+                    };
+                    button.Element.style.display = Util.Display(show);
                 }
             }
-            // 自国の他の城の場合は、特定のアクションのみ実行可能
+            // 自国の他の城の場合
             else if (targetTile.Castle.Country == currentCharacter.Country)
             {
                 foreach (var button in strategyButtons)
@@ -333,7 +344,7 @@ public partial class ActionScreen : IScreen
                     button.Element.style.display = Util.Display(show);
                 }
             }
-            // 他国の城の場合は、特定のアクションのみ実行可能
+            // 他国の城の場合
             else
             {
                 foreach (var button in strategyButtons)
@@ -341,6 +352,7 @@ public partial class ActionScreen : IScreen
                     var show = button.Action switch
                     {
                         StrategyActions.AllyAction => true,
+                        StrategyActions.BreakAllianceAction => true,
                         StrategyActions.GoodwillAction => true,
                         _ => false
                     };

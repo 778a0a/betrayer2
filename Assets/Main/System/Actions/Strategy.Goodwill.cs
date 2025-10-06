@@ -45,54 +45,16 @@ partial class StrategyActions
             Util.IsTrue(CanDo(args));
             var actor = args.actor;
 
-            // プレイヤーの場合は君主選択画面を表示
+            // プレイヤーの場合
             if (actor.IsPlayer)
             {
-                // 自城で実行された場合は、まず国を選択してもらう。
-                if (args.selectedTile.Castle == actor.Castle)
+                // 対象の国がセットされているのでその国を取得する。
+                args.targetCountry = args.selectedTile.Castle.Country;
+                var ok = await MessageWindow.ShowOkCancel($"{args.targetCountry.Ruler.Name} と関係改善します。\nよろしいですか？");
+                if (!ok)
                 {
-                    // 自国以外の君主一覧を取得する。
-                    var otherRulers = World.Countries
-                        .Where(c => c != actor.Country)
-                        .OrderByDescending(c =>
-                        {
-                            var rel = actor.Country.GetRelation(c);
-                            if (rel > 50) rel += 1000;
-                            else if (rel < 50) rel += 500;
-                            var isNeighbor = actor.Country.Neighbors.Contains(c);
-                            if (isNeighbor) rel += 200;
-                            return rel;
-                        })
-                        .ToList();
-
-                    if (otherRulers.Count == 0)
-                    {
-                        await MessageWindow.Show("親善を行える相手がいません。");
-                        return;
-                    }
-                    args.targetCountry = await UI.SelectCountryScreen.Show(
-                        "親善を行う相手を選択してください",
-                        "キャンセル",
-                        otherRulers,
-                        _ => true
-                    );
-
-                    if (args.targetCountry == null)
-                    {
-                        Debug.Log("キャラクター選択がキャンセルされました。");
-                        return;
-                    }
-                }
-                // 自城以外で実行された場合は、その城の国を対象とする。
-                else
-                {
-                    args.targetCountry = args.selectedTile.Castle.Country;
-                    var ok = await MessageWindow.ShowOkCancel($"{args.targetCountry.Ruler.Name} と関係改善します。\nよろしいですか？");
-                    if (!ok)
-                    {
-                        Debug.Log("親善がキャンセルされました。");
-                        return;
-                    }
+                    Debug.Log("親善がキャンセルされました。");
+                    return;
                 }
             }
 
