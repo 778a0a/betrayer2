@@ -15,6 +15,33 @@ public partial class AI
     {
         var neighbors = country.DiplomacyTargets.ToList();
 
+        switch (country.Ruler.Personality)
+        {
+            case Personality.Pacifist:
+            case Personality.Merchant:
+                // 平和的な君主は攻め込める国がなくても何もしない。
+                break;
+            default:
+                // 周辺国が全て同盟国の場合は、一番弱い国との同盟を破棄する。
+                var directNeighbors = country.Neighbors;
+                if (0.05f.Chance() && directNeighbors.All(country.IsAlly))
+                {
+                    Debug.LogWarning($"{country} 隣接国が全て同盟国なので一番弱い国との同盟を破棄します。");
+                    var weakest = directNeighbors.OrderBy(n => n.Power).First();
+                    var act = core.StrategyActions.BreakAlliance;
+                    var args = act.Args(country.Ruler, weakest);
+                    if (act.CanDo(args))
+                    {
+                        await act.Do(args);
+                    }
+                    else
+                    {
+                        Debug.Log($"前提不足のため同盟破棄できませんでした。{args}");
+                    }
+                }
+                break;
+        }
+
         // 同盟
         foreach (var neighbor in neighbors)
         {

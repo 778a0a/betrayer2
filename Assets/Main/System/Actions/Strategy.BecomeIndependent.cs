@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Assertions;
+using Random = UnityEngine.Random;
 using RebelAction = PersonalActions.RebelAction;
 
 partial class StrategyActions
@@ -83,11 +84,11 @@ partial class StrategyActions
             // 城を奪取する。
             await RebelAction.IndependenceSucceeded(actor.Castle, betrayers, newCountry, oldCountry, World);
 
-            // 元の国のキャラの忠誠を5下げる。
+            // 元の国のキャラの忠誠を最大5下げる。
             foreach (var chara in oldCountry.Members)
             {
                 if (chara.IsRuler) continue;
-                chara.Loyalty = (chara.Loyalty - 5).MinWith(0);
+                chara.Loyalty = (chara.Loyalty - Random.Range(1, 5)).MinWith(0);
             }
             // 反乱側のキャラの忠誠を5上げる。
             foreach (var chara in newCountry.Members)

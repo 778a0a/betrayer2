@@ -21,8 +21,8 @@ partial class StrategyActions
 
         // 同盟を結んでいる他国の城でのみ表示する。
         protected override bool VisibleCore(Character actor, GameMapTile tile) =>
-            actor.Country != tile.Castle?.Country && actor.Country.IsAlly(tile.Castle?.Country);
-
+            actor.Country != tile.Castle?.Country &&
+            actor.Country.IsAlly(tile.Castle?.Country);
 
         public ActionArgs Args(Character actor, Country target) => new(actor, targetCountry: target);
 
@@ -61,10 +61,48 @@ partial class StrategyActions
             }
             else if (actor.Country.Members.Any(m => m.IsPlayer))
             {
-                await MessageWindow.Show($"{target.Ruler.Name}との同盟を破棄しました。");
+                await MessageWindow.Show($"{target.Ruler.Name}との同盟を破棄しました。\n周辺国から警戒されました。");
+            }
+            else
+            {
+                await MessageWindow.Show($"{actor.Name}が{target.Ruler.Name}との同盟を破棄しました。");
             }
 
             args.actor.Country.SetRelation(target, 20);
+            // 他の国との関係も30下げる。
+            foreach (var country in World.Countries.Where(c => c != actor.Country && c != target))
+            {
+                // 同盟関係の場合、対象国とも同盟関係の場合のみ下げる。
+                if (country.IsAlly(actor.Country))
+                {
+                    if (country.IsAlly(target))
+                    {
+                        var shouldBreak = false;
+                        if (country.Ruler.IsPlayer)
+                        {
+                            shouldBreak = await MessageWindow.ShowYesNo(
+                                $"{actor.Name}が{target.Ruler.Name}との同盟を一方的に破棄しました！\n" +
+                                $"{actor.Name}との同盟を破棄しますか？");
+                        }
+                        else
+                        {
+                            shouldBreak = true;
+                        }
+                        if (shouldBreak)
+                        {
+                            country.SetRelation(actor.Country, 20);
+                            if (actor.IsPlayer)
+                            {
+                                await MessageWindow.Show($"{country.Ruler.Name}が{actor.Name}との同盟を破棄しました。");
+                            }
+                        }
+                    }
+                    continue;
+                }
+
+                var rel = country.GetRelation(actor.Country);
+                country.SetRelation(actor.Country, (rel - 30).MinWith(0));
+            }
             Debug.Log($"{args.actor.Country} が {target} との同盟を破棄しました。");
         }
     }
