@@ -36,7 +36,7 @@ partial class StrategyActions
             var myCastles = args.actor.Country.Castles.Count;
             var targetCastles = args.targetCountry?.Castles.Count ?? 0;
             var goldCost = (myCastles + targetCastles) * 5;
-            return ActionCost.Of(0, 1, goldCost);
+            return ActionCost.Of(0, 5, goldCost);
         }
 
         public override bool Enabled(Character actor, GameMapTile tile)
@@ -56,7 +56,7 @@ partial class StrategyActions
             {
                 // 対象の国がセットされているのでその国を取得する。
                 args.targetCountry = args.selectedTile.Castle.Country;
-                var ok = await MessageWindow.ShowOkCancel($"{args.targetCountry.Ruler.Name} と関係改善します。\nよろしいですか？");
+                var ok = await MessageWindow.ShowOkCancel($"{args.targetCountry.Ruler.Name}と関係改善します。\nよろしいですか？");
                 if (!ok)
                 {
                     Debug.Log("親善がキャンセルされました。");
@@ -73,7 +73,7 @@ partial class StrategyActions
             if (target.Ruler.IsPlayer)
             {
                 // プレイヤーに選択させる。
-                var message = $"{actor.Name} からゴールドが贈られました。\n金額: {giftAmount}\n受け取りますか？";
+                var message = $"{actor.Name}からゴールドが贈られました。\n金額: {giftAmount}\n受け取りますか？";
                 accepted = await MessageWindow.ShowYesNo(message);
             }
             else
@@ -93,7 +93,7 @@ partial class StrategyActions
                 Debug.Log($"{actor.Country.Ruler.Name} が {target.Ruler.Name} に贈り物を贈りましたが拒否されました。（{rel} -> {newRel}）");
                 if (actor.IsPlayer)
                 {
-                    await MessageWindow.Show($"{target.Ruler.Name} は関係改善を拒否しました。\n関係度: {rel} → {newRel}");
+                    await MessageWindow.Show($"{target.Ruler.Name}は関係改善を拒否しました。\n関係度: {rel} → {newRel}");
                 }
                 // コストはAPのみにする。
                 actor.ActionPoints -= Cost(args).actionPoints;
