@@ -21,6 +21,7 @@ partial class StrategyActions
 
         // 同盟を結んでいない他国の城でのみ表示する。
         protected override bool VisibleCore(Character actor, GameMapTile tile) =>
+            tile.Castle != null &&
             actor.Country != tile.Castle?.Country &&
             !actor.Country.IsAlly(tile.Castle?.Country);
 

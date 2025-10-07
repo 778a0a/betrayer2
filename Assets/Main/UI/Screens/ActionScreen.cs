@@ -284,34 +284,19 @@ public partial class ActionScreen : IScreen
         }
         CastleInfoPanel.SetData(targetTile, summaryDefault);
 
-        // 個人フェイズでは常にアクション可能、戦略フェイズでは条件付き
+        // 個人フェイズ
         if (IsPersonalPhase)
         {
-            ActionPanel.style.display = DisplayStyle.Flex;
-            NoActionPanel.style.display = DisplayStyle.None;
+            var noAction = personalButtons.All(b => b.Element.style.display.value == DisplayStyle.None);
+            ActionPanel.style.display = Util.Display(!noAction);
+            NoActionPanel.style.display = Util.Display(noAction);
         }
-        // 戦略フェイズの場合
+        // 戦略フェイズ
         else
         {
-            // 城なしの場合はアクションなし。
-            if (!targetTile.HasCastle)
-            {
-                ActionPanel.style.display = DisplayStyle.None;
-                NoActionPanel.style.display = DisplayStyle.Flex;
-                // 軍勢の指示は軍勢一覧から行ってもらう。
-                return;
-            }
-            // 自身が君主でない場合は自城以外ではアクション不可。
-            if (!currentCharacter.IsRuler && targetTile != characterTile)
-            {
-                ActionPanel.style.display = DisplayStyle.None;
-                NoActionPanel.style.display = DisplayStyle.Flex;
-                return;
-            }
-
-            // 以下は自身が君主の場合
-            ActionPanel.style.display = DisplayStyle.Flex;
-            NoActionPanel.style.display = DisplayStyle.None;
+            var noAction = strategyButtons.All(b => b.Element.style.display.value == DisplayStyle.None);
+            ActionPanel.style.display = Util.Display(!noAction);
+            NoActionPanel.style.display = Util.Display(noAction);
         }
     }
 }

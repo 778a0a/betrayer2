@@ -20,6 +20,7 @@ partial class StrategyActions
 
         // 他国の城でのみ表示する。
         protected override bool VisibleCore(Character actor, GameMapTile tile) =>
+            tile.Castle != null &&
             actor.Country != tile.Castle?.Country;
 
         public ActionArgs Args(Character actor, Country target) => new(actor, targetCountry: target);
