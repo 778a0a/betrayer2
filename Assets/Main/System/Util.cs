@@ -248,7 +248,7 @@ public static class Util
         }
         else
         {
-            label.text = chara.Loyalty.MaxWith(100).ToString("0");
+            label.text = chara.Loyalty.ToString("0");
             label.style.color = LoyaltyToColor(chara.Loyalty);
         }
     }
