@@ -166,9 +166,8 @@ public partial class CountryDetailTab
         ObjectiveSelectionView.style.display = Util.Display(showObjectiveSelection);
         // 国方針はプレイヤーが統治者の国のみ設定可能
         ObjectiveContainer.style.display = Util.Display(Core.World.Player?.Country == country);
-        var canOrder = Core.World.Player?.Country == country;
-        labelObjective.style.display = Util.Display(!canOrder);
-        comboObjective.style.display = Util.Display(canOrder);
+        labelObjective.style.display = Util.Display(!country.Ruler.IsPlayer);
+        comboObjective.style.display = Util.Display(country.Ruler.IsPlayer);
         var objectiveText = targetCountry.Objective switch
         {
             CountryObjective.RegionConquest co => $"{co.TargetRegionName}攻略",
