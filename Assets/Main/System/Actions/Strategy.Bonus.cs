@@ -100,7 +100,7 @@ partial class StrategyActions
 
                     if (target.IsPlayer)
                     {
-                        await MessageWindow.Show($"{actor.Name} から褒賞を貰いました！");
+                        //await MessageWindow.Show($"{actor.Name} から褒賞を貰いました！");
                     }
                 }
             }

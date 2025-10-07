@@ -53,8 +53,9 @@ public class Battle
                 // プレーヤーの近隣国同士の戦闘も観戦する。
                 else
                 {
-                    var neighbors = playerCountry.Neighbors.ToArray();
-                    NeedWatchBattle = neighbors.Contains(Atk.Country) && neighbors.Contains(Def.Country);
+                    // やっぱり観戦しない。
+                    //var neighbors = playerCountry.Neighbors.ToArray();
+                    //NeedWatchBattle = neighbors.Contains(Atk.Country) && neighbors.Contains(Def.Country);
                 }
             }
         }
@@ -432,7 +433,7 @@ public class Battle
                 //if (NeedInteraction)
                 {
                     UI.SetData(this);
-                    var wait = NeedInteraction ? 0.08f : 0.02f;
+                    var wait = NeedInteraction ? 0.08f : 0.015f;
                     await Awaitable.WaitForSecondsAsync(wait);
                 }
             }
