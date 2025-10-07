@@ -44,7 +44,7 @@ public class Soldier
         }
         else
         {
-            exp /= 20;
+            exp /= 5;
         }
         Experience += exp;
 
