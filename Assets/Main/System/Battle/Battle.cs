@@ -184,8 +184,10 @@ public class Battle
         var castle = Atk.Tile.Castle ?? Def.Tile.Castle;
         if (castle != null && Type == BattleType.Siege)
         {
-            castle.Strength *= ((100 - TickCount / 2f * Random.Range(0.5f, 1f)) / 100f).MaxWith(0.99f);
-            //Debug.LogError($"{TickCount}");
+            var mul = ((100 - TickCount / 2f * Random.Range(0.5f, 1f)) / 100f).MaxWith(0.99f);
+            var dif = Random.Range(1, 3);
+            castle.Strength = (castle.Strength * mul - dif).MinWith(0);
+            Debug.LogError($"城 tick:{TickCount} mul:{mul:0.000} dif:{dif}");
         }
         // 戦闘が起きた町の内政値を減らす。
         if (Atk.Tile.Town != null) DamegeTown(Atk.Tile.Town, Type, Atk);
@@ -352,8 +354,8 @@ public class Battle
             else adj += Tap("自特性", +(TraitsAdjustment(chara.Tile, chara.Character.Traits) + TraitsAdjustment(op.Tile, chara.Character.Traits)));
             if (Util.IsMarine(op.Character.Traits) && isMarine) adj += Tap("敵特性", -(Mathf.Max(0, TraitsAdjustment(op.Tile, op.Character.Traits)) + Mathf.Max(0, TraitsAdjustment(chara.Tile, op.Character.Traits))));
             else adj += Tap("敵特性", -(TraitsAdjustment(op.Tile, op.Character.Traits) + TraitsAdjustment(chara.Tile, op.Character.Traits)));
-            if (chara.IsInCastle) adj += Tap("自城", +chara.Tile.Castle.Strength / 100 * 0.7f);
-            if (op.IsInCastle) adj += Tap("敵城", -op.Tile.Castle.Strength / 100 * 0.7f);
+            if (chara.IsInCastle) adj += Tap("自城", +chara.Tile.Castle.Strength / 100 * 0.5f);
+            if (op.IsInCastle) adj += Tap("敵城", -op.Tile.Castle.Strength / 100 * 0.5f);
             if (chara.IsInOwnTerritory) adj += Tap("自領1", +0.05f);
             if (op.IsInEnemyTerritory) adj += Tap("自領2", +0.05f);
             if (chara.IsInEnemyTerritory) adj += Tap("敵地1", -0.05f);
