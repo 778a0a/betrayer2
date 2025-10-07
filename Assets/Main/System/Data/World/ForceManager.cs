@@ -383,14 +383,14 @@ public class ForceManager : IReadOnlyList<Force>
             switch (c.Objective)
             {
                 case CastleObjective.Attack o:
-                    if (o.TargetCastleName == c.Name)
+                    if (o.TargetCastleName == castle.Name)
                     {
                         c.Objective = new CastleObjective.None();
                         Debug.Log($"城の方針をリセットしました。{c}");
                     }
                     break;
                 case CastleObjective.Transport o:
-                    if (o.TargetCastleName == c.Name)
+                    if (o.TargetCastleName == castle.Name)
                     {
                         c.Objective = new CastleObjective.None();
                         Debug.Log($"城の方針をリセットしました。{c}");
