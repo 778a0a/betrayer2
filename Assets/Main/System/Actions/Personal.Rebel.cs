@@ -78,24 +78,18 @@ partial class PersonalActions
             // メッセージを表示する。他国でも通知を受け取る。
             if (!asked)
             {
-                await MessageWindow.Show($"{actor.Castle.Name}で{actor.Name}が\n{actor.Country.Ruler.Name}に対して反乱を起こしました！");
+                await MessageWindow.Show(
+                    $"{actor.Castle.Name}で{actor.Name}が\n" +
+                    $"{actor.Country.Ruler.Name}に対して反乱を起こしました！\n" +
+                    $"\n反乱側: {betrayers.Count}人\n鎮圧側: {opponents.Count}人");
             }
 
             var oldCountry = actor.Country;
             Country newCountry = CreateNewCountry(actor, World);
 
-            // 全員が裏切った場合は反乱成功。
-            var rebellionSucceeded = opponents.Count == 0;
-            // 裏切らないキャラがいる場合は戦闘を行う。
-            if (!rebellionSucceeded)
-            {
-                await MessageWindow.Show($"反乱\n反乱軍: {string.Join(", ", betrayers.Select(b => b.Name))}\n" +
-                    $"鎮圧軍: {string.Join(", ", opponents.Select(o => o.Name))}\n");
-                rebellionSucceeded = true;//0.5f.Chance();
-            }
-
+            // 単純に人数比で反乱成功を判定する。
             // 反乱成功なら城を奪取する。
-            if (rebellionSucceeded)
+            if (betrayers.Count >= opponents.Count)
             {
                 // 出撃中のキャラをどちらに所属させるか判定する。
                 foreach (var chara in movings)
