@@ -80,7 +80,7 @@ partial class StrategyActions
                             var ok = await MessageWindow.ShowOkCancel("城が存在しない場所に進軍します。\nよろしいですか？");
                             return ok;
                         }
-                        if (!neighborCastles.Contains(selectedTile.Castle) && selectedTile.Castle.IsAttackable(actor.Country))
+                        if (!BattleManager.IsRemote(actor.Castle, selectedTile.Castle) && selectedTile.Castle.IsAttackable(actor.Country))
                         {
                             var ok = await MessageWindow.ShowOkCancel("遠方の城のため戦闘効率が落ちます。\nよろしいですか？");
                             return ok;

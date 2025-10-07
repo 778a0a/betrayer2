@@ -22,9 +22,9 @@ public class BattleManager
         
         // 遠方での戦闘かどうかをセットする。
         var atkHome = attacker.Character.Castle.Position;
-        atk.IsRemote = atkHome.DistanceTo(attacker) > 5 || atkHome.DistanceTo(defender) > 5;
+        atk.IsRemote = IsRemote(atkHome, attacker) || IsRemote(atkHome, defender);
         var defHome = defender.Character.Castle.Position;
-        def.IsRemote = defHome.DistanceTo(defender) > 5 || defHome.DistanceTo(attacker) > 5;
+        def.IsRemote = IsRemote(defHome, defender) || IsRemote(defHome, attacker);
 
         var battle = new Battle(atk, def, BattleType.Field);
 
@@ -47,11 +47,16 @@ public class BattleManager
 
         // 遠方での戦闘かどうかをセットする。
         var atkHome = attacker.Character.Castle.Position;
-        atk.IsRemote = atkHome.DistanceTo(attacker) > 5 && atkHome.DistanceTo(defender.Castle.Position) > 5;
+        atk.IsRemote = IsRemote(atkHome, attacker) && IsRemote(atkHome, defender.Castle);
 
         var battle = new Battle(atk, def, BattleType.Siege);
         battle.Title = $"{defender.Castle.Name}攻防戦";
         return battle;
+    }
+
+    public static bool IsRemote(IMapEntity a, IMapEntity b)
+    {
+        return a.DistanceTo(b) > 10;
     }
 }
 
