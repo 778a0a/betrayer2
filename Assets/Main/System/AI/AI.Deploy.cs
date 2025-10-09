@@ -36,6 +36,17 @@ public partial class AI
             return;
         }
 
+        var charaCands = castle.Members
+            .Where(m => m.IsDefendable)
+            // 兵士数が減っているキャラも除外する。
+            .Where(m => 1f * m.Soldiers.SoldierCount / m.Soldiers.SoldierCountMax > 0.8f)
+            .ToList();
+        if (charaCands.Count < 2)
+        {
+            //Debug.Log($"出撃判定 {castle} 出撃候補過少");
+            return;
+        }
+
         var targetCands = new List<Castle>();
         var relThresh = castle.Country.Ruler.Personality switch
         {
@@ -114,9 +125,9 @@ public partial class AI
                 leaveCount = Random.Range(1, 3);
                 break;
         }
-        while (castle.Members.Count(m => m.IsDefendable) > leaveCount)
+        while (charaCands.Count > leaveCount)
         {
-            var attacker = castle.Members.Where(m => m.IsDefendable).RandomPick();
+            var attacker = charaCands.RandomPick();
             var act = core.StrategyActions.Deploy;
             var args = act.Args(boss, attacker, target);
 
@@ -124,6 +135,7 @@ public partial class AI
             if (act.CanDo(args))
             {
                 await act.Do(args);
+                charaCands.Remove(attacker);
             }
             else
             {
