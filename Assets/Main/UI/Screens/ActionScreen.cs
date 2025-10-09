@@ -89,8 +89,7 @@ public partial class ActionScreen : IScreen
         
         buttonTurnEnd.clicked += () =>
         {
-            // ターン終了
-            GameCore.Instance.Booter.hold = false;
+            EndTurn();
         };
 
         buttonMoveToMyCastle.clicked += async () =>
@@ -165,6 +164,21 @@ public partial class ActionScreen : IScreen
         // 表示を更新する。
         Render();
         Root.style.display = DisplayStyle.Flex;
+
+        // 放浪、独立、反乱を実行した場合はターンを終了する。
+        var isResign = action is PersonalActions.ResignAction or StrategyActions.ResignAction && chara.IsFree;
+        var isIndependent = action is StrategyActions.BecomeIndependentAction a && !a.IsCancelled;
+        var isRebel = action is PersonalActions.RebelAction a2 && !a2.IsCancelled;
+        if (isResign || isIndependent || isRebel)
+        {
+            Debug.Log("ターンを強制終了します。");
+            EndTurn();
+        }
+    }
+
+    private void EndTurn()
+    {
+        GameCore.Instance.Booter.hold = false;
     }
 
     /// <summary>

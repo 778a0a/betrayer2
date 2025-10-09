@@ -27,16 +27,23 @@ partial class StrategyActions
             return new ActionArgs(chara);
         }
 
+        public bool IsCancelled { get; set; }
+
         public override async ValueTask Do(ActionArgs args)
         {
             Util.IsTrue(CanDo(args));
+            IsCancelled = false;
 
             var actor = args.actor;
             if (actor.IsPlayer)
             {
                 // 確認する。
                 var ok = await MessageWindow.ShowOkCancel("本当に独立しますか？");
-                if (!ok) return;
+                if (!ok)
+                {
+                    IsCancelled = true;
+                    return;
+                }
             }
             PayCost(args);
 
