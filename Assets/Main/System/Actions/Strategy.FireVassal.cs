@@ -59,12 +59,16 @@ partial class StrategyActions
             // TODO 拒否された場合
 
             // キャラを浪士にする。
+            // 軍勢があれば削除する。
+            if (actor.Force != null)
+            {
+                World.Forces.Unregister(actor.Force);
+            }
             target.ChangeCastle(target.Castle, true);
             target.Contribution /= 2;
             target.IsImportant = false;
             target.OrderIndex = -1;
             target.Loyalty = 0;
-            // TODO 恨み
 
             Debug.Log($"{target.Name} が {actor.Castle} から解雇されました。");
             if (actor.IsPlayer)

@@ -42,6 +42,11 @@ partial class StrategyActions
             }
 
             // キャラを浪士にする。
+            // 軍勢があれば削除する。
+            if (actor.Force != null)
+            {
+                World.Forces.Unregister(actor.Force);
+            }
             var isRuler = actor.IsRuler;
             var oldCountry = actor.Country;
             actor.ChangeCastle(actor.Castle, true);
@@ -50,7 +55,7 @@ partial class StrategyActions
             actor.OrderIndex = -1;
             actor.Loyalty = 0;
 
-            // 君主だったの場合は、序列2位を新たな君主にする。
+            // 君主だった場合は、序列2位を新たな君主にする。
             var additionalMessage = "";
             if (isRuler)
             {
