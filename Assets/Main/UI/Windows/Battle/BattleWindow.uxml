@@ -226,6 +226,7 @@
                         <engine:Button text="休息" name="buttonRest" style="margin: 10px 0 0 0; height: 55px; width: 100px;" />
                         <engine:Button text="撤退" name="buttonRetreat" style="margin: 10px 0 0 0; height: 55px; width: 100px;" />
                         <engine:Button text="攻撃側の勝利" name="buttonResult" style="margin: 0; height: 55px;" />
+                        <engine:Button text="撤退" name="buttonWinnerWithdraw" style="margin: 10px 0 0 0; height: 55px;" />
                     </engine:VisualElement>
                 </engine:VisualElement>
 

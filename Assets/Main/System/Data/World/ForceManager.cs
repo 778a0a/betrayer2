@@ -191,7 +191,7 @@ public class ForceManager : IReadOnlyList<Force>
     {
         var enemy = enemies.RandomPick();
         var battle = BattleManager.PrepareFieldBattle(force, enemy);
-        var result = await battle.Do();
+        var (result, winnerWithdraw) = await battle.Do();
         var win = result == BattleResult.AttackerWin;
         force.Country.SetEnemy(enemy.Country);
 
@@ -211,6 +211,13 @@ public class ForceManager : IReadOnlyList<Force>
             force.ResetTileMoveProgress();
             force.SetDestination(home);
             //Debug.Log($"軍勢更新処理 野戦に敗北しました。撤退します。({force.TileMoveRemainingDays})");
+
+            // 防御側が撤退を選択した場合
+            if (winnerWithdraw)
+            {
+                enemy.SetDestination(enemy.Character.Castle);
+            }
+
             return;
         }
 
@@ -255,6 +262,13 @@ public class ForceManager : IReadOnlyList<Force>
                 enemy.SetDestination(enemyHome);
                 //Debug.Log($"{enemy} 野戦に敗北したため後退しました。");
             }
+        }
+
+        // 勝利後に撤退を選択した場合は目的地変更を行う。
+        if (winnerWithdraw && nextTile != force.Character.Castle.Tile)
+        {
+            force.SetDestination(force.Character.Castle);
+            return;
         }
 
         // まだ他に敵がいる場合は移動進捗を少しリセットする。
@@ -305,11 +319,13 @@ public class ForceManager : IReadOnlyList<Force>
         var enemy = castle.Members.Where(e => e.IsDefendable).RandomPickDefault();
         force.Country.SetEnemy(castle.Country);
         var win = true;
+        var withdraw = false;
         if (enemy != null)
         {
             var battle = BattleManager.PrepareSiegeBattle(force, enemy);
             var result = await battle.Do();
-            win = result == BattleResult.AttackerWin;
+            win = result.Item1 == BattleResult.AttackerWin;
+            withdraw = result.WinnerWithdraw;
         }
         else
         {
@@ -338,6 +354,13 @@ public class ForceManager : IReadOnlyList<Force>
 
         // 敵を行動不能状態にする。
         enemy?.SetIncapacitated();
+
+        // 勝利後に撤退を選択した場合は目的地変更を行う。
+        if (withdraw)
+        {
+            force.SetDestination(force.Character.Castle);
+            return;
+        }
 
         // 防衛可能な敵が残っている場合は、移動進捗を半分リセットする。
         if (castle.Members.Any(e => e.IsDefendable))

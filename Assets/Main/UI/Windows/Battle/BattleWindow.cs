@@ -43,6 +43,20 @@ public partial class BattleWindow// : IWindow
             buttonRetreat.style.display = DisplayStyle.None;
             buttonResult.style.display = DisplayStyle.Flex;
             buttonResult.text = result == BattleResult.AttackerWin ? "攻撃側の勝利" : "防衛側の勝利";
+
+            // 必要なら撤退ボタンを表示する。
+            buttonWinnerWithdraw.style.display = DisplayStyle.None;
+            var winner = result == BattleResult.AttackerWin ? battle.Attacker : battle.Defender;
+            var winnerIsPlayer = winner.Character.IsPlayer;
+            if (winnerIsPlayer)
+            {
+                // 野戦または、攻城戦の侵攻側の場合（=攻城戦の防衛側は表示しない）
+                if (battle.Type == BattleType.Field || result == BattleResult.AttackerWin)
+                {
+                    buttonWinnerWithdraw.style.display = DisplayStyle.Flex;
+                }
+            }
+
             if (result == BattleResult.AttackerWin)
             {
                 Root.AddToClassList("attacker-win");
@@ -61,6 +75,7 @@ public partial class BattleWindow// : IWindow
             buttonRest.style.display = Util.Display(battle.NeedInteraction);
             buttonRetreat.style.display = Util.Display(battle.NeedInteraction);
             buttonResult.style.display = DisplayStyle.None;
+            buttonWinnerWithdraw.style.display = DisplayStyle.None;
 
             // 攻撃側のボタン表示
             bool isPlayerAttacker = battle.Player == battle.Attacker;
@@ -188,6 +203,7 @@ public partial class BattleWindow// : IWindow
             buttonRest.clicked -= buttonRestClicked;
             buttonRetreat.clicked -= buttonRetreatClicked;
             buttonResult.clicked -= buttonResultClicked;
+            buttonWinnerWithdraw.clicked -= buttonWinnerWithdrawClicked;
         }
 
         buttonAttack.clicked += buttonAttackClicked;
@@ -243,6 +259,13 @@ public partial class BattleWindow// : IWindow
         void buttonResultClicked()
         {
             tcs.SetResult(BattleAction.Result);
+            RemoveAllHandlers();
+        }
+
+        buttonWinnerWithdraw.clicked += buttonWinnerWithdrawClicked;
+        void buttonWinnerWithdrawClicked()
+        {
+            tcs.SetResult(BattleAction.Retreat);
             RemoveAllHandlers();
         }
 

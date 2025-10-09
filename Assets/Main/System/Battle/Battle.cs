@@ -61,7 +61,7 @@ public class Battle
         }
     }
 
-    public async ValueTask<BattleResult> Do()
+    public async ValueTask<(BattleResult, bool WinnerWithdraw)> Do()
     {
         //Debug.Log($"[戦闘処理] {Atk}) -> {Def} ({Type}) 攻撃側地形: {Atk.Terrain} 防御側地形: {Def.Terrain}");
 
@@ -131,14 +131,19 @@ public class Battle
         }
         //Debug.Log($"[戦闘処理] {Atk}) -> {Def} ({Type}) 攻撃側地形: {Atk.Terrain} 防御側地形: {Def.Terrain} 結果: {result}");
 
+        var winnerWithdraw = false;
+
         // 画面を更新する。
         if (NeedWatchBattle)
         {
             UI.SetData(this, result);
-            var player = GameCore.Instance.World.Player;
             if (NeedInteraction)
             {
-                await UI.WaitPlayerClick();
+                var selection = await UI.WaitPlayerClick();
+                if (selection == BattleAction.Retreat)
+                {
+                    winnerWithdraw = true;
+                }
             }
             // 配下の戦闘の場合はクリックで終わらせる。
             else if (Atk.Character.CanOrder || Def.Character.CanOrder)
@@ -205,7 +210,17 @@ public class Battle
             town.GoldIncome *= 1 - damage;
         }
 
-        return result;
+        // AIの場合、撤退の判断を行う。
+        if (!winner.IsPlayer && !(Type == BattleType.Siege && winner == Def))
+        {
+            // 兵士が十分残っている列があるなら撤退しない。
+            var hasHealthyRow = new[] { winner.Row1, winner.Row2, winner.Row3 }
+                .Any(row => row.Count(s => s.IsAlive) > 4 && row.All(s => s.Hp == 0 || s.Hp >= 20));
+            winnerWithdraw = !hasHealthyRow;
+            Debug.Log($"[戦闘処理] {winner.Character.Name}の撤退判定: {winnerWithdraw}");
+        }
+
+        return (result, winnerWithdraw);
     }
 
 
