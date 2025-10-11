@@ -13,17 +13,20 @@ public partial class CharacterTable : MainUIComponent
     private List<Character> originalCharas;
     private List<Character> charas;
     private Predicate<Character> clickable;
-    
+
     // 複数選択機能
     private bool isMultiSelectMode = false;
     private HashSet<Character> selectedCharacters = new HashSet<Character>();
 
     // ソート状態管理
     private enum SortState { None, Ascending, Descending }
-    private enum SortColumn { Name, Attack, Defence, Intelligence, Governing, Soldiers, Contribution, Prestige, Loyalty }
-    
+    private enum SortColumn { Name, Attack, Defence, Intelligence, Governing, Soldiers, Contribution, Prestige, Loyalty, Importance, OrderIndex, Role, Castle }
+
     private SortColumn? currentSortColumn;
     private SortState currentSortState = SortState.None;
+
+    // 表示切替機能
+    private bool isAlternateDisplayMode = false;
 
     public void Initialize()
     {
@@ -46,12 +49,15 @@ public partial class CharacterTable : MainUIComponent
             var character = charas[index];
             var isClickable = clickable?.Invoke(character) ?? false;
             var isSelected = selectedCharacters.Contains(character);
-            item.SetData(character, isClickable, isSelected);
+            item.SetData(character, isClickable, isSelected, isAlternateDisplayMode);
             //Debug.Log("bindItem: " + index + " -> " + character?.Name);
         };
 
         // ヘッダークリック処理を設定
         SetupHeaderClickHandlers();
+
+        // 切替ボタンのクリック処理を設定
+        buttonToggleDisplay.RegisterCallback<ClickEvent>(OnToggleDisplayClick);
     }
 
     private void OnRowMouseMove(object sender, Character e)
@@ -100,6 +106,10 @@ public partial class CharacterTable : MainUIComponent
         labelHeaderContribution.RegisterCallback<ClickEvent>(evt => OnHeaderClick(SortColumn.Contribution));
         labelHeaderPrestige.RegisterCallback<ClickEvent>(evt => OnHeaderClick(SortColumn.Prestige));
         labelHeaderLoyalty.RegisterCallback<ClickEvent>(evt => OnHeaderClick(SortColumn.Loyalty));
+        labelHeaderImportance.RegisterCallback<ClickEvent>(evt => OnHeaderClick(SortColumn.Importance));
+        labelHeaderOrderIndex.RegisterCallback<ClickEvent>(evt => OnHeaderClick(SortColumn.OrderIndex));
+        labelHeaderRole.RegisterCallback<ClickEvent>(evt => OnHeaderClick(SortColumn.Role));
+        labelHeaderCastle.RegisterCallback<ClickEvent>(evt => OnHeaderClick(SortColumn.Castle));
     }
 
     /// <summary>
@@ -165,9 +175,24 @@ public partial class CharacterTable : MainUIComponent
             SortColumn.Contribution => ascending ? characters.OrderBy(c => c.Contribution) : characters.OrderByDescending(c => c.Contribution),
             SortColumn.Prestige => ascending ? characters.OrderBy(c => c.Prestige) : characters.OrderByDescending(c => c.Prestige),
             SortColumn.Loyalty => ascending ? characters.OrderBy(c => c.Loyalty) : characters.OrderByDescending(c => c.Loyalty),
+            SortColumn.Importance => ascending ? characters.OrderBy(c => c.Importance) : characters.OrderByDescending(c => c.Importance),
+            SortColumn.OrderIndex => ascending ? characters.OrderBy(c => c.OrderIndex) : characters.OrderByDescending(c => c.OrderIndex),
+            SortColumn.Role => ascending ? characters.OrderBy(c => GetRoleSortKey(c)) : characters.OrderByDescending(c => GetRoleSortKey(c)),
+            SortColumn.Castle => ascending ? characters.OrderBy(c => c.Castle.Name) : characters.OrderByDescending(c => c.Castle.Name),
             _ => ascending ? characters.OrderBy(c => c.Name) : characters.OrderByDescending(c => c.Name)
         };
         return ordered;
+    }
+
+    /// <summary>
+    /// 役職のソートキーを取得（君主→城主→一般→浪士の順）
+    /// </summary>
+    private int GetRoleSortKey(Character character)
+    {
+        if (character.IsRuler) return 100;
+        if (character.IsBoss) return 10;
+        if (character.IsVassal) return 1;
+        return 0; // 浪士
     }
 
     /// <summary>
@@ -185,6 +210,10 @@ public partial class CharacterTable : MainUIComponent
         ClearSortIndicator(labelHeaderContribution);
         ClearSortIndicator(labelHeaderPrestige);
         ClearSortIndicator(labelHeaderLoyalty);
+        ClearSortIndicator(labelHeaderImportance);
+        ClearSortIndicator(labelHeaderOrderIndex);
+        ClearSortIndicator(labelHeaderRole);
+        ClearSortIndicator(labelHeaderCastle);
 
         // 現在のソート列にインジケーターを追加
         if (currentSortColumn.HasValue && currentSortState != SortState.None)
@@ -211,6 +240,10 @@ public partial class CharacterTable : MainUIComponent
         SortColumn.Contribution => labelHeaderContribution,
         SortColumn.Prestige => labelHeaderPrestige,
         SortColumn.Loyalty => labelHeaderLoyalty,
+        SortColumn.Importance => labelHeaderImportance,
+        SortColumn.OrderIndex => labelHeaderOrderIndex,
+        SortColumn.Role => labelHeaderRole,
+        SortColumn.Castle => labelHeaderCastle,
         _ => null
     };
 
@@ -310,5 +343,56 @@ public partial class CharacterTable : MainUIComponent
     private void RefreshDisplay()
     {
         ListView.RefreshItems();
+    }
+
+    /// <summary>
+    /// 表示切替ボタンがクリックされた時の処理
+    /// </summary>
+    private void OnToggleDisplayClick(ClickEvent evt)
+    {
+        isAlternateDisplayMode = !isAlternateDisplayMode;
+        UpdateDisplayMode();
+    }
+
+    /// <summary>
+    /// 表示モードを更新
+    /// </summary>
+    private void UpdateDisplayMode()
+    {
+        if (isAlternateDisplayMode)
+        {
+            // 切替後の表示（序列・役職・所属城）
+            labelHeaderAttack.style.display = DisplayStyle.None;
+            labelHeaderDefence.style.display = DisplayStyle.None;
+            labelHeaderIntelligence.style.display = DisplayStyle.None;
+            labelHeaderGoverning.style.display = DisplayStyle.None;
+            labelHeaderSoldiers.style.display = DisplayStyle.None;
+            labelHeaderContribution.style.display = DisplayStyle.None;
+            labelHeaderPrestige.style.display = DisplayStyle.None;
+
+            labelHeaderImportance.style.display = DisplayStyle.Flex;
+            labelHeaderOrderIndex.style.display = DisplayStyle.Flex;
+            labelHeaderRole.style.display = DisplayStyle.Flex;
+            labelHeaderCastle.style.display = DisplayStyle.Flex;
+        }
+        else
+        {
+            // 通常表示（ステータス）
+            labelHeaderAttack.style.display = DisplayStyle.Flex;
+            labelHeaderDefence.style.display = DisplayStyle.Flex;
+            labelHeaderIntelligence.style.display = DisplayStyle.Flex;
+            labelHeaderGoverning.style.display = DisplayStyle.Flex;
+            labelHeaderSoldiers.style.display = DisplayStyle.Flex;
+            labelHeaderContribution.style.display = DisplayStyle.Flex;
+            labelHeaderPrestige.style.display = DisplayStyle.Flex;
+
+            labelHeaderImportance.style.display = DisplayStyle.None;
+            labelHeaderOrderIndex.style.display = DisplayStyle.None;
+            labelHeaderRole.style.display = DisplayStyle.None;
+            labelHeaderCastle.style.display = DisplayStyle.None;
+        }
+
+        // 各行の表示も更新
+        RefreshDisplay();
     }
 }

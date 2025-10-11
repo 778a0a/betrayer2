@@ -3,7 +3,10 @@
     <Style src="project://database/Assets/Main/UI/MainUI.uss" />
     <Style src="CharacterTableStyle.uss" />
     <engine:VisualElement name="Header" class="CharacterTable-Row" style="flex-shrink: 0; background-color: rgba(70, 70, 90, 0.5);">
-        <engine:Label name="labelHeaderName" text="名前" class="CharacterTable-Cell CharacterTable-Cell-Header CharacterTable-Col-Name" />
+        <engine:VisualElement style="flex-direction: row; justify-content: space-between; position: relative;">
+            <engine:Label name="labelHeaderName" text="名前" class="CharacterTable-Cell CharacterTable-Cell-Header CharacterTable-Col-Name" style="flex-grow: 1;" />
+            <engine:Button name="buttonToggleDisplay" text="切替" style="font-size: 24px; padding: 2px; margin-top: -3px; position: absolute; right: 0;" />
+        </engine:VisualElement>
         <engine:Label name="labelHeaderAttack" text="攻撃" class="CharacterTable-Cell CharacterTable-Cell-Header CharacterTable-Col-Attack" />
         <engine:Label name="labelHeaderDefence" text="防衛" class="CharacterTable-Cell CharacterTable-Cell-Header CharacterTable-Col-Defense" />
         <engine:Label name="labelHeaderIntelligence" text="智謀" class="CharacterTable-Cell CharacterTable-Cell-Header CharacterTable-Col-Intelligence" />
@@ -12,6 +15,10 @@
         <engine:Label name="labelHeaderContribution" text="功績" class="CharacterTable-Cell CharacterTable-Cell-Header CharacterTable-Col-Contribution" />
         <engine:Label name="labelHeaderPrestige" text="名声" class="CharacterTable-Cell CharacterTable-Cell-Header CharacterTable-Col-Prestige" />
         <engine:Label name="labelHeaderLoyalty" text="忠誠" class="CharacterTable-Cell CharacterTable-Cell-Header CharacterTable-Col-Loyalty" />
+        <engine:Label name="labelHeaderRole" text="地位" class="CharacterTable-Cell CharacterTable-Cell-Header CharacterTable-Col-Role" style="display: none;" />
+        <engine:Label name="labelHeaderOrderIndex" text="序列" class="CharacterTable-Cell CharacterTable-Cell-Header CharacterTable-Col-OrderIndex" style="display: none;" />
+        <engine:Label name="labelHeaderImportance" text="権威" class="CharacterTable-Cell CharacterTable-Cell-Header CharacterTable-Col-Importance" style="display: none;" />
+        <engine:Label name="labelHeaderCastle" text="所属" class="CharacterTable-Cell CharacterTable-Cell-Header CharacterTable-Col-Castle" style="display: none;" />
     </engine:VisualElement>
     <engine:ListView name="ListView" />
 </engine:UXML>

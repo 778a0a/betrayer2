@@ -16,6 +16,8 @@ public partial class CharacterTable
 {
     public Label labelHeaderName { get; private set; }
 
+    public Button buttonToggleDisplay { get; private set; }
+
     public Label labelHeaderAttack { get; private set; }
 
     public Label labelHeaderDefence { get; private set; }
@@ -32,6 +34,14 @@ public partial class CharacterTable
 
     public Label labelHeaderLoyalty { get; private set; }
 
+    public Label labelHeaderOrderIndex { get; private set; }
+
+    public Label labelHeaderRole { get; private set; }
+
+    public Label labelHeaderCastle { get; private set; }
+
+    public Label labelHeaderImportance { get; private set; }
+
     public VisualElement Header { get; private set; }
 
     public ListView ListView { get; private set; }
@@ -42,6 +52,7 @@ public partial class CharacterTable
     {
         Root = root;
         labelHeaderName = Root?.Q<Label>("labelHeaderName");
+        buttonToggleDisplay = Root?.Q<Button>("buttonToggleDisplay");
         labelHeaderAttack = Root?.Q<Label>("labelHeaderAttack");
         labelHeaderDefence = Root?.Q<Label>("labelHeaderDefence");
         labelHeaderIntelligence = Root?.Q<Label>("labelHeaderIntelligence");
@@ -50,6 +61,10 @@ public partial class CharacterTable
         labelHeaderContribution = Root?.Q<Label>("labelHeaderContribution");
         labelHeaderPrestige = Root?.Q<Label>("labelHeaderPrestige");
         labelHeaderLoyalty = Root?.Q<Label>("labelHeaderLoyalty");
+        labelHeaderOrderIndex = Root?.Q<Label>("labelHeaderOrderIndex");
+        labelHeaderRole = Root?.Q<Label>("labelHeaderRole");
+        labelHeaderCastle = Root?.Q<Label>("labelHeaderCastle");
+        labelHeaderImportance = Root?.Q<Label>("labelHeaderImportance");
         Header = Root?.Q<VisualElement>("Header");
         ListView = Root?.Q<ListView>("ListView");
     }
@@ -58,6 +73,7 @@ public partial class CharacterTable
     {
         Root = root;
         labelHeaderName = Root?.Q<Label>("labelHeaderName");
+        buttonToggleDisplay = Root?.Q<Button>("buttonToggleDisplay");
         labelHeaderAttack = Root?.Q<Label>("labelHeaderAttack");
         labelHeaderDefence = Root?.Q<Label>("labelHeaderDefence");
         labelHeaderIntelligence = Root?.Q<Label>("labelHeaderIntelligence");
@@ -66,6 +82,10 @@ public partial class CharacterTable
         labelHeaderContribution = Root?.Q<Label>("labelHeaderContribution");
         labelHeaderPrestige = Root?.Q<Label>("labelHeaderPrestige");
         labelHeaderLoyalty = Root?.Q<Label>("labelHeaderLoyalty");
+        labelHeaderOrderIndex = Root?.Q<Label>("labelHeaderOrderIndex");
+        labelHeaderRole = Root?.Q<Label>("labelHeaderRole");
+        labelHeaderCastle = Root?.Q<Label>("labelHeaderCastle");
+        labelHeaderImportance = Root?.Q<Label>("labelHeaderImportance");
         Header = Root?.Q<VisualElement>("Header");
         ListView = Root?.Q<ListView>("ListView");
     }

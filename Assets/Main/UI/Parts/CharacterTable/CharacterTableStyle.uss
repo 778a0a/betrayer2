@@ -38,7 +38,9 @@
 
 .CharacterTable-Cell-Header {
     font-size: 24px;
-    cursor: link;
+    margin: -2px 0;
+    padding: 2px;
+    /* cursor: link; */
 }
 
 .CharacterTable-Cell-Header:hover {
@@ -98,3 +100,23 @@
 .CharacterTable-Col-Loyalty {
 }
 
+.CharacterTable-Col-Role {
+    width: 70px;
+    color: #fff;
+}
+
+.CharacterTable-Col-OrderIndex {
+    width: 60px;
+    color: #ff8;
+}
+
+.CharacterTable-Col-Importance {
+    width: 90px;
+    color: #ffa;
+}
+
+.CharacterTable-Col-Castle {
+    width: 180px;
+    color: #fff;
+    -unity-text-align: middle-left;
+}

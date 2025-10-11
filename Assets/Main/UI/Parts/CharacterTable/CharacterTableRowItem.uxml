@@ -14,5 +14,9 @@
         <engine:Label name="labelContribution" text="88888" class="CharacterTable-Cell CharacterTable-Col-Contribution" />
         <engine:Label name="labelPrestige" text="88888" class="CharacterTable-Cell CharacterTable-Col-Prestige" />
         <engine:Label name="labelLoyalty" text="100" class="CharacterTable-Cell CharacterTable-Col-Loyalty" />
+        <engine:Label name="labelRole" text="君主" class="CharacterTable-Cell CharacterTable-Col-Role" style="display: none;" />
+        <engine:Label name="labelOrderIndex" text="1" class="CharacterTable-Cell CharacterTable-Col-OrderIndex" style="display: none;" />
+        <engine:Label name="labelImportance" text="88" class="CharacterTable-Cell CharacterTable-Col-Importance" style="display: none;" />
+        <engine:Label name="labelCastle" text="城名" class="CharacterTable-Cell CharacterTable-Col-Castle" style="display: none;" />
     </engine:Button>
 </engine:UXML>

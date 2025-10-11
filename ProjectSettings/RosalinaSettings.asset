@@ -80,3 +80,7 @@ MonoBehaviour:
     _path: Assets/Main/UI/Parts/ForceTable/ForceTable.uxml
   - _type: 1
     _path: Assets/Main/UI/Screens/BonusScreen.uxml
+  - _type: 1
+    _path: Assets/Main/UI/Parts/CharacterTable/CharacterTable.uxml
+  - _type: 1
+    _path: Assets/Main/UI/Parts/CharacterTable/CharacterTableRowItem.uxml
