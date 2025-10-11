@@ -94,9 +94,8 @@ partial class PersonalActions
             var oldCountry = actor.Country;
             Country newCountry = CreateNewCountry(actor, World);
 
-            // 単純に人数比で反乱成功を判定する。
             // 反乱成功なら城を奪取する。
-            if (betrayers.Count >= opponents.Count)
+            if (betrayers.Sum(m => m.Power) >= opponents.Sum(m => m.Power))
             {
                 // 出撃中のキャラをどちらに所属させるか判定する。
                 foreach (var chara in movings)
@@ -165,8 +164,14 @@ partial class PersonalActions
                         await MessageWindow.Show($"反乱は失敗し、勢力を追放されました。");
                     }
                 }
+                
+                // 城のキャラの忠誠を5下げる。
+                foreach (var chara in actor.Castle.Members)
+                {
+                    if (chara.IsRuler) continue;
+                    chara.Loyalty = (chara.Loyalty - 5).MinWith(0);
+                }
             }
-
         }
 
         public static async ValueTask IndependenceSucceeded(
