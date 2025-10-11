@@ -29,7 +29,7 @@ partial class StrategyActions
 
             if (actor.IsPlayer)
             {
-                if (actor.Castle.Members.Count >= 6)
+                if (actor.Castle.Members.Count >= actor.Castle.MaxMember)
                 {
                     await MessageWindow.Show("城の所属人数の上限に達しています。");
                     return;
