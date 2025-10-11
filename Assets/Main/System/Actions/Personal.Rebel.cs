@@ -270,10 +270,10 @@ partial class PersonalActions
             prob += actor.TotalCapability > actor.Country.Ruler.TotalCapability ? 0.2f : -0.05f;
 
             // 忠実さ
-            if (member.Fealty > 7) prob *= 1 / (member.Fealty - 6);
-            if (member.Fealty < 7) prob *= 1 + (7 - member.Fealty) * 0.1f;
+            if (member.Fealty > 7) prob *= 1f / (member.Fealty - 6);
+            if (member.Fealty < 7) prob *= 1f + (7 - member.Fealty) * 0.1f;
             // 野心
-            if (member.Ambition >= 7) prob *= 1 + (member.Ambition - 6) * 0.1f;
+            if (member.Ambition >= 7) prob *= 1f + (member.Ambition - 6) * 0.1f;
             return prob;
         }
     }

@@ -31,6 +31,7 @@ public partial class ActionScreen : IScreen
             //ActionButtonHelper.Strategy(a => a.BuildTown),
             ActionButtonHelper.Strategy(a => a.DepositCastleGold),
             ActionButtonHelper.Strategy(a => a.WithdrawCastleGold),
+            ActionButtonHelper.Strategy(a => a.Subdue),
             ActionButtonHelper.Strategy(a => a.BecomeIndependent),
             ActionButtonHelper.Strategy(a => a.Resign),
         };
