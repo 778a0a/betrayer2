@@ -140,7 +140,7 @@ partial class StrategyActions
                     0 :
                     0.10f + (baseThreshold - character.Loyalty) * 0.05f;
                 var denied = denyProb.Chance();
-                if (denied)
+                if (!character.IsPlayer && denied)
                 {
                     if (actor.IsPlayer)
                     {
