@@ -136,6 +136,27 @@ partial class StrategyActions
             // 各キャラクターを個別に出撃させる
             foreach (var character in deployMembers)
             {
+                // 忠誠が低いなら一定確率で拒否する。
+                // 忠誠90なら10%、忠誠80なら50%
+                var baseThreshold = 90 - character.Fealty;
+                var denyProb = character.Loyalty > baseThreshold ?
+                    0 :
+                    0.10f + (baseThreshold - character.Loyalty) * 0.05f;
+                var denied = denyProb.Chance();
+                if (denied)
+                {
+                    if (actor.IsPlayer)
+                    {
+                        character.Loyalty = (character.Loyalty - 10).MinWith(0);
+                        await MessageWindow.Show($"{character.Name}は出撃を拒否しました！");
+                    }
+                    else
+                    {
+                        Debug.Log($"{character.Name}は出撃を拒否しました。");
+                    }
+                    continue;
+                }
+
                 var force = new Force(World, character, character.Castle.Position);
                 force.IsPlayerDirected = actor.IsPlayer;
                 force.SetDestination(target);
