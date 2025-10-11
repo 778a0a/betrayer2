@@ -74,9 +74,14 @@ public class CountryManager : IReadOnlyList<Country>
     /// </summary>
     public void UpdateRanking(Country target = null)
     {
+        var regions = GameCore.Instance.World.Castles.GroupBy(c => c.Region);
+
         foreach (var country in countries)
         {
             if (target != null && country != target) continue;
+
+            // 完全制覇している地域の数
+            var regionCount = regions.Count(g => g.All(c => c.Country == country));
 
             var members = country.Members.OrderByDescending(m => m.Importance).ToList();
             members.Remove(country.Ruler);
@@ -85,6 +90,7 @@ public class CountryManager : IReadOnlyList<Country>
             for (int i = 0; i < members.Count; i++)
             {
                 members[i].OrderIndex = i + 1;
+                members[i].CanBeRegionBoss = i + 1 < regionCount;
                 members[i].IsImportant = i + 1 < country.MaxImportantMemberCount;
             }
         }

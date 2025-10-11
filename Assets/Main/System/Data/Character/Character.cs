@@ -173,6 +173,15 @@ public class Character
     /// 重臣ならtrue
     /// </summary>
     public bool IsImportant { get; set; }
+    /// <summary>
+    /// 国主になれるならtrue
+    /// </summary>
+    public bool CanBeRegionBoss { get; set; }
+    /// <summary>
+    /// 国主ならtrue
+    /// </summary>
+    [JsonIgnore]
+    public bool IsRegionBoss => IsBoss && CanBeRegionBoss;
 
     /// <summary>
     /// 供給不足ならtrue
@@ -303,6 +312,7 @@ public class Character
         }
         else if (IsBoss)
         {
+            if (IsRegionBoss) return "国主";
             return "城主";
         }
         else if (IsVassal)
