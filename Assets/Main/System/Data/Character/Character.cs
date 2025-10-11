@@ -167,7 +167,8 @@ public class Character
     /// <summary>
     /// 指示を出せるならtrue
     /// </summary>
-    public bool CanOrder => IsPlayer || (IsVassal && (Castle.Boss.IsPlayer || Country.Ruler.IsPlayer));
+    [JsonIgnore]
+    public bool CanOrder => IsPlayer || (IsVassal && Castle.CanOrder);
 
     /// <summary>
     /// 重臣ならtrue

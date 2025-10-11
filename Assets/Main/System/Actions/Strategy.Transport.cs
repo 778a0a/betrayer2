@@ -17,10 +17,7 @@ partial class StrategyActions
         public override string Label => L["輸送"];
         public override string Description => L["別の城へ物資を輸送します。"];
 
-        // 君主なら自国の城、城主なら自分の城でのみ表示する。
-        protected override bool VisibleCore(Character actor, GameMapTile tile) =>
-            (actor.IsRuler && actor.Country == tile.Castle?.Country) ||
-            (actor.IsBoss && actor.Castle.Tile == tile);
+        protected override bool VisibleCore(Character actor, GameMapTile tile) => tile.Castle?.CanOrder ?? false;
 
         public ActionArgs Args(Character actor, Castle c, Castle c2, float gold) =>
             new(actor, targetCastle: c, targetCastle2: c2, gold: gold);

@@ -198,6 +198,27 @@ public class Castle : ICountryEntity, IMapEntity
     public bool IsFrontline => Neighbors.Any(this.IsAttackable);
 
     /// <summary>
+    /// プレーヤーが指示を出すことが可能ならtrue
+    /// </summary>
+    [JsonIgnore]
+    public bool CanOrder
+    {
+        get
+        {
+            if (Country.Ruler.IsPlayer) return true;
+            if (Boss?.IsPlayer ?? false) return true;
+            var bossOrderIndex = Boss?.OrderIndex ?? int.MaxValue;
+            var regionBossExists = Neighbors
+                .Where(c => c.Country == Country)
+                .Where(c => c.Boss?.IsRegionBoss ?? false)
+                .Any(c => c.Boss.OrderIndex < bossOrderIndex && c.Boss.IsPlayer);
+            if (regionBossExists) return true;
+
+            return false;
+        }
+    }
+
+    /// <summary>
     /// 方針
     /// </summary>
     public CastleObjective Objective { get; set; } = new CastleObjective.None();

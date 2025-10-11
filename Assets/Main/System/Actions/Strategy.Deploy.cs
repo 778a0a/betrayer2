@@ -17,10 +17,7 @@ partial class StrategyActions
         public override string Label => L["進軍"];
         public override string Description => L["進軍します。"];
 
-        // 君主なら自国の城、城主なら自分の城でのみ表示する。
-        protected override bool VisibleCore(Character actor, GameMapTile tile) =>
-            (actor.IsRuler && actor.Country == tile.Castle?.Country) ||
-            (actor.IsBoss && actor.Castle.Tile == tile);
+        protected override bool VisibleCore(Character actor, GameMapTile tile) => tile.Castle?.CanOrder ?? false;
 
         public ActionArgs Args(Character actor, Character attacker, Castle target) =>
             new(actor, targetCharacter: attacker, targetCastle: target);

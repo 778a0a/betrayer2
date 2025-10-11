@@ -17,10 +17,7 @@ partial class StrategyActions
         public override string Label => L["褒賞"];
         public override string Description => L["臣下に褒賞を与えます。"];
 
-        // 君主なら自国の城、城主なら自分の城でのみ表示する。
-        protected override bool VisibleCore(Character actor, GameMapTile tile) =>
-            (actor.IsRuler && actor.Country == tile.Castle?.Country) ||
-            (actor.IsBoss && actor.Castle.Tile == tile);
+        protected override bool VisibleCore(Character actor, GameMapTile tile) => tile.Castle?.CanOrder ?? false;
 
         public ActionArgs Args(Character actor, Character target) => new(actor, targetCharacter: target);
 
@@ -38,10 +35,10 @@ partial class StrategyActions
             {
                 var selectedCastle = args.selectedTile?.Castle ?? actor.Castle;
 
-                // プレーヤーが君主で、本拠地で褒賞を実行しているなら、全臣下をリスト化する。
+                // プレーヤーが君主か国主で、本拠地で褒賞を実行しているなら、全臣下をリスト化する。
                 // そうでないなら、対象の城のメンバーをリスト化する。
-                var cands = actor.IsRuler && selectedCastle == actor.Castle ?
-                    actor.Country.Members.Where(c => c != actor) :
+                var cands = (actor.IsRuler || actor.IsRegionBoss) && selectedCastle == actor.Castle ?
+                    actor.Country.Members.Where(c => c != actor && c.CanOrder) :
                     selectedCastle.Members.Where(c => c != actor);
                 var candList = cands
                     .OrderBy(c => c.Loyalty)
