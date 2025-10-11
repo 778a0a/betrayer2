@@ -174,7 +174,7 @@ public partial class CharacterTable : MainUIComponent
             SortColumn.Soldiers => ascending ? characters.OrderBy(c => c.Soldiers.SoldierCount) : characters.OrderByDescending(c => c.Soldiers.SoldierCount),
             SortColumn.Contribution => ascending ? characters.OrderBy(c => c.Contribution) : characters.OrderByDescending(c => c.Contribution),
             SortColumn.Prestige => ascending ? characters.OrderBy(c => c.Prestige) : characters.OrderByDescending(c => c.Prestige),
-            SortColumn.Loyalty => ascending ? characters.OrderBy(c => c.Loyalty) : characters.OrderByDescending(c => c.Loyalty),
+            SortColumn.Loyalty => ascending ? characters.OrderBy(c => c.IsPlayer || c.IsRuler ? 999 : c.Loyalty) : characters.OrderByDescending(c => c.IsPlayer || c.IsRuler ? 999 : c.Loyalty),
             SortColumn.Importance => ascending ? characters.OrderBy(c => c.Importance) : characters.OrderByDescending(c => c.Importance),
             SortColumn.OrderIndex => ascending ? characters.OrderBy(c => c.OrderIndex) : characters.OrderByDescending(c => c.OrderIndex),
             SortColumn.Role => ascending ? characters.OrderBy(c => GetRoleSortKey(c)) : characters.OrderByDescending(c => GetRoleSortKey(c)),
