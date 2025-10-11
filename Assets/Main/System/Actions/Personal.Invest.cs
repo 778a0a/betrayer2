@@ -39,7 +39,7 @@ partial class PersonalActions
             // 能力値
             var adj = 1 + (chara.Governing - 75) / 100f;
             // 特性
-            if (chara.Traits.HasFlag(Traits.Merchant)) adj += 0.25f;
+            if (chara.Traits.HasFlag(Traits.Merchant)) adj += 0.3f;
             // 地形
             var adjTerrain = TerrainAdjustment(chara.Castle);
             // 発展度
@@ -60,7 +60,7 @@ partial class PersonalActions
             // 功績を加算する。
             var contribAdj = chara.Salary < 30 ? 2 : 0.5f;
             // 開発の2.5倍のコストなので2.5倍が基本なものの、直接収入が上がるわけではないので多少抑えめにする。
-            chara.Contribution += 1.5f * cost / GoldCost * adj * contribAdj;
+            chara.Contribution += 1f * cost / GoldCost * adj * contribAdj;
 
             action.PayCost(args);
             return default;
