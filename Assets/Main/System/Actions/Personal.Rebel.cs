@@ -85,8 +85,8 @@ partial class PersonalActions
             // メッセージを表示する。他国でも通知を受け取る。
             if (!asked)
             {
-                var betrayerNames = string.Join(", ", betrayers.Select(b => b.Name));
-                var opponentNames = string.Join(", ", opponents.Select(o => o.Name));
+                var betrayerNames = string.Join(", ", betrayers.Select((b, i) => i % 6 == 0 ? "\n" + b.Name : b.Name)).Trim();
+                var opponentNames = string.Join(", ", opponents.Select((o, i) => i % 6 == 0 ? "\n" + o.Name : o.Name)).Trim();
 
                 await MessageWindow.Show(
                     $"{actor.Castle.Name}で{actor.Name}が\n" +
