@@ -78,11 +78,11 @@ partial class StrategyActions
 
             if (actor.IsPlayer)
             {
-                await MessageWindow.Show($"{args.targetCastle2.Name}へ金{args.gold}を輸送しました。");
+                await MessageWindow.Show($"{args.targetCastle2.Name}へ金{args.gold:0}を輸送しました。");
             }
             else if (args.targetCastle2.Boss.IsPlayer)
             {
-                await MessageWindow.Show($"{args.targetCastle.Name}から金{args.gold}が輸送されました。");
+                await MessageWindow.Show($"{args.targetCastle.Name}から金{args.gold:0}が輸送されました。");
             }
 
             if (NeedPayCost)
