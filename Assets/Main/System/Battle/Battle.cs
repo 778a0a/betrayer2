@@ -176,7 +176,7 @@ public class Battle
         //}
 
         // 名声の処理を行う。
-        var loserPrestigeLoss = loser.Character.Prestige / 3;
+        var loserPrestigeLoss = loser.Character.Prestige / 8;
         loser.Character.Prestige -= loserPrestigeLoss;
         winner.Character.Prestige += loserPrestigeLoss;
         winner.Character.Prestige += 5;
