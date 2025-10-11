@@ -18,7 +18,7 @@ partial class StrategyActions
     {
         public override string Label => L["独立"];
         public override string Description => L["独立します。"];
-        protected override ActionRequirements Requirements => ActionRequirements.BossNotRuler;
+        protected override ActionRequirements Requirements => ActionRequirements.BossNotRuler | ActionRequirements.NotMoving;
 
         public override ActionCost Cost(ActionArgs args) => ActionCost.Of(0, 10, 0);
 

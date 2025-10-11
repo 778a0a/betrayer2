@@ -17,7 +17,7 @@ partial class StrategyActions
         public override string Label => L["討伐"];
         public override string Description => L["配下を討伐し、勢力から追い出します。"];
 
-        protected override ActionRequirements Requirements => ActionRequirements.Boss;
+        protected override ActionRequirements Requirements => ActionRequirements.Boss | ActionRequirements.NotMoving;
 
         protected override bool VisibleCore(Character actor, GameMapTile tile) =>
             actor.Castle.Tile == tile;

@@ -16,6 +16,7 @@ partial class StrategyActions
     {
         public override string Label => L["引出"];
         public override string Description => L["城資金から所持金へゴールドを10移動します。"];
+        protected override ActionRequirements Requirements => ActionRequirements.Boss | ActionRequirements.NotMoving;
 
         public ActionArgs Args(Character actor, int gold) => new(actor, gold: gold);
 
