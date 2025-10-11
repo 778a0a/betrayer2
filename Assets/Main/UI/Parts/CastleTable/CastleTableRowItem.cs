@@ -94,7 +94,7 @@ public partial class CastleTableRowItem
         labelMaxIncome.text = castle.GoldIncomeMax.ToString("0");
         
         // 収入バー
-        const float IncomeBarMax = 200f;
+        const float IncomeBarMax = 1000f;
         MaxIncomeBar.style.width = Length.Percent(UnityEngine.Mathf.Clamp01(castle.GoldIncomeMax / IncomeBarMax) * 100f);
         CurrentIncomeBar.style.width = Length.Percent(UnityEngine.Mathf.Clamp01(castle.GoldIncome / IncomeBarMax) * 100f);
         

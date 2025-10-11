@@ -22,22 +22,22 @@
                 </engine:VisualElement>
                 <!-- 城の基本情報 -->
                 <engine:VisualElement style="flex-direction: row; align-items: center;">
-                    <engine:VisualElement style="flex-direction: row; min-width: 190px;">
+                    <engine:VisualElement style="flex-direction: row; min-width: 210px;">
                         <engine:Label text="城資金:" style="margin-right: 10px; font-size: 24px;" />
                         <engine:Label name="labelGold" text="0" style="font-size: 24px; color: yellow;" />
                         <engine:Label text="(" style="margin-left: 5px; font-size: 24px;" />
                         <engine:Label name="labelBalance" text="+0" style="font-size: 24px; color: white;" />
                         <engine:Label text=")" style="font-size: 24px;" />
                     </engine:VisualElement>
-                    <engine:VisualElement style="flex-direction: row; min-width: 320px; align-items: center">
+                    <engine:VisualElement style="flex-direction: row; min-width: 200px; justify-content: flex-end; align-items: center">
                         <engine:Label text="収入:" style="margin-right: 10px; font-size: 24px;" />
                         <engine:Label name="labelIncome" text="0" style="font-size: 24px; color: white; margin-right: 5px;" />
                         <engine:Label text="/" style="font-size: 24px; margin-right: 5px;" />
                         <engine:Label name="labelMaxIncome" text="0" style="font-size: 24px; color: silver; margin-right: 10px;" />
-                        <engine:VisualElement name="IncomeBar" style="width: 150px; height: 15px; background-color: gray; margin-right: 10px; border-width: 1px; border-color: white;">
-                            <engine:VisualElement name="MaxIncomeBar" style="position: absolute; top: 0; left: 0; height: 100%; background-color: rgba(255, 255, 0, 0.3);" />
-                            <engine:VisualElement name="CurrentIncomeBar" style="position: absolute; top: 0; left: 0; height: 100%; background-color: yellow;" />
-                        </engine:VisualElement>
+                    </engine:VisualElement>
+                    <engine:VisualElement name="IncomeBar" style="width: 140px; height: 15px; background-color: gray; margin-right: 10px; border-width: 1px; border-color: white;">
+                        <engine:VisualElement name="MaxIncomeBar" style="position: absolute; top: 0; left: 0; height: 100%; background-color: rgba(255, 255, 0, 0.3);" />
+                        <engine:VisualElement name="CurrentIncomeBar" style="position: absolute; top: 0; left: 0; height: 100%; background-color: yellow;" />
                     </engine:VisualElement>
                     <engine:Label text="支出:" style="margin-right: 10px; font-size: 24px;" />
                     <engine:Label name="labelExpenditure" text="0" style="font-size: 24px; color: red;" />
