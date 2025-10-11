@@ -52,11 +52,42 @@ partial class StrategyActions
                     return;
                 }
             }
+            PayCost(args);
 
             var target = args.targetCharacter;
 
-            // TODO targetがプレーヤーの場合
-            // TODO 拒否された場合
+            // targetがプレーヤーの場合
+            var denied = false;
+            if (target.IsPlayer)
+            {
+                // 拒否するか確認する。
+                denied = await MessageWindow.ShowYesNo($"{actor.Name}から解雇を通知されました！\n従いますか？");
+            }
+            // AIの場合
+            else
+            {
+                var denyProb = target.Loyalty > (95 - target.Fealty) ? 0 : 0.5f;
+                denyProb += Mathf.Lerp(0, 0.5f, (100 - target.Loyalty) / 50f);
+                denyProb += target.Power > actor.Power ? 0.2f : 0;
+                denied = denyProb.Chance();
+            }
+
+            // 拒否された場合
+            if (denied)
+            {
+                if (actor.IsPlayer)
+                {
+                    var prevLoyalty = target.Loyalty;
+                    target.Loyalty = (target.Loyalty - 50).MinWith(0);
+                    await MessageWindow.Show($"{target.Name}は解雇を拒否しました！\n忠誠: {prevLoyalty} → {target.Loyalty}");
+                    // 同じ城のキャラの忠誠も下げる。
+                    foreach (var mate in actor.Castle.Members.Where(m => m != target && m != actor))
+                    {
+                        mate.Loyalty = (mate.Loyalty - 3).MinWith(0);
+                    }
+                }
+                return;
+            }
 
             // キャラを浪士にする。
             // 軍勢があれば削除する。
@@ -75,8 +106,6 @@ partial class StrategyActions
             {
                 await MessageWindow.Show($"{target.Name}を解雇しました。");
             }
-
-            PayCost(args);
         }
     }
 
