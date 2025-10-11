@@ -71,7 +71,7 @@ partial class StrategyActions
             // targetがプレーヤーの場合
             if (args.targetCharacter.IsPlayer)
             {
-                var yes = await MessageWindow.ShowYesNo($"{args.actor.Name} ({args.actor.Country.Ruler.Name}軍) から仕官の誘いがありました。\n受けますか？");
+                var yes = await MessageWindow.ShowYesNo($"{args.actor.Country.Ruler.Name}軍の\n{args.actor.Name} ({args.actor.Castle.Name}) から仕官の誘いがありました。\n受けますか？");
                 if (!yes)
                 {
                     Debug.Log($"{args.targetCharacter.Name} は仕官の誘いを断りました。");
