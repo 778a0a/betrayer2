@@ -85,10 +85,13 @@ partial class PersonalActions
             // メッセージを表示する。他国でも通知を受け取る。
             if (!asked)
             {
+                var betrayerNames = string.Join(", ", betrayers.Select(b => b.Name));
+                var opponentNames = string.Join(", ", opponents.Select(o => o.Name));
+
                 await MessageWindow.Show(
                     $"{actor.Castle.Name}で{actor.Name}が\n" +
                     $"{actor.Country.Ruler.Name}に対して反乱を起こしました！\n" +
-                    $"\n反乱側: {betrayers.Count}人\n鎮圧側: {opponents.Count}人");
+                    $"\n反乱側: {betrayers.Count}人\n{betrayerNames}\n\n鎮圧側: {opponents.Count}人\n{opponentNames}");
             }
 
             var oldCountry = actor.Country;
