@@ -80,6 +80,10 @@ partial class StrategyActions
             {
                 await MessageWindow.Show($"{args.targetCastle2.Name}へ金{args.gold:0}を輸送しました。");
             }
+            else if (args.targetCastle.Boss.IsPlayer)
+            {
+                await MessageWindow.Show($"{args.targetCastle2.Name}へ金{args.gold:0}が輸送されました。");
+            }
             else if (args.targetCastle2.Boss.IsPlayer)
             {
                 await MessageWindow.Show($"{args.targetCastle.Name}から金{args.gold:0}が輸送されました。");
