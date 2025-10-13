@@ -21,22 +21,26 @@ partial class PersonalActions
 
         public override ActionCost Cost(ActionArgs args) => 2;
 
-        protected override bool CanDoCore(ActionArgs args) => args.estimate ? 
-            args.actor.Castle.Strength < args.actor.Castle.StrengthMax :
-            args.targetCastle.Strength < args.targetCastle.StrengthMax;
+        protected override bool CanDoCore(ActionArgs args)
+        {
+            var castle = args.targetCastle ?? args.actor.Castle;
+            return castle.Strength < castle.StrengthMax;
+        }
 
         public override ValueTask Do(ActionArgs args)
         {
             Util.IsTrue(CanDo(args));
             var chara = args.actor;
-            var castle = args.targetCastle;
+            var castle = args.targetCastle ?? chara.Castle;
 
             var cap = chara.Intelligence.MinWith(chara.Attack).MinWith(chara.Defense);
             var adj = 1 + (cap - 50) / 100f;
             var adjDim = (castle.StrengthMax - castle.Strength) / castle.StrengthMax;
             var adjImp = chara.IsImportant || chara.IsPlayer ? 1 : 0.8f;
             var adjCount = chara.IsPlayer ? 1 : Mathf.Pow(0.9f, (chara.Castle.Members.Count - 3).MinWith(0));
-            castle.Strength = (castle.Strength + 0.1f * adj * adjDim * adjImp * adjCount).MaxWith(castle.StrengthMax);
+            // 発展度までは上がりやすくする
+            var adjDev = castle.Strength < castle.DevLevel ? 1.5f : 1;
+            castle.Strength = (castle.Strength + 0.1f * adj * adjDim * adjImp * adjCount * adjDev).MaxWith(castle.StrengthMax);
 
             chara.Contribution += adjImp * adj * 1;
             PayCost(args);
