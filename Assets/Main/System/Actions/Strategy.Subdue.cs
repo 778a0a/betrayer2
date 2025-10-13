@@ -45,7 +45,7 @@ partial class StrategyActions
             if (actor.IsPlayer)
             {
                 // キャラ選択画面を表示する。
-                var vassals = actor.Castle.Members.Where(m => m != actor && !m.IsMoving).ToList();
+                var vassals = actor.Castle.Members.Where(m => m != actor && !m.IsMoving).OrderBy(m => m.OrderIndex).ToList();
                 args.targetCharacter = await UI.SelectCharacterScreen.Show(
                     "討伐する配下を選択してください",
                     "キャンセル",

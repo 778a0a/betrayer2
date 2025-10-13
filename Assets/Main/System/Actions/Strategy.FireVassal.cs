@@ -38,7 +38,7 @@ partial class StrategyActions
             if (actor.IsPlayer)
             {
                 // キャラ選択画面を表示する。
-                var vassals = actor.Castle.Members.Where(m => m != actor).ToList();
+                var vassals = actor.Castle.Members.Where(m => m != actor).OrderBy(m => m.OrderIndex).ToList();
                 args.targetCharacter = await UI.SelectCharacterScreen.Show(
                     "解雇するキャラクターを選択してください",
                     "キャンセル",

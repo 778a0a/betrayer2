@@ -55,7 +55,7 @@ partial class StrategyActions
                 Assert.IsNotNull(baseCastle);
 
                 // 出撃可能なキャラクターがいるか確認する。
-                var candidateMembers = baseCastle.Members.Where(m => m.IsDefendable).ToList();
+                var candidateMembers = baseCastle.Members.Where(m => m.IsDefendable).OrderByDescending(m => m.Soldiers.SoldierCount).ToList();
                 if (candidateMembers.Count == 0)
                 {
                     await MessageWindow.ShowOk("出撃可能なキャラクターが存在しません。");
