@@ -272,11 +272,18 @@ partial class PersonalActions
             prob += actor.TotalCapability > member.TotalCapability ? 0.1f : -0.05f;
             prob += actor.TotalCapability > actor.Country.Ruler.TotalCapability ? 0.2f : -0.05f;
 
+            // 首謀者が国主で、memberのBossまたは隣接城のBossなら確率を上げる
+            if (actor.IsRegionBoss && (actor == member.Castle.Boss || actor.Castle.Neighbors.Contains(member.Castle)))
+            {
+                prob += 0.3f;
+            }
+
             // 忠実さ
             if (member.Fealty > 7) prob *= 1f / (member.Fealty - 6);
             if (member.Fealty < 7) prob *= 1f + (7 - member.Fealty) * 0.1f;
             // 野心
             if (member.Ambition >= 7) prob *= 1f + (member.Ambition - 6) * 0.1f;
+
             return prob;
         }
     }
