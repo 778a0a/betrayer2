@@ -72,8 +72,13 @@ public class CountryManager : IReadOnlyList<Country>
     /// <summary>
     /// 勢力の序列を更新します。
     /// </summary>
-    public void UpdateRanking(Country target = null)
+    public async ValueTask UpdateRanking(Country target = null)
     {
+        var player = GameCore.Instance.World.Player;
+        var playerIsVassal = player.IsVassal;
+        var playerIsBoss = player.IsBoss;
+        var playerIsRegionBoss = player.CanBeRegionBoss;
+
         var regions = GameCore.Instance.World.Castles.GroupBy(c => c.Region);
 
         foreach (var country in countries)
@@ -93,6 +98,28 @@ public class CountryManager : IReadOnlyList<Country>
                 members[i].CanBeRegionBoss = i + 1 < regionCount;
                 members[i].IsImportant = i + 1 < country.MaxImportantMemberCount;
             }
+        }
+
+        // プレーヤーの地位に変動があれば通知する。
+        // 国主になった場合
+        if (!playerIsRegionBoss && player.IsRegionBoss)
+        {
+            await MessageWindow.ShowOk("国主に昇進しました。\n近隣の城にも命令を出せるようになります。");
+        }
+        // 城主になった場合
+        else if (!playerIsBoss && player.IsBoss)
+        {
+            await MessageWindow.ShowOk("城主に昇進しました。");
+        }
+        // 国主から城主に降格した場合
+        else if (playerIsRegionBoss && !player.IsRegionBoss)
+        {
+            await MessageWindow.ShowOk("国主を解任されました...");
+        }
+        // 城主を解任された場合
+        else if (playerIsBoss && !player.IsBoss)
+        {
+            await MessageWindow.ShowOk("城主を解任されました...");
         }
     }
 

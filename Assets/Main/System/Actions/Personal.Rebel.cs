@@ -195,7 +195,7 @@ partial class PersonalActions
                 }
             }
             // 序列を更新する。
-            world.Countries.UpdateRanking(newCountry);
+            await world.Countries.UpdateRanking(newCountry);
 
             // 落城処理との共通化のために簡易的に軍勢を作る。
             var force = new Force(world, betrayers.First(), castle.Tile.Neighbors.RandomPick().Position);
