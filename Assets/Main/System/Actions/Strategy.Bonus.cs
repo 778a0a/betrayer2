@@ -61,6 +61,7 @@ partial class StrategyActions
                         }
                         UI.BonusScreen.labelDescription.text = message;
                         UI.BonusScreen.buttonConfirm.enabledSelf = !ng && selectedList.Count > 0;
+                        UI.BonusScreen.buttonSelectLowestLoyalty.enabledSelf = APCostUnit <= actor.ActionPoints;
                     },
                     // 実行ボタン押下時
                     async selectedList =>

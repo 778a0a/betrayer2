@@ -33,34 +33,46 @@ public partial class BonusScreen : MainUIComponent, IScreen
         };
 
         // 忠誠下位5人を選択ボタン
-        buttonSelectLowestLoyalty.clicked += () =>
+        buttonSelectLowestLoyalty.clicked += async () =>
         {
             if (charas == null || charas.Count == 0) return;
 
             var count = Math.Min(5, actor.ActionPoints / StrategyActions.BonusAction.APCostUnit);
-            var sortedCharas = charas.OrderBy(c => c.Loyalty).Take(count).ToList();
-
-            // 現在の選択と同じなら、選択を解除する。
-            if (CharacterTable.GetSelectedCharacters().OrderBy(c => c.Name).SequenceEqual(sortedCharas.OrderBy(c => c.Name)))
-            {
-                CharacterTable.ClearSelection();
-                return;
-            }
+            var sortedCharas = CharacterTable.charas.Take(count).ToList();
+            if (sortedCharas.Count == 0) return;
 
             CharacterTable.SetSelection(sortedCharas);
-            onSelectionChanged?.Invoke(sortedCharas);
+            labelDescription.visible = false;
+            buttonSelectLowestLoyalty.SetEnabled(false);
+            await Task.Delay(100);
+            Execute(sortedCharas);
+            await Task.Delay(100);
+            ClearSelection();
+            labelDescription.visible = true;
         };
 
         // 実行ボタン
         buttonConfirm.clicked += () =>
         {
             var selected = CharacterTable.GetSelectedCharacters();
+            Execute(selected);
+        };
+
+        void Execute(List<Character> selected)
+        {
             onConfirmClicked?.Invoke(selected);
             // 忠誠度順に並び替え直す。
             charas = charas.OrderBy(c => c.Loyalty).ToList();
             onSelectionChanged?.Invoke(selected);
             Render();
-        };
+        }
+
+        // 選択クリア
+        void ClearSelection()
+        {
+            CharacterTable.ClearSelection();
+            onSelectionChanged?.Invoke(new List<Character>());
+        }
 
         // 閉じるボタン
         buttonClose.clicked += () =>
@@ -100,7 +112,7 @@ public partial class BonusScreen : MainUIComponent, IScreen
 
     public void Render()
     {
-        CharacterTable.SetData(charas, _ => true);
+        CharacterTable.SetData(charas, _ => true, true);
         if (charas != null && charas.Count > 0)
         {
             CharacterSummary.SetData(charas[0]);

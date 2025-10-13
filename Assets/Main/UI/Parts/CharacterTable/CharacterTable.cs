@@ -11,7 +11,7 @@ public partial class CharacterTable : MainUIComponent
     public event EventHandler<List<Character>> SelectionChanged;
 
     private List<Character> originalCharas;
-    private List<Character> charas;
+    public List<Character> charas;
     private Predicate<Character> clickable;
 
     // 複数選択機能
@@ -78,15 +78,17 @@ public partial class CharacterTable : MainUIComponent
     }
 
     public void SetData(IEnumerable<Character> charas, bool clickable) => SetData(charas, _ => clickable);
-    public void SetData(IEnumerable<Character> charas, Predicate<Character> clickable = null)
+    public void SetData(IEnumerable<Character> charas, Predicate<Character> clickable = null, bool retainSort = false)
     {
         this.originalCharas = charas?.ToList() ?? new List<Character>();
         this.clickable = clickable ?? (_ => false);
-        
-        // ソート状態をリセット
-        currentSortColumn = null;
-        currentSortState = SortState.None;
-        
+
+        if (!retainSort)
+        {
+            currentSortColumn = null;
+            currentSortState = SortState.None;
+        }
+
         // データを表示
         RefreshData();
         UpdateSortIndicators();
