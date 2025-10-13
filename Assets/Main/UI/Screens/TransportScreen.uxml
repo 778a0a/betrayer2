@@ -9,13 +9,16 @@
                 <engine:Slider name="sliderAmount" style="flex-grow: 1;" />
                 <engine:Button name="buttonMinus10" text="-10" style="margin-left: 10px; width: 60px;" />
                 <engine:Button name="buttonPlus10" text="+10" style="margin-left: 10px; width: 60px;" />
-                <engine:Label name="labelAmount" text="100" style="font-size: 28px; min-width: 60px; margin-left: 10px" />
+                <engine:Label name="labelAmount" text="100" style="font-size: 28px; min-width: 60px; margin-left: 10px; -unity-text-align: middle-right;" />
+                <engine:Label text="/" style="font-size: 28px; margin-left: 5px; color: silver" />
+                <engine:Label name="labelCastleGold" text="999" style="font-size: 28px; min-width: 60px; margin-left: 5px; color: silver; -unity-text-align: middle-left;" />
             </engine:VisualElement>
         </engine:VisualElement>
         <engine:Label name="labelDescription" text="輸送先の城を選択してください" style="font-size: 32px; margin-top: 15px;" />
         <engine:Instance template="CastleTable" name="CastleTable" style="margin-top: 20px; flex-grow: 1;" />
-        <engine:VisualElement style="margin-top: 10px; flex-shrink: 0;">
-            <engine:Button name="buttonClose" text="キャンセル" />
+        <engine:VisualElement style="margin-top: 10px; flex-shrink: 0; flex-direction: row;">
+            <engine:Button name="buttonConfirm" text="実行" style="flex-grow: 1; margin-right: 10px;" />
+            <engine:Button name="buttonClose" text="閉じる" style="flex-grow: 1;" />
         </engine:VisualElement>
     </engine:VisualElement>
 </engine:UXML>

@@ -12,6 +12,7 @@ public partial class CastleTable : MainUIComponent
 
     private List<Castle> castles;
     private Predicate<Castle> clickable;
+    private Castle selectedCastle;
 
     public void Initialize()
     {
@@ -32,7 +33,9 @@ public partial class CastleTable : MainUIComponent
         ListView.bindItem = (element, index) =>
         {
             var item = (CastleTableRowItem)element.userData;
-            item.SetData(castles[index], clickable?.Invoke(castles[index]) ?? false);
+            var castle = castles[index];
+            var isClickable = clickable?.Invoke(castle) ?? false;
+            item.SetData(castle, isClickable, selectedCastle == castle);
             //Debug.Log("bindItem: " + index + " -> " + castles[index]?.Name);
         };
     }
@@ -65,6 +68,33 @@ public partial class CastleTable : MainUIComponent
     {
         this.castles = castles?.ToList() ?? new List<Castle>();
         this.clickable = clickable ?? (_ => false);
+        if (selectedCastle != null && !this.castles.Contains(selectedCastle))
+        {
+            selectedCastle = null;
+        }
+
         ListView.itemsSource = this.castles;
+        ListView?.RefreshItems();
     }
+
+    public void SetSelection(Castle castle)
+    {
+        if (castle != null && !castles.Contains(castle))
+        {
+            return;
+        }
+
+        if (selectedCastle == castle) return;
+        selectedCastle = castle;
+        ListView?.RefreshItems();
+    }
+
+    public void ClearSelection()
+    {
+        if (selectedCastle == null) return;
+        selectedCastle = null;
+        ListView?.RefreshItems();
+    }
+
+    public Castle GetSelectedCastle() => selectedCastle;
 }

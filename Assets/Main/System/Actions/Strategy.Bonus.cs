@@ -67,7 +67,14 @@ partial class StrategyActions
                     async selectedList =>
                     {
                         if (selectedList.Count == 0) return;
-                        await SendBonus(selectedList);
+                        var processed = await SendBonus(selectedList);
+                        foreach (var processedTarget in processed)
+                        {
+                            if (processedTarget != null && !targets.Contains(processedTarget))
+                            {
+                                targets.Add(processedTarget);
+                            }
+                        }
                     });
 
                 if (targets == null || targets.Count == 0)
@@ -81,9 +88,10 @@ partial class StrategyActions
                 await SendBonus(targets);
             }
 
-            async ValueTask SendBonus(List<Character> targets)
+            async ValueTask<List<Character>> SendBonus(List<Character> targetList)
             {
-                foreach (var target in targets)
+                var processed = new List<Character>();
+                foreach (var target in targetList)
                 {
                     if (target == null) continue;
                     if (actor.ActionPoints < APCostUnit) break;
@@ -100,7 +108,11 @@ partial class StrategyActions
                     {
                         //await MessageWindow.Show($"{actor.Name} から褒賞を貰いました！");
                     }
+
+                    processed.Add(target);
                 }
+
+                return processed;
             }
         }
     }

@@ -32,4 +32,7 @@
     background-color: rgba(0, 156, 143, 0.8);
 }
 
-/* Remove table-based styles as we're now using card layout */
+#CastleTableRowItemRoot.selected {
+    background-color: rgba(0, 156, 143, 0.6);
+    border-color: rgba(0, 255, 255, 0.8);
+}

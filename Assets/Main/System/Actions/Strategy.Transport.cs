@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.Assertions;
 
 partial class StrategyActions
 {
@@ -24,15 +23,11 @@ partial class StrategyActions
 
         public override ActionCost Cost(ActionArgs args) => ActionCost.Of(0, 2, 0);
 
-        override protected bool CanDoCore(ActionArgs args)
-        {
-            return args.gold <= args.targetCastle.Gold;
-        }
+        protected override bool CanDoCore(ActionArgs args) => args.gold <= args.targetCastle.Gold;
 
         public override bool Enabled(Character actor, GameMapTile tile)
         {
             return actor.CanPay(Cost(new(actor, estimate: true))) &&
-                // 他に拠点が存在する場合のみ有効
                 actor.Country.Castles.Count > 1;
         }
 
@@ -41,59 +36,116 @@ partial class StrategyActions
         public override async ValueTask Do(ActionArgs args)
         {
             var actor = args.actor;
+            var sourceCastle = args.selectedTile?.Castle ?? args.targetCastle;
 
-            // プレーヤーの場合
+            if (sourceCastle == null)
+            {
+                Debug.LogWarning("Transport source castle is not specified.");
+                return;
+            }
+
+            args.targetCastle = sourceCastle;
+
+            async ValueTask<bool> SendTransportAsync(Castle destination, float amount)
+            {
+                if (destination == null) return false;
+                if (amount <= 0f) return false;
+                if (amount > sourceCastle.Gold)
+                {
+                    await MessageWindow.Show("輸送量が城の資金を超えています。");
+                    return false;
+                }
+
+                var costArgs = new ActionArgs(actor, targetCastle: sourceCastle, targetCastle2: destination, gold: amount);
+                if (NeedPayCost)
+                {
+                    var cost = Cost(costArgs);
+                    if (!cost.CanPay(actor))
+                    {
+                        await MessageWindow.Show("APが不足しています。");
+                        return false;
+                    }
+                    PayCost(costArgs);
+                }
+
+                sourceCastle.Gold -= amount;
+                destination.Gold += amount;
+                args.targetCastle2 = destination;
+                args.gold = amount;
+
+                await ShowTransportMessage(actor, sourceCastle, destination, amount);
+                Debug.Log($"{actor.Name} が {sourceCastle} から {destination} へ {amount}G 運びました。");
+                return true;
+            }
+
             if (actor.IsPlayer)
             {
-                args.targetCastle = args.selectedTile.Castle;
-
-                // 自国の他の拠点を取得する。
                 var targetCastles = actor.Country.Castles
-                    .Where(c => c != args.targetCastle)
+                    .Where(c => c != sourceCastle)
                     .ToList();
 
-                var (castle, amount) = await UI.TransportScreen.Show(
-                    targetCastles,
-                    args.targetCastle.Gold.MaxWith(10), 
-                    args.targetCastle.Gold);
-
-                if (castle == null)
+                if (targetCastles.Count == 0)
                 {
-                    Debug.Log("輸送がキャンセルされました。");
+                    Debug.Log("輸送可能な城が存在しません。");
                     return;
                 }
 
-                args.targetCastle2 = castle;
-                args.gold = amount;
+                var executedCount = 0;
+
+                Func<bool> CanExecute = () =>
+                {
+                    if (!NeedPayCost) return true;
+                    var cost = Cost(new ActionArgs(actor, targetCastle: sourceCastle));
+                    return cost.CanPay(actor);
+                };
+
+                async ValueTask<bool> OnConfirmAsync(Castle destination, float amount)
+                {
+                    var success = await SendTransportAsync(destination, amount);
+                    if (success)
+                    {
+                        executedCount++;
+                    }
+                    return success;
+                }
+
+                await UI.TransportScreen.Show(
+                    targetCastles,
+                    sourceCastle.Gold.MaxWith(10),
+                    () => sourceCastle.Gold,
+                    CanExecute,
+                    OnConfirmAsync);
+
+                if (executedCount == 0)
+                {
+                    Debug.Log("輸送がキャンセルされました。");
+                }
+
+                return;
             }
+
             Util.IsTrue(CanDo(args));
+            await SendTransportAsync(args.targetCastle2, args.gold);
+        }
 
-            // 輸送を行う。
-            args.targetCastle.Gold -= args.gold;
-            args.targetCastle2.Gold += args.gold;
-            //if (!args.actor.IsRuler)
-            //{
-            //    args.actor.Contribution += args.gold / 10f;
-            //}
-
+        private static async ValueTask ShowTransportMessage(
+            Character actor,
+            Castle source,
+            Castle destination,
+            float amount)
+        {
             if (actor.IsPlayer)
             {
-                await MessageWindow.Show($"{args.targetCastle2.Name}へ金{args.gold:0}を輸送しました。");
+                await MessageWindow.Show($"{destination.Name}へ金{amount:0}を輸送しました。");
             }
-            else if (args.targetCastle.Boss.IsPlayer)
+            else if (source.Boss != null && source.Boss.IsPlayer)
             {
-                await MessageWindow.Show($"{args.targetCastle2.Name}へ金{args.gold:0}が輸送されました。");
+                await MessageWindow.Show($"{destination.Name}へ金{amount:0}が輸送されました。");
             }
-            else if (args.targetCastle2.Boss.IsPlayer)
+            else if (destination.Boss != null && destination.Boss.IsPlayer)
             {
-                await MessageWindow.Show($"{args.targetCastle.Name}から金{args.gold:0}が輸送されました。");
+                await MessageWindow.Show($"{source.Name}から金{amount:0}が輸送されました。");
             }
-
-            if (NeedPayCost)
-            {
-                PayCost(args);
-            }
-            Debug.Log($"{args.actor.Name} が {args.targetCastle} から {args.targetCastle2} へ {args.gold}G 運びました。");
         }
     }
 }

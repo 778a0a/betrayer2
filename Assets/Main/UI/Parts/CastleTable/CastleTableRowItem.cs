@@ -39,7 +39,7 @@ public partial class CastleTableRowItem
         MouseLeave?.Invoke(this, Castle);
     }
 
-    public void SetData(Castle castle, bool isClickable)
+    public void SetData(Castle castle, bool isClickable, bool isSelected)
     {
         Castle = castle;
         if (castle == null)
@@ -50,6 +50,7 @@ public partial class CastleTableRowItem
         Root.style.visibility = Visibility.Visible;
 
         CastleTableRowItemRoot.EnableInClassList("clickable", isClickable);
+        CastleTableRowItemRoot.EnableInClassList("selected", isSelected);
         
         // 城名
         labelName.text = castle.Name;

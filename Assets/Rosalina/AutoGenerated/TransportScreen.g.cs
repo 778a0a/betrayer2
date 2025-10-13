@@ -22,6 +22,10 @@ public partial class TransportScreen
 
     public Label labelAmount { get; private set; }
 
+    public Label labelCastleGold { get; private set; }
+
+    public Button buttonConfirm { get; private set; }
+
     public Button buttonClose { get; private set; }
 
     public Label labelDescription { get; private set; }
@@ -37,6 +41,8 @@ public partial class TransportScreen
         buttonMinus10 = Root?.Q<Button>("buttonMinus10");
         buttonPlus10 = Root?.Q<Button>("buttonPlus10");
         labelAmount = Root?.Q<Label>("labelAmount");
+        labelCastleGold = Root?.Q<Label>("labelCastleGold");
+        buttonConfirm = Root?.Q<Button>("buttonConfirm");
         buttonClose = Root?.Q<Button>("buttonClose");
         labelDescription = Root?.Q<Label>("labelDescription");
         CastleTable = new CastleTable(Root?.Q<VisualElement>("CastleTable"));
@@ -49,6 +55,8 @@ public partial class TransportScreen
         buttonMinus10 = Root?.Q<Button>("buttonMinus10");
         buttonPlus10 = Root?.Q<Button>("buttonPlus10");
         labelAmount = Root?.Q<Label>("labelAmount");
+        labelCastleGold = Root?.Q<Label>("labelCastleGold");
+        buttonConfirm = Root?.Q<Button>("buttonConfirm");
         buttonClose = Root?.Q<Button>("buttonClose");
         labelDescription = Root?.Q<Label>("labelDescription");
         CastleTable = new CastleTable(Root?.Q<VisualElement>("CastleTable"));
