@@ -376,8 +376,8 @@ public class Battle
             if (op.IsInEnemyTerritory) adj += Tap("自領2", +0.05f);
             if (chara.IsInEnemyTerritory) adj += Tap("敵地1", -0.05f);
             if (op.IsInOwnTerritory) adj += Tap("敵地2", -0.05f);
-            if (chara.IsRemote) adj += Tap("遠征1", -0.20f);
-            if (op.IsRemote) adj += Tap("遠征2", +0.20f);
+            if (chara.IsRemote) adj += Tap("遠征1", -0.25f);
+            if (op.IsRemote) adj += Tap("遠征2", +0.25f);
             return (adj, sb.ToString());
 
             float Tap(string label, float v)
