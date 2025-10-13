@@ -125,7 +125,7 @@ public class DefaultData
         // 書き込みを即座に反映させるために、直接読み込みます。
         return File.ReadAllText($"Assets/Resources/{path}.csv");
 #else
-        return Resources.Load<TextAsset>(path).text
+        return Resources.Load<TextAsset>(path).text;
 #endif
     }
 

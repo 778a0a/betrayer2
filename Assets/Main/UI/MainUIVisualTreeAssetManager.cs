@@ -71,10 +71,12 @@ public class MainUIVisualTreeAssetManager : MonoBehaviour
             shouldStop = true;
         }
 
+#if UNITY_EDITOR
         if (shouldStop)
         {
             UnityEditor.EditorApplication.isPlaying = false;
         }
+#endif
     }
 }
 
