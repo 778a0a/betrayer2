@@ -82,6 +82,7 @@ public partial class BonusScreen : MainUIComponent, IScreen
         Action<List<Character>> onSelectionChanged,
         Func<List<Character>, ValueTask> onConfirmClicked)
     {
+        using var _ = Core.World.Map.DisableClickEventHandler();
         tcs = new();
         this.onSelectionChanged = onSelectionChanged;
         this.onConfirmClicked = onConfirmClicked;

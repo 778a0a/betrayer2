@@ -79,6 +79,7 @@ public partial class SelectCharacterScreen : MainUIComponent, IScreen
         IList<Character> charas,
         Predicate<Character> predCanSelect)
     {
+        using var _ = Core.World.Map.DisableClickEventHandler();
         tcs = new();
         this.predCanSelect = predCanSelect;
 
@@ -112,6 +113,7 @@ public partial class SelectCharacterScreen : MainUIComponent, IScreen
         Predicate<Character> predCanSelect,
         Action<List<Character>> onSelectionChanged = null)
     {
+        using var _ = Core.World.Map.DisableClickEventHandler();
         multiTcs = new();
         this.predCanSelect = predCanSelect;
         this.onSelectionChanged = onSelectionChanged;

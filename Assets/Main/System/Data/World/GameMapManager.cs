@@ -166,6 +166,22 @@ public class GameMapManager
         });
     }
 
+    public IDisposable DisableClickEventHandler()
+    {
+        customEventHandler?.Dispose();
+        var ui = GameCore.Instance.Map;
+        customEventHandler = ui.SetCellClickHandler(click);
+        return Util.Defer(() =>
+        {
+            ClearCustomEventHandler();
+        });
+
+        static void click(object sender, MapPosition pos)
+        {
+            Debug.Log($"クリックイベントは無効化されています。{pos}");
+        }
+    }
+
     public void ClearCustomEventHandler()
     {
         customEventHandler?.Dispose();
