@@ -179,7 +179,7 @@ public class Battle
         var loserPrestigeLoss = loser.Character.Prestige / 8;
         loser.Character.Prestige -= loserPrestigeLoss;
         winner.Character.Prestige += loserPrestigeLoss;
-        winner.Character.Prestige += 5;
+        winner.Character.Prestige += 10;
         loser.Character.Prestige += 1;
 
         // 功績の処理を行う。
