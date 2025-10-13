@@ -6,38 +6,38 @@
     <ui:VisualElement class="panel">
         
         <!-- ヘッダー -->
-        <ui:VisualElement class="header-panel" style="flex-direction: row; justify-content: space-between;">
+        <ui:VisualElement class="header-panel" style="flex-direction: row; align-items: flex-start; height: 45px; justify-content: space-between;">
 
             <ui:VisualElement style="flex-direction: row; align-items: flex-end;">
                 <ui:Label name="labelPhaseTitle" text="戦略" style="font-size: 40px; font-weight: bold; color: #0ff;" />
-                <ui:Label name="labelPhaseSubtitle" text="フェイズ" style="font-size: 30px; font-weight: bold;" />
+                <ui:Label name="labelPhaseSubtitle" text="フェイズ" style="font-size: 25px; font-weight: bold;" />
                 
                 <!-- 戦略フェイズ用ヘッダー -->
                 <ui:VisualElement name="StrategyPhaseHeader" style="flex-direction: row; align-items: flex-end;">
-                    <ui:Label text="(城資金 " style="font-size: 28px; margin: 0 5px 0 10px;" />
-                    <ui:Label text="8888" name="labelCurrentCastleGold" style="font-size: 28px; color: yellow;" />
-                    <ui:Label text=", 采配P " style="font-size: 28px; margin: 0 5px 0 0;" />
-                    <ui:Label text="88" name="labelCurrentAP" style="font-size: 28px; color: red;" />
-                    <ui:Label text=")" style="font-size: 28px;" />
+                    <ui:Label text="(城資金 " style="font-size: 26px; margin: 0 5px 0 10px;" />
+                    <ui:Label text="8888" name="labelCurrentCastleGold" style="font-size: 26px; color: yellow;" />
+                    <ui:Label text=", 采配P " style="font-size: 26px; margin: 0 5px 0 0;" />
+                    <ui:Label text="88" name="labelCurrentAP" style="font-size: 26px; color: red;" />
+                    <ui:Label text=")" style="font-size: 26px;" />
                 </ui:VisualElement>
                 
                 <!-- 個人フェイズ用ヘッダー -->
                 <ui:VisualElement name="PersonalPhaseHeader" style="flex-direction: row; align-items: flex-end; display: none;">
-                    <ui:Label text="(所持金 " style="font-size: 28px; margin: 0 5px 0 10px;" />
-                    <ui:Label text="8888" name="labelCurrentPersonalGold" style="font-size: 28px; color: yellow;" />
-                    <ui:Label text=")" style="font-size: 28px;" />
+                    <ui:Label text="(所持金 " style="font-size: 26px; margin: 0 5px 0 10px;" />
+                    <ui:Label text="8888" name="labelCurrentPersonalGold" style="font-size: 26px; color: yellow;" />
+                    <ui:Label text=")" style="font-size: 26px;" />
                 </ui:VisualElement>
             </ui:VisualElement>
 
             <ui:VisualElement style="flex-direction: row; align-items: flex-end; margin: 5px 0 0px 0; align-items: stretch;">
-                <ui:Button text="ターン終了" name="buttonTurnEnd" style="font-size: 28px; padding: 5px 10px; margin: 0 10px 0 0" />
-                <ui:Button text="×" name="buttonClose" style="font-size: 28px; -unity-font-style: bold; padding: 0; width: 40px; margin: 0" />
+                <!-- <ui:Button text="×" name="buttonClose" style="font-size: 28px; -unity-font-style: bold; padding: 0; width: 40px; margin: 0" /> -->
+                <ui:Button name="buttonClose" text="⚙️" style="background-color: #223344; font-size: 25px; width: 40px; height: 40px; padding: 0 10px; margin: 0;" />
             </ui:VisualElement>
 
         </ui:VisualElement>
 
         <!-- アクションボタンエリア -->
-        <ui:VisualElement style="margin-top: 10px; padding: 10px 5px 5px 5px; background-color: #223344; min-height: 40px">
+        <ui:VisualElement style="margin-top: 5px; padding: 10px 5px 5px 5px; background-color: #223344; min-height: 40px">
 
             <ui:VisualElement name="ActionPanelContent" style="min-height: 205px;">
                 <!-- 実行可能なアクションがあるとき用 -->
@@ -66,7 +66,10 @@
                 </ui:VisualElement>
             </ui:VisualElement>
 
-            <ui:Button name="buttonToggleActionPanelFolding" text="-" style="font-size: 40px; position: absolute; right: 0; width: 40px; height: 40px; padding: 0; margin: -10px 0 0 0" />
+            <ui:VisualElement style="position: absolute; right: 0; flex-direction: row; align-items: center; margin: -10px 0 0 0">
+                <ui:Button text="ターン終了" name="buttonTurnEnd" style="font-size: 28px; height: 40px; padding: 5px 10px; margin: 0 5px 0 0;" />
+                <ui:Button name="buttonToggleActionPanelFolding" text="-" style="font-size: 40px; width: 40px; height: 40px; padding: 0; margin: 0;" />
+            </ui:VisualElement>
 
         </ui:VisualElement>
 
