@@ -372,10 +372,10 @@ public class Battle
             else adj += Tap("敵特性", -(TraitsAdjustment(op.Tile, op.Character.Traits) + TraitsAdjustment(chara.Tile, op.Character.Traits)));
             if (chara.IsInCastle) adj += Tap("自城", +chara.Tile.Castle.Strength / 100 * 0.5f);
             if (op.IsInCastle) adj += Tap("敵城", -op.Tile.Castle.Strength / 100 * 0.5f);
-            if (chara.IsInOwnTerritory) adj += Tap("自領1", +0.05f);
+            if (chara.IsInOwnTerritory || chara.IsInAllyTerritory) adj += Tap("自領1", +0.05f);
             if (op.IsInEnemyTerritory) adj += Tap("自領2", +0.05f);
             if (chara.IsInEnemyTerritory) adj += Tap("敵地1", -0.05f);
-            if (op.IsInOwnTerritory) adj += Tap("敵地2", -0.05f);
+            if (op.IsInOwnTerritory || op.IsInAllyTerritory) adj += Tap("敵地2", -0.05f);
             if (chara.IsRemote) adj += Tap("遠征1", -0.25f);
             if (op.IsRemote) adj += Tap("遠征2", +0.25f);
             return (adj, sb.ToString());

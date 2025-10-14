@@ -126,6 +126,8 @@ public partial class BattleWindow
 
     public Label labelAttackerOwnTerritory { get; private set; }
 
+    public Label labelAttackerAllyTerritory { get; private set; }
+
     public Label labelAttackerEnemyTerritory { get; private set; }
 
     public Label labelAttackerRemote { get; private set; }
@@ -163,6 +165,8 @@ public partial class BattleWindow
     public VisualElement DefenderCastleLevelContainer { get; private set; }
 
     public Label labelDefenderOwnTerritory { get; private set; }
+
+    public Label labelDefenderAllyTerritory { get; private set; }
 
     public Label labelDefenderEnemyTerritory { get; private set; }
 
@@ -251,6 +255,7 @@ public partial class BattleWindow
         labelAttackerIntelligenseCaption = Root?.Q<Label>("labelAttackerIntelligenseCaption");
         labelAttackerIntelligense = Root?.Q<Label>("labelAttackerIntelligense");
         labelAttackerOwnTerritory = Root?.Q<Label>("labelAttackerOwnTerritory");
+        labelAttackerAllyTerritory = Root?.Q<Label>("labelAttackerAllyTerritory");
         labelAttackerEnemyTerritory = Root?.Q<Label>("labelAttackerEnemyTerritory");
         labelAttackerRemote = Root?.Q<Label>("labelAttackerRemote");
         imageAttacker = Root?.Q<VisualElement>("imageAttacker");
@@ -270,6 +275,7 @@ public partial class BattleWindow
         labelDefenderCastleLevel = Root?.Q<Label>("labelDefenderCastleLevel");
         DefenderCastleLevelContainer = Root?.Q<VisualElement>("DefenderCastleLevelContainer");
         labelDefenderOwnTerritory = Root?.Q<Label>("labelDefenderOwnTerritory");
+        labelDefenderAllyTerritory = Root?.Q<Label>("labelDefenderAllyTerritory");
         labelDefenderEnemyTerritory = Root?.Q<Label>("labelDefenderEnemyTerritory");
         labelDefenderRemote = Root?.Q<Label>("labelDefenderRemote");
         imageDefender = Root?.Q<VisualElement>("imageDefender");
@@ -344,6 +350,7 @@ public partial class BattleWindow
         labelAttackerIntelligenseCaption = Root?.Q<Label>("labelAttackerIntelligenseCaption");
         labelAttackerIntelligense = Root?.Q<Label>("labelAttackerIntelligense");
         labelAttackerOwnTerritory = Root?.Q<Label>("labelAttackerOwnTerritory");
+        labelAttackerAllyTerritory = Root?.Q<Label>("labelAttackerAllyTerritory");
         labelAttackerEnemyTerritory = Root?.Q<Label>("labelAttackerEnemyTerritory");
         labelAttackerRemote = Root?.Q<Label>("labelAttackerRemote");
         imageAttacker = Root?.Q<VisualElement>("imageAttacker");
@@ -363,6 +370,7 @@ public partial class BattleWindow
         labelDefenderCastleLevel = Root?.Q<Label>("labelDefenderCastleLevel");
         DefenderCastleLevelContainer = Root?.Q<VisualElement>("DefenderCastleLevelContainer");
         labelDefenderOwnTerritory = Root?.Q<Label>("labelDefenderOwnTerritory");
+        labelDefenderAllyTerritory = Root?.Q<Label>("labelDefenderAllyTerritory");
         labelDefenderEnemyTerritory = Root?.Q<Label>("labelDefenderEnemyTerritory");
         labelDefenderRemote = Root?.Q<Label>("labelDefenderRemote");
         imageDefender = Root?.Q<VisualElement>("imageDefender");

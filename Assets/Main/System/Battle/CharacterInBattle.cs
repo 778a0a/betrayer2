@@ -17,6 +17,7 @@ public record CharacterInBattle(
     public Country Country = Character.Country; // TODO 奪取の場合
     public bool IsDefender = !IsAttacker;
     public bool IsInOwnTerritory = Tile.Country == Character.Country;
+    public bool IsInAllyTerritory = Tile.Country != Character.Country && (Tile.Country?.IsAlly(Character.Country) ?? false);
     public bool IsInEnemyTerritory => Tile.Country == Opponent.Country;
     public Terrain Terrain = Tile.Terrain;
     
@@ -168,7 +169,7 @@ public record CharacterInBattle(
     /// 戦闘に利用する戦闘能力値
     /// </summary>
     public int Strength => UseAttack ? Character.Attack : Character.Defense;
-    public bool UseAttack => !IsInOwnTerritory;
+    public bool UseAttack => !IsInOwnTerritory && !IsInAllyTerritory;
     public int Intelligence => Character.Intelligence;
 
     public IEnumerable<Soldier> OrderedSoldiers => Row1.Concat(Row2).Concat(Row3);

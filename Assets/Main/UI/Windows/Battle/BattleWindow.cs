@@ -166,8 +166,10 @@ public partial class BattleWindow// : IWindow
         // 自国領・敵国領・遠征表示
         labelAttackerOwnTerritory.style.display = Util.Display(battle.Attacker.IsInOwnTerritory);
         labelDefenderOwnTerritory.style.display = Util.Display(battle.Defender.IsInOwnTerritory);
-        labelAttackerEnemyTerritory.style.display = Util.Display(!battle.Attacker.IsInOwnTerritory);
-        labelDefenderEnemyTerritory.style.display = Util.Display(!battle.Defender.IsInOwnTerritory);
+        labelAttackerAllyTerritory.style.display = Util.Display(battle.Attacker.IsInAllyTerritory);
+        labelDefenderAllyTerritory.style.display = Util.Display(battle.Defender.IsInAllyTerritory);
+        labelAttackerEnemyTerritory.style.display = Util.Display(battle.Attacker.IsInEnemyTerritory);
+        labelDefenderEnemyTerritory.style.display = Util.Display(battle.Defender.IsInEnemyTerritory);
         labelAttackerRemote.style.display = Util.Display(battle.Attacker.IsRemote);
         labelDefenderRemote.style.display = Util.Display(battle.Defender.IsRemote);
     }

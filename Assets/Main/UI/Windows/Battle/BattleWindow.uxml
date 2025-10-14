@@ -142,7 +142,7 @@
                         <!-- 攻撃側: 顔画像とステータス -->
                         <engine:VisualElement style="flex-grow: 0; flex-direction: row; margin-top: 10px">
                             <engine:VisualElement name="imageAttacker" style="flex-grow: 0; width: 200px; height: 200px; border-width: 2px; border-color: #888;" />
-                            <engine:VisualElement style="flex-grow: 0; flex-direction: column;">
+                            <engine:VisualElement style="flex-grow: 0; flex-direction: column; align-items: flex-end">
                                 <engine:VisualElement style="flex-grow: 0; flex-direction: row;">
                                     <engine:Label text="攻撃" name="labelAttackerAttackCaption" style="padding: 0 5px 20px 5px;" />
                                     <engine:Label text="99" name="labelAttackerAttack" style="" />
@@ -153,6 +153,7 @@
                                 </engine:VisualElement>
                                 <!-- 領地表示 -->
                                 <engine:Label text="自国領" name="labelAttackerOwnTerritory" style="padding: 0 5px 20px 5px; color: rgb(144, 238, 144); display: none;" />
+                                <engine:Label text="同盟国領" name="labelAttackerAllyTerritory" style="padding: 0 5px 20px 5px; color: rgb(144, 238, 144); display: none;" />
                                 <engine:Label text="敵国領" name="labelAttackerEnemyTerritory" style="padding: 0 5px 20px 5px; color: rgb(255, 99, 99); display: none;" />
                                 <engine:Label text="遠征" name="labelAttackerRemote" style="padding: 0 5px 20px 5px; color: rgb(255, 99, 99); display: none;" />
                             </engine:VisualElement>
@@ -188,7 +189,7 @@
                         <!-- 防衛側: 顔画像とステータス (右寄せレイアウト) -->
                         <engine:VisualElement style="flex-grow: 0; flex-direction: row-reverse; margin-top: 10px;">
                             <engine:VisualElement name="imageDefender" style="flex-grow: 0; width: 200px; height: 200px; border-width: 2px; border-color: #888;" />
-                            <engine:VisualElement style="flex-grow: 0; flex-direction: column;">
+                            <engine:VisualElement style="flex-grow: 0; flex-direction: column; align-items: flex-end">
                                 <engine:VisualElement style="flex-grow: 0; flex-direction: row;">
                                     <engine:Label text="防衛" name="labelDefenderDefenceCaption" style="" />
                                     <engine:Label text="99" name="labelDefenderDefence" style="padding: 0 5px 20px 5px;" />
@@ -204,6 +205,7 @@
                                 </engine:VisualElement>
                                 <!-- 領地表示 -->
                                 <engine:Label text="自国領" name="labelDefenderOwnTerritory" style="padding: 0 5px 20px 5px; color: rgb(144, 238, 144); display: none;" />
+                                <engine:Label text="同盟国領" name="labelDefenderAllyTerritory" style="padding: 0 5px 20px 5px; color: rgb(144, 238, 144); display: none;" />
                                 <engine:Label text="敵国領" name="labelDefenderEnemyTerritory" style="padding: 0 5px 20px 5px; color: rgb(255, 99, 99); display: none;" />
                                 <engine:Label text="遠征" name="labelDefenderRemote" style="padding: 0 5px 20px 5px; color: rgb(255, 165, 0); display: none;" />
                             </engine:VisualElement>
