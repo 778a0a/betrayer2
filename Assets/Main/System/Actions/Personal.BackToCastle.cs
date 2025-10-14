@@ -44,6 +44,7 @@ partial class PersonalActions
             {
                 GameCore.Instance.World.Forces.Unregister(force);
                 Debug.LogWarning($"すでに本拠地に到達しています。軍勢を削除します。");
+                return true;
             }
 
             if (force.Destination != prevDestination)
