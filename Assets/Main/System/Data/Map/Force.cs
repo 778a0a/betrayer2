@@ -361,17 +361,26 @@ public class Force : ICountryEntity, IMapEntity
     {
         // キャラの攻撃能力に応じて移動コストを補正する。
         var martialAdj = Character.Attack;
+        if (Destination is Castle castle)
+        {
+            // 目的地が自国・同盟国の城なら攻撃と防衛の高い方を採用する。
+            if (this.IsSelfOrAlly(castle))
+            {
+                martialAdj = Mathf.Max(Character.Attack, Character.Defense);
+            }
+        }
 
-        // 援軍の場合は、攻撃と防衛の高い方を採用する。
-        if (Mode == ForceMode.Reinforcement)
-        {
-            martialAdj = Mathf.Max(Character.Attack, Character.Defense);
-        }
-        // 自国領の場合は防衛能力で補正する。
-        else if (Country.Has(current) || Country.Has(next))
-        {
-            martialAdj = Character.Defense;
-        }
+        //// 援軍の場合は、攻撃と防衛の高い方を採用する。
+        //if (Mode == ForceMode.Reinforcement)
+        //{
+        //    martialAdj = Mathf.Max(Character.Attack, Character.Defense);
+        //}
+        //// 自国領の場合は防衛能力で補正する。
+        //else if (Country.Has(current) || Country.Has(next))
+        //{
+        //    martialAdj = Character.Defense;
+        //}
+
         // 能力が70の場合は補正1.0、能力が80の場合は0.9、能力が60の場合は1.1
         var martialAdjRate = 1.0f - (martialAdj - 70) * 0.01f;
 
