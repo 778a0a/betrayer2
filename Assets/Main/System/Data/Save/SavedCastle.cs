@@ -31,7 +31,7 @@ public static class SavedCastles
             };
             countries.Add(country);
         }
-        return countries;
+        return countries.OrderBy(c => c.Data.Id).ToList();
     }
 
     public static string ToCsv(List<SavedCastle> castles)
