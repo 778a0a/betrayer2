@@ -24,6 +24,7 @@ public partial class ActionScreen : IScreen
             ActionButtonHelper.Strategy(a => a.Bonus),
             ActionButtonHelper.Strategy(a => a.HireVassal),
             ActionButtonHelper.Strategy(a => a.FireVassal),
+            ActionButtonHelper.Strategy(a => a.Subdue),
             ActionButtonHelper.Strategy(a => a.Goodwill),
             ActionButtonHelper.Strategy(a => a.Ally),
             ActionButtonHelper.Strategy(a => a.BreakAlliance),
@@ -31,7 +32,6 @@ public partial class ActionScreen : IScreen
             //ActionButtonHelper.Strategy(a => a.BuildTown),
             ActionButtonHelper.Strategy(a => a.DepositCastleGold),
             ActionButtonHelper.Strategy(a => a.WithdrawCastleGold),
-            ActionButtonHelper.Strategy(a => a.Subdue),
             ActionButtonHelper.Strategy(a => a.BecomeIndependent),
             ActionButtonHelper.Strategy(a => a.Resign),
         };
