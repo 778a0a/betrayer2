@@ -24,7 +24,7 @@ public partial class AI
             default:
                 // 周辺国が全て同盟国の場合は、一番弱い国との同盟を破棄する。
                 var directNeighbors = country.Neighbors;
-                if (0.05f.Chance() && directNeighbors.All(country.IsAlly))
+                if (directNeighbors.Any() && 0.05f.Chance() && directNeighbors.All(country.IsAlly))
                 {
                     Debug.LogWarning($"{country} 隣接国が全て同盟国なので一番弱い国との同盟を破棄します。");
                     var weakest = directNeighbors.OrderBy(n => n.Power).First();
