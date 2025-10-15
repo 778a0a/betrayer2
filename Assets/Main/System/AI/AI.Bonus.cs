@@ -38,14 +38,18 @@ public partial class AI
     {
         // 君主なら必ず実行する。
         // 君主以外は、忠誠度90以上なら1あたり10%の確率で実行する。
-        var prob = boss.IsRuler ? 1 : (boss.Loyalty - 90) * 0.1f;
+        var prob = boss.IsRuler ? 1 : ((boss.Loyalty - 90) * 0.1f).MaxWith(1);
 
         var shouldDo = prob.Chance();
         if (!shouldDo) return;
 
-        var memberCount = Mathf.Min(boss.Castle.Members.Count, boss.Castle.MaxMember);
-        var bonusCount = (int)(memberCount * ((boss.Governing - 50) / 50f) * prob).MinWith(1);
-        var targetMembers = boss.Castle.Members
+        // 君主または国主なら、隣接する城も対象にする。
+        var memberSource = boss.IsRuler || boss.IsRegionBoss ?
+            boss.Castle.Members.Concat(boss.Castle.Neighbors.Where(c => c.Country == boss.Country).SelectMany(c => c.Members)) :
+            boss.Castle.Members;
+
+        var bonusCount = (int)((boss.Governing - 50) / 10 * prob).MinWith(1);
+        var targetMembers = memberSource
             .Where(c => c != boss)
             .OrderBy(c => c.Loyalty)
             .Take(bonusCount);
