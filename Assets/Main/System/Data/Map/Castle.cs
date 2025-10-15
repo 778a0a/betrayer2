@@ -142,7 +142,7 @@ public class Castle : ICountryEntity, IMapEntity
     /// 最大許容所属人数
     /// </summary>
     [JsonIgnore]
-    public int MaxMember => 3 + DevLevel / 10;
+    public int MaxMember => (3 + DevLevel / 10).MaxWith(10);
     [JsonIgnore]
     public bool IsMemberOver => Members.Count > MaxMember;
 
