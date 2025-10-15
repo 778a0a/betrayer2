@@ -100,7 +100,7 @@ partial class StrategyActions
                     //target.Contribution += 5;
                     target.Loyalty = (target.Loyalty + 5).MaxWith(110);
 
-                    Debug.Log($"{args.actor.Name} が {target} に褒賞を与えました。(忠誠 {oldLoyalty} -> {target.Loyalty})");
+                    //Debug.Log($"{args.actor.Name} が {target} に褒賞を与えました。(忠誠 {oldLoyalty} -> {target.Loyalty})");
 
                     actor.ActionPoints -= APCostUnit;
 

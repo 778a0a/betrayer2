@@ -86,11 +86,11 @@ public partial class AI
             }
         }
 
-        Debug.LogWarning($"[AI] Ruler: {ruler.Name}" +
-            $" Safe Castles: {string.Join(", ", safeCastles.Select(cr => cr.castle.Name))}" +
-            $" Danger Castles: {string.Join(", ", dangerCastles.Select(cr => cr.castle.Name))}");
-        Debug.Log($"[AI] Move Candidates Safe: {string.Join(", ", moveCandsFromSafe)}");
-        Debug.Log($"[AI] Move Candidates Danger: {string.Join(", ", moveCandsFromDanger)}");
+        //Debug.LogWarning($"[AI] Ruler: {ruler.Name}" +
+        //    $" Safe Castles: {string.Join(", ", safeCastles.Select(cr => cr.castle.Name))}" +
+        //    $" Danger Castles: {string.Join(", ", dangerCastles.Select(cr => cr.castle.Name))}" +
+        //    $" Move Candidates Safe: {string.Join(", ", moveCandsFromSafe)}" +
+        //    $"[AI] Move Candidates Danger: {string.Join(", ", moveCandsFromDanger)}");
 
         // 危険城に空きがあれば、安全城移動候補から近いやつを移動させる。
         foreach (var (castle, _) in dangerCastles)

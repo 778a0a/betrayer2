@@ -193,7 +193,7 @@ public class Battle
             var mul = ((100 - TickCount / 2f * Random.Range(0.5f, 1f)) / 100f).MaxWith(0.99f);
             var dif = 1; // Random.Range(1, 3);
             castle.Strength = (castle.Strength * mul - dif).MinWith(0);
-            Debug.LogError($"城 tick:{TickCount} mul:{mul:0.000} dif:{dif}");
+            //Debug.LogError($"城 tick:{TickCount} mul:{mul:0.000} dif:{dif}");
         }
         // 戦闘が起きた町の内政値を減らす。
         if (Atk.Tile.Town != null) DamegeTown(Atk.Tile.Town, Type, Atk);
