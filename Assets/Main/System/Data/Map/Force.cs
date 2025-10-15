@@ -173,6 +173,24 @@ public class Force : ICountryEntity, IMapEntity
         if (!isRestoring && (prevDestination.Position == Position || prevDirection != Direction))
         {
             ResetTileMoveProgress();
+            
+            // 202510 目的地が同盟国なら救援モードにする。
+            var castle = world.Map.GetTile(Destination)?.Castle;
+            if (castle != null && !this.IsSelf(castle) && this.IsAlly(castle) && Mode == ForceMode.Normal)
+            {
+                Mode = ForceMode.Reinforcement;
+                ReinforcementOriginalTarget = castle;
+                ReinforcementWaitDays = 90;
+                Debug.Log($"目的地が同盟国のため、増援モードに変更しました。{this}");
+            }
+            // 敵国の場合は通常モードにする。
+            else if (castle != null && this.IsAttackable(castle) && Mode == ForceMode.Reinforcement)
+            {
+                Mode = ForceMode.Normal;
+                ReinforcementOriginalTarget = null;
+                ReinforcementWaitDays = 0;
+                Debug.Log($"目的地が敵国のため、通常モードに変更しました。{this}");
+            }
         }
 
         world.Forces.ShouldCheckDefenceStatus = true;

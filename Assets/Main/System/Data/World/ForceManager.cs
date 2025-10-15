@@ -167,9 +167,11 @@ public class ForceManager : IReadOnlyList<Force>
         }
 
         // 移動先が目的地で自国の城の場合は城に入る。
-        if (nextTile.Castle == force.Destination && force.IsSelf(nextTile) &&
-            // 援軍の場合は入城しない。ただし自分の本拠地への帰還なら入場する。
-            (force.Mode != ForceMode.Reinforcement || nextTile.Castle.Members.Contains(force.Character)))
+        if (nextTile.Castle == force.Destination && force.IsSelf(nextTile))
+            // 自国の城への救援はいったん無くしたのでコメントアウトしました。
+            //// 援軍の場合は入城しない。ただし自分の本拠地への帰還なら入場する。
+            //&& (force.Mode != ForceMode.Reinforcement || nextTile.Castle.Members.Contains(force.Character)))
+
         {
             force.Character.ChangeCastle(nextTile.Castle, false);
 
@@ -530,17 +532,18 @@ public class ForceManager : IReadOnlyList<Force>
             {
                 foreach (var otherForce in group)
                 {
-                    // ただし救援の場合は攻撃できないので帰還する。
+                    // <del>ただし救援の場合は攻撃できないので帰還する。</del>
+                    // 救援でも攻撃を続行する。
                     if (otherForce.Mode == ForceMode.Reinforcement)
                     {
-                        var home = otherForce.Character.Castle;
-                        otherForce.SetDestination(home);
-                        Debug.Log($"{otherForce} 城が他国に占領されたため帰還します。(救援)");
-                        if (otherForce.Position == home.Position)
-                        {
-                            Unregister(otherForce);
-                        }
+                        //var home = otherForce.Character.Castle;
+                        //otherForce.SetDestination(home);
+                        //Debug.Log($"{otherForce} 城が他国に占領されたため帰還します。(救援)");
+                        //if (otherForce.Position == home.Position) Unregister(otherForce);
                         //GameCore.Instance.Pause();
+
+                        otherForce.Mode = ForceMode.Normal;
+                        Debug.Log($"{otherForce} 城が他国に占領されましたが攻撃を続行します。(救援)");
                     }
                     else
                     {
