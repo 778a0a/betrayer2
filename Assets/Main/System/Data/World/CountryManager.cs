@@ -75,9 +75,9 @@ public class CountryManager : IReadOnlyList<Country>
     public async ValueTask UpdateRanking(Country target = null)
     {
         var player = GameCore.Instance.World.Player;
-        var playerIsVassal = player.IsVassal;
-        var playerIsBoss = player.IsBoss;
-        var playerIsRegionBoss = player.CanBeRegionBoss;
+        var playerIsVassal = player?.IsVassal ?? false;
+        var playerIsBoss = player?.IsBoss ?? false;
+        var playerIsRegionBoss = player?.CanBeRegionBoss ?? false;
 
         var regions = GameCore.Instance.World.Castles.GroupBy(c => c.Region);
 
@@ -102,22 +102,22 @@ public class CountryManager : IReadOnlyList<Country>
 
         // プレーヤーの地位に変動があれば通知する。
         // 国主になった場合
-        if (!playerIsRegionBoss && player.IsRegionBoss)
+        if (!playerIsRegionBoss && (player?.IsRegionBoss ?? false))
         {
             await MessageWindow.ShowOk("国主に昇進しました。\n近隣の城にも命令を出せるようになります。");
         }
         // 城主になった場合
-        else if (!playerIsBoss && player.IsBoss)
+        else if (!playerIsBoss && (player?.IsBoss ?? false))
         {
             await MessageWindow.ShowOk("城主に昇進しました。");
         }
         // 国主から城主に降格した場合
-        else if (playerIsRegionBoss && !player.IsRegionBoss)
+        else if (playerIsRegionBoss && (!player?.IsRegionBoss ?? false))
         {
             await MessageWindow.ShowOk("国主を解任されました...");
         }
         // 城主を解任された場合
-        else if (playerIsBoss && !player.IsBoss)
+        else if (playerIsBoss && (!player?.IsBoss ?? false))
         {
             await MessageWindow.ShowOk("城主を解任されました...");
         }
