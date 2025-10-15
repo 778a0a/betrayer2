@@ -26,12 +26,11 @@ public partial class AI
             .Where(c => !c.IsRuler)
             .OrderBy(c => c.Loyalty);
 
-        do
+        while (ruler.ActionPoints > 50 && targetMembers.Take(5).Select(m => m.Loyalty).DefaultIfEmpty(100).Average() < 95)
         {
             var lowLoyaltyMembers = targetMembers.Take(5);
             await BonusCore(ruler, lowLoyaltyMembers);
         }
-        while (ruler.ActionPoints > 50 && targetMembers.Take(5).Select(m => m.Loyalty).DefaultIfEmpty(100).Average() < 90);
     }
 
     public async ValueTask BonusFromBoss(Character boss)
@@ -48,9 +47,10 @@ public partial class AI
             boss.Castle.Members.Concat(boss.Castle.Neighbors.Where(c => c.Country == boss.Country).SelectMany(c => c.Members)) :
             boss.Castle.Members;
 
-        var bonusCount = (int)((boss.Governing - 50) / 10 * prob).MinWith(1);
+        var bonusCount = (int)((boss.Governing - 50) * 0.1f * prob).MinWith(1);
         var targetMembers = memberSource
             .Where(c => c != boss)
+            .Where(c => c.OrderIndex > boss.OrderIndex)
             .OrderBy(c => c.Loyalty)
             .Take(bonusCount);
 
