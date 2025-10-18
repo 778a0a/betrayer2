@@ -35,11 +35,19 @@ partial class StrategyActions
             {
                 var selectedCastle = args.selectedTile?.Castle ?? actor.Castle;
 
-                // プレーヤーが君主か国主で、本拠地で褒賞を実行しているなら、全臣下をリスト化する。
+                // プレーヤーが君主が本拠地で褒賞を実行しているなら、全臣下をリスト化する。
+                // 国主で本拠地なら周辺の城の臣下もをリスト化する。
                 // そうでないなら、対象の城のメンバーをリスト化する。
-                var cands = (actor.IsRuler || actor.IsRegionBoss) && selectedCastle == actor.Castle ?
-                    actor.Country.Members.Where(c => c != actor && c.CanOrder) :
-                    selectedCastle.Members.Where(c => c != actor);
+                var cands = selectedCastle.Members.Where(c => c != actor && c.CanOrder);
+                if (actor.IsRuler && selectedCastle == actor.Castle)
+                {
+                    cands = actor.Country.Members.Where(c => c != actor);
+                }
+                else if (actor.IsRegionBoss && selectedCastle == actor.Castle)
+                {
+                    cands = cands.Concat(actor.Castle.Neighbors.Where(c => c.CanOrder).SelectMany(c => c.Members))
+                        .Where(c => c != actor && c.CanOrder);
+                }
                 var candList = cands
                     .OrderBy(c => c.Loyalty)
                     .ThenByDescending(c => c.Contribution)
