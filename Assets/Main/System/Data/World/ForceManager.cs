@@ -460,6 +460,14 @@ public class ForceManager : IReadOnlyList<Force>
                 m.Loyalty = 0;
             }
 
+            // 滅亡させた国と隣接国との関係を悪化させる。
+            foreach (var c in force.Country.Neighbors)
+            {
+                if (c.IsAlly(force.Country)) continue;
+                var rel = c.GetRelation(force.Country);
+                c.SetRelation(force.Country, rel - 15);
+            }
+
             // 滅亡メッセージを表示する。
             await MessageWindow.Show($"{oldCountry.Ruler.Name}軍が\n{force.Country.Ruler.Name}軍によって滅ぼされました。");
         }
