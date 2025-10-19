@@ -15,7 +15,7 @@ partial class PersonalActions
     public class TrainSoldiersAction : PersonalActionBase
     {
         public override string Label => L["訓練"];
-        public override string Description => L["兵士を訓練します。"];
+        public override string Description => L["兵士を訓練します。(右クリックで10回実行)"];
         protected override ActionRequirements Requirements => ActionRequirements.NotMoving;
 
         public override ActionCost Cost(ActionArgs args) => 2;

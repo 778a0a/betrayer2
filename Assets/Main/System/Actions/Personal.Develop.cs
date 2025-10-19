@@ -15,7 +15,7 @@ partial class PersonalActions
     public class DevelopAction : PersonalActionBase
     {
         public override string Label => L["内政"];
-        public override string Description => L["城のゴールド収入を改善します。"];
+        public override string Description => L["城のゴールド収入を改善します。(右クリックで10回実行)"];
         protected override ActionRequirements Requirements => ActionRequirements.NotMovingAndNotFree;
 
         public override ActionCost Cost(ActionArgs args) => 2;

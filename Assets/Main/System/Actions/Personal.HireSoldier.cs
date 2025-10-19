@@ -15,7 +15,7 @@ partial class PersonalActions
     public class HireSoldierAction : PersonalActionBase
     {
         public override string Label => L["雇兵"];
-        public override string Description => L["兵士を雇います。"];
+        public override string Description => L["兵士を雇います。(右クリックで10回実行)"];
         protected override ActionRequirements Requirements => ActionRequirements.NotMoving;
 
         public override ActionCost Cost(ActionArgs args) => 2;

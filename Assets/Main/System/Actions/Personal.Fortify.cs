@@ -16,7 +16,7 @@ partial class PersonalActions
     public class FortifyAction : PersonalActionBase
     {
         public override string Label => L["築城"];
-        public override string Description => L["城の強度を改善します。"];
+        public override string Description => L["城の強度を改善します。(右クリックで10回実行)"];
         protected override ActionRequirements Requirements => ActionRequirements.NotMovingAndNotFree;
 
         public override ActionCost Cost(ActionArgs args) => 2;
