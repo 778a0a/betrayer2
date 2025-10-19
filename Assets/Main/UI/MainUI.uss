@@ -88,3 +88,12 @@ Label {
     height: 48px;
     width: 125px;
 }
+
+Toggle:hover > .unity-base-field__label {
+    color: #ffc;
+}
+
+Toggle > .unity-base-field__label {
+    /* フォーカス時に薄い青になるのを防ぐ。 */
+    color: white;
+}

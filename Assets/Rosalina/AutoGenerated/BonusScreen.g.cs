@@ -26,6 +26,8 @@ public partial class BonusScreen
 
     public Button buttonSelectLowestLoyalty { get; private set; }
 
+    public Toggle toggleFilterHighLoyalty { get; private set; }
+
     public VisualElement Root { get; private set; }
 
     public BonusScreen(VisualElement root)
@@ -37,6 +39,7 @@ public partial class BonusScreen
         CharacterTable = new CharacterTable(Root?.Q<VisualElement>("CharacterTable"));
         CharacterSummary = new CharacterSummary(Root?.Q<VisualElement>("CharacterSummary"));
         buttonSelectLowestLoyalty = Root?.Q<Button>("buttonSelectLowestLoyalty");
+        toggleFilterHighLoyalty = Root?.Q<Toggle>("toggleFilterHighLoyalty");
     }
 
     public void ReinitializeComponent(VisualElement root)
@@ -48,5 +51,6 @@ public partial class BonusScreen
         CharacterTable = new CharacterTable(Root?.Q<VisualElement>("CharacterTable"));
         CharacterSummary = new CharacterSummary(Root?.Q<VisualElement>("CharacterSummary"));
         buttonSelectLowestLoyalty = Root?.Q<Button>("buttonSelectLowestLoyalty");
+        toggleFilterHighLoyalty = Root?.Q<Toggle>("toggleFilterHighLoyalty");
     }
 }

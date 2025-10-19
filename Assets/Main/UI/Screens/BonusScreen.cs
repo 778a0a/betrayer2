@@ -38,7 +38,11 @@ public partial class BonusScreen : MainUIComponent, IScreen
             if (charas == null || charas.Count == 0) return;
 
             var count = Math.Min(5, actor.ActionPoints / StrategyActions.BonusAction.APCostUnit);
-            var sortedCharas = CharacterTable.charas.Take(count).ToList();
+            var sortedCharas = CharacterTable.charas
+                // チェックボックスがオンの場合、忠誠105以下のキャラのみに絞り込む。
+                .Where(c => !toggleFilterHighLoyalty.value || (int)c.Loyalty <= 105)
+                .Take(count)
+                .ToList();
             if (sortedCharas.Count == 0) return;
 
             CharacterTable.SetSelection(sortedCharas);
