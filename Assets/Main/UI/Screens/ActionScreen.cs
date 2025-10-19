@@ -46,6 +46,7 @@ public partial class ActionScreen : IScreen
             ActionButtonHelper.Personal(a => a.Invest),
             ActionButtonHelper.Personal(a => a.Fortify),
             ActionButtonHelper.Personal(a => a.Deploy),
+            ActionButtonHelper.Personal(a => a.SowDiscord),
             ActionButtonHelper.Personal(a => a.Rebel),
             ActionButtonHelper.Personal(a => a.Resign),
             ActionButtonHelper.Personal(a => a.Relocate),
