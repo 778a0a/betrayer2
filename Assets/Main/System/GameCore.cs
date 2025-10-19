@@ -21,6 +21,56 @@ public partial class GameCore
 
     public GameDate GameDate { get; set; }
 
+    private PlayerTitle prevPlayerTitle;
+    private PlayerTitle GetPlayerTitle(Character c)
+    {
+        if (c == null) return PlayerTitle.Free;
+        if (c.IsRuler) return PlayerTitle.Ruler;
+        if (c.IsRegionBoss) return PlayerTitle.RegionBoss;
+        if (c.IsBoss) return PlayerTitle.Boss;
+        if (c.IsVassal) return PlayerTitle.NormalVassal;
+        return PlayerTitle.Free;
+    }
+    private enum PlayerTitle
+    {
+        Ruler,
+        RegionBoss,
+        Boss,
+        NormalVassal,
+        Free,
+    }
+    private async ValueTask NotifyPlayerTitleChangeIfNeeded()
+    {
+        var prev = prevPlayerTitle;
+        var current = GetPlayerTitle(World.Player);
+
+        // 城主になった場合
+        if (prev == PlayerTitle.NormalVassal &&
+            current == PlayerTitle.Boss)
+        {
+            await MessageWindow.Show("城主に昇格しました。\n戦略アクションを実行できるようになります。");
+        }
+        // 国主になった場合
+        else if ((prev == PlayerTitle.NormalVassal || prev == PlayerTitle.Boss) &&
+            current == PlayerTitle.RegionBoss)
+        {
+            await MessageWindow.Show("国主に昇格しました。\n近隣の城にも命令を出せるようになります。");
+        }
+        // 国主を解任された場合
+        else if (prev == PlayerTitle.RegionBoss &&
+            (current == PlayerTitle.Boss || current == PlayerTitle.NormalVassal))
+        {
+            await MessageWindow.Show("国主を解任されました。");
+        }
+        // 城主を解任された場合
+        else if (prev == PlayerTitle.Boss &&
+            current == PlayerTitle.NormalVassal)
+        {
+            await MessageWindow.Show("城主を解任されました。");
+        }
+        prevPlayerTitle = current;
+    }
+
     public GameCore(WorldData world, UIMapManager map, MainUI mainui, Booter booter)
     {
         Instance = this;
@@ -29,6 +79,7 @@ public partial class GameCore
         MainUI = mainui;
         Booter = booter;
         GameDate = new(0);
+        prevPlayerTitle = GetPlayerTitle(world.Player);
 
         AI = new AI(this);
         PersonalActions = new(this);
@@ -225,6 +276,9 @@ public partial class GameCore
         // 軍勢関連の処理を行う。
         World.Forces.UpdateDangerStatus(this);
         await World.Forces.OnForceMove(this);
+
+        // プレイヤーの地位の変化があれば通知する。
+        await NotifyPlayerTitleChangeIfNeeded();
 
         // キャラの行動を行う。
         await OnCharacterMove(player);
