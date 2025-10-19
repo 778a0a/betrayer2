@@ -27,14 +27,13 @@ partial class StrategyActions
 
         public override ActionCost Cost(ActionArgs args)
         {
-            if (args.estimate)
-            {
-                // 推定値の場合は最低コストを返す。
-                return ActionCost.Of(0, 5, 10);
-            }
+            Debug.Log($"GoodwillAction.Cost: {args}");
+            var targetCountry = args.targetCountry ?? args.selectedTile?.Castle?.Country;
+            if (targetCountry == null) return ActionCost.Variable;
+
             // 自国と他国の城の数に応じて金額を計算する。
             var myCastles = args.actor.Country.Castles.Count;
-            var targetCastles = args.targetCountry?.Castles.Count ?? 0;
+            var targetCastles = targetCountry.Castles.Count;
             var goldCost = (myCastles + targetCastles) * 5;
             return ActionCost.Of(0, 5, goldCost);
         }

@@ -58,7 +58,7 @@ public partial class ActionScreen : IScreen
             button.SetEventHandlers(
                 labelCost,
                 labelActionDescription,
-                () => currentCharacter,
+                () => (currentCharacter, currentTile),
                 OnActionButtonClicked
             );
         }
@@ -68,7 +68,7 @@ public partial class ActionScreen : IScreen
             button.SetEventHandlers(
                 labelCost,
                 labelActionDescription,
-                () => currentCharacter,
+                () => (currentCharacter, currentTile),
                 OnActionButtonClicked
             );
         }

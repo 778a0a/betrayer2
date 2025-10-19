@@ -43,8 +43,8 @@ public class ActionBase
     /// </summary>
     public virtual bool Enabled(Character actor, GameMapTile tile) =>
         Visible(actor, tile) &&
-        actor.CanPay(Cost(new(actor, estimate: true))) &&
-        CanDoCore(new(actor, estimate: true));
+        actor.CanPay(Cost(new(actor, selectedTile: tile, estimate: true))) &&
+        CanDoCore(new(actor, selectedTile: tile, estimate: true));
     /// <summary>
     /// アクションの実行に必要なコスト
     /// </summary>

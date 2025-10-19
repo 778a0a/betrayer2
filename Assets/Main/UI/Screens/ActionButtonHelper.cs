@@ -12,7 +12,7 @@ public class ActionButtonHelper
     private readonly Func<ActionBase> actionGetter;
     private Label labelCostGold;
     private Label labelDescription;
-    private Func<Character> currentCharacterGetter;
+    private Func<(Character, GameMapTile)> currentContextGetter;
     private Action<ActionButtonHelper, EventBase> clickHandler;
     private bool IsMouseOver;
 
@@ -39,12 +39,12 @@ public class ActionButtonHelper
     public void SetEventHandlers(
         Label labelCostGold,
         Label labelDescription,
-        Func<Character> currentCharacterGetter,
+        Func<(Character, GameMapTile)> currentContextGetter,
         Action<ActionButtonHelper, EventBase> clickHandler)
     {
         this.labelCostGold = labelCostGold;
         this.labelDescription = labelDescription;
-        this.currentCharacterGetter = currentCharacterGetter;
+        this.currentContextGetter = currentContextGetter;
         this.clickHandler = clickHandler;
 
         // なぜかMouseDownEventだと左クリックが受け取れないのでClickEventも購読する。
@@ -56,11 +56,11 @@ public class ActionButtonHelper
 
     private void OnActionButtonPointerEnter(PointerEnterEvent evt)
     {
-        var chara = currentCharacterGetter();
+        var (chara, selectedTile) = currentContextGetter();
 
         IsMouseOver = true;
         labelDescription.text = Action.Description;
-        var cost = Action.Cost(new(chara, estimate: true));
+        var cost = Action.Cost(new(chara, selectedTile: selectedTile, estimate: true));
         if (cost.IsVariable)
         {
             labelCostGold.text = "---";
