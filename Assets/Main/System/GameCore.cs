@@ -20,6 +20,7 @@ public partial class GameCore
     public StrategyActions StrategyActions { get; }
 
     public GameDate GameDate { get; set; }
+    public int SaveDataSlotNo { get; set; }
 
     private PlayerTitle prevPlayerTitle;
     private PlayerTitle GetPlayerTitle(Character c)
