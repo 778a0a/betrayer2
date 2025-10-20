@@ -22,8 +22,9 @@ public class SavedCountry
                 Id = int.Parse(values[0]),
                 ColorIndex = int.Parse(values[1]),
                 Objective = CountryObjective.Parse(values[2]),
+                QuarterActionDone = bool.Parse(values[3]),
             },
-            Memo = values[3],
+            Memo = values[4],
         };
         return country;
     }
@@ -52,6 +53,7 @@ public static class SavedCountries
         sb.Append(nameof(Country.Id)).Append(delimiter);
         sb.Append(nameof(Country.ColorIndex)).Append(delimiter);
         sb.Append(nameof(Country.Objective)).Append(delimiter);
+        sb.Append(nameof(Country.QuarterActionDone)).Append(delimiter);
         sb.Append(nameof(SavedCountry.Memo)).Append(delimiter);
         sb.AppendLine();
 
@@ -62,6 +64,7 @@ public static class SavedCountries
             sb.Append(country.Data.Id).Append(delimiter);
             sb.Append(country.Data.ColorIndex).Append(delimiter);
             sb.Append(country.Data.Objective.ToCsvColumn()).Append(delimiter);
+            sb.Append(country.Data.QuarterActionDone).Append(delimiter);
             sb.Append(country.Memo).Append(delimiter);
             sb.AppendLine();
         }
