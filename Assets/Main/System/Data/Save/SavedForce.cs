@@ -14,6 +14,7 @@ public class SavedForce
     public ForceDestinationType DestinationType { get; set; }
     public MapPosition DestinationPosition { get; set; }
     public int DestinationForceCharacterId { get; set; }
+    public int ReinforcementOriginalTargetCastleId { get; set; }
     public Force Data { get; set; }
     public string Memo { get; set; }
 
@@ -27,8 +28,9 @@ public class SavedForce
             DestinationType = Enum.Parse<ForceDestinationType>(values[2]),
             DestinationPosition = JsonConvert.DeserializeObject<MapPosition>(values[3]),
             DestinationForceCharacterId = int.Parse(values[4]),
-            Data = JsonConvert.DeserializeObject<Force>(values[5]),
-            Memo = values[6],
+            ReinforcementOriginalTargetCastleId = int.Parse(values[5]),
+            Data = JsonConvert.DeserializeObject<Force>(values[6]),
+            Memo = values[7],
         };
         return force;
     }
@@ -61,6 +63,7 @@ public static class SavedForces
                 },
                 DestinationPosition = original.Destination.Position,
                 DestinationForceCharacterId = original.Destination is Force f ? f.Character.Id : 0,
+                ReinforcementOriginalTargetCastleId = original.ReinforcementOriginalTarget?.Id ?? -1,
                 Data = original,
                 Memo = original.Character.Name,
             };
@@ -80,6 +83,7 @@ public static class SavedForces
         sb.Append(nameof(SavedForce.DestinationType)).Append(delimiter);
         sb.Append(nameof(SavedForce.DestinationPosition)).Append(delimiter);
         sb.Append(nameof(SavedForce.DestinationForceCharacterId)).Append(delimiter);
+        sb.Append(nameof(SavedForce.ReinforcementOriginalTargetCastleId)).Append(delimiter);
         sb.Append(nameof(SavedForce.Data)).Append(delimiter);
         sb.Append(nameof(SavedForce.Memo)).Append(delimiter);
         sb.AppendLine();
@@ -93,6 +97,7 @@ public static class SavedForces
             sb.Append(force.DestinationType).Append(delimiter);
             sb.Append(JsonConvert.SerializeObject(force.DestinationPosition)).Append(delimiter);
             sb.Append(force.DestinationForceCharacterId).Append(delimiter);
+            sb.Append(force.ReinforcementOriginalTargetCastleId).Append(delimiter);
             sb.Append(JsonConvert.SerializeObject(force.Data)).Append(delimiter);
             sb.Append(force.Memo).Append(delimiter);
             sb.AppendLine();

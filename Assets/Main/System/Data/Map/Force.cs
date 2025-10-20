@@ -89,6 +89,7 @@ public class Force : ICountryEntity, IMapEntity
         }
     }
 
+    [JsonIgnore]
     public Castle ReinforcementOriginalTarget { get; set; }
 
     /// <summary>

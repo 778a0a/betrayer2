@@ -98,6 +98,9 @@ public class DefaultData
                 ForceDestinationType.Position => map.GetTile(force.DestinationPosition),
                 _ => throw new ArgumentOutOfRangeException(),
             }, false, true);
+            force.Data.ReinforcementOriginalTarget = force.ReinforcementOriginalTargetCastleId != -1
+                ? castles.First(c => c.Data.Id == force.ReinforcementOriginalTargetCastleId).Data
+                : null;
         }
 
         var world = new WorldData
