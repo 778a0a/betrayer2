@@ -226,7 +226,12 @@ public class Force : ICountryEntity, IMapEntity
                     // 普通のキャラの場合、候補が全て川・大河なら、他の陸地タイルも含める。
                     else if (cands.All(tile => tile.Terrain == Terrain.River || tile.Terrain == Terrain.LargeRiver))
                     {
-                        cands = castleTile.Neighbors;
+                        // コールドヘイブン→ノースゲートの移動経路に問題があったので、もう一回隣接領域を拡大する。
+                        cands = cands.SelectMany(tile => tile.Neighbors).Intersect(castleTile.Neighbors);
+                        if (cands.All(tile => tile.Terrain == Terrain.River || tile.Terrain == Terrain.LargeRiver))
+                        {
+                            cands = castleTile.Neighbors;
+                        }
                     }
                     var target = cands
                         // 戦闘補正が+なものを優先する。
