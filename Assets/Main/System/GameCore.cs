@@ -19,7 +19,6 @@ public partial class GameCore
     public PersonalActions PersonalActions { get; }
     public StrategyActions StrategyActions { get; }
 
-    public GameDate GameDate { get; set; }
     public int SaveDataSlotNo { get; set; }
 
     private PlayerTitle prevPlayerTitle;
@@ -79,7 +78,6 @@ public partial class GameCore
         Map = map;
         MainUI = mainui;
         Booter = booter;
-        GameDate = new(0);
         prevPlayerTitle = GetPlayerTitle(world.Player);
 
         AI = new AI(this);
@@ -135,10 +133,10 @@ public partial class GameCore
         //}
 
         // 月初の処理
-        if (GameDate.Day == 1)
+        if (World.GameDate.Day == 1)
         {
             // 年初の処理
-            if (GameDate.Month == 1)
+            if (World.GameDate.Month == 1)
             {
                 // 序列を更新する。
                 await World.Countries.UpdateRanking();
@@ -162,7 +160,7 @@ public partial class GameCore
             }
 
             // 収入月の場合
-            if (GameDate.IsIncomeMonth)
+            if (World.GameDate.IsIncomeMonth)
             {
                 // 城の収入処理を行う。
                 OnCastleIncome();
@@ -199,7 +197,7 @@ public partial class GameCore
                 }
 
                 // ゲーム開始直後は忠誠・友好度の減少を行わない。
-                if (!GameDate.IsGameFirstDay)
+                if (!World.GameDate.IsGameFirstDay)
                 {
                     // 忠誠を更新する。
                     foreach (var chara in World.Characters)
@@ -288,7 +286,7 @@ public partial class GameCore
         MainUI.Frame.RefreshUI();
         await Booter.HoldIfNeeded();
 
-        GameDate++;
+        World.GameDate++;
     }
 
     /// <summary>

@@ -61,7 +61,7 @@ public class ForceManager : IReadOnlyList<Force>
         if (!ShouldCheckDefenceStatus) return;
         ShouldCheckDefenceStatus = false;
         var prev = prevCheck;
-        prevCheck = core.GameDate;
+        prevCheck = core.World.GameDate;
         //Debug.Log("城の防衛状況を確認します。" + (core.GameDate - prev));
         foreach (var castle in world.Castles)
         {

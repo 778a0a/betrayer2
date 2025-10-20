@@ -17,15 +17,34 @@ public class SavedCountry
         var values = line.Split('\t');
         var country = new SavedCountry
         {
-            Data = new Country()
-            {
-                Id = int.Parse(values[0]),
-                ColorIndex = int.Parse(values[1]),
-                Objective = CountryObjective.Parse(values[2]),
-                QuarterActionDone = bool.Parse(values[3]),
-            },
-            Memo = values[4],
+            Data = new Country(),
         };
+
+        for (int i = 0; i < header.Length; i++)
+        {
+            switch (header[i])
+            {
+                case nameof(Country.Id):
+                    country.Data.Id = int.Parse(values[i]);
+                    break;
+                case nameof(Country.ColorIndex):
+                    country.Data.ColorIndex = int.Parse(values[i]);
+                    break;
+                case nameof(Country.Objective):
+                    country.Data.Objective = CountryObjective.Parse(values[i]);
+                    break;
+                case nameof(Country.QuarterActionDone):
+                    country.Data.QuarterActionDone = bool.Parse(values[i]);
+                    break;
+                case nameof(Memo):
+                    // 特に何もしない。
+                    break;
+                default:
+                    Debug.LogWarning($"SavedCountry 不明な列: {header[i]}");
+                    break;
+            }
+        }
+
         return country;
     }
 }

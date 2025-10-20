@@ -32,7 +32,6 @@ public class SaveDataSummary
 
     public static SaveDataSummary Create(
         WorldData world,
-        SavedGameCoreState state,
         int saveDataSlotNo,
         DateTime savedTime = default)
     {
@@ -45,7 +44,7 @@ public class SaveDataSummary
             Name = chara.Name,
             SoldierCount = chara.Soldiers.SoldierCount,
             Gold = chara.Gold,
-            GameDate = new GameDate(state.GameDateTicks).ToString(),
+            GameDate = world.GameDate.ToString(),
             SaveDataSlotNo = saveDataSlotNo,
             SavedTime = savedTime,
         };

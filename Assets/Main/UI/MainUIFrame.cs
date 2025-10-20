@@ -34,7 +34,7 @@ public partial class MainUIFrame : MainUIComponent
 
     public void RefreshUI()
     {
-        labelCurrentDate.text = Core.GameDate.ToString();
+        labelCurrentDate.text = Core.World.GameDate.ToString();
 
         var paused = Core.Booter.hold;
         if (paused)

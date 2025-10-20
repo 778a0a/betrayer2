@@ -31,9 +31,7 @@ public class SaveDataManager
 
     private SaveDataText CreateSaveDataText(GameCore core)
     {
-        var world = core.World;
-        var state = SavedGameCoreState.Create(core);
-        var saveData = SaveDataText.Serialize(world, state, core.SaveDataSlotNo);
+        var saveData = SaveDataText.Serialize(core.World, core.SaveDataSlotNo);
         return saveData;
     }
 

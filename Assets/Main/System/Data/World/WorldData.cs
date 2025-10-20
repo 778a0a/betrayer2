@@ -12,15 +12,23 @@ public class WorldData
     public ForceManager Forces { get; set; }
     public GameMapManager Map { get; set; }
     public Character Player { get; private set; }
+    public GameDate GameDate { get; set; } = new GameDate(0);
 
     public IEnumerable<Castle> Castles => Countries.SelectMany(c => c.Castles);
 
     public void SetPlayer(Character player)
     {
         var oldPlayer = Player;
-        if (oldPlayer != null) oldPlayer.IsPlayer = false;
+        if (oldPlayer != null)
+        {
+            oldPlayer.IsPlayer = false;
+        }
 
-        player.IsPlayer = true;
+        if (player != null)
+        {
+            player.IsPlayer = true;
+        }
+
         Player = player;
     }
 

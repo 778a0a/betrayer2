@@ -41,7 +41,6 @@ public class SaveDataText
     /// </summary>
     public static SaveDataText Serialize(
         WorldData world,
-        SavedGameCoreState state,
         int saveDataSlotNo,
         DateTime savedTime = default)
     {
@@ -51,7 +50,8 @@ public class SaveDataText
         var forces = SavedForces.FromWorld(world);
         var countryRelations = SavedCountryRelations.FromWorld(world);
         var terrains = SavedTerrains.FromWorld(world);
-        var summary = SaveDataSummary.Create(world, state, saveDataSlotNo, savedTime);
+        var misc = SavedWorldMiscData.FromWorld(world);
+        var summary = SaveDataSummary.Create(world, saveDataSlotNo, savedTime);
 
         var saveData = new SaveData
         {
@@ -61,7 +61,7 @@ public class SaveDataText
             Forces = forces,
             CountryRelations = countryRelations,
             Terrains = terrains,
-            State = state,
+            Misc = misc,
             Summary = summary,
         };
         var text = Serialize(saveData);
@@ -104,10 +104,10 @@ public class SaveDataText
         var terrainsCsv = SavedTerrains.ToCsv(data.Terrains);
         sb.AppendLine(terrainsCsv);
 
-        // ゲーム状態（JSON）
+        // その他データ（JSON）
         sb.AppendLine(SaveDataSectionDivider);
-        var stateJson = SavedGameCoreState.Serialize(data.State);
-        sb.AppendLine(stateJson);
+        var miscJson = SavedWorldMiscData.Serialize(data.Misc);
+        sb.AppendLine(miscJson);
 
         // セーブ画面用情報（JSON）
         sb.AppendLine(SaveDataSectionDivider);
@@ -144,8 +144,8 @@ public class SaveDataText
         var terrainsCsv = sections[5].Trim();
         var terrains = SavedTerrains.FromCsv(terrainsCsv);
 
-        var stateJson = sections[6].Trim();
-        var state = SavedGameCoreState.Deserialize(stateJson);
+        var miscJson = sections[6].Trim();
+        var misc = SavedWorldMiscData.Deserialize(miscJson);
 
         var summaryJson = sections[7].Trim();
         var summary = SaveDataSummary.Deserialize(summaryJson);
@@ -158,7 +158,7 @@ public class SaveDataText
             Forces = forces,
             CountryRelations = countryRelations,
             Terrains = terrains,
-            State = state,
+            Misc = misc,
             Summary = summary,
         };
     }
