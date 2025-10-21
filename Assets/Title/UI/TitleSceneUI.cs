@@ -90,6 +90,7 @@ public partial class TitleSceneUI : MonoBehaviour
             {
                 IsNewGame = true,
                 NewGameSaveDataSlotNo = currentSelectedSlotNo,
+                NewGameScenarioNo = "01",
             });
             OnSceneLoadingStart(op);
         };

@@ -28,6 +28,7 @@ public class Booter : MonoBehaviour
     /// プレーヤー名（テスト用）
     /// </summary>
     [SerializeField] private string testPlayerName = "フレデリック";
+    [SerializeField] private bool testSkipPlayerSelection = false;
     /// <summary>
     /// 1tickの待機時間
     /// </summary>
@@ -50,19 +51,65 @@ public class Booter : MonoBehaviour
 
     void Start()
     {
-        UpdatePlaySpeed(PlaySpeedIndex);
+        UpdatePlaySpeed(PlayerPrefs.GetInt(nameof(PlaySpeedIndex), 3));
 
-        // ワールドを作成する。
-        var world = DefaultData.Create("02");
-        world.Map.AttachUIMap(map);
-        
-        // プレーヤーをセットする。
-        var player = world.Characters.FirstOrDefault(c => c.Name == testPlayerName);
-        if (player != null) world.SetPlayer(player);
+        var args = s_args ?? new MainSceneStartArguments()
+        {
+            IsNewGame = true,
+            NewGameSaveDataSlotNo = 0,
+            NewGameScenarioNo = "02",
+        };
 
-        // ゲームループを開始する。
-        core = new GameCore(world, map, ui, this);
-        core.DoMainLoop().Forget();
+        // はじめから
+        if (args.IsNewGame)
+        {
+            // シナリオを読み込む。
+            var world = DefaultData.Create(args.NewGameScenarioNo);
+
+            world.Map.AttachUIMap(map);
+            core = new GameCore(world, map, ui, this);
+            core.SaveDataSlotNo = args.NewGameSaveDataSlotNo;
+
+            // プレーヤーを選択する。
+            if (Application.isEditor && testSkipPlayerSelection)
+            {
+                var player = world.Characters.FirstOrDefault(c => c.Name == testPlayerName);
+                if (player != null) world.SetPlayer(player);
+                core.DoMainLoop().Forget();
+            }
+            else
+            {
+                // 操作キャラを選択してもらう。
+                core.MainUI.SelectPlayerCharacterScreen.Show(world, chara =>
+                {
+                    // 観戦モード
+                    if (chara == null)
+                    {
+                        Debug.Log("観戦モードが選択されました。");
+                        core.IsWatchMode = true;
+                        core.MainUI.WatchModeWindow.Show();
+                    }
+                    else
+                    {
+                        chara.IsPlayer = true;
+                        Debug.Log($"Player selected: {chara.Name}");
+                    }
+                    core.DoMainLoop().Foreget();
+                });
+                MessageWindow.Show("操作キャラを選択してください。");
+            }
+        }
+        // 再開
+        else
+        {
+            // セーブデータから復元する。
+            var world = args.SaveData.RestoreWorldData();
+
+            world.Map.AttachUIMap(map);
+            core = new GameCore(world, map, ui, this);
+            core.SaveDataSlotNo = args.SaveData.Summary.SaveDataSlotNo;
+            core.DoMainLoop().Forget();
+        }
     }
 
     /// <summary>
@@ -83,6 +130,7 @@ public class Booter : MonoBehaviour
     public void UpdatePlaySpeed(int index)
     {
         PlaySpeedIndex = index;
+        PlayerPrefs.SetInt(nameof(PlaySpeedIndex), PlaySpeedIndex);
         TickWait = PlaySpeedTable[index];
         Debug.Log($"PlaySpeedIndex: {PlaySpeedIndex}, TickWait: {TickWait}");
     }
@@ -93,6 +141,7 @@ public class MainSceneStartArguments
 {
     public bool IsNewGame { get; set; }
     public int NewGameSaveDataSlotNo { get; set; }
+    public string NewGameScenarioNo { get; set; }
     public SaveData SaveData { get; set; }
 }
 
