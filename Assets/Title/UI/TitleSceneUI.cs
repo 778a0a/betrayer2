@@ -17,17 +17,17 @@ public partial class TitleSceneUI : MonoBehaviour
     private bool isInitialized = false;
     private void OnEnable()
     {
-        using var _ = Util.Defer(() => isInitialized = true);
-
-        Root.visible = false;
-        InitializeDocument();
-        
-        // UIBuilderで要素を操作するとUIDocumentが作り直しになるので
-        // Startを呼んでUIを再構築する。
-        if (isInitialized)
+        if (!isInitialized)
         {
+            Root.visible = false;
+            InitializeDocument();
+            isInitialized = true;
+        }
+        else
+        {
+            // uxmlを編集した場合は再初期化する。
+            ReinitializeDocument();
             StartCoroutine(Start());
-            return;
         }
     }
 
@@ -37,32 +37,30 @@ public partial class TitleSceneUI : MonoBehaviour
 
         yield return LocalizationSettings.InitializationOperation;
 
-        //InitializeNewGameWindow();
-        //InitializeTextBoxWindow();
-        //InitializeProgressWindow();
-        //InitializeLicenseWindow();
-        //MessageWindow.L = L;
-        //MessageWindow.Initialize();
+        InitializeNewGameWindow();
+        InitializeTextBoxWindow();
+        InitializeProgressWindow();
+        InitializeLicenseWindow();
+        MessageWindow.Initialize();
         SystemSettingsWindow.L = L;
         SystemSettingsWindow.Initialize();
         SaveDataList.Initialize(this);
 
         L.Register(this);
-
         L.Apply();
 
         buttonCloseApplication.clicked += () =>
         {
 #if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;
-#elif UNITY_EDITOR             
+#else
             Application.Quit();
 #endif
         };
 
         buttonShowLicense.clicked += () =>
         {
-            //ShowLicenseWindow();
+            ShowLicenseWindow();
         };
 
         buttonShowSystemSettings.clicked += () =>
@@ -70,12 +68,11 @@ public partial class TitleSceneUI : MonoBehaviour
             SystemSettingsWindow.Show();
         };
 
-        //SaveDataList.SetData(SaveDataManager.Instance);
+        SaveDataList.SetData(SaveDataManager.Instance);
 
         Root.visible = true;
     }
 
-#if false
     #region NewGameWindow
     private readonly int[] slotNoList = new[] { 0, 1, 2 };
     private Button[] CopySlotButtons => new[] { buttonCopyFromSlot1, buttonCopyFromSlot2, buttonCopyFromSlot3 };
@@ -89,7 +86,7 @@ public partial class TitleSceneUI : MonoBehaviour
         buttonStartNewGame.clicked += () =>
         {
             NewGameMenu.style.display = DisplayStyle.None;
-            var op = MainSceneManager.LoadScene(new MainSceneStartArguments()
+            var op = Booter.LoadScene(new MainSceneStartArguments()
             {
                 IsNewGame = true,
                 NewGameSaveDataSlotNo = currentSelectedSlotNo,
@@ -283,7 +280,7 @@ public partial class TitleSceneUI : MonoBehaviour
     }
 
     private string GetLicense() =>
-        L["本ソフトの配布にあたって同梱されているサードパーティーコンポーネントとそのライセンス情報を以下に示します。"] + @"
+        L["本ソフトの配布にあたって、同梱されているサードパーティーコンポーネントとそのライセンス情報を以下に示します。"] + @"
 
 Noto Sans Japanese
 ===========================================================
@@ -383,5 +380,4 @@ FROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM
 OTHER DEALINGS IN THE FONT SOFTWARE.
 ";
     #endregion
-#endif
 }

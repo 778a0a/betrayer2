@@ -22,6 +22,13 @@ public class FaceImageManager
         var path = $"CharacterImages/{chara.Id:0000}";
         return GetImage(path);
     }
+
+    public Texture2D GetImage(int characterId)
+    {
+        var path = $"CharacterImages/{characterId:0000}";
+        return GetImage(path);
+    }
+
     public Texture2D GetImage(string path)
     {
         if (cacheImages.TryGetValue(path, out var tex))

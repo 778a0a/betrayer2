@@ -27,3 +27,7 @@
 .unity-progress-bar__background {
 	background-color: #fff;
 }
+
+Label, Button {
+    font-size: 40px;
+}

@@ -6,8 +6,7 @@ using UnityEngine.UIElements;
 public partial class SaveDataListWindow
 {
     private TitleSceneUI uiTitle;
-    //private SaveDataManager saves;
-    private dynamic saves;
+    private SaveDataManager saves;
     public LocalizationManager L => uiTitle.L;
 
     public void Initialize(TitleSceneUI uiTitle)
@@ -20,13 +19,12 @@ public partial class SaveDataListWindow
         {
             var slot = manualSlots[i];
             slot.Initialize(this, i, false);
-            //slot.ButtonClick += SaveSlot_ButtonClick;
+            slot.ButtonClick += SaveSlot_ButtonClick;
         }
-        //SaveSlotAuto.Initialize(this, SaveDataManager.AutoSaveDataSlotNo, true);
-        //SaveSlotAuto.ButtonClick += SaveSlot_ButtonClick;
+        SaveSlotAuto.Initialize(this, SaveDataManager.AutoSaveDataSlotNo, true);
+        SaveSlotAuto.ButtonClick += SaveSlot_ButtonClick;
     }
 
-#if false
     private async void SaveSlot_ButtonClick(object sender, SaveDataListWindowListItem.ButtonType e)
     {
         var slot = (SaveDataListWindowListItem)sender;
@@ -37,7 +35,7 @@ public partial class SaveDataListWindow
                     try
                     {
                         var saveData = saves.Load(slot.SlotNo);
-                        var op = MainSceneManager.LoadScene(new MainSceneStartArguments()
+                        var op = Booter.LoadScene(new MainSceneStartArguments()
                         {
                             IsNewGame = false,
                             SaveData = saveData,
@@ -120,5 +118,4 @@ public partial class SaveDataListWindow
             SaveSlotAuto.SetData(autoSummary);
         }
     }
-#endif
 }

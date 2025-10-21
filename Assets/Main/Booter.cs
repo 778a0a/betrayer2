@@ -1,13 +1,21 @@
 using System.Linq;
 using System.Threading.Tasks;
-using NUnit.Framework;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// ゲームの初期化を担当します。
 /// </summary>
 public class Booter : MonoBehaviour
 {
+    private static MainSceneStartArguments s_args;
+    public static AsyncOperation LoadScene(MainSceneStartArguments args)
+    {
+        s_args = args;
+        return SceneManager.LoadSceneAsync("MainScene");
+    }
+
+
     /// <summary>
     /// マップ
     /// </summary>
@@ -81,3 +89,16 @@ public class Booter : MonoBehaviour
 
 }
 
+public class MainSceneStartArguments
+{
+    public bool IsNewGame { get; set; }
+    public int NewGameSaveDataSlotNo { get; set; }
+    public SaveData SaveData { get; set; }
+}
+
+public enum MainSceneStartMode
+{
+    NewGame,
+    ResumeFromLocalData,
+    ResumeFromTextData
+}

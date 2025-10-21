@@ -26,9 +26,9 @@ public partial class SaveDataListWindowListItem
 
     public Label labelName { get; private set; }
 
-    public Label labelTurnCountCaption { get; private set; }
+    public Label labelGameDateCaption { get; private set; }
 
-    public Label labelTurnCount { get; private set; }
+    public Label labelGameDate { get; private set; }
 
     public Label labelSavedTimeCaption { get; private set; }
 
@@ -57,8 +57,8 @@ public partial class SaveDataListWindowListItem
         labelGold = Root?.Q<Label>("labelGold");
         labelTitle = Root?.Q<Label>("labelTitle");
         labelName = Root?.Q<Label>("labelName");
-        labelTurnCountCaption = Root?.Q<Label>("labelTurnCountCaption");
-        labelTurnCount = Root?.Q<Label>("labelTurnCount");
+        labelGameDateCaption = Root?.Q<Label>("labelGameDateCaption");
+        labelGameDate = Root?.Q<Label>("labelGameDate");
         labelSavedTimeCaption = Root?.Q<Label>("labelSavedTimeCaption");
         labelSavedTime = Root?.Q<Label>("labelSavedTime");
         imageCharacter = Root?.Q<Image>("imageCharacter");
@@ -78,8 +78,8 @@ public partial class SaveDataListWindowListItem
         labelGold = Root?.Q<Label>("labelGold");
         labelTitle = Root?.Q<Label>("labelTitle");
         labelName = Root?.Q<Label>("labelName");
-        labelTurnCountCaption = Root?.Q<Label>("labelTurnCountCaption");
-        labelTurnCount = Root?.Q<Label>("labelTurnCount");
+        labelGameDateCaption = Root?.Q<Label>("labelGameDateCaption");
+        labelGameDate = Root?.Q<Label>("labelGameDate");
         labelSavedTimeCaption = Root?.Q<Label>("labelSavedTimeCaption");
         labelSavedTime = Root?.Q<Label>("labelSavedTime");
         imageCharacter = Root?.Q<Image>("imageCharacter");

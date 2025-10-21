@@ -71,6 +71,8 @@ public partial class TitleSceneUI
 
     public SystemSettingsWindow SystemSettingsWindow { get; private set; }
 
+    public MessageWindow MessageWindow { get; private set; }
+
     public VisualElement Windows { get; private set; }
 
     public VisualElement Root => _document?.rootVisualElement;
@@ -104,6 +106,7 @@ public partial class TitleSceneUI
         ProgressWindow = Root?.Q<VisualElement>("ProgressWindow");
         LicenseWindow = Root?.Q<VisualElement>("LicenseWindow");
         SystemSettingsWindow = new SystemSettingsWindow(Root?.Q<VisualElement>("SystemSettingsWindow"));
+        MessageWindow = new MessageWindow(Root?.Q<VisualElement>("MessageWindow"));
         Windows = Root?.Q<VisualElement>("Windows");
     }
 
@@ -137,6 +140,7 @@ public partial class TitleSceneUI
         ProgressWindow = Root?.Q<VisualElement>("ProgressWindow");
         LicenseWindow = Root?.Q<VisualElement>("LicenseWindow");
         SystemSettingsWindow.ReinitializeComponent(Root?.Q<VisualElement>("SystemSettingsWindow"));
+        MessageWindow.ReinitializeComponent(Root?.Q<VisualElement>("MessageWindow"));
         Windows = Root?.Q<VisualElement>("Windows");
     }
 }

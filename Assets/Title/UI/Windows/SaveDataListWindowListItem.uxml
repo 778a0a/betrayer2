@@ -1,5 +1,5 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <Style src="project://database/Assets/Title/UI/Windows/WindowStyle.uss?fileID=7433441132597879392&amp;guid=80d59a0d12b88b64fb3406bae5117ab3&amp;type=3#WindowStyle" />
+    <Style src="project://database/Assets/Title/UI/Windows/WindowStyle.uss" />
     <ui:VisualElement name="SaveDataLisItemRoot" style="flex-grow: 1; flex-direction: row; justify-content: space-between; width: 1300px; height: 150px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;">
         <ui:Button name="buttonMain" style="flex-direction: row; flex-grow: 1; margin-top: 2px; margin-right: 2px; margin-bottom: 2px; margin-left: 2px;">
             <ui:Image name="imageCharacter" style="flex-grow: 0; background-color: rgb(186, 66, 66); width: 100px; height: 100px; align-self: center; margin-right: 8px;" />
@@ -21,8 +21,8 @@
                         <ui:Label text="保存:" name="labelSavedTimeCaption" style="align-items: stretch; align-self: stretch; -unity-text-align: middle-left;" />
                         <ui:Label text="2024-02-01 18:40" name="labelSavedTime" style="align-items: stretch; align-self: stretch; -unity-text-align: middle-left; margin-right: 8px;" />
                         <ui:VisualElement style="flex-grow: 0; flex-direction: row; margin-left: 10px; margin-right: 8px;">
-                            <ui:Label text="ターン:" name="labelTurnCountCaption" style="align-items: stretch; align-self: stretch; -unity-text-align: middle-left;" />
-                            <ui:Label text="888" name="labelTurnCount" style="align-items: stretch; align-self: stretch; -unity-text-align: middle-left;" />
+                            <ui:Label text="日付:" name="labelGameDateCaption" style="align-items: stretch; align-self: stretch; -unity-text-align: middle-left;" />
+                            <ui:Label text="888/88/88" name="labelGameDate" style="align-items: stretch; align-self: stretch; -unity-text-align: middle-left;" />
                         </ui:VisualElement>
                     </ui:VisualElement>
                 </ui:VisualElement>

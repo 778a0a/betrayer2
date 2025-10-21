@@ -1,5 +1,5 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <Style src="project://database/Assets/Title/UI/Windows/WindowStyle.uss?fileID=7433441132597879392&amp;guid=80d59a0d12b88b64fb3406bae5117ab3&amp;type=3#WindowStyle" />
+    <Style src="project://database/Assets/Title/UI/Windows/WindowStyle.uss" />
     <ui:VisualElement style="flex-grow: 1; align-items: center; justify-content: center; bottom: 0;">
         <ui:VisualElement name="Border" style="flex-grow: 0; background-color: rgb(0, 9, 25); padding-top: 3px; padding-right: 3px; padding-bottom: 3px; padding-left: 3px;">
             <ui:Label text="システム設定" name="labelSaveDataListWindowTitle" style="color: rgb(255, 255, 255);" />

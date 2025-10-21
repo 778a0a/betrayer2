@@ -17,11 +17,11 @@ public partial class SaveDataListWindowListItem
 
     private SaveDataListWindow parent;
     private LocalizationManager L => parent.L;
+    private FaceImageManager FaceImages { get; } = new();
 
     public int SlotNo { get; private set; }
     public bool IsAutoSaveData { get; private set; }
-    //public SaveDataSummary Summary { get; private set; }
-    public dynamic Summary { get; private set; }
+    public SaveDataSummary Summary { get; private set; }
 
     public void Initialize(SaveDataListWindow parent, int slotNo, bool isAutoSaveData)
     {
@@ -35,7 +35,6 @@ public partial class SaveDataListWindowListItem
         buttonNoData.clicked += () => ButtonClick?.Invoke(this, ButtonType.NoData);
     }
 
-#if false
     public void SetData(SaveDataSummary data)
     {
         Summary = data;
@@ -55,12 +54,12 @@ public partial class SaveDataListWindowListItem
         SaveDataLisItemRoot.style.display = DisplayStyle.Flex;
         buttonNoData.style.display = DisplayStyle.None;
 
-        //imageCharacter.image = FaceImageManager.Instance.GetImage(data.FaceImageId);
+        imageCharacter.image = FaceImages.GetImage(data.FaceImageId);
         labelTitle.text = data.Title;
         labelName.text = data.Name;
         labelSoldiers.text = data.SoldierCount.ToString();
         labelGold.text = data.Gold.ToString();
-        labelTurnCount.text = data.TurnCount.ToString();
+        labelGameDate.text = data.GameDate;
         labelSavedTime.text = data.SavedTime.ToString();
 
         if (IsAutoSaveData)
@@ -68,5 +67,4 @@ public partial class SaveDataListWindowListItem
             parent.labelAutoSaveOriginalSlotNo.text = L["（スロット{0}）", data.SaveDataSlotNo + 1];
         }
     }
-#endif
 }

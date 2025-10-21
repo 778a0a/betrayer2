@@ -2,7 +2,6 @@ using System;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-//public partial class SystemSettingsWindow : IWindow
 public partial class SystemSettingsWindow
 {
     public SystemSettingsManager SystemSettings => SystemSettingsManager.Instance;
