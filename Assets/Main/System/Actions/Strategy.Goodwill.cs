@@ -75,11 +75,14 @@ partial class StrategyActions
                 var message = $"{actor.Name}からゴールドが贈られました。\n金額: {giftAmount}\n受け取りますか？";
                 accepted = await MessageWindow.ShowYesNo(message);
             }
+            // AIの場合
             else
             {
-                // AIの場合はとりあえず常に受け入れる。
-                // TODO 恨みがあれば拒否する？
-                accepted = true;
+                // 友好度50以下の場合は、1につき2%の確率で拒否される。
+                var relation = target.GetRelation(actor.Country);
+                var prob = (relation >= 50) ? 1 : Mathf.Clamp01(relation * 2 / 100f) + 0.01f;
+                accepted = prob.Chance();
+                Debug.Log($"{actor.Name}->{target.Ruler.Name} 親善受諾確率: {prob} ({relation})");
             }
 
             // 拒否された場合は関係悪化して終了。
