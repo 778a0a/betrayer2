@@ -20,8 +20,8 @@
 }
 
 #CastleTableRowItemRoot:hover {
-    background-color: rgba(0, 156, 143, 0.3);
-    border-color: rgba(204, 204, 204, 0.7);
+    /* background-color: rgba(0, 156, 143, 0.3); */
+    /* border-color: rgba(204, 204, 204, 0.7); */
 }
 
 #CastleTableRowItemRoot.clickable:hover {

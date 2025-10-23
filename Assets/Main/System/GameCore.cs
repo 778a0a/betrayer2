@@ -10,11 +10,20 @@ public partial class GameCore
 {
     public static GameCore Instance { get; set; }
 
+    // ゲームクリアしたことがあるならtrue
+    public static bool GameCleared
+    {
+        set => PlayerPrefs.SetInt("GameCleared", value ? 1 : 0);
+        get => PlayerPrefs.GetInt("GameCleared", 0) == 1;
+    }
+
     public WorldData World { get; }
     public UIMapManager Map { get; }
     public MainUI MainUI { get; }
     public Booter Booter { get; }
     public AI AI { get; }
+
+    public bool IsWatchMode { get; set; } = false;
 
     public PersonalActions PersonalActions { get; }
     public StrategyActions StrategyActions { get; }

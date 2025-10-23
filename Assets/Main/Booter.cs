@@ -87,14 +87,14 @@ public class Booter : MonoBehaviour
                     {
                         Debug.Log("観戦モードが選択されました。");
                         core.IsWatchMode = true;
-                        core.MainUI.WatchModeWindow.Show();
+                        //core.MainUI.WatchModeWindow.Show(); // TODO: WatchModeWindow未実装
                     }
                     else
                     {
-                        chara.IsPlayer = true;
+                        world.SetPlayer(chara);
                         Debug.Log($"Player selected: {chara.Name}");
                     }
-                    core.DoMainLoop().Foreget();
+                    core.DoMainLoop().Forget();
                 });
                 MessageWindow.Show("操作キャラを選択してください。");
             }

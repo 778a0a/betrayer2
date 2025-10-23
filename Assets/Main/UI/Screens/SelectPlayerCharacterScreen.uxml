@@ -1,0 +1,17 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <engine:Template name="CharacterTable" src="project://database/Assets/Main/UI/Parts/CharacterTable/CharacterTable.uxml" />
+    <engine:Template name="CharacterSummary" src="project://database/Assets/Main/UI/Parts/CharacterSummary.uxml" />
+    <engine:Template name="CastleTableRowItem" src="project://database/Assets/Main/UI/Parts/CastleTable/CastleTableRowItem.uxml" />
+    <Style src="project://database/Assets/Main/UI/MainUI.uss" />
+    <engine:VisualElement class="panel">
+        <engine:Label name="labelDescription" text="城タイルをクリックして操作キャラを選択してください" style="font-size: 32px; margin-top: 10px; flex-shrink: 0;" />
+        <engine:VisualElement style="margin-top: 10px; flex-direction: row; flex-shrink: 0;">
+            <engine:Button name="buttonShowFreeList" text="浪士一覧" style="margin-right: 10px; margin-left: 0;" />
+            <engine:Button name="buttonRandom" text="ランダム" style="margin-right: 10px;" />
+            <engine:Button name="buttonWatch" text="観戦モード" style="margin-right: 0;" />
+        </engine:VisualElement>
+        <engine:Instance name="CastleInfo" template="CastleTableRowItem" style="margin-top: 10px; display: none;" />
+        <engine:Instance template="CharacterTable" name="CharacterTable" style="margin-top: 10px; flex-grow: 1;" />
+        <engine:Instance template="CharacterSummary" name="CharacterSummary" style="flex-shrink: 0; margin-top: 10px;" />
+    </engine:VisualElement>
+</engine:UXML>
