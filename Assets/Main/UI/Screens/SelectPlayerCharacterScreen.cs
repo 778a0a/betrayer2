@@ -67,6 +67,8 @@ public partial class SelectPlayerCharacterScreen : MainUIComponent, IScreen
 
     public void Show(WorldData world, Action<Character> onCharacterSelected)
     {
+        UI.Frame.Root.style.display = DisplayStyle.None;
+
         this.world = world;
         this.onCharacterSelected = onCharacterSelected;
         isShowingFreeList = false;
@@ -179,6 +181,7 @@ public partial class SelectPlayerCharacterScreen : MainUIComponent, IScreen
         var ok = await MessageWindow.ShowOkCancel(message);
         if (!ok) return;
 
+        UI.Frame.Root.style.display = DisplayStyle.Flex;
         Root.style.display = DisplayStyle.None;
         world.Map.ClearCustomEventHandler();
         onCharacterSelected?.Invoke(chara);
