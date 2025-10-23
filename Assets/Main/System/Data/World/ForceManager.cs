@@ -465,7 +465,7 @@ public class ForceManager : IReadOnlyList<Force>
             {
                 if (c.IsAlly(force.Country)) continue;
                 var rel = c.GetRelation(force.Country);
-                c.SetRelation(force.Country, rel - 15);
+                c.SetRelation(force.Country, rel - 10);
             }
 
             // 滅亡メッセージを表示する。
