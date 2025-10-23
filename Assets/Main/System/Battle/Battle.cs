@@ -218,6 +218,14 @@ public class Battle
                 .Any(row => row.Count(s => s.IsAlive) > 4 && row.All(s => s.Hp == 0 || s.Hp >= 20));
             winnerWithdraw = !hasHealthyRow;
             Debug.Log($"[戦闘処理] {winner.Character.Name}の撤退判定: {winnerWithdraw}");
+
+            // ただし、攻城戦で、防衛側がもう残っていない場合は撤退しない。
+            if (Type == BattleType.Siege && Def.IsInCastle && Def.Character.Castle.Members.Count(m => m.IsDefendable) == 1)
+            {
+                Debug.Log($"[戦闘処理] {winner.Character.Name}の撤退判定: 敵城に防衛可能キャラがいないため撤退しません");
+                winnerWithdraw = false;
+            }
+
         }
 
         return (result, winnerWithdraw);
