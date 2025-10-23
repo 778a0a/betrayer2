@@ -12,7 +12,7 @@
             </ui:VisualElement>
             <ui:VisualElement style="flex-grow: 1; margin-left: 10px;">
                 <ui:VisualElement style="flex-direction: row; align-items: flex-end;">
-                    <ui:VisualElement name="iconCountry" style="width: 25px; height: 25px; margin-right: 5px; background-color: #088" />
+                    <ui:VisualElement name="iconCountry" style="width: 25px; height: 25px; margin-bottom: 2px; margin-right: 5px; background-color: #088" />
                     <ui:Label name="labelPlayerTitle" text="将軍" style="font-size: 28px; margin:0 10px 0 0; padding:0;" />
                     <ui:Label name="labelPlayerName" text="ハイペリオン" style="font-size: 36px; font-weight: bold; margin:0; width:295px;" />
                     <ui:VisualElement name="TraitContainer" style="flex-direction: row; margin-left: 10px; align-items: flex-end;">
