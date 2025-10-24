@@ -44,6 +44,10 @@ public partial class CharacterSummary
 
     public VisualElement TraitContainer { get; private set; }
 
+    public VisualElement TraitTooltipContainer { get; private set; }
+
+    public Label labelTraitTooltip { get; private set; }
+
     public Label labelAttack { get; private set; }
 
     public Label labelDefense { get; private set; }
@@ -122,6 +126,8 @@ public partial class CharacterSummary
         labelPlayerTitle = Root?.Q<Label>("labelPlayerTitle");
         labelPlayerName = Root?.Q<Label>("labelPlayerName");
         TraitContainer = Root?.Q<VisualElement>("TraitContainer");
+        TraitTooltipContainer = Root?.Q<VisualElement>("TraitTooltipContainer");
+        labelTraitTooltip = Root?.Q<Label>("labelTraitTooltip");
         labelAttack = Root?.Q<Label>("labelAttack");
         labelDefense = Root?.Q<Label>("labelDefense");
         labelIntelligence = Root?.Q<Label>("labelIntelligence");
@@ -171,6 +177,8 @@ public partial class CharacterSummary
         labelPlayerTitle = Root?.Q<Label>("labelPlayerTitle");
         labelPlayerName = Root?.Q<Label>("labelPlayerName");
         TraitContainer = Root?.Q<VisualElement>("TraitContainer");
+        TraitTooltipContainer = Root?.Q<VisualElement>("TraitTooltipContainer");
+        labelTraitTooltip = Root?.Q<Label>("labelTraitTooltip");
         labelAttack = Root?.Q<Label>("labelAttack");
         labelDefense = Root?.Q<Label>("labelDefense");
         labelIntelligence = Root?.Q<Label>("labelIntelligence");

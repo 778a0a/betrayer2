@@ -6,9 +6,66 @@ using UnityEngine.UIElements;
 public partial class CharacterSummary
 {
     private CharacterInfoSoldierIcon[] soldierIcons;
+    private bool isInitialized = false;
+
+    private void InitializeTooltipsIfNeeded()
+    {
+        if (isInitialized) return;
+        isInitialized = true;
+
+        RegisterTraitTooltip(traitKnight, @"【騎士】
+<color=green>戦闘補正↑</color>
+<color=green>訓練効果↑</color>
+<color=#ff7f50>内政効果↓</color>
+");
+        RegisterTraitTooltip(traitDrillmaster, @"【教官】
+<color=green>同拠点全員の訓練効果↑</color>
+");
+        RegisterTraitTooltip(traitPirate, @"【海賊】
+<color=green>大河・川での戦闘・移動補正↑↑↑</color>
+<color=#ff7f50>陸地での戦闘・移動補正↓↓（川沿い除く）</color>
+");
+        RegisterTraitTooltip(traitAdmiral, @"【提督】
+<color=green>大河・川での戦闘・移動補正↑↑</color>
+<color=#ff7f50>陸地での戦闘・移動補正↓（川沿い除く）</color>
+");
+        RegisterTraitTooltip(traitHunter, @"【狩人】
+<color=green>森林での戦闘・移動補正↑↑</color>
+<color=green>山岳・丘陵での戦闘・移動補正↑</color>
+<color=#ff7f50>平地での戦闘補正↓</color>
+");
+        RegisterTraitTooltip(traitMountaineer, @"【山岳兵】
+<color=green>山岳での戦闘・移動補正↑↑↑</color>
+<color=green>森林・丘陵での戦闘・移動補正↑</color>
+<color=#ff7f50>平地での戦闘補正↓</color>
+");
+        RegisterTraitTooltip(traitMerchant, @"【商人】
+<color=green>投資効果↑↑</color>
+<color=green>内政効果↑</color>
+<color=#ff7f50>戦闘補正↓</color>
+");
+        RegisterTraitTooltip(traitDivineSpeed, @"【迅速】
+<color=green>移動補正↑↑</color>
+");
+    }
+
+    private void RegisterTraitTooltip(Label traitLabel, string description)
+    {
+        traitLabel.RegisterCallback<MouseEnterEvent>(evt =>
+        {
+            labelTraitTooltip.text = description;
+            labelTraitTooltip.style.display = DisplayStyle.Flex;
+        });
+        traitLabel.RegisterCallback<MouseLeaveEvent>(evt =>
+        {
+            labelTraitTooltip.style.display = DisplayStyle.None;
+        });
+    }
 
     public void SetData(Character chara)
     {
+        InitializeTooltipsIfNeeded();
+
         if (chara == null)
         {
             Root.style.opacity = 0;
