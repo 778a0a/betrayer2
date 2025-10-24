@@ -139,19 +139,24 @@ public partial class ActionScreen : IScreen
         var chara = currentCharacter;
         var action = button.Action;
 
-        ValueTask DoAction()
+        ValueTask DoAction(bool isSpecial = false)
         {
             var canPrepare = action.Enabled(chara, currentTile);
             if (!canPrepare)
             {
                 return default;
             }
-            return action.Do(new(chara, selectedTile: currentTile));
+            return action.Do(new(chara, selectedTile: currentTile, isSpecial: isSpecial));
         }
 
-        // 連打が多いアクションは右クリックで10回実行できるようにする。
         var isRightClick = ((evt as MouseDownEvent)?.button ?? (evt as ClickEvent)?.button ?? 0) == 1;
-        if (isRightClick && IsRightClickEnabledAction(action))
+        // 褒賞の場合は特殊実行を行う。
+        if (isRightClick && action is StrategyActions.BonusAction bonus)
+        {
+            await DoAction(true);
+        }
+        // 連打が多いアクションは右クリックで10回実行できるようにする。
+        else if (isRightClick && IsRightClickEnabledAction(action))
         {
             for (int i = 0; i < 10; i++)
             {

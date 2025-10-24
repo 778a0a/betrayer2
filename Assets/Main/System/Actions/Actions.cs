@@ -158,6 +158,7 @@ public struct ActionArgs
     public float gold;
     public bool estimate;
     public GameMapTile selectedTile;
+    public bool isSpecial;
 
     public ActionArgs(
         Character actor,
@@ -168,7 +169,8 @@ public struct ActionArgs
         MapPosition? targetPosition = null,
         float gold = 0,
         bool estimate = false,
-        GameMapTile selectedTile = null)
+        GameMapTile selectedTile = null,
+        bool isSpecial = false)
     {
         this.actor = actor;
         this.targetCastle = targetCastle;
@@ -179,6 +181,7 @@ public struct ActionArgs
         this.gold = gold;
         this.estimate = estimate;
         this.selectedTile = selectedTile;
+        this.isSpecial = isSpecial;
     }
 
     public override readonly string ToString()

@@ -15,7 +15,7 @@ partial class StrategyActions
     public class BonusAction : StrategyActionBase
     {
         public override string Label => L["褒賞"];
-        public override string Description => L["臣下に褒賞を与えます。"];
+        public override string Description => L["臣下に褒賞を与えます。(右クリックで忠誠下位5人に自動実行)"];
 
         protected override bool VisibleCore(Character actor, GameMapTile tile) => tile.Castle?.CanOrder ?? false;
 
@@ -52,6 +52,19 @@ partial class StrategyActions
                     .OrderBy(c => c.Loyalty)
                     .ThenByDescending(c => c.Contribution)
                     .ToList();
+
+                // 特殊実行の場合は、画面を表示せずに忠誠下位5人に褒賞を与える。
+                if (args.isSpecial)
+                {
+                    var sortedCharas = candList
+                        .Where(c => (int)c.Loyalty <= 105)
+                        .Take(5)
+                        .ToList();
+                    if (sortedCharas.Count == 0) return;
+                    await SendBonus(sortedCharas);
+                    Debug.Log($"{actor.Name} が忠誠下位5人に褒賞を与えました。");
+                    return;
+                }
 
                 // 複数キャラ選択画面を表示する。
                 await UI.BonusScreen.Show(
