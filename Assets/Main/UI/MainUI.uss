@@ -89,6 +89,11 @@ Label {
     width: 125px;
 }
 
+Toggle:hover {
+    /* background-color: rgba(255, 255, 255, 0.1); */
+    background-color: rgba(128, 128, 128, 0.2);
+}
+
 Toggle:hover > .unity-base-field__label {
     color: #ffc;
 }
@@ -96,4 +101,13 @@ Toggle:hover > .unity-base-field__label {
 Toggle > .unity-base-field__label {
     /* フォーカス時に薄い青になるのを防ぐ。 */
     color: white;
+}
+
+Toggle {
+    flex-direction: row-reverse;
+    padding: 5px;
+}
+
+Toggle > Label {
+    margin-left: 10px;
 }
