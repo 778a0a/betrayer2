@@ -33,14 +33,15 @@ public class Soldier
     public bool IsAlive => !IsEmptySlot && HpFloat > 0;
     public bool IsDeadInBattle { get; set; }
 
-    public void AddExperience(Character owner, bool isTraining = false, bool drillMasterExists = false)
+    public void AddExperience(Character owner, bool isTraining = false, bool drillMasterExists = false, bool isKnight = false)
     {
         if (IsEmptySlot) return;
         
         var exp = 20 + Random.Range(-5, 5) + (drillMasterExists ? Random.Range(2, 5) : 0);
         if (isTraining)
         {
-            exp = (int)(exp * owner.Attack.MinWith(owner.Defense, owner.Intelligence) / 100f);
+            var traitAdj = isKnight ? 1.1f : 1.0f;
+            exp = (int)(exp * traitAdj * owner.Attack.MinWith(owner.Defense, owner.Intelligence) / 100f);
         }
         else
         {

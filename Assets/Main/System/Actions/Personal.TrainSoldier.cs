@@ -26,10 +26,11 @@ partial class PersonalActions
             var chara = args.actor;
 
             var drillMasterExists = chara.Castle.Members.Any(m => m.Traits.HasFlag(Traits.Drillmaster));
+            var isKnight = chara.Traits.HasFlag(Traits.Knight);
             foreach (var soldier in chara.Soldiers)
             {
                 if (soldier.IsEmptySlot) continue;
-                soldier.AddExperience(chara, true, drillMasterExists);
+                soldier.AddExperience(chara, true, drillMasterExists, isKnight);
             }
 
             PayCost(args);

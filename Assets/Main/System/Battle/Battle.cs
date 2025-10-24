@@ -312,7 +312,7 @@ public class Battle
     {
         var adj = 0f;
         if (traits.HasFlag(Traits.Merchant)) adj += -0.05f;
-        if (traits.HasFlag(Traits.Knight)) adj += +0.025f;
+        if (traits.HasFlag(Traits.Knight)) adj += +0.03f;
         switch (t.Terrain)
         {
             case Terrain.LargeRiver:

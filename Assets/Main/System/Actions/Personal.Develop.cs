@@ -34,6 +34,7 @@ partial class PersonalActions
 
             var adj = 1 + (chara.Governing - 75) / 100f;
             if (chara.Traits.HasFlag(Traits.Merchant)) adj += 0.15f;
+            if (chara.Traits.HasFlag(Traits.Knight)) adj -= 0.02f;
             var adjDim = 1 + 0.5f * (chara.Castle.GoldIncomeMax - chara.Castle.GoldIncome) / (float)chara.Castle.GoldIncomeMax;
             var adjDim2 = 1 + (0.5f * ((chara.Castle.GoldIncomeMax / 2) - town.GoldIncome) / (chara.Castle.GoldIncomeMax / 2f)).MinWith(0);
             var adjImp = chara.IsImportant || chara.IsPlayer ? 1 : 0.8f;
