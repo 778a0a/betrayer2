@@ -44,7 +44,7 @@
                 <ui:VisualElement name="ActionPanel">
                     <ui:VisualElement style="flex-direction: row; align-items: flex-end; margin-left: 5px;">
                         <ui:Label text="コスト:" style="margin: 0 10px 0 0px; font-size: 28px; " />
-                        <ui:Label name="labelCost" text="城資金 10, 采配P 5" style="font-size: 28px;" />
+                        <ui:Label name="labelCost" text="" style="font-size: 28px;" />
                     </ui:VisualElement>
                     <ui:VisualElement style="flex-direction: row; align-items: center; min-height: 32px; margin: 15px 0 15px 5px;">
                         <ui:Label name="labelActionDescription" text="アクションの説明がここに表示されます。" style="font-size: 28px; white-space: normal" />
