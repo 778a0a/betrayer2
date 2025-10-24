@@ -111,3 +111,20 @@ Toggle {
 Toggle > Label {
     margin-left: 10px;
 }
+
+.dark-button {
+    color: white;
+    background-color: #223344;
+}
+
+.dark-button:hover {
+    background-color: #334455;
+}
+
+.dark-button:active {
+    background-color: #445566;
+}
+
+.dark-button:focus {
+    border-color: #959595;
+}

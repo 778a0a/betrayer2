@@ -52,7 +52,7 @@
                         </ui:VisualElement>
                     </ui:VisualElement>
                 </ui:VisualElement>
-                <ui:Button name="buttonSystem" text="≡" style="color: white; background-color: #223344; font-size: 25px; width: 40px; height: 40px; padding: 0 10px; margin: 0;" />
+                <ui:Button name="buttonSystem" text="≡" class="dark-button" style="font-size: 25px; width: 40px; height: 40px; padding: 0 10px; margin: 0;" />
             </ui:VisualElement>
 
         </ui:VisualElement>
