@@ -28,9 +28,21 @@ public partial class ActionScreen
 
     public VisualElement PersonalPhaseHeader { get; private set; }
 
-    public Button buttonTurnEnd { get; private set; }
+    public VisualElement PersonalActionGaugeMaxBar { get; private set; }
 
-    public Button buttonClose { get; private set; }
+    public VisualElement PersonalActionGaugeCurrentBar { get; private set; }
+
+    public VisualElement PersonalActionGaugeBar { get; private set; }
+
+    public VisualElement StrategyActionGaugeMaxBar { get; private set; }
+
+    public VisualElement StrategyActionGaugeCurrentBar { get; private set; }
+
+    public VisualElement StrategyActionGaugeBar { get; private set; }
+
+    public Label labelGameDate { get; private set; }
+
+    public Button buttonSystem { get; private set; }
 
     public Label labelCost { get; private set; }
 
@@ -46,9 +58,11 @@ public partial class ActionScreen
 
     public VisualElement NoActionPanel { get; private set; }
 
-    public VisualElement ActionPanelContent { get; private set; }
+    public Button buttonTurnEnd { get; private set; }
 
     public Button buttonToggleActionPanelFolding { get; private set; }
+
+    public VisualElement ActionPanelContent { get; private set; }
 
     public CastleInfoPanel CastleInfoPanel { get; private set; }
 
@@ -64,8 +78,14 @@ public partial class ActionScreen
         labelPhaseSubtitle = Root?.Q<Label>("labelPhaseSubtitle");
         StrategyPhaseHeader = Root?.Q<VisualElement>("StrategyPhaseHeader");
         PersonalPhaseHeader = Root?.Q<VisualElement>("PersonalPhaseHeader");
-        buttonTurnEnd = Root?.Q<Button>("buttonTurnEnd");
-        buttonClose = Root?.Q<Button>("buttonClose");
+        PersonalActionGaugeMaxBar = Root?.Q<VisualElement>("PersonalActionGaugeMaxBar");
+        PersonalActionGaugeCurrentBar = Root?.Q<VisualElement>("PersonalActionGaugeCurrentBar");
+        PersonalActionGaugeBar = Root?.Q<VisualElement>("PersonalActionGaugeBar");
+        StrategyActionGaugeMaxBar = Root?.Q<VisualElement>("StrategyActionGaugeMaxBar");
+        StrategyActionGaugeCurrentBar = Root?.Q<VisualElement>("StrategyActionGaugeCurrentBar");
+        StrategyActionGaugeBar = Root?.Q<VisualElement>("StrategyActionGaugeBar");
+        labelGameDate = Root?.Q<Label>("labelGameDate");
+        buttonSystem = Root?.Q<Button>("buttonSystem");
         labelCost = Root?.Q<Label>("labelCost");
         labelActionDescription = Root?.Q<Label>("labelActionDescription");
         StrategyActionButtons = Root?.Q<VisualElement>("StrategyActionButtons");
@@ -73,8 +93,9 @@ public partial class ActionScreen
         buttonMoveToMyCastle = Root?.Q<Button>("buttonMoveToMyCastle");
         ActionPanel = Root?.Q<VisualElement>("ActionPanel");
         NoActionPanel = Root?.Q<VisualElement>("NoActionPanel");
-        ActionPanelContent = Root?.Q<VisualElement>("ActionPanelContent");
+        buttonTurnEnd = Root?.Q<Button>("buttonTurnEnd");
         buttonToggleActionPanelFolding = Root?.Q<Button>("buttonToggleActionPanelFolding");
+        ActionPanelContent = Root?.Q<VisualElement>("ActionPanelContent");
         CastleInfoPanel = new CastleInfoPanel(Root?.Q<VisualElement>("CastleInfoPanel"));
     }
 
@@ -88,8 +109,14 @@ public partial class ActionScreen
         labelPhaseSubtitle = Root?.Q<Label>("labelPhaseSubtitle");
         StrategyPhaseHeader = Root?.Q<VisualElement>("StrategyPhaseHeader");
         PersonalPhaseHeader = Root?.Q<VisualElement>("PersonalPhaseHeader");
-        buttonTurnEnd = Root?.Q<Button>("buttonTurnEnd");
-        buttonClose = Root?.Q<Button>("buttonClose");
+        PersonalActionGaugeMaxBar = Root?.Q<VisualElement>("PersonalActionGaugeMaxBar");
+        PersonalActionGaugeCurrentBar = Root?.Q<VisualElement>("PersonalActionGaugeCurrentBar");
+        PersonalActionGaugeBar = Root?.Q<VisualElement>("PersonalActionGaugeBar");
+        StrategyActionGaugeMaxBar = Root?.Q<VisualElement>("StrategyActionGaugeMaxBar");
+        StrategyActionGaugeCurrentBar = Root?.Q<VisualElement>("StrategyActionGaugeCurrentBar");
+        StrategyActionGaugeBar = Root?.Q<VisualElement>("StrategyActionGaugeBar");
+        labelGameDate = Root?.Q<Label>("labelGameDate");
+        buttonSystem = Root?.Q<Button>("buttonSystem");
         labelCost = Root?.Q<Label>("labelCost");
         labelActionDescription = Root?.Q<Label>("labelActionDescription");
         StrategyActionButtons = Root?.Q<VisualElement>("StrategyActionButtons");
@@ -97,8 +124,9 @@ public partial class ActionScreen
         buttonMoveToMyCastle = Root?.Q<Button>("buttonMoveToMyCastle");
         ActionPanel = Root?.Q<VisualElement>("ActionPanel");
         NoActionPanel = Root?.Q<VisualElement>("NoActionPanel");
-        ActionPanelContent = Root?.Q<VisualElement>("ActionPanelContent");
+        buttonTurnEnd = Root?.Q<Button>("buttonTurnEnd");
         buttonToggleActionPanelFolding = Root?.Q<Button>("buttonToggleActionPanelFolding");
+        ActionPanelContent = Root?.Q<VisualElement>("ActionPanelContent");
         CastleInfoPanel = new CastleInfoPanel(Root?.Q<VisualElement>("CastleInfoPanel"));
     }
 }

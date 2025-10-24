@@ -285,6 +285,11 @@ public partial class GameCore
         World.Forces.UpdateDangerStatus(this);
         await World.Forces.OnForceMove(this);
 
+        if (player != null)
+        {
+            MainUI.ActionScreen.UpdateActionGauge(player);
+        }
+
         // プレイヤーの地位の変化があれば通知する。
         await NotifyPlayerTitleChangeIfNeeded();
 

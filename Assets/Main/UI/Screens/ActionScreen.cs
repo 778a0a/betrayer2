@@ -113,9 +113,8 @@ public partial class ActionScreen : IScreen
             buttonToggleActionPanelFolding.text = show ? "-" : "+";
         };
         
-        buttonClose.clicked += () =>
+        buttonSystem.clicked += () =>
         {
-            Root.style.display = DisplayStyle.None;
         };
 
         CastleInfoPanel.Initialize();
@@ -263,6 +262,36 @@ public partial class ActionScreen : IScreen
         Render();
     }
 
+    public void UpdateActionGauge(Character player)
+    {
+        // ついでに日付も更新する。
+        labelGameDate.text = Core.World.GameDate.ToString();
+        if (player == null) return;
+
+        // 個人アクションゲージ
+        var personalCurrent = player.PersonalActionGauge;
+        var personalMax = 100f;
+        var personalRatio = Mathf.Clamp01(personalCurrent / personalMax);
+        PersonalActionGaugeCurrentBar.style.width = Length.Percent(personalRatio * 100f);
+        PersonalActionGaugeMaxBar.style.width = Length.Percent(100f);
+
+        // 戦略アクションゲージ
+        if (!player.IsBoss)
+        {
+            // currentBarを非表示にする。
+            StrategyActionGaugeCurrentBar.style.width = Length.Percent(0f);
+            StrategyActionGaugeMaxBar.style.width = Length.Percent(0f);
+        }
+        else
+        {
+            var strategyCurrent = player.StrategyActionGauge;
+            var strategyMax = 100f;
+            var strategyRatio = Mathf.Clamp01(strategyCurrent / strategyMax);
+            StrategyActionGaugeCurrentBar.style.width = Length.Percent(strategyRatio * 100f);
+            StrategyActionGaugeMaxBar.style.width = Length.Percent(100f);
+        }
+    }
+
     public void Render()
     {
         currentCharacter ??= Core.World.Characters.First();
@@ -297,7 +326,9 @@ public partial class ActionScreen : IScreen
                 button.SetData(currentCharacter, targetTile);
             }
         }
-        
+
+        labelGameDate.text = Core.World.GameDate.ToString();
+
         var summaryDefault = currentCharacter;
         if (targetTile != characterTile && targetTile.Castle != null)
         {

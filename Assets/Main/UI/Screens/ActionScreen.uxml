@@ -6,32 +6,53 @@
     <ui:VisualElement class="panel">
         
         <!-- ヘッダー -->
-        <ui:VisualElement class="header-panel" style="flex-direction: row; align-items: flex-start; height: 45px; justify-content: space-between;">
+        <ui:VisualElement class="header-panel" style="flex-direction: row; align-items: stretch; height: 45px; justify-content: space-between;">
 
-            <ui:VisualElement style="flex-direction: row; align-items: flex-end;">
-                <ui:Label name="labelPhaseTitle" text="戦略" style="font-size: 40px; font-weight: bold; color: #0ff;" />
+            <ui:VisualElement style="flex-direction: row; align-items: flex-end; margin-bottom: 3px;">
+                <ui:Label name="labelPhaseTitle" text="戦略" style="font-size: 38px; font-weight: bold; color: #0ff; margin-bottom: -2px;" />
                 <ui:Label name="labelPhaseSubtitle" text="フェイズ" style="font-size: 25px; font-weight: bold;" />
                 
                 <!-- 戦略フェイズ用ヘッダー -->
                 <ui:VisualElement name="StrategyPhaseHeader" style="flex-direction: row; align-items: flex-end;">
-                    <ui:Label text="(城資金 " style="font-size: 26px; margin: 0 5px 0 10px;" />
-                    <ui:Label text="8888" name="labelCurrentCastleGold" style="font-size: 26px; color: yellow;" />
-                    <ui:Label text=", 采配P " style="font-size: 26px; margin: 0 5px 0 0;" />
-                    <ui:Label text="88" name="labelCurrentAP" style="font-size: 26px; color: red;" />
-                    <ui:Label text=")" style="font-size: 26px;" />
+                    <ui:Label text="(城資金 " style="font-size: 25px; margin: 0 5px 0 10px;" />
+                    <ui:Label text="8888" name="labelCurrentCastleGold" style="font-size: 25px; color: yellow;" />
+                    <ui:Label text=", 采配P " style="font-size: 25px; margin: 0 5px 0 0;" />
+                    <ui:Label text="88" name="labelCurrentAP" style="font-size: 25px; color: red;" />
+                    <ui:Label text=")" style="font-size: 25px;" />
                 </ui:VisualElement>
                 
                 <!-- 個人フェイズ用ヘッダー -->
                 <ui:VisualElement name="PersonalPhaseHeader" style="flex-direction: row; align-items: flex-end; display: none;">
-                    <ui:Label text="(所持金 " style="font-size: 26px; margin: 0 5px 0 10px;" />
-                    <ui:Label text="8888" name="labelCurrentPersonalGold" style="font-size: 26px; color: yellow;" />
-                    <ui:Label text=")" style="font-size: 26px;" />
+                    <ui:Label text="(所持金 " style="font-size: 25px; margin: 0 5px 0 10px;" />
+                    <ui:Label text="8888" name="labelCurrentPersonalGold" style="font-size: 25px; color: yellow;" />
+                    <ui:Label text=")" style="font-size: 25px;" />
                 </ui:VisualElement>
             </ui:VisualElement>
 
-            <ui:VisualElement style="flex-direction: row; align-items: flex-end; margin: 5px 0 0px 0; align-items: stretch;">
-                <!-- <ui:Button text="×" name="buttonClose" style="font-size: 28px; -unity-font-style: bold; padding: 0; width: 40px; margin: 0" /> -->
-                <ui:Button name="buttonClose" text="⚙️" style="background-color: #223344; font-size: 25px; width: 40px; height: 40px; padding: 0 10px; margin: 0;" />
+            <ui:VisualElement style="flex-direction: row; align-items: flex-end;">
+                <!-- 日付 -->
+                <ui:Label name="labelGameDate" text="000/01/01" style="font-size: 28px; margin-right: 10px; color: #ddd; border-color: #888; border-width: 1px; padding: 3px 6px;" />
+
+                <!-- アクションゲージ -->
+                <ui:VisualElement style="flex-direction: column; justify-content: flex-end; margin-right: 10px;">
+                    <!-- 個人アクションゲージ -->
+                    <ui:VisualElement style="flex-direction: row; align-items: center; margin-bottom: 3px;">
+                        <ui:Label text="個人" style="font-size: 16px; width: 38px;" />
+                        <ui:VisualElement name="PersonalActionGaugeBar" style="width: 115px; height: 12px; background-color: gray; border-width: 1px; border-color: white;">
+                            <ui:VisualElement name="PersonalActionGaugeMaxBar" style="position: absolute; top: 0; left: 0; height: 100%; background-color: rgba(255, 255, 0, 0.3);" />
+                            <ui:VisualElement name="PersonalActionGaugeCurrentBar" style="position: absolute; top: 0; left: 0; height: 100%; background-color: yellow;" />
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                    <!-- 戦略アクションゲージ -->
+                    <ui:VisualElement style="flex-direction: row; align-items: center;">
+                        <ui:Label text="戦略" style="font-size: 16px; width: 38px;" />
+                        <ui:VisualElement name="StrategyActionGaugeBar" style="width: 115px; height: 12px; background-color: gray; border-width: 1px; border-color: white;">
+                            <ui:VisualElement name="StrategyActionGaugeMaxBar" style="position: absolute; top: 0; left: 0; height: 100%; background-color: rgba(0, 255, 255, 0.3);" />
+                            <ui:VisualElement name="StrategyActionGaugeCurrentBar" style="position: absolute; top: 0; left: 0; height: 100%; background-color: cyan;" />
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                </ui:VisualElement>
+                <ui:Button name="buttonSystem" text="≡" style="color: white; background-color: #223344; font-size: 25px; width: 40px; height: 40px; padding: 0 10px; margin: 0;" />
             </ui:VisualElement>
 
         </ui:VisualElement>
