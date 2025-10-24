@@ -114,6 +114,8 @@ public partial class CastleTableRowItem
         labelStrength.text = castle.Strength.ToString("0");
         
         // 将数
-        labelMembers.text = castle.Members.Count.ToString();
+        labelMembers.text = $"{castle.Members.Count}/{castle.MaxMember}";
+        labelMembers.style.color = castle.IsMemberOver ? Color.red : Color.white;
+
     }
 }

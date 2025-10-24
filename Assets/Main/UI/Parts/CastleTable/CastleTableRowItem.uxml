@@ -57,7 +57,7 @@
                     <engine:Label text="城塞Lv:" style="margin-left: 15px; margin-right: 10px; font-size: 24px;" />
                     <engine:Label name="labelStrength" text="888" style="font-size: 24px; color: cyan;" />
                     <engine:Label text="将数:" style="margin-left: 15px; margin-right: 10px; font-size: 24px;" />
-                    <engine:Label name="labelMembers" text="88" style="font-size: 24px; min-width: 40px" />
+                    <engine:Label name="labelMembers" text="88/88" style="font-size: 24px; min-width: 40px" />
                 </engine:VisualElement>
             </engine:VisualElement>
         </engine:VisualElement>
