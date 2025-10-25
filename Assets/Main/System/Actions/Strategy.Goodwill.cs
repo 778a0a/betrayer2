@@ -79,7 +79,7 @@ partial class StrategyActions
             {
                 // 友好度50以下の場合は、1につき2%の確率で拒否される。
                 var relation = target.GetRelation(actor.Country);
-                var prob = (relation >= 50) ? 1 : Mathf.Clamp01(relation * 2 / 100f) + 0.01f;
+                var prob = (relation >= 50) ? 1 : Mathf.Clamp01(relation * 2 / 100f) + actor.Intelligence.MinWith(actor.Governing) * 0.01f;
                 accepted = prob.Chance();
                 Debug.Log($"{actor.Name}->{target.Ruler.Name} 親善受諾確率: {prob} ({relation})");
             }
