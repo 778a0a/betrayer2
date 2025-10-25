@@ -12,6 +12,7 @@ public partial class ActionScreen : IScreen
     private ActionButtonHelper[] personalButtons;
     private Character currentCharacter;
     private GameMapTile currentTile;
+    public bool IsProgressPhase => CurrentPhase == Phase.Progress;
     public bool IsPersonalPhase => CurrentPhase == Phase.Personal;
     public bool IsStrategyPhase => CurrentPhase == Phase.Strategy;
     public Phase CurrentPhase { get; private set; } = Phase.Progress;
@@ -185,6 +186,7 @@ public partial class ActionScreen : IScreen
 
     private void EndTurn()
     {
+        ActivatePhase(currentCharacter, Phase.Progress);
         GameCore.Instance.Booter.hold = false;
     }
 
@@ -291,30 +293,38 @@ public partial class ActionScreen : IScreen
         var targetTile = currentTile ?? characterTile;
 
         // フェイズに応じてヘッダーとボタンを切り替える。
+        ActivePhaseContent.style.display = Util.Display(!IsProgressPhase);
+        ProgressPhaseContent.style.display = Util.Display(IsProgressPhase);
+        buttonTurnEnd.style.display = Util.Display(!IsProgressPhase);
         PersonalPhaseHeader.style.display = Util.Display(IsPersonalPhase);
         PersonalActionButtons.style.display = Util.Display(IsPersonalPhase);
-        StrategyPhaseHeader.style.display = Util.Display(!IsPersonalPhase);
-        StrategyActionButtons.style.display = Util.Display(!IsPersonalPhase);
-        if (IsPersonalPhase)
+        StrategyPhaseHeader.style.display = Util.Display(IsStrategyPhase);
+        StrategyActionButtons.style.display = Util.Display(IsStrategyPhase);
+        switch (CurrentPhase)
         {
-            labelPhaseTitle.text = "個人";
-            labelPhaseTitle.style.color = Color.yellow;
-            labelCurrentPersonalGold.text = currentCharacter.Gold.ToString("0");
-            foreach (var button in personalButtons)
-            {
-                button.SetData(currentCharacter, targetTile);
-            }
-        }
-        else
-        {
-            labelPhaseTitle.text = "戦略";
-            labelPhaseTitle.style.color = Color.cyan;
-            labelCurrentCastleGold.text = currentCharacter.Castle.Gold.ToString("0");
-            labelCurrentAP.text = currentCharacter.ActionPoints.ToString();
-            foreach (var button in strategyButtons)
-            {
-                button.SetData(currentCharacter, targetTile);
-            }
+            case Phase.Progress:
+                labelPhaseTitle.text = "進行";
+                labelPhaseTitle.style.color = Color.green;
+                break;
+            case Phase.Personal:
+                labelPhaseTitle.text = "個人";
+                labelPhaseTitle.style.color = Color.yellow;
+                labelCurrentPersonalGold.text = currentCharacter.Gold.ToString("0");
+                foreach (var button in personalButtons)
+                {
+                    button.SetData(currentCharacter, targetTile);
+                }
+                break;
+            case Phase.Strategy:
+                labelPhaseTitle.text = "戦略";
+                labelPhaseTitle.style.color = Color.cyan;
+                labelCurrentCastleGold.text = currentCharacter.Castle.Gold.ToString("0");
+                labelCurrentAP.text = currentCharacter.ActionPoints.ToString();
+                foreach (var button in strategyButtons)
+                {
+                    button.SetData(currentCharacter, targetTile);
+                }
+                break;
         }
 
         labelGameDate.text = Core.World.GameDate.ToString();

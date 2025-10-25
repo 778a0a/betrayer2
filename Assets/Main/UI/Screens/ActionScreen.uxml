@@ -61,30 +61,39 @@
         <ui:VisualElement style="margin-top: 5px; padding: 10px 5px 5px 5px; background-color: #223344; min-height: 40px">
 
             <ui:VisualElement name="ActionPanelContent" style="min-height: 205px;">
-                <!-- 実行可能なアクションがあるとき用 -->
-                <ui:VisualElement name="ActionPanel">
-                    <ui:VisualElement style="flex-direction: row; align-items: flex-end; margin-left: 5px;">
-                        <ui:Label text="コスト:" style="margin: 0 10px 0 0px; font-size: 28px; " />
-                        <ui:Label name="labelCost" text="" style="font-size: 28px;" />
+                <!-- 個人・戦略フェイズ用 -->
+                <ui:VisualElement name="ActivePhaseContent">
+                    <!-- 実行可能なアクションがあるとき用 -->
+                    <ui:VisualElement name="ActionPanel">
+                        <ui:VisualElement style="flex-direction: row; align-items: flex-end; margin-left: 5px;">
+                            <ui:Label text="コスト:" style="margin: 0 10px 0 0px; font-size: 28px; " />
+                            <ui:Label name="labelCost" text="" style="font-size: 28px;" />
+                        </ui:VisualElement>
+                        <ui:VisualElement style="flex-direction: row; align-items: center; min-height: 32px; margin: 15px 0 15px 5px;">
+                            <ui:Label name="labelActionDescription" text="" style="font-size: 28px; white-space: normal" />
+                        </ui:VisualElement>
+                        <!-- 戦略フェイズ用ボタン -->
+                        <ui:VisualElement name="StrategyActionButtons" style="flex-wrap: wrap; flex-direction: row;">
+                            <!-- 戦略ボタンはC#で動的生成 -->
+                        </ui:VisualElement>
+                        <!-- 個人フェイズ用ボタン -->
+                        <ui:VisualElement name="PersonalActionButtons" style="flex-wrap: wrap; flex-direction: row; display: none;">
+                            <!-- 個人ボタンはC#で動的生成 -->
+                        </ui:VisualElement>
                     </ui:VisualElement>
-                    <ui:VisualElement style="flex-direction: row; align-items: center; min-height: 32px; margin: 15px 0 15px 5px;">
-                        <ui:Label name="labelActionDescription" text="アクションの説明がここに表示されます。" style="font-size: 28px; white-space: normal" />
-                    </ui:VisualElement>
-                    <!-- 戦略フェイズ用ボタン -->
-                    <ui:VisualElement name="StrategyActionButtons" style="flex-wrap: wrap; flex-direction: row;">
-                        <!-- 戦略ボタンはC#で動的生成 -->
-                    </ui:VisualElement>
-                    <!-- 個人フェイズ用ボタン -->
-                    <ui:VisualElement name="PersonalActionButtons" style="flex-wrap: wrap; flex-direction: row; display: none;">
-                        <!-- 個人ボタンはC#で動的生成 -->
-                    </ui:VisualElement>
-                </ui:VisualElement>
             
-                <!-- 実行可能なアクションがないとき用 -->
-                <ui:VisualElement name="NoActionPanel" style="display: none">
-                    <ui:Label text="ここで実行できるアクションはありません。" style="font-size: 28px; margin: 0 0 15px 5px;" />
-                    <ui:Button name="buttonMoveToMyCastle" text="所属城を表示" style="width: 200px" />
+                    <!-- 実行可能なアクションがないとき用 -->
+                    <ui:VisualElement name="NoActionPanel" style="display: none">
+                        <ui:Label text="ここで実行できるアクションはありません。" style="font-size: 28px; margin: 0 0 15px 5px;" />
+                        <ui:Button name="buttonMoveToMyCastle" text="所属城を表示" style="width: 200px" />
+                    </ui:VisualElement>
                 </ui:VisualElement>
+
+                <!-- 進行中フェイズ用 -->
+                <ui:VisualElement name="ProgressPhaseContent" style="display: none;">
+                    <ui:Label text="進行中..." style="margin: 0 10px 0 0px; font-size: 28px; margin-left: 5px;" />
+                </ui:VisualElement>
+
             </ui:VisualElement>
 
             <ui:VisualElement style="position: absolute; right: 0; flex-direction: row; align-items: center; margin: -10px 0 0 0">
