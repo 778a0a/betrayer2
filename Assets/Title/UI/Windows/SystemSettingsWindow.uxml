@@ -4,9 +4,23 @@
         <ui:VisualElement name="Border" style="flex-grow: 0; background-color: rgb(0, 9, 25); padding-top: 3px; padding-right: 3px; padding-bottom: 3px; padding-left: 3px;">
             <ui:Label text="システム設定" name="labelSaveDataListWindowTitle" style="color: rgb(255, 255, 255);" />
             <ui:Button text="×" name="CloseButton" style="position: absolute; align-items: stretch; align-self: auto; right: 2px; width: 50px; height: 50px;" />
-            <ui:VisualElement style="flex-grow: 1; background-color: rgb(204, 204, 204); width: 500px;">
+            <ui:VisualElement style="flex-grow: 1; background-color: rgb(204, 204, 204); width: 500px; padding: 10px;">
                 <ui:DropdownField label="画面回転" choices="自動,通常,反転" index="0" name="comboOrientation" />
                 <ui:DropdownField label="言語" choices="自動,日本語,English" index="0" name="comboLayout" />
+
+                <!-- 再生速度設定 -->
+                <ui:VisualElement style="margin-top: 20px;">
+                    <ui:Label text="ゲーム進行速度" style="font-size: 35px; margin-bottom: 10px; -unity-font-style: bold;" />
+                    <ui:VisualElement style="flex-direction: row; align-items: center;">
+                        <ui:Label text="遅い" style="font-size: 30px; margin-right: 10px;" />
+                        <ui:Button name="buttonPlaySpeed0" text="1" style="width: 60px; height: 40px; margin: 2px; background-color: rgb(76, 204, 76); font-size: 30px;" />
+                        <ui:Button name="buttonPlaySpeed1" text="2" style="width: 60px; height: 40px; margin: 2px; background-color: rgb(76, 204, 76); font-size: 30px;" />
+                        <ui:Button name="buttonPlaySpeed2" text="3" style="width: 60px; height: 40px; margin: 2px; background-color: rgb(76, 204, 76); font-size: 30px;" />
+                        <ui:Button name="buttonPlaySpeed3" text="4" style="width: 60px; height: 40px; margin: 2px; background-color: rgb(76, 204, 76); font-size: 30px;" />
+                        <ui:Button name="buttonPlaySpeed4" text="5" style="width: 60px; height: 40px; margin: 2px; background-color: rgb(76, 204, 76); font-size: 30px;" />
+                        <ui:Label text="速い" style="font-size: 30px; margin-left: 10px;" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
             </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>

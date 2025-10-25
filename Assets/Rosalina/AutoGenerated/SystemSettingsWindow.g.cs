@@ -18,6 +18,16 @@ public partial class SystemSettingsWindow
 
     public DropdownField comboLayout { get; private set; }
 
+    public Button buttonPlaySpeed0 { get; private set; }
+
+    public Button buttonPlaySpeed1 { get; private set; }
+
+    public Button buttonPlaySpeed2 { get; private set; }
+
+    public Button buttonPlaySpeed3 { get; private set; }
+
+    public Button buttonPlaySpeed4 { get; private set; }
+
     public Label labelSaveDataListWindowTitle { get; private set; }
 
     public Button CloseButton { get; private set; }
@@ -31,6 +41,11 @@ public partial class SystemSettingsWindow
         Root = root;
         comboOrientation = Root?.Q<DropdownField>("comboOrientation");
         comboLayout = Root?.Q<DropdownField>("comboLayout");
+        buttonPlaySpeed0 = Root?.Q<Button>("buttonPlaySpeed0");
+        buttonPlaySpeed1 = Root?.Q<Button>("buttonPlaySpeed1");
+        buttonPlaySpeed2 = Root?.Q<Button>("buttonPlaySpeed2");
+        buttonPlaySpeed3 = Root?.Q<Button>("buttonPlaySpeed3");
+        buttonPlaySpeed4 = Root?.Q<Button>("buttonPlaySpeed4");
         labelSaveDataListWindowTitle = Root?.Q<Label>("labelSaveDataListWindowTitle");
         CloseButton = Root?.Q<Button>("CloseButton");
         Border = Root?.Q<VisualElement>("Border");
@@ -41,6 +56,11 @@ public partial class SystemSettingsWindow
         Root = root;
         comboOrientation = Root?.Q<DropdownField>("comboOrientation");
         comboLayout = Root?.Q<DropdownField>("comboLayout");
+        buttonPlaySpeed0 = Root?.Q<Button>("buttonPlaySpeed0");
+        buttonPlaySpeed1 = Root?.Q<Button>("buttonPlaySpeed1");
+        buttonPlaySpeed2 = Root?.Q<Button>("buttonPlaySpeed2");
+        buttonPlaySpeed3 = Root?.Q<Button>("buttonPlaySpeed3");
+        buttonPlaySpeed4 = Root?.Q<Button>("buttonPlaySpeed4");
         labelSaveDataListWindowTitle = Root?.Q<Label>("labelSaveDataListWindowTitle");
         CloseButton = Root?.Q<Button>("CloseButton");
         Border = Root?.Q<VisualElement>("Border");

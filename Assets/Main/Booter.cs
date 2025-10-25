@@ -52,7 +52,7 @@ public class Booter : MonoBehaviour
 
     void Start()
     {
-        UpdatePlaySpeed(PlayerPrefs.GetInt(nameof(PlaySpeedIndex), 3));
+        UpdatePlaySpeed(SystemSettingsManager.Instance.PlaySpeedIndex);
 
         var args = s_args ?? new MainSceneStartArguments()
         {
@@ -131,7 +131,6 @@ public class Booter : MonoBehaviour
     public void UpdatePlaySpeed(int index)
     {
         PlaySpeedIndex = index;
-        PlayerPrefs.SetInt(nameof(PlaySpeedIndex), PlaySpeedIndex);
         TickWait = PlaySpeedTable[index];
         Debug.Log($"PlaySpeedIndex: {PlaySpeedIndex}, TickWait: {TickWait}");
     }
