@@ -9,8 +9,8 @@
             <ui:Instance template="SaveDataListWindow" name="SaveDataList" style="position: relative; left: 0; right: 0; bottom: 0; top: 0;" />
             <ui:Button text="ゲーム終了" name="buttonCloseApplication" class="title--menu-button" style="align-self: center; margin-top: 30px; height: 100px; display: none;" />
             <ui:VisualElement style="flex-grow: 1; position: absolute; top: 0; right: 0; flex-direction: row;">
-                <ui:Button text="システム設定" name="buttonShowSystemSettings" class="title--menu-button" style="align-self: center; margin-top: 20px; height: auto; width: auto; margin-right: 20px; margin-bottom: 20px; margin-left: 20px;" />
-                <ui:Button text="ライセンス情報" name="buttonShowLicense" class="title--menu-button" style="align-self: center; margin-top: 20px; height: auto; width: auto; margin-right: 20px; margin-bottom: 20px; margin-left: 20px;" />
+                <ui:Button text="システム設定" name="buttonShowSystemSettings" class="title--menu-button" style="align-self: center; margin-top: 20px; height: auto; width: auto; margin-right: 10px; margin-bottom: 20px; margin-left: 20px;" />
+                <ui:Button text="ライセンス情報" name="buttonShowLicense" class="title--menu-button" style="align-self: center; margin-top: 20px; height: auto; width: auto; margin-right: 20px; margin-bottom: 20px; margin-left: 10px;" />
             </ui:VisualElement>
         </ui:VisualElement>
         <ui:VisualElement name="NewGameMenu" class="window window-modal" style="background-color: rgba(0, 0, 0, 0.37); display: none;">
