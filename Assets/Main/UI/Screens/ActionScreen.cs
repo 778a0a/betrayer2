@@ -126,6 +126,7 @@ public partial class ActionScreen : IScreen
             Core.TogglePlay();
             labelGameDate.style.backgroundColor = Core.Booter.hold ? new Color(0.8f, 0.3f, 0.3f) : default;
             buttonResume.style.display = Util.Display(Core.Booter.hold);
+            buttonSystem.SetEnabled(Core.Booter.hold);
         };
 
         labelGameDate.RegisterCallback<ClickEvent>(evt =>
@@ -134,6 +135,7 @@ public partial class ActionScreen : IScreen
             Core.TogglePlay();
             labelGameDate.style.backgroundColor = Core.Booter.hold ? new Color(0.8f, 0.3f, 0.3f) : default;
             buttonResume.style.display = Util.Display(Core.Booter.hold);
+            buttonSystem.SetEnabled(Core.Booter.hold);
             if (Core.Booter.hold)
             {
                 Render();
@@ -327,8 +329,10 @@ public partial class ActionScreen : IScreen
         var characterTile = Core.World.Map.GetTile(currentCharacter.Castle);
         var targetTile = currentTile ?? characterTile;
 
+        // システムボタンは進行中以外は有効化する。
+        buttonSystem.SetEnabled(Core.Booter.hold);
+
         // フェイズに応じてヘッダーとボタンを切り替える。
-        buttonSystem.SetEnabled(!IsProgressPhase);
         ActivePhaseContent.style.display = Util.Display(!IsProgressPhase);
         ProgressPhaseContent.style.display = Util.Display(IsProgressPhase);
         buttonTurnEnd.style.display = Util.Display(!IsProgressPhase);
