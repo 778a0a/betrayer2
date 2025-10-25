@@ -49,7 +49,7 @@ partial class GameCore
 
         // プレーヤーの場合
         Pause();
-        MainUI.ActionScreen.Show(chara, personalPhase: true);
+        MainUI.ActionScreen.ActivatePhase(chara, Phase.Personal);
         await Booter.HoldIfNeeded();
     }
 
@@ -67,7 +67,7 @@ partial class GameCore
 
         // プレーヤーの場合
         Pause();
-        MainUI.ActionScreen.Show(chara);
+        MainUI.ActionScreen.ActivatePhase(chara, Phase.Strategy);
         await Booter.HoldIfNeeded();
     }
 

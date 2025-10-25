@@ -12,8 +12,9 @@ public partial class ActionScreen : IScreen
     private ActionButtonHelper[] personalButtons;
     private Character currentCharacter;
     private GameMapTile currentTile;
-    public bool IsPersonalPhase { get; set; } = false;
-    public bool IsStrategyPhase => !IsPersonalPhase;
+    public bool IsPersonalPhase => CurrentPhase == Phase.Personal;
+    public bool IsStrategyPhase => CurrentPhase == Phase.Strategy;
+    public Phase CurrentPhase { get; private set; } = Phase.Progress;
 
     public void Initialize()
     {
@@ -231,34 +232,23 @@ public partial class ActionScreen : IScreen
         Render();
     }
 
-    public void Show(Character chara, bool personalPhase = false)
+    public void Show()
     {
         Core.MainUI.HideAllPanels();
-        IsPersonalPhase = personalPhase;
-        if (currentCharacter != chara)
-        {
-            SetData(chara);
-        }
-        else
-        {
-            Render();
-        }
         Root.style.display = DisplayStyle.Flex;
 
         ActionPanelContent.style.display = DisplayStyle.Flex;
         buttonToggleActionPanelFolding.text = "-";
     }
 
-    public void Show()
+    public void ActivatePhase(Character chara, Phase phase)
     {
-        SetData(currentCharacter);
-        Root.style.display = DisplayStyle.Flex;
-    }
-
-    public void SetData(Character chara)
-    {
-        currentCharacter = chara;
-        currentTile = Core.World.Map.GetTile(chara.Castle.Position);
+        CurrentPhase = phase;
+        if (currentCharacter != chara)
+        {
+            currentCharacter = chara;
+            currentTile = Core.World.Map.GetTile(chara.Castle.Position);
+        }
         Render();
     }
 
@@ -351,4 +341,11 @@ public partial class ActionScreen : IScreen
             NoActionPanel.style.display = Util.Display(noAction);
         }
     }
+}
+
+public enum Phase
+{
+    Progress,
+    Personal,
+    Strategy,
 }

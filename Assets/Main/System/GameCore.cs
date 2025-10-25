@@ -104,6 +104,9 @@ public partial class GameCore
     {
         try
         {
+            MainUI.ActionScreen.Show();
+            MainUI.ActionScreen.ActivatePhase(World.Player, Phase.Progress);
+
             while (true)
             {
                 await Tick();
