@@ -29,6 +29,7 @@ public class Booter : MonoBehaviour
     /// </summary>
     [SerializeField] private string testPlayerName = "フレデリック";
     [SerializeField] private bool testSkipPlayerSelection = false;
+    [SerializeField] private string testScenarioNo = "02";
     /// <summary>
     /// 1tickの待機時間
     /// </summary>
@@ -57,7 +58,7 @@ public class Booter : MonoBehaviour
         {
             IsNewGame = true,
             NewGameSaveDataSlotNo = 0,
-            NewGameScenarioNo = "02",
+            NewGameScenarioNo = testScenarioNo,
         };
 
         // はじめから
