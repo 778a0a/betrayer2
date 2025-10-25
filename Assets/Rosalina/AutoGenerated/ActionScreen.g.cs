@@ -38,6 +38,8 @@ public partial class ActionScreen
 
     public VisualElement StrategyActionGaugeCurrentBar { get; private set; }
 
+    public Label labelStrategyActionGuageCaption { get; private set; }
+
     public VisualElement StrategyActionGaugeBar { get; private set; }
 
     public Button buttonResume { get; private set; }
@@ -89,6 +91,7 @@ public partial class ActionScreen
         PersonalActionGaugeBar = Root?.Q<VisualElement>("PersonalActionGaugeBar");
         StrategyActionGaugeMaxBar = Root?.Q<VisualElement>("StrategyActionGaugeMaxBar");
         StrategyActionGaugeCurrentBar = Root?.Q<VisualElement>("StrategyActionGaugeCurrentBar");
+        labelStrategyActionGuageCaption = Root?.Q<Label>("labelStrategyActionGuageCaption");
         StrategyActionGaugeBar = Root?.Q<VisualElement>("StrategyActionGaugeBar");
         buttonResume = Root?.Q<Button>("buttonResume");
         labelGameDate = Root?.Q<Label>("labelGameDate");
@@ -123,6 +126,7 @@ public partial class ActionScreen
         PersonalActionGaugeBar = Root?.Q<VisualElement>("PersonalActionGaugeBar");
         StrategyActionGaugeMaxBar = Root?.Q<VisualElement>("StrategyActionGaugeMaxBar");
         StrategyActionGaugeCurrentBar = Root?.Q<VisualElement>("StrategyActionGaugeCurrentBar");
+        labelStrategyActionGuageCaption = Root?.Q<Label>("labelStrategyActionGuageCaption");
         StrategyActionGaugeBar = Root?.Q<VisualElement>("StrategyActionGaugeBar");
         buttonResume = Root?.Q<Button>("buttonResume");
         labelGameDate = Root?.Q<Label>("labelGameDate");

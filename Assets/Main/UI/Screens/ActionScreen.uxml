@@ -48,7 +48,7 @@
                     </ui:VisualElement>
                     <!-- 戦略アクションゲージ -->
                     <ui:VisualElement style="flex-direction: row; align-items: center;">
-                        <ui:Label text="戦略" style="font-size: 16px; width: 38px;" />
+                        <ui:Label name="labelStrategyActionGuageCaption" text="戦略" style="font-size: 16px; width: 38px;" />
                         <ui:VisualElement name="StrategyActionGaugeBar" style="width: 115px; height: 12px; background-color: gray; border-width: 1px; border-color: white;">
                             <ui:VisualElement name="StrategyActionGaugeMaxBar" style="position: absolute; top: 0; left: 0; height: 100%; background-color: rgba(0, 255, 255, 0.3);" />
                             <ui:VisualElement name="StrategyActionGaugeCurrentBar" style="position: absolute; top: 0; left: 0; height: 100%; background-color: cyan;" />

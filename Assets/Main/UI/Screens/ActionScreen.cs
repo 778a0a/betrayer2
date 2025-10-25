@@ -293,6 +293,7 @@ public partial class ActionScreen : IScreen
             // currentBarを非表示にする。
             StrategyActionGaugeCurrentBar.style.width = Length.Percent(0f);
             StrategyActionGaugeMaxBar.style.width = Length.Percent(0f);
+            labelStrategyActionGuageCaption.style.color = Util.Color("#bbb");
         }
         else
         {
@@ -301,6 +302,7 @@ public partial class ActionScreen : IScreen
             var strategyRatio = Mathf.Clamp01(strategyCurrent / strategyMax);
             StrategyActionGaugeCurrentBar.style.width = Length.Percent(strategyRatio * 100f);
             StrategyActionGaugeMaxBar.style.width = Length.Percent(100f);
+            labelStrategyActionGuageCaption.style.color = Color.white;
         }
     }
 
