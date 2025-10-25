@@ -47,7 +47,7 @@ public partial class AI
 
         if (ruler.ActionPoints < 50)
         {
-            Debug.LogError($"[輸送] 君主の行動力が50未満のため、輸送を終了します。{ruler.Name}, AP: {ruler.ActionPoints}");
+            //Debug.LogError($"[輸送] 君主の行動力が50未満のため、輸送を終了します。{ruler.Name}, AP: {ruler.ActionPoints}");
             return;
         }
 
