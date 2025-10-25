@@ -46,8 +46,8 @@ public partial class TitleSceneUI : MonoBehaviour
         SystemSettingsWindow.Initialize();
         SaveDataList.Initialize(this);
 
-        L.Register(this);
-        L.Apply();
+        //L.Register(this);
+        //L.Apply();
 
         buttonCloseApplication.clicked += () =>
         {
