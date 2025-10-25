@@ -1,6 +1,5 @@
 using System;
 using System.Threading.Tasks;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -9,6 +8,7 @@ public partial class MessageWindow
     public static MessageWindow Instance { get; private set; }
 
     private ValueTaskCompletionSource<MessageBoxResult> tcsMessageWindow;
+    private MessageBoxButton currentButton;
 
     public void Initialize()
     {
@@ -25,6 +25,21 @@ public partial class MessageWindow
         buttonMessageYes.clicked += () => OnClick(MessageBoxResult.Yes);
         buttonMessageNo.clicked += () => OnClick(MessageBoxResult.No);
         buttonMessageCancel.clicked += () => OnClick(MessageBoxResult.Cancel);
+
+        // Enterキーでの操作対応
+        Root.RegisterCallback<KeyDownEvent>(evt =>
+        {
+            if (evt.keyCode == KeyCode.Return || evt.keyCode == KeyCode.KeypadEnter)
+            {
+                // OKボタンのみの場合、EnterキーでOKを押したことにする
+                if (currentButton == MessageBoxButton.Ok)
+                {
+                    OnClick(MessageBoxResult.Ok);
+                    evt.StopPropagation();
+                }
+            }
+        });
+
         Root.style.display = DisplayStyle.None;
     }
 
@@ -53,6 +68,7 @@ public partial class MessageWindow
         if (tcsMessageWindow != null) throw new InvalidOperationException();
         tcsMessageWindow = new();
 
+        currentButton = button;
         labelMessageText.text = message;
         buttonMessageOK.style.display = Util.Display(button.HasFlag(MessageBoxButton.Ok));
         buttonMessageYes.style.display = Util.Display(button.HasFlag(MessageBoxButton.Yes));
@@ -60,6 +76,11 @@ public partial class MessageWindow
         buttonMessageCancel.style.display = Util.Display(button.HasFlag(MessageBoxButton.Cancel));
 
         Root.style.display = DisplayStyle.Flex;
+        if (button == MessageBoxButton.Ok)
+        {
+            buttonMessageOK.Focus();
+        }
+
         return tcsMessageWindow.Task;
     }
 }
