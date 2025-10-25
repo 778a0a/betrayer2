@@ -26,7 +26,7 @@ public class SaveDataManager
         Debug.Log($"セーブデータ圧縮: {saveDataText.Length} -> {compressed.Length} ({compressed.Length / (float)saveDataText.Length * 100:F1}%)");
         PlayerPrefs.SetString(SaveDataKey(slotNo), compressed);
         PlayerPrefs.Save();
-        Debug.Log(saveDataText);
+        //Debug.Log(saveDataText);
     }
 
     private SaveDataText CreateSaveDataText(GameCore core, Phase timing)
