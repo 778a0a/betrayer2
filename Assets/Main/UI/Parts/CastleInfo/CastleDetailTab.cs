@@ -194,7 +194,7 @@ public partial class CastleDetailTab
         labelDevLevel.text = $"{castle.DevLevel}";
         labelTotalInvestment.text = $"{castle.TotalInvestment:0}";
         labelCastleStrength.text = $"{castle.Strength:0}";
-        labelMemberCount.text = $"{castle.Members.Count}/{castle.MaxMember}";
+        labelMemberCount.text = $"{castle.Members.Count}/{castle.MaxMember} {(castle.IsMemberOver ? "(!)" : "")}";
         labelMemberCount.style.color = castle.IsMemberOver ? Color.red : Color.white;
         labelTotalPower.text = $"{castle.SoldierCount:0}";
         labelTotalPowerMax.text = $"{castle.SoldierCountMax:0}";
