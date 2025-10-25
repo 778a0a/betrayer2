@@ -50,7 +50,7 @@ public class SaveDataText
         var castles = SavedCastles.FromWorld(world);
         var forces = SavedForces.FromWorld(world);
         var countryRelations = SavedCountryRelations.FromWorld(world);
-        var terrains = SavedTerrains.FromWorld(world);
+        //var terrains = SavedTerrains.FromWorld(world);
         var misc = SavedWorldMiscData.FromWorld(world);
         var summary = SaveDataSummary.Create(world, saveDataSlotNo, saveTiming, savedTime);
 
@@ -61,7 +61,7 @@ public class SaveDataText
             Castles = castles,
             Forces = forces,
             CountryRelations = countryRelations,
-            Terrains = terrains,
+            //Terrains = terrains,
             Misc = misc,
             Summary = summary,
         };
@@ -100,10 +100,10 @@ public class SaveDataText
         var countryRelationsCsv = SavedCountryRelations.ToCsv(data.CountryRelations);
         sb.AppendLine(countryRelationsCsv);
 
-        // 地形データ（CSV）
-        sb.AppendLine(SaveDataSectionDivider);
-        var terrainsCsv = SavedTerrains.ToCsv(data.Terrains);
-        sb.AppendLine(terrainsCsv);
+        //// 地形データ（CSV）
+        //sb.AppendLine(SaveDataSectionDivider);
+        //var terrainsCsv = SavedTerrains.ToCsv(data.Terrains);
+        //sb.AppendLine(terrainsCsv);
 
         // その他データ（JSON）
         sb.AppendLine(SaveDataSectionDivider);
@@ -126,29 +126,31 @@ public class SaveDataText
         var sections = saveDataText.Split(
             new[] { SaveDataSectionDivider },
             StringSplitOptions.RemoveEmptyEntries);
+        var i = 0;
 
-        var charasCsv = sections[0].Trim();
+        var charasCsv = sections[i++].Trim();
         var charas = SavedCharacters.FromCsv(charasCsv);
 
-        var countriesCsv = sections[1].Trim();
+        var countriesCsv = sections[i++].Trim();
         var countries = SavedCountries.FromCsv(countriesCsv);
 
-        var castlesCsv = sections[2].Trim();
+        var castlesCsv = sections[i++].Trim();
         var castles = SavedCastles.FromCsv(castlesCsv);
 
-        var forcesCsv = sections[3].Trim();
+        var forcesCsv = sections[i++].Trim();
         var forces = SavedForces.FromCsv(forcesCsv);
 
-        var countryRelationsCsv = sections[4].Trim();
+        var countryRelationsCsv = sections[i++].Trim();
         var countryRelations = SavedCountryRelations.FromCsv(countryRelationsCsv);
 
-        var terrainsCsv = sections[5].Trim();
-        var terrains = SavedTerrains.FromCsv(terrainsCsv);
+        //var terrainsCsv = sections[i++].Trim();
+        //var terrains = SavedTerrains.FromCsv(terrainsCsv);
+        var terrains = DefaultData.LoadTerrain();
 
-        var miscJson = sections[6].Trim();
+        var miscJson = sections[i++].Trim();
         var misc = SavedWorldMiscData.Deserialize(miscJson);
 
-        var summaryJson = sections[7].Trim();
+        var summaryJson = sections[i++].Trim();
         var summary = SaveDataSummary.Deserialize(summaryJson);
 
         return new SaveData
@@ -173,7 +175,7 @@ public class SaveDataText
             new[] { SaveDataSectionDivider },
             StringSplitOptions.RemoveEmptyEntries);
 
-        var summaryJson = sections[7].Trim();
+        var summaryJson = sections[^1].Trim();
         var summary = SaveDataSummary.Deserialize(summaryJson);
 
         return summary;

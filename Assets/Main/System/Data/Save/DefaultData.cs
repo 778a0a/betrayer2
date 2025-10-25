@@ -16,7 +16,7 @@ public class DefaultData
     public static WorldData Create(string saveDir = "01")
     {
         Debug.Log("地形データ読み込み中...");
-        var terrains = SavedTerrains.FromCsv(LoadTextFile($"Scenarios/{saveDir}/terrain_data"));
+        var terrains = LoadTerrain(saveDir);
         Debug.Log($"国データ読み込み中...");
         var countries = SavedCountries.FromCsv(LoadTextFile($"Scenarios/{saveDir}/country_data"));
         Debug.Log($"国関係データ読み込み中...");
@@ -43,6 +43,11 @@ public class DefaultData
         Debug.Log("ワールドデータ復元中...");
         var world = saveData.RestoreWorldData();
         return world;
+    }
+
+    public static List<SavedTerrain> LoadTerrain(string saveDir = "01")
+    {
+        return SavedTerrains.FromCsv(LoadTextFile($"Scenarios/{saveDir}/terrain_data"));
     }
 
     private static string LoadTextFile(string path)
