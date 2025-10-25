@@ -14,7 +14,7 @@ public partial class GameCore
     public static bool GameCleared
     {
         set => PlayerPrefs.SetInt("GameCleared", value ? 1 : 0);
-        get => PlayerPrefs.GetInt("GameCleared", 0) == 1 || (Instance?.Booter != null && Instance.Booter.testClearedFlagOn);
+        get => PlayerPrefs.GetInt("GameCleared", 0) == 1 || (Application.isEditor && Instance?.Booter != null && Instance.Booter.testClearedFlagOn);
     }
 
     public WorldData World { get; }
