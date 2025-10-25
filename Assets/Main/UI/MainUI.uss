@@ -121,6 +121,10 @@ Toggle > Label {
     background-color: #334455;
 }
 
+.dark-button:hover:disabled {
+    background-color: #223344;
+}
+
 .dark-button:active {
     background-color: #445566;
 }

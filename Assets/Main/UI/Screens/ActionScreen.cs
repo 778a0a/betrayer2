@@ -293,6 +293,7 @@ public partial class ActionScreen : IScreen
         var targetTile = currentTile ?? characterTile;
 
         // フェイズに応じてヘッダーとボタンを切り替える。
+        buttonSystem.SetEnabled(!IsProgressPhase);
         ActivePhaseContent.style.display = Util.Display(!IsProgressPhase);
         ProgressPhaseContent.style.display = Util.Display(IsProgressPhase);
         buttonTurnEnd.style.display = Util.Display(!IsProgressPhase);
