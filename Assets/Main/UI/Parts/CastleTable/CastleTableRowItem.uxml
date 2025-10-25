@@ -10,7 +10,7 @@
             <engine:VisualElement style="margin-left: 10px;">
                 <!-- 城名・地方・方針 -->
                 <engine:VisualElement style="flex-direction: row; align-items: center; margin-bottom: 5px;">
-                    <engine:VisualElement name="iconCountry" style="width: 25px; height: 25px; margin-right: 5px; background-color: #088" />
+                    <engine:VisualElement name="iconCountry" style="width: 22px; height: 22px; margin-right: 5px; background-color: #088" />
                     <engine:Label name="labelName" text="クリスタルウォーター" style="font-size: 24px; width: 300px;" />
                     <engine:VisualElement style="display: none;">
                         <engine:Label text="(" style="font-size: 24px; margin-left: 5px; color: silver" />
