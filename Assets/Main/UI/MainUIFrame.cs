@@ -8,11 +8,6 @@ public partial class MainUIFrame : MainUIComponent
 
     public void Initialize()
     {
-        buttonPlay.clicked += () =>
-        {
-            Core.TogglePlay();
-        };
-
         playSpeedButtons = new[]
         {
             buttonPlaySpeed0,
@@ -37,14 +32,6 @@ public partial class MainUIFrame : MainUIComponent
         labelCurrentDate.text = Core.World.GameDate.ToString();
 
         var paused = Core.Booter.hold;
-        if (paused)
-        {
-            buttonPlay.text = "停止";
-        }
-        else
-        {
-            buttonPlay.text = "再生";
-        }
 
         for (var i = 0; i < playSpeedButtons.Length; i++)
         {

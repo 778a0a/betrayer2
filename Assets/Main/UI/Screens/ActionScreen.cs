@@ -119,6 +119,13 @@ public partial class ActionScreen : IScreen
         {
         };
 
+        labelGameDate.RegisterCallback<ClickEvent>(evt =>
+        {
+            if (!IsProgressPhase) return;
+            Core.TogglePlay();
+            labelGameDate.style.backgroundColor = Core.Booter.hold ? new Color(0.8f, 0.3f, 0.3f) : default;
+        });
+
         CastleInfoPanel.Initialize();
     }
 
@@ -186,8 +193,8 @@ public partial class ActionScreen : IScreen
 
     private void EndTurn()
     {
+        Core.Booter.hold = false;
         ActivatePhase(currentCharacter, Phase.Progress);
-        GameCore.Instance.Booter.hold = false;
     }
 
     /// <summary>
@@ -301,6 +308,10 @@ public partial class ActionScreen : IScreen
         PersonalActionButtons.style.display = Util.Display(IsPersonalPhase);
         StrategyPhaseHeader.style.display = Util.Display(IsStrategyPhase);
         StrategyActionButtons.style.display = Util.Display(IsStrategyPhase);
+
+        // 進行フェイズでポーズ中なら背景色を変える。
+        labelGameDate.style.backgroundColor = IsProgressPhase && Core.Booter.hold ? new Color(0.8f, 0.3f, 0.3f) : default;
+
         switch (CurrentPhase)
         {
             case Phase.Progress:

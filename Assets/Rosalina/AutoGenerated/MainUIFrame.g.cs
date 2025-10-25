@@ -32,8 +32,6 @@ public partial class MainUIFrame
 
     public Label labelCurrentDate { get; private set; }
 
-    public Button buttonPlay { get; private set; }
-
     public VisualElement DatePanel { get; private set; }
 
     public VisualElement Root { get; private set; }
@@ -50,7 +48,6 @@ public partial class MainUIFrame
         buttonPlaySpeed4 = Root?.Q<Button>("buttonPlaySpeed4");
         buttonShowSystemMenu = Root?.Q<Button>("buttonShowSystemMenu");
         labelCurrentDate = Root?.Q<Label>("labelCurrentDate");
-        buttonPlay = Root?.Q<Button>("buttonPlay");
         DatePanel = Root?.Q<VisualElement>("DatePanel");
     }
 
@@ -66,7 +63,6 @@ public partial class MainUIFrame
         buttonPlaySpeed4 = Root?.Q<Button>("buttonPlaySpeed4");
         buttonShowSystemMenu = Root?.Q<Button>("buttonShowSystemMenu");
         labelCurrentDate = Root?.Q<Label>("labelCurrentDate");
-        buttonPlay = Root?.Q<Button>("buttonPlay");
         DatePanel = Root?.Q<VisualElement>("DatePanel");
     }
 }
