@@ -15,8 +15,6 @@ public class DefaultData
 {
     public static WorldData Create(string saveDir = "01")
     {
-        Random.InitState(42);
-
         Debug.Log("地形データ読み込み中...");
         var terrains = SavedTerrains.FromCsv(LoadTextFile($"Scenarios/{saveDir}/terrain_data"));
         Debug.Log($"国データ読み込み中...");

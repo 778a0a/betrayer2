@@ -63,6 +63,11 @@ public class Booter : MonoBehaviour
             NewGameScenarioNo = testScenarioNo,
         };
 
+        if (Application.isEditor)
+        {
+            Random.InitState(42);
+        }
+
         // はじめから
         if (args.IsNewGame)
         {
