@@ -27,7 +27,6 @@ partial class StrategyActions
 
         public override ActionCost Cost(ActionArgs args)
         {
-            Debug.Log($"GoodwillAction.Cost: {args}");
             var targetCountry = args.targetCountry ?? args.selectedTile?.Castle?.Country;
             if (targetCountry == null) return ActionCost.Variable;
 
