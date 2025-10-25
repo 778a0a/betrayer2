@@ -117,6 +117,7 @@ public partial class ActionScreen : IScreen
         
         buttonSystem.clicked += () =>
         {
+            Core.MainUI.SystemMenuWindow.Show();
         };
 
         buttonResume.clicked += () =>

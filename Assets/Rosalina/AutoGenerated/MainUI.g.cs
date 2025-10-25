@@ -23,6 +23,8 @@ public partial class MainUI
 
     public MessageWindow MessageWindow { get; private set; }
 
+    public SystemMenuWindow SystemMenuWindow { get; private set; }
+
     public VisualElement WindowHost { get; private set; }
 
     public VisualElement Root => _document?.rootVisualElement;
@@ -32,6 +34,7 @@ public partial class MainUI
         UIContainer = Root?.Q<VisualElement>("UIContainer");
         BattleWindow = new BattleWindow(Root?.Q<VisualElement>("BattleWindow"));
         MessageWindow = new MessageWindow(Root?.Q<VisualElement>("MessageWindow"));
+        SystemMenuWindow = new SystemMenuWindow(Root?.Q<VisualElement>("SystemMenuWindow"));
         WindowHost = Root?.Q<VisualElement>("WindowHost");
     }
 
@@ -41,6 +44,7 @@ public partial class MainUI
         UIContainer = Root?.Q<VisualElement>("UIContainer");
         BattleWindow.ReinitializeComponent(Root?.Q<VisualElement>("BattleWindow"));
         MessageWindow.ReinitializeComponent(Root?.Q<VisualElement>("MessageWindow"));
+        SystemMenuWindow.ReinitializeComponent(Root?.Q<VisualElement>("SystemMenuWindow"));
         WindowHost = Root?.Q<VisualElement>("WindowHost");
     }
 }
