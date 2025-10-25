@@ -57,10 +57,7 @@ partial class GameCore
         // プレーヤーの場合
         Pause();
         MainUI.ActionScreen.ActivatePhase(chara, Phase.Personal);
-        if (!IsRestoring)
-        {
-            SaveDataManager.Instance.Save(SaveDataManager.AutoSaveDataSlotNo, this, Phase.Personal);
-        }
+        AutoSave(Phase.Personal);
         await Booter.HoldIfNeeded();
     }
 
@@ -79,11 +76,22 @@ partial class GameCore
         // プレーヤーの場合
         Pause();
         MainUI.ActionScreen.ActivatePhase(chara, Phase.Strategy);
-        if (!IsRestoring)
-        {
-            SaveDataManager.Instance.Save(SaveDataManager.AutoSaveDataSlotNo, this, Phase.Strategy);
-        }
+        AutoSave(Phase.Strategy);
         await Booter.HoldIfNeeded();
+    }
+
+    private void AutoSave(Phase phase)
+    {
+        if (IsRestoring) return;
+
+        // 重いので非同期で実行する。
+        Booter.StartCoroutine(AutoSaveCoroutine());
+        IEnumerator AutoSaveCoroutine()
+        {
+            yield return null; // 1フレーム待機してから実行する。
+            Debug.Log("オートセーブを実行します。");
+            SaveDataManager.Instance.Save(SaveDataManager.AutoSaveDataSlotNo, this, phase);
+        }
     }
 
     public void Pause()
