@@ -11,7 +11,11 @@
     -unity-text-align: initial;
 }
 
-#ForceTable .unity-collection-view__item:hover {
+#ForceListViewTable .unity-list-view__empty-label {
+    display: none;
+}
+
+#ForceListViewTable .unity-collection-view__item > Button:hover {
     background-color: initial;
 }
 
