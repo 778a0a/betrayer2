@@ -17,21 +17,28 @@ partial class GameCore
     private async ValueTask OnCharacterMove(Character player)
     {
         // 戦略フェイズの処理を行う。
+        // ロード処理の都合でプレーヤーは最初に処理する。
         var bosses = World.Castles
             .Select(c => c.Boss)
             .Where(b => b != null && b.StrategyActionGauge >= 100)
-            .Shuffle();
+            .Shuffle()
+            .OrderByDescending(b => b.IsPlayer);
         foreach (var boss in bosses)
         {
-            boss.StrategyActionGauge = 0;
             await DoStrategyAction(boss);
+            boss.StrategyActionGauge = 0;
         }
 
         // 個人フェイズの処理を行う。
-        foreach (var chara in World.Characters.Where(c => c.PersonalActionGauge >= 100).Shuffle())
+        // ロード処理の都合でプレーヤーは最初に処理する。
+        var charas = World.Characters
+            .Where(c => c.PersonalActionGauge >= 100)
+            .Shuffle()
+            .OrderByDescending(c => c.IsPlayer);
+        foreach (var chara in charas)
         {
-            chara.PersonalActionGauge = 0;
             await DoPersonalAction(chara);
+            chara.PersonalActionGauge = 0;
         }
     }
 
@@ -50,6 +57,10 @@ partial class GameCore
         // プレーヤーの場合
         Pause();
         MainUI.ActionScreen.ActivatePhase(chara, Phase.Personal);
+        if (!IsRestoring)
+        {
+            SaveDataManager.Instance.Save(SaveDataManager.AutoSaveDataSlotNo, this, Phase.Personal);
+        }
         await Booter.HoldIfNeeded();
     }
 
@@ -68,6 +79,10 @@ partial class GameCore
         // プレーヤーの場合
         Pause();
         MainUI.ActionScreen.ActivatePhase(chara, Phase.Strategy);
+        if (!IsRestoring)
+        {
+            SaveDataManager.Instance.Save(SaveDataManager.AutoSaveDataSlotNo, this, Phase.Strategy);
+        }
         await Booter.HoldIfNeeded();
     }
 

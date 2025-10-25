@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -17,7 +18,18 @@ public partial class SystemMenuWindow
 
         buttonSave.clicked += () =>
         {
-            MessageWindow.Show("セーブ機能は未実装です。");
+            try
+            {
+                Debug.Log("セーブします。");
+                var core = GameCore.Instance;
+                SaveDataManager.Instance.Save(core.SaveDataSlotNo, core, core.MainUI.ActionScreen.CurrentPhase);
+                MessageWindow.Show("セーブしました。");
+            }
+            catch (Exception ex)
+            {
+                MessageWindow.Show($"セーブに失敗しました。\n({ex.Message})");
+                Debug.LogError($"セーブに失敗しました。{ex}");
+            }
         };
 
         buttonChangePlayer.clicked += async () =>

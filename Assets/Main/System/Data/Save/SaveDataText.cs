@@ -42,6 +42,7 @@ public class SaveDataText
     public static SaveDataText Serialize(
         WorldData world,
         int saveDataSlotNo,
+        Phase saveTiming,
         DateTime savedTime = default)
     {
         var charas = SavedCharacters.FromWorld(world, retainFreeCharaCastleRandom: false);
@@ -51,7 +52,7 @@ public class SaveDataText
         var countryRelations = SavedCountryRelations.FromWorld(world);
         var terrains = SavedTerrains.FromWorld(world);
         var misc = SavedWorldMiscData.FromWorld(world);
-        var summary = SaveDataSummary.Create(world, saveDataSlotNo, savedTime);
+        var summary = SaveDataSummary.Create(world, saveDataSlotNo, saveTiming, savedTime);
 
         var saveData = new SaveData
         {

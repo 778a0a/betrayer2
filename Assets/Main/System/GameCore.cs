@@ -27,6 +27,8 @@ public partial class GameCore
     public StrategyActions StrategyActions { get; }
 
     public int SaveDataSlotNo { get; set; }
+    public Phase? RestoringPhase { get; set; } = null;
+    private bool IsRestoring => RestoringPhase != null;
 
     private PlayerTitle prevPlayerTitle;
     private PlayerTitle GetPlayerTitle(Character c)
@@ -112,6 +114,19 @@ public partial class GameCore
         {
             MainUI.ActionScreen.Show();
             MainUI.ActionScreen.ActivatePhase(World.Player, Phase.Progress);
+
+            // ロードで開始した場合は、セーブした日の進行を復元する。
+            if (IsRestoring)
+            {
+                // 進行フェイズならホールド状態にして再開する。
+                if (RestoringPhase == Phase.Progress)
+                {
+                    TogglePlay();
+                }
+
+                await TickCore(World.Player);
+                RestoringPhase = null;
+            }
 
             while (true)
             {
@@ -290,17 +305,31 @@ public partial class GameCore
             }
         }
 
-        // 軍勢関連の処理を行う。
+        await TickCore(player);
+    }
+
+    private async ValueTask TickCore(Character player)
+    {
         World.Forces.UpdateDangerStatus(this);
-        await World.Forces.OnForceMove(this);
+        if (!IsRestoring)
+        {
+            // 軍勢関連の処理を行う。
+            await World.Forces.OnForceMove(this);
+        }
 
         MainUI.ActionScreen.UpdateActionGauge(player);
 
-        // プレイヤーの地位の変化があれば通知する。
-        await NotifyPlayerTitleChangeIfNeeded();
+        if (!IsRestoring)
+        {
+            // プレイヤーの地位の変化があれば通知する。
+            await NotifyPlayerTitleChangeIfNeeded();
+        }
 
-        // キャラの行動を行う。
-        await OnCharacterMove(player);
+        if (!IsRestoring || RestoringPhase == Phase.Personal || RestoringPhase == Phase.Strategy)
+        {
+            // キャラの行動を行う。
+            await OnCharacterMove(player);
+        }
 
         // 表示を更新する。
         await Booter.HoldIfNeeded();

@@ -106,6 +106,7 @@ public class Booter : MonoBehaviour
             world.Map.AttachUIMap(map);
             core = new GameCore(world, map, ui, this);
             core.SaveDataSlotNo = args.SaveData.Summary.SaveDataSlotNo;
+            core.RestoringPhase = args.SaveData.Summary.SaveTiming;
             core.DoMainLoop().Forget();
         }
     }

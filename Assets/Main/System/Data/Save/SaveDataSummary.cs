@@ -18,6 +18,7 @@ public class SaveDataSummary
     public float Gold { get; set; }
     public string GameDate { get; set; }
     public int SaveDataSlotNo { get; set; }
+    public Phase SaveTiming { get; set; } = Phase.Progress;
     public DateTime SavedTime { get; set; }
 
     public static SaveDataSummary Deserialize(string json)
@@ -33,6 +34,7 @@ public class SaveDataSummary
     public static SaveDataSummary Create(
         WorldData world,
         int saveDataSlotNo,
+        Phase saveTiming,
         DateTime savedTime = default)
     {
         savedTime = savedTime == default ? DateTime.Now : savedTime;
@@ -46,6 +48,7 @@ public class SaveDataSummary
             Gold = chara.Gold,
             GameDate = world.GameDate.ToString(),
             SaveDataSlotNo = saveDataSlotNo,
+            SaveTiming = saveTiming,
             SavedTime = savedTime,
         };
         return summary;

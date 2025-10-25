@@ -19,7 +19,7 @@ public class SaveDataManager
     public bool HasSaveData(int slotNo) => PlayerPrefs.HasKey(SaveDataKey(slotNo));
     public bool HasAutoSaveData() => PlayerPrefs.HasKey(SaveDataKey(AutoSaveDataSlotNo));
 
-    public void Save(int slotNo, GameCore core) => Save(slotNo, CreateSaveDataText(core));
+    public void Save(int slotNo, GameCore core, Phase timing) => Save(slotNo, CreateSaveDataText(core, timing));
     public void Save(int slotNo, SaveDataText saveDataText)
     {
         var compressed = saveDataText.Compress();
@@ -29,9 +29,9 @@ public class SaveDataManager
         Debug.Log(saveDataText);
     }
 
-    private SaveDataText CreateSaveDataText(GameCore core)
+    private SaveDataText CreateSaveDataText(GameCore core, Phase timing)
     {
-        var saveData = SaveDataText.Serialize(core.World, core.SaveDataSlotNo);
+        var saveData = SaveDataText.Serialize(core.World, core.SaveDataSlotNo, timing);
         return saveData;
     }
 

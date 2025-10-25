@@ -129,3 +129,9 @@ public class SaveData
         return world;
     }
 }
+
+public enum SaveTiming
+{
+    OnProgressPhase,
+    OnActionPhase,
+}
