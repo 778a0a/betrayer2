@@ -30,6 +30,9 @@
             </ui:VisualElement>
 
             <ui:VisualElement style="flex-direction: row; align-items: flex-end;">
+                <!-- 再開ボタン（進行フェイズ中かつ停止中のみ表示） -->
+                <ui:Button text="再開" name="buttonResume" class="dark-button" style="font-size: 28px; margin: 0 -1px 0 0; padding: 3px 6px; display: none;" />
+
                 <!-- 日付 -->
                 <ui:Label name="labelGameDate" text="000/01/01" style="font-size: 28px; margin-right: 10px; color: #ddd; border-color: #888; border-width: 1px; padding: 3px 6px;" />
 

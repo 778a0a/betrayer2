@@ -119,11 +119,24 @@ public partial class ActionScreen : IScreen
         {
         };
 
+        buttonResume.clicked += () =>
+        {
+            if (!IsProgressPhase) return;
+            Core.TogglePlay();
+            labelGameDate.style.backgroundColor = Core.Booter.hold ? new Color(0.8f, 0.3f, 0.3f) : default;
+            buttonResume.style.display = Util.Display(Core.Booter.hold);
+        };
+
         labelGameDate.RegisterCallback<ClickEvent>(evt =>
         {
             if (!IsProgressPhase) return;
             Core.TogglePlay();
             labelGameDate.style.backgroundColor = Core.Booter.hold ? new Color(0.8f, 0.3f, 0.3f) : default;
+            buttonResume.style.display = Util.Display(Core.Booter.hold);
+            if (Core.Booter.hold)
+            {
+                Render();
+            }
         });
 
         CastleInfoPanel.Initialize();
@@ -309,8 +322,10 @@ public partial class ActionScreen : IScreen
         StrategyPhaseHeader.style.display = Util.Display(IsStrategyPhase);
         StrategyActionButtons.style.display = Util.Display(IsStrategyPhase);
 
-        // 進行フェイズでポーズ中なら背景色を変える。
-        labelGameDate.style.backgroundColor = IsProgressPhase && Core.Booter.hold ? new Color(0.8f, 0.3f, 0.3f) : default;
+        // 再開ボタンと日付背景色の制御
+        var isProgressAndHold = IsProgressPhase && Core.Booter.hold;
+        buttonResume.style.display = Util.Display(isProgressAndHold);
+        labelGameDate.style.backgroundColor = isProgressAndHold ? new Color(0.8f, 0.3f, 0.3f) : default;
 
         switch (CurrentPhase)
         {

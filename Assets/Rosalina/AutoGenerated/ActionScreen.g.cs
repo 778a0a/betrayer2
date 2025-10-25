@@ -40,6 +40,8 @@ public partial class ActionScreen
 
     public VisualElement StrategyActionGaugeBar { get; private set; }
 
+    public Button buttonResume { get; private set; }
+
     public Label labelGameDate { get; private set; }
 
     public Button buttonSystem { get; private set; }
@@ -88,6 +90,7 @@ public partial class ActionScreen
         StrategyActionGaugeMaxBar = Root?.Q<VisualElement>("StrategyActionGaugeMaxBar");
         StrategyActionGaugeCurrentBar = Root?.Q<VisualElement>("StrategyActionGaugeCurrentBar");
         StrategyActionGaugeBar = Root?.Q<VisualElement>("StrategyActionGaugeBar");
+        buttonResume = Root?.Q<Button>("buttonResume");
         labelGameDate = Root?.Q<Label>("labelGameDate");
         buttonSystem = Root?.Q<Button>("buttonSystem");
         labelCost = Root?.Q<Label>("labelCost");
@@ -121,6 +124,7 @@ public partial class ActionScreen
         StrategyActionGaugeMaxBar = Root?.Q<VisualElement>("StrategyActionGaugeMaxBar");
         StrategyActionGaugeCurrentBar = Root?.Q<VisualElement>("StrategyActionGaugeCurrentBar");
         StrategyActionGaugeBar = Root?.Q<VisualElement>("StrategyActionGaugeBar");
+        buttonResume = Root?.Q<Button>("buttonResume");
         labelGameDate = Root?.Q<Label>("labelGameDate");
         buttonSystem = Root?.Q<Button>("buttonSystem");
         labelCost = Root?.Q<Label>("labelCost");
