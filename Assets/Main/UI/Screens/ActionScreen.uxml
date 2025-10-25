@@ -40,7 +40,7 @@
                 <ui:VisualElement style="flex-direction: column; justify-content: flex-end; margin-right: 10px;">
                     <!-- 個人アクションゲージ -->
                     <ui:VisualElement style="flex-direction: row; align-items: center; margin-bottom: 3px;">
-                        <ui:Label text="個人" style="font-size: 16px; width: 38px;" />
+                        <ui:Label name="labelPersonalActionGuageCaption" text="個人" style="font-size: 16px; width: 38px;" />
                         <ui:VisualElement name="PersonalActionGaugeBar" style="width: 115px; height: 12px; background-color: gray; border-width: 1px; border-color: white;">
                             <ui:VisualElement name="PersonalActionGaugeMaxBar" style="position: absolute; top: 0; left: 0; height: 100%; background-color: rgba(255, 255, 0, 0.3);" />
                             <ui:VisualElement name="PersonalActionGaugeCurrentBar" style="position: absolute; top: 0; left: 0; height: 100%; background-color: yellow;" />

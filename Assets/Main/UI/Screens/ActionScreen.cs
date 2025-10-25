@@ -270,7 +270,7 @@ public partial class ActionScreen : IScreen
         if (currentCharacter != chara)
         {
             currentCharacter = chara;
-            currentTile = Core.World.Map.GetTile(chara.Castle.Position);
+            if (chara != null) currentTile = Core.World.Map.GetTile(chara.Castle.Position);
         }
         Render();
     }
@@ -279,7 +279,18 @@ public partial class ActionScreen : IScreen
     {
         // ついでに日付も更新する。
         labelGameDate.text = Core.World.GameDate.ToString();
-        if (player == null) return;
+
+        if (player == null)
+        {
+            PersonalActionGaugeCurrentBar.style.width = Length.Percent(0f);
+            PersonalActionGaugeMaxBar.style.width = Length.Percent(0f);
+            labelPersonalActionGuageCaption.style.color = Util.Color("#bbb");
+
+            StrategyActionGaugeCurrentBar.style.width = Length.Percent(0f);
+            StrategyActionGaugeMaxBar.style.width = Length.Percent(0f);
+            labelStrategyActionGuageCaption.style.color = Util.Color("#bbb");
+            return;
+        }
 
         // 個人アクションゲージ
         var personalCurrent = player.PersonalActionGauge;
@@ -287,6 +298,7 @@ public partial class ActionScreen : IScreen
         var personalRatio = Mathf.Clamp01(personalCurrent / personalMax);
         PersonalActionGaugeCurrentBar.style.width = Length.Percent(personalRatio * 100f);
         PersonalActionGaugeMaxBar.style.width = Length.Percent(100f);
+        labelPersonalActionGuageCaption.style.color = Color.white;
 
         // 戦略アクションゲージ
         if (!player.IsBoss)

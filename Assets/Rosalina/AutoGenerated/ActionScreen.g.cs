@@ -32,6 +32,8 @@ public partial class ActionScreen
 
     public VisualElement PersonalActionGaugeCurrentBar { get; private set; }
 
+    public Label labelPersonalActionGuageCaption { get; private set; }
+
     public VisualElement PersonalActionGaugeBar { get; private set; }
 
     public VisualElement StrategyActionGaugeMaxBar { get; private set; }
@@ -88,6 +90,7 @@ public partial class ActionScreen
         PersonalPhaseHeader = Root?.Q<VisualElement>("PersonalPhaseHeader");
         PersonalActionGaugeMaxBar = Root?.Q<VisualElement>("PersonalActionGaugeMaxBar");
         PersonalActionGaugeCurrentBar = Root?.Q<VisualElement>("PersonalActionGaugeCurrentBar");
+        labelPersonalActionGuageCaption = Root?.Q<Label>("labelPersonalActionGuageCaption");
         PersonalActionGaugeBar = Root?.Q<VisualElement>("PersonalActionGaugeBar");
         StrategyActionGaugeMaxBar = Root?.Q<VisualElement>("StrategyActionGaugeMaxBar");
         StrategyActionGaugeCurrentBar = Root?.Q<VisualElement>("StrategyActionGaugeCurrentBar");
@@ -123,6 +126,7 @@ public partial class ActionScreen
         PersonalPhaseHeader = Root?.Q<VisualElement>("PersonalPhaseHeader");
         PersonalActionGaugeMaxBar = Root?.Q<VisualElement>("PersonalActionGaugeMaxBar");
         PersonalActionGaugeCurrentBar = Root?.Q<VisualElement>("PersonalActionGaugeCurrentBar");
+        labelPersonalActionGuageCaption = Root?.Q<Label>("labelPersonalActionGuageCaption");
         PersonalActionGaugeBar = Root?.Q<VisualElement>("PersonalActionGaugeBar");
         StrategyActionGaugeMaxBar = Root?.Q<VisualElement>("StrategyActionGaugeMaxBar");
         StrategyActionGaugeCurrentBar = Root?.Q<VisualElement>("StrategyActionGaugeCurrentBar");

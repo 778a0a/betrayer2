@@ -67,6 +67,7 @@ public partial class MessageWindow
 [Flags]
 public enum MessageBoxButton
 {
+    None = 0,
     Ok = 1 << 0,
     Yes = 1 << 1,
     No = 1 << 2,

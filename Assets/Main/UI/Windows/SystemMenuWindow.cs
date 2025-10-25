@@ -25,31 +25,14 @@ public partial class SystemMenuWindow
             var ok = await MessageWindow.ShowOkCancel("操作キャラを変更します。\nよろしいですか？");
             if (!ok) return;
 
-            // 現在のプレイヤーフラグをクリア
-            foreach (var chara in Core.World.Characters.Where(c => c.IsPlayer))
-            {
-                chara.IsPlayer = false;
-            }
-
             Root.style.display = DisplayStyle.None;
             Core.MainUI.SelectPlayerCharacterScreen.Show(Core.World, chara =>
             {
-                // 観戦モード
-                if (chara == null)
-                {
-                    Debug.Log("観戦モードが選択されました。");
-                    Core.IsWatchMode = true;
-                    Core.Booter.hold = false;
-                    MessageWindow.Show("観戦モードは未実装です。");
-                }
-                else
-                {
-                    chara.IsPlayer = true;
-                    Debug.Log($"Player selected: {chara.Name}");
-                    Core.Booter.hold = false;
-
-                    Core.MainUI.ActionScreen.Show();
-                }
+                Debug.Log($"プレーヤー変更: {chara?.Name}");
+                Core.World.SetPlayer(chara);
+                Core.Booter.hold = false;
+                Core.MainUI.ActionScreen.ActivatePhase(chara, Phase.Progress);
+                Core.MainUI.ActionScreen.Show();
             });
 
         };
@@ -59,6 +42,7 @@ public partial class SystemMenuWindow
             var ok = await MessageWindow.ShowOkCancel("タイトル画面に戻ります。\nよろしいですか？");
             if (!ok) return;
 
+            _ = MessageWindow.Show("ゲーム終了中...", MessageBoxButton.None);
             TitleSceneManager.LoadScene();
         };
     }

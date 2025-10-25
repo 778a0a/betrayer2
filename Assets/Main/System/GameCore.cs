@@ -14,7 +14,7 @@ public partial class GameCore
     public static bool GameCleared
     {
         set => PlayerPrefs.SetInt("GameCleared", value ? 1 : 0);
-        get => PlayerPrefs.GetInt("GameCleared", 0) == 1;
+        get => PlayerPrefs.GetInt("GameCleared", 0) == 1 || (Instance?.Booter != null && Instance.Booter.testClearedFlagOn);
     }
 
     public WorldData World { get; }
@@ -22,8 +22,6 @@ public partial class GameCore
     public MainUI MainUI { get; }
     public Booter Booter { get; }
     public AI AI { get; }
-
-    public bool IsWatchMode { get; set; } = false;
 
     public PersonalActions PersonalActions { get; }
     public StrategyActions StrategyActions { get; }
@@ -287,10 +285,7 @@ public partial class GameCore
         World.Forces.UpdateDangerStatus(this);
         await World.Forces.OnForceMove(this);
 
-        if (player != null)
-        {
-            MainUI.ActionScreen.UpdateActionGauge(player);
-        }
+        MainUI.ActionScreen.UpdateActionGauge(player);
 
         // プレイヤーの地位の変化があれば通知する。
         await NotifyPlayerTitleChangeIfNeeded();

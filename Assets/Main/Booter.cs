@@ -30,6 +30,7 @@ public class Booter : MonoBehaviour
     [SerializeField] private string testPlayerName = "フレデリック";
     [SerializeField] private bool testSkipPlayerSelection = false;
     [SerializeField] private string testScenarioNo = "02";
+    public bool testClearedFlagOn = false;
     /// <summary>
     /// 1tickの待機時間
     /// </summary>
@@ -83,18 +84,8 @@ public class Booter : MonoBehaviour
                 // 操作キャラを選択してもらう。
                 core.MainUI.SelectPlayerCharacterScreen.Show(world, chara =>
                 {
-                    // 観戦モード
-                    if (chara == null)
-                    {
-                        Debug.Log("観戦モードが選択されました。");
-                        core.IsWatchMode = true;
-                        //core.MainUI.WatchModeWindow.Show(); // TODO: WatchModeWindow未実装
-                    }
-                    else
-                    {
-                        world.SetPlayer(chara);
-                        Debug.Log($"Player selected: {chara.Name}");
-                    }
+                    Debug.Log($"Player selected: {chara?.Name}");
+                    world.SetPlayer(chara);
                     core.DoMainLoop().Forget();
                 });
                 MessageWindow.Show("操作キャラを選択してください。");
