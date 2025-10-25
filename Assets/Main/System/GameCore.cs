@@ -94,7 +94,16 @@ public partial class GameCore
 
     public void TogglePlay()
     {
-        Booter.hold = !Booter.hold;
+        var hold = !Booter.hold;
+        Booter.hold = hold;
+
+        MainUI.ActionScreen.labelGameDate.style.backgroundColor = hold ? new Color(0.8f, 0.3f, 0.3f) : default;
+        MainUI.ActionScreen.buttonResume.style.display = Util.Display(hold);
+        MainUI.ActionScreen.buttonSystem.SetEnabled(hold);
+        if (hold)
+        {
+            MainUI.ActionScreen.Render();
+        }
     }
 
     public async ValueTask DoMainLoop()

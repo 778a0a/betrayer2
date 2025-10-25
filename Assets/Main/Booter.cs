@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 /// <summary>
@@ -124,6 +125,18 @@ public class Booter : MonoBehaviour
         PlaySpeedIndex = index;
         TickWait = PlaySpeedTable[index];
         Debug.Log($"PlaySpeedIndex: {PlaySpeedIndex}, TickWait: {TickWait}");
+    }
+
+    void Update()
+    {
+        // スペースキーで進行フェイズの再生/停止を切り替え
+        if (Keyboard.current != null && Keyboard.current.spaceKey.wasPressedThisFrame)
+        {
+            if (core != null && core.MainUI.ActionScreen.IsProgressPhase)
+            {
+                core.TogglePlay();
+            }
+        }
     }
 
 }
