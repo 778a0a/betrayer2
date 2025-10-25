@@ -17,7 +17,8 @@
             <ui:VisualElement style="flex-grow: 0; justify-content: center; align-items: stretch; width: 1000px; align-self: center; align-content: auto; background-color: rgb(0, 0, 0); padding-top: 0; padding-right: 0; padding-bottom: 5px; padding-left: 0; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;">
                 <ui:Label text="NEW GAME" style="color: rgb(255, 255, 255); margin-left: 5px;" />
                 <ui:Button text="×" name="buttonCloseNewGameWindow" style="position: absolute; top: 0; right: 0; margin-top: 4px; margin-right: 4px; margin-bottom: 4px; margin-left: 4px; padding-top: 10px; padding-right: 10px; padding-bottom: 10px; padding-left: 10px; height: 48px; width: 48px;" />
-                <ui:Button text="はじめから" name="buttonStartNewGame" />
+                <ui:Button text="はじめから - シナリオ1" name="buttonStartNewGameScenario1" />
+                <ui:Button text="はじめから - シナリオ2" name="buttonStartNewGameScenario2" />
                 <ui:Button text="テキストデータ読み込み" name="buttonLoadTextData" />
                 <ui:Button text="スロット1からコピー" name="buttonCopyFromSlot1" />
                 <ui:Button text="スロット2からコピー" name="buttonCopyFromSlot2" />

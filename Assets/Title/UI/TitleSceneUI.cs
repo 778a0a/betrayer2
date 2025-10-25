@@ -82,8 +82,8 @@ public partial class TitleSceneUI : MonoBehaviour
         // 閉じるボタン
         buttonCloseNewGameWindow.clicked += () => NewGameMenu.style.display = DisplayStyle.None;
         
-        // はじめから
-        buttonStartNewGame.clicked += () =>
+        // はじめから - シナリオ1
+        buttonStartNewGameScenario1.clicked += () =>
         {
             NewGameMenu.style.display = DisplayStyle.None;
             var op = Booter.LoadScene(new MainSceneStartArguments()
@@ -91,6 +91,19 @@ public partial class TitleSceneUI : MonoBehaviour
                 IsNewGame = true,
                 NewGameSaveDataSlotNo = currentSelectedSlotNo,
                 NewGameScenarioNo = "01",
+            });
+            OnSceneLoadingStart(op);
+        };
+
+        // はじめから - シナリオ2
+        buttonStartNewGameScenario2.clicked += () =>
+        {
+            NewGameMenu.style.display = DisplayStyle.None;
+            var op = Booter.LoadScene(new MainSceneStartArguments()
+            {
+                IsNewGame = true,
+                NewGameSaveDataSlotNo = currentSelectedSlotNo,
+                NewGameScenarioNo = "02",
             });
             OnSceneLoadingStart(op);
         };

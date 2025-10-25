@@ -25,7 +25,9 @@ public partial class TitleSceneUI
 
     public Button buttonCloseNewGameWindow { get; private set; }
 
-    public Button buttonStartNewGame { get; private set; }
+    public Button buttonStartNewGameScenario1 { get; private set; }
+
+    public Button buttonStartNewGameScenario2 { get; private set; }
 
     public Button buttonLoadTextData { get; private set; }
 
@@ -83,7 +85,8 @@ public partial class TitleSceneUI
         SaveDataList = new SaveDataListWindow(Root?.Q<VisualElement>("SaveDataList"));
         buttonCloseApplication = Root?.Q<Button>("buttonCloseApplication");
         buttonCloseNewGameWindow = Root?.Q<Button>("buttonCloseNewGameWindow");
-        buttonStartNewGame = Root?.Q<Button>("buttonStartNewGame");
+        buttonStartNewGameScenario1 = Root?.Q<Button>("buttonStartNewGameScenario1");
+        buttonStartNewGameScenario2 = Root?.Q<Button>("buttonStartNewGameScenario2");
         buttonLoadTextData = Root?.Q<Button>("buttonLoadTextData");
         buttonCopyFromSlot1 = Root?.Q<Button>("buttonCopyFromSlot1");
         buttonCopyFromSlot2 = Root?.Q<Button>("buttonCopyFromSlot2");
@@ -117,7 +120,8 @@ public partial class TitleSceneUI
         SaveDataList.ReinitializeComponent(Root?.Q<VisualElement>("SaveDataList"));
         buttonCloseApplication = Root?.Q<Button>("buttonCloseApplication");
         buttonCloseNewGameWindow = Root?.Q<Button>("buttonCloseNewGameWindow");
-        buttonStartNewGame = Root?.Q<Button>("buttonStartNewGame");
+        buttonStartNewGameScenario1 = Root?.Q<Button>("buttonStartNewGameScenario1");
+        buttonStartNewGameScenario2 = Root?.Q<Button>("buttonStartNewGameScenario2");
         buttonLoadTextData = Root?.Q<Button>("buttonLoadTextData");
         buttonCopyFromSlot1 = Root?.Q<Button>("buttonCopyFromSlot1");
         buttonCopyFromSlot2 = Root?.Q<Button>("buttonCopyFromSlot2");
