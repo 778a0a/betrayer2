@@ -35,7 +35,6 @@ public partial class MainUI : MonoBehaviour
             ReinitializeDocument();
         }
 
-        Frame.Initialize();
         MessageWindow.Initialize();
         BattleWindow.Initialize();
         
@@ -47,7 +46,6 @@ public partial class MainUI : MonoBehaviour
 
         if (isInitialized)
         {
-            Frame.RefreshUI();
             if (lastVisibleScreen != null)
             {
                 lastVisibleScreen.Render();

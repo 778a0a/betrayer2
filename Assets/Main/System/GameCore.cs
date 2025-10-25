@@ -97,7 +97,6 @@ public partial class GameCore
     public void TogglePlay()
     {
         Booter.hold = !Booter.hold;
-        MainUI.Frame.RefreshUI();
     }
 
     public async ValueTask DoMainLoop()
@@ -300,7 +299,6 @@ public partial class GameCore
         await OnCharacterMove(player);
 
         // 表示を更新する。
-        MainUI.Frame.RefreshUI();
         await Booter.HoldIfNeeded();
 
         World.GameDate++;

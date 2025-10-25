@@ -122,7 +122,6 @@ Assets/Main/
 │   ├── MainUI.cs            # メインUI制御
 │   ├── MainUI.uxml          # メインUIレイアウト
 │   ├── MainUI.uss           # メインUIスタイル
-│   ├── MainUIFrame.cs       # UIフレーム
 │   ├── Parts/               # UI部品
 │   ├── Windows/             # ウィンドウ
 │   └── Images/              # UI画像

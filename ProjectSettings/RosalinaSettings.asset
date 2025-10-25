@@ -16,8 +16,6 @@ MonoBehaviour:
   _files:
   - _type: 0
     _path: Assets/Main/UI/MainUI.uxml
-  - _type: 1
-    _path: Assets/Main/UI/MainUIFrame.uxml
   - _type: 0
     _path: Assets/Title/UI/TitleSceneUI.uxml
   - _type: 1
