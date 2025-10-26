@@ -451,6 +451,7 @@ public class ForceManager : IReadOnlyList<Force>
                 Unregister(f);
             }
 
+            var playerCountryEliminated = oldCountry == world.Player?.Country;
             foreach (var m in castle.Members.ToList())
             {
                 m.ChangeCastle(castle, true);
@@ -469,7 +470,10 @@ public class ForceManager : IReadOnlyList<Force>
             }
 
             // 滅亡メッセージを表示する。
-            await MessageWindow.Show($"{oldCountry.Ruler.Name}軍が\n{force.Country.Ruler.Name}軍によって滅ぼされました。");
+            if (SystemSetting.Instance.ShowCountryEliminatedNotification || playerCountryEliminated)
+            {
+                await MessageWindow.Show($"{oldCountry.Ruler.Name}軍が\n{force.Country.Ruler.Name}軍によって滅ぼされました。");
+            }
         }
         // まだ他の城がある場合は、一番近くの城に所属を移動する。
         else
