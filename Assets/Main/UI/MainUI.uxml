@@ -2,6 +2,7 @@
     <engine:Template name="BattleWindow" src="project://database/Assets/Main/UI/Windows/Battle/BattleWindow.uxml" />
     <engine:Template name="MessageWindow" src="project://database/Assets/Main/UI/Windows/MessageWindow.uxml" />
     <engine:Template name="SystemMenuWindow" src="project://database/Assets/Main/UI/Windows/SystemMenuWindow.uxml" />
+    <engine:Template name="SystemSettingWindow" src="project://database/Assets/Title/UI/Windows/SystemSettingWindow.uxml" />
     <engine:Template name="CameraMovementArea" src="project://database/Assets/Main/UI/CameraMovementArea.uxml" />
     <Style src="project://database/Assets/Main/UI/MainUI.uss" />
     <engine:VisualElement style="flex-direction: row; flex: 1" picking-mode="Ignore">
@@ -11,6 +12,7 @@
     <engine:VisualElement name="WindowHost" picking-mode="Ignore" style="flex-grow: 1; position: absolute; top: 0; right: 0; left: 0; bottom: 0; align-items: center; justify-content: center;">
         <engine:Instance template="BattleWindow" name="BattleWindow" picking-mode="Ignore" class="window" />
         <engine:Instance template="SystemMenuWindow" name="SystemMenuWindow" picking-mode="Ignore" class="window" />
+        <engine:Instance template="SystemSettingWindow" name="SystemSettingWindow" picking-mode="Ignore" class="window" />
         <engine:Instance template="MessageWindow" name="MessageWindow" picking-mode="Ignore" class="window" />
     </engine:VisualElement>
 </engine:UXML>

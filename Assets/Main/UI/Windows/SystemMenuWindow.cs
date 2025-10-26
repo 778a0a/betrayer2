@@ -32,6 +32,11 @@ public partial class SystemMenuWindow
             }
         };
 
+        buttonSystemSetting.clicked += () =>
+        {
+            Core.MainUI.SystemSettingWindow.Show();
+        };
+
         buttonChangePlayer.clicked += async () =>
         {
             var ok = await MessageWindow.ShowOkCancel("操作キャラを変更します。\nよろしいですか？");

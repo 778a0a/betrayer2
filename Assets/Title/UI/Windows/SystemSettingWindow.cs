@@ -10,6 +10,8 @@ public partial class SystemSettingWindow
 
     public void Initialize()
     {
+        Root.style.display = DisplayStyle.None;
+
         // WebGLでなおかつスマホの場合のみ画面回転設定を表示
         var isWebGLMobile = Application.platform == RuntimePlatform.WebGLPlayer && Application.isMobilePlatform;
         OrientationContainer.style.display = Util.Display(isWebGLMobile);

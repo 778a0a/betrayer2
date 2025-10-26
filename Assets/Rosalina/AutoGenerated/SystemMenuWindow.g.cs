@@ -20,6 +20,8 @@ public partial class SystemMenuWindow
 
     public Button buttonSave { get; private set; }
 
+    public Button buttonSystemSetting { get; private set; }
+
     public Button buttonChangePlayer { get; private set; }
 
     public Button buttonGoToTitle { get; private set; }
@@ -32,6 +34,7 @@ public partial class SystemMenuWindow
         labelTitle = Root?.Q<Label>("labelTitle");
         buttonClose = Root?.Q<Button>("buttonClose");
         buttonSave = Root?.Q<Button>("buttonSave");
+        buttonSystemSetting = Root?.Q<Button>("buttonSystemSetting");
         buttonChangePlayer = Root?.Q<Button>("buttonChangePlayer");
         buttonGoToTitle = Root?.Q<Button>("buttonGoToTitle");
     }
@@ -42,6 +45,7 @@ public partial class SystemMenuWindow
         labelTitle = Root?.Q<Label>("labelTitle");
         buttonClose = Root?.Q<Button>("buttonClose");
         buttonSave = Root?.Q<Button>("buttonSave");
+        buttonSystemSetting = Root?.Q<Button>("buttonSystemSetting");
         buttonChangePlayer = Root?.Q<Button>("buttonChangePlayer");
         buttonGoToTitle = Root?.Q<Button>("buttonGoToTitle");
     }

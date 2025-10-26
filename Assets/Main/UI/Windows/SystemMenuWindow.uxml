@@ -7,6 +7,7 @@
                 <ui:Button text="×" name="buttonClose" class="dark-button" style="position: absolute; top: 1; right: 0; margin: 4px; padding: 10px; height: 48px; width: 48px; font-size: 30px;" />
             </ui:VisualElement>
             <ui:Button text="セーブ" name="buttonSave" style="font-size: 35px; margin-bottom: 5px; padding: 10px;" />
+            <ui:Button text="システム設定" name="buttonSystemSetting" style="font-size: 35px; margin-bottom: 5px; padding: 10px;" />
             <ui:Button text="操作キャラ変更" name="buttonChangePlayer" style="font-size: 35px; margin-bottom: 5px; padding: 10px;" />
             <ui:Button text="タイトルへ" name="buttonGoToTitle" style="font-size: 35px; padding: 10px;" />
         </ui:VisualElement>

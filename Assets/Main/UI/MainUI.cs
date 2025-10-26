@@ -38,7 +38,8 @@ public partial class MainUI : MonoBehaviour
         MessageWindow.Initialize();
         BattleWindow.Initialize();
         SystemMenuWindow.Initialize();
-        
+        SystemSettingWindow.Initialize();
+
         // CameraMovementAreaを初期化
         Camera = FindObjectOfType<CameraMovement>();
         CameraMovementArea.Initialize(Camera);
