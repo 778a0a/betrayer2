@@ -90,14 +90,14 @@ public class SystemSetting
 
     public float PlaySpeed => PlaySpeedIndex switch
     {
-        0 => 0.5f,
-        1 => 0.25f,
-        2 => 0.125f,
-        3 => 0.05f,
+        0 => 0.25f,
+        1 => 0.125f,
+        2 => 0.05f,
+        3 => 0.025f,
         4 or _ => 0f,
     };
     public int PlaySpeedIndex { get => _PlaySpeedIndex; set => SetValue(ref _PlaySpeedIndex, value); }
-    private int _PlaySpeedIndex = PlayerPrefs.GetInt(nameof(PlaySpeedIndex), 3);
+    private int _PlaySpeedIndex = PlayerPrefs.GetInt(nameof(PlaySpeedIndex), 2);
 
     public AutoSaveFrequency AutoSaveFrequency { get => _AutoSaveFrequency; set => SetValue(ref _AutoSaveFrequency, value); }
     private AutoSaveFrequency _AutoSaveFrequency = (AutoSaveFrequency)PlayerPrefs.GetInt(nameof(AutoSaveFrequency), (int)AutoSaveFrequency.EveryYear);
