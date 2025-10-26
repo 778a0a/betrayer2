@@ -296,7 +296,7 @@ public partial class TitleSceneUI : MonoBehaviour
         L["本ソフトの配布にあたって、同梱されているサードパーティーコンポーネントとそのライセンス情報を以下に示します。"] + @"
 
 Noto Sans Japanese
-==================
+=================
 
 Copyright 2014-2021 Adobe (http://www.adobe.com/), with Reserved Font Name 'Source'
 
