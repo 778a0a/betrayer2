@@ -14,9 +14,9 @@ using UnityEngine.UIElements;
 
 public partial class SystemSettingsWindow
 {
-    public DropdownField comboOrientation { get; private set; }
+    public VisualElement OrientationContainer { get; private set; }
 
-    public DropdownField comboLayout { get; private set; }
+    public DropdownField comboOrientation { get; private set; }
 
     public Button buttonPlaySpeed0 { get; private set; }
 
@@ -27,6 +27,10 @@ public partial class SystemSettingsWindow
     public Button buttonPlaySpeed3 { get; private set; }
 
     public Button buttonPlaySpeed4 { get; private set; }
+
+    public DropdownField comboAutoSaveFrequency { get; private set; }
+
+    public DropdownField comboCountryEliminatedNotification { get; private set; }
 
     public Label labelSaveDataListWindowTitle { get; private set; }
 
@@ -39,13 +43,15 @@ public partial class SystemSettingsWindow
     public SystemSettingsWindow(VisualElement root)
     {
         Root = root;
+        OrientationContainer = Root?.Q<VisualElement>("OrientationContainer");
         comboOrientation = Root?.Q<DropdownField>("comboOrientation");
-        comboLayout = Root?.Q<DropdownField>("comboLayout");
         buttonPlaySpeed0 = Root?.Q<Button>("buttonPlaySpeed0");
         buttonPlaySpeed1 = Root?.Q<Button>("buttonPlaySpeed1");
         buttonPlaySpeed2 = Root?.Q<Button>("buttonPlaySpeed2");
         buttonPlaySpeed3 = Root?.Q<Button>("buttonPlaySpeed3");
         buttonPlaySpeed4 = Root?.Q<Button>("buttonPlaySpeed4");
+        comboAutoSaveFrequency = Root?.Q<DropdownField>("comboAutoSaveFrequency");
+        comboCountryEliminatedNotification = Root?.Q<DropdownField>("comboCountryEliminatedNotification");
         labelSaveDataListWindowTitle = Root?.Q<Label>("labelSaveDataListWindowTitle");
         CloseButton = Root?.Q<Button>("CloseButton");
         Border = Root?.Q<VisualElement>("Border");
@@ -54,13 +60,15 @@ public partial class SystemSettingsWindow
     public void ReinitializeComponent(VisualElement root)
     {
         Root = root;
+        OrientationContainer = Root?.Q<VisualElement>("OrientationContainer");
         comboOrientation = Root?.Q<DropdownField>("comboOrientation");
-        comboLayout = Root?.Q<DropdownField>("comboLayout");
         buttonPlaySpeed0 = Root?.Q<Button>("buttonPlaySpeed0");
         buttonPlaySpeed1 = Root?.Q<Button>("buttonPlaySpeed1");
         buttonPlaySpeed2 = Root?.Q<Button>("buttonPlaySpeed2");
         buttonPlaySpeed3 = Root?.Q<Button>("buttonPlaySpeed3");
         buttonPlaySpeed4 = Root?.Q<Button>("buttonPlaySpeed4");
+        comboAutoSaveFrequency = Root?.Q<DropdownField>("comboAutoSaveFrequency");
+        comboCountryEliminatedNotification = Root?.Q<DropdownField>("comboCountryEliminatedNotification");
         labelSaveDataListWindowTitle = Root?.Q<Label>("labelSaveDataListWindowTitle");
         CloseButton = Root?.Q<Button>("CloseButton");
         Border = Root?.Q<VisualElement>("Border");

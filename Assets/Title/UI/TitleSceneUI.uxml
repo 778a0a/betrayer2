@@ -13,9 +13,9 @@
                 <ui:Button text="ライセンス情報" name="buttonShowLicense" class="title--menu-button" style="align-self: center; margin-top: 20px; height: auto; width: auto; margin-right: 20px; margin-bottom: 20px; margin-left: 10px;" />
             </ui:VisualElement>
         </ui:VisualElement>
-        <ui:VisualElement name="NewGameMenu" class="window window-modal" style="background-color: rgba(0, 0, 0, 0.37); display: none;">
+        <ui:VisualElement name="NewGameMenu" class="window" style="background-color: rgba(0, 0, 0, 0.37); display: none;">
             <ui:VisualElement style="flex-grow: 0; justify-content: center; align-items: stretch; width: 1000px; align-self: center; align-content: auto; background-color: rgb(0, 0, 0); padding-top: 0; padding-right: 0; padding-bottom: 5px; padding-left: 0; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;">
-                <ui:Label text="NEW GAME" style="color: rgb(255, 255, 255); margin-left: 5px;" />
+                <ui:Label text="NEW GAME" style="color: rgb(255, 255, 255); margin-left: 5px; padding-left: 3px" />
                 <ui:Button text="×" name="buttonCloseNewGameWindow" style="position: absolute; top: 0; right: 0; margin-top: 4px; margin-right: 4px; margin-bottom: 4px; margin-left: 4px; padding-top: 10px; padding-right: 10px; padding-bottom: 10px; padding-left: 10px; height: 48px; width: 48px;" />
                 <ui:Button text="はじめから - シナリオ1" name="buttonStartNewGameScenario1" />
                 <ui:Button text="はじめから - シナリオ2" name="buttonStartNewGameScenario2" />
@@ -26,9 +26,9 @@
                 <ui:Button text="オートセーブスロットからコピー" name="buttonCopyFromSlotAuto" />
             </ui:VisualElement>
         </ui:VisualElement>
-        <ui:VisualElement name="TextBoxWindow" class="window window-modal" style="background-color: rgba(0, 0, 0, 0.37); display: none;">
+        <ui:VisualElement name="TextBoxWindow" class="window" style="background-color: rgba(0, 0, 0, 0.37); display: none;">
             <ui:VisualElement style="flex-grow: 0; justify-content: center; align-items: stretch; width: 1000px; align-self: center; align-content: auto; background-color: rgb(0, 0, 0); padding-top: 0; padding-right: 0; padding-bottom: 5px; padding-left: 0; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;">
-                <ui:Label text="テキストデータ" name="labelTextBoxWindowTitle" style="color: rgb(255, 255, 255); margin-left: 5px;" />
+                <ui:Label text="テキストデータ" name="labelTextBoxWindowTitle" style="color: rgb(255, 255, 255); margin-left: 5px; padding-left: 3px" />
                 <ui:Button text="×" name="buttonCloseTextBoxWindow" style="position: absolute; top: 0; right: 0; margin-top: 4px; margin-right: 4px; margin-bottom: 4px; margin-left: 4px; padding-top: 10px; padding-right: 10px; padding-bottom: 10px; padding-left: 10px; height: 48px; width: 48px;" />
                 <ui:TextField placeholder-text="ここにセーブデータを貼り付けてください。" name="textTextBoxWindow" multiline="true" vertical-scroller-visibility="AlwaysVisible" style="height: 500px; font-size: 20px;" />
                 <ui:VisualElement style="flex-grow: 1; flex-direction: row;">
@@ -39,20 +39,20 @@
                 <ui:Button text="確定" name="buttonSubmitText" />
             </ui:VisualElement>
         </ui:VisualElement>
-        <ui:VisualElement name="ProgressWindow" class="window window-modal" style="background-color: rgba(0, 0, 0, 0.37); display: none;">
+        <ui:VisualElement name="ProgressWindow" class="window" style="background-color: rgba(0, 0, 0, 0.37); display: none;">
             <ui:VisualElement style="flex-grow: 0; justify-content: center; align-items: stretch; width: 400px; align-self: center; align-content: auto; background-color: rgb(0, 0, 0); padding-top: 10px; padding-right: 10px; padding-bottom: 10px; padding-left: 10px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-left-color: rgb(0, 255, 255); border-right-color: rgb(0, 255, 255); border-top-color: rgb(0, 255, 255); border-bottom-color: rgb(0, 255, 255); max-width: 1500px; height: 150px; max-height: 1000px;">
                 <ui:Label name="labelProgressWindowTitle" text="ロード中..." style="color: rgb(255, 255, 255); margin-left: 0; font-size: 30px; margin-top: 0; margin-right: 0; margin-bottom: 0; padding-top: 10px; padding-right: 10px; padding-bottom: 10px; padding-left: 10px;" />
                 <ui:ProgressBar value="22" name="progressLoading" />
             </ui:VisualElement>
         </ui:VisualElement>
-        <ui:VisualElement name="LicenseWindow" class="window window-modal" style="background-color: rgba(0, 0, 0, 0.37); display: none;">
+        <ui:VisualElement name="LicenseWindow" class="window" style="background-color: rgba(0, 0, 0, 0.37); display: none;">
             <ui:VisualElement style="flex-grow: 0; justify-content: center; align-items: stretch; width: 1500px; align-self: center; align-content: auto; background-color: rgb(0, 0, 0); padding-top: 0; padding-right: 0; padding-bottom: 5px; padding-left: 0; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;">
-                <ui:Label name="labelLicenseWindowTitle" text="ライセンス情報" style="color: rgb(255, 255, 255); margin-left: 5px;" />
+                <ui:Label name="labelLicenseWindowTitle" text="ライセンス情報" style="color: rgb(255, 255, 255); margin-left: 5px; padding-left: 3px" />
                 <ui:Button text="×" name="buttonCloseLicenseWindow" style="position: absolute; top: 0; right: 0; margin-top: 4px; margin-right: 4px; margin-bottom: 4px; margin-left: 4px; padding-top: 10px; padding-right: 10px; padding-bottom: 10px; padding-left: 10px; height: 48px; width: 48px;" />
                 <ui:TextField name="textLicenseWindow" multiline="true" vertical-scroller-visibility="AlwaysVisible" readonly="true" style="height: 900px; font-size: 25px; white-space: normal;" />
             </ui:VisualElement>
         </ui:VisualElement>
-        <ui:Instance template="SystemSettingsWindow" name="SystemSettingsWindow" style="display: none;" />
+        <ui:Instance template="SystemSettingsWindow" name="SystemSettingsWindow" class="window" style="display: none;" />
         <ui:Instance template="MessageWindow" name="MessageWindow" class="window" style="display: none;" />
     </ui:VisualElement>
 </ui:UXML>

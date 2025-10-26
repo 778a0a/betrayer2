@@ -1,25 +1,41 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Title/UI/TitleSceneUI.uss" />
     <Style src="project://database/Assets/Title/UI/Windows/WindowStyle.uss" />
-    <ui:VisualElement style="flex-grow: 1; align-items: center; justify-content: center; bottom: 0;">
-        <ui:VisualElement name="Border" style="flex-grow: 0; background-color: rgb(0, 9, 25); padding-top: 3px; padding-right: 3px; padding-bottom: 3px; padding-left: 3px;">
-            <ui:Label text="システム設定" name="labelSaveDataListWindowTitle" style="color: rgb(255, 255, 255);" />
+    <ui:VisualElement class="" style="background-color: rgba(0, 0, 0, 0.5); position: absolute; top: 0; right: 0; left: 0; bottom: 0; justify-content: center; align-items: center;">
+        <ui:VisualElement name="Border" style="background-color: rgb(0, 9, 25); padding: 3px;">
+            <ui:Label text="システム設定" name="labelSaveDataListWindowTitle" style="color: white; padding-left: 3px" />
             <ui:Button text="×" name="CloseButton" style="position: absolute; align-items: stretch; align-self: auto; right: 2px; width: 50px; height: 50px;" />
-            <ui:VisualElement style="flex-grow: 1; background-color: rgb(204, 204, 204); width: 500px; padding: 10px;">
-                <ui:DropdownField label="画面回転" choices="自動,通常,反転" index="0" name="comboOrientation" />
-                <ui:DropdownField label="言語" choices="自動,日本語,English" index="0" name="comboLayout" />
+            <ui:VisualElement style="flex-grow: 1; background-color: #ccc; padding: 0 20px 20px 20px;">
+                <!-- 画面回転設定 -->
+                <ui:VisualElement name="OrientationContainer" style="margin-top: 20px; display: none;">
+                    <ui:Label text="画面回転" style="font-size: 35px; margin-bottom: 10px; -unity-font-style: bold;" />
+                    <ui:DropdownField choices="自動,通常,反転" index="0" name="comboOrientation" />
+                </ui:VisualElement>
 
                 <!-- 再生速度設定 -->
                 <ui:VisualElement style="margin-top: 20px;">
                     <ui:Label text="ゲーム進行速度" style="font-size: 35px; margin-bottom: 10px; -unity-font-style: bold;" />
                     <ui:VisualElement style="flex-direction: row; align-items: center;">
-                        <ui:Label text="遅い" style="font-size: 30px; margin-right: 10px;" />
-                        <ui:Button name="buttonPlaySpeed0" text="1" style="width: 60px; height: 40px; margin: 2px; background-color: rgb(76, 204, 76); font-size: 30px;" />
-                        <ui:Button name="buttonPlaySpeed1" text="2" style="width: 60px; height: 40px; margin: 2px; background-color: rgb(76, 204, 76); font-size: 30px;" />
-                        <ui:Button name="buttonPlaySpeed2" text="3" style="width: 60px; height: 40px; margin: 2px; background-color: rgb(76, 204, 76); font-size: 30px;" />
-                        <ui:Button name="buttonPlaySpeed3" text="4" style="width: 60px; height: 40px; margin: 2px; background-color: rgb(76, 204, 76); font-size: 30px;" />
-                        <ui:Button name="buttonPlaySpeed4" text="5" style="width: 60px; height: 40px; margin: 2px; background-color: rgb(76, 204, 76); font-size: 30px;" />
-                        <ui:Label text="速い" style="font-size: 30px; margin-left: 10px;" />
+                        <ui:Label text="遅い" style="font-size: 35px; margin-right: 10px; flex-grow: 0" />
+                        <ui:Button name="buttonPlaySpeed0" text="1" style="flex-grow: 1; height: 60px; margin: 2px; background-color: rgb(76, 204, 76); font-size: 30px;" />
+                        <ui:Button name="buttonPlaySpeed1" text="2" style="flex-grow: 1; height: 60px; margin: 2px; background-color: rgb(76, 204, 76); font-size: 30px;" />
+                        <ui:Button name="buttonPlaySpeed2" text="3" style="flex-grow: 1; height: 60px; margin: 2px; background-color: rgb(76, 204, 76); font-size: 30px;" />
+                        <ui:Button name="buttonPlaySpeed3" text="4" style="flex-grow: 1; height: 60px; margin: 2px; background-color: rgb(76, 204, 76); font-size: 30px;" />
+                        <ui:Button name="buttonPlaySpeed4" text="5" style="flex-grow: 1; height: 60px; margin: 2px; background-color: rgb(76, 204, 76); font-size: 30px;" />
+                        <ui:Label text="速い" style="font-size: 35px; margin-left: 10px; flex-grow: 0" />
                     </ui:VisualElement>
+                </ui:VisualElement>
+
+                <!-- オートセーブ頻度設定 -->
+                <ui:VisualElement style="margin-top: 20px;">
+                    <ui:Label text="オートセーブ頻度" style="font-size: 35px; margin-bottom: 10px; -unity-font-style: bold;" />
+                    <ui:DropdownField choices="なし,2年毎,1年毎,半年毎,3ヵ月毎,フェイズ毎" index="0" name="comboAutoSaveFrequency" />
+                </ui:VisualElement>
+
+                <!-- 勢力滅亡通知設定 -->
+                <ui:VisualElement style="margin-top: 20px;">
+                    <ui:Label text="勢力滅亡通知" style="font-size: 35px; margin-bottom: 10px; -unity-font-style: bold;" />
+                    <ui:DropdownField choices="表示しない,表示する" index="1" name="comboCountryEliminatedNotification" />
                 </ui:VisualElement>
             </ui:VisualElement>
         </ui:VisualElement>

@@ -4,21 +4,25 @@ using UnityEngine.UIElements;
 
 public partial class SystemSettingsWindow
 {
-    public SystemSettingsManager SystemSettings => SystemSettingsManager.Instance;
-    public LocalizationManager L { get; set; }
+    private SystemSettingsManager Settings => SystemSettingsManager.Instance;
     private Button[] playSpeedButtons;
 
     public void Initialize()
     {
-        L.Register(this);
+        // WebGLでなおかつスマホの場合のみ画面回転設定を表示
+        var isWebGLMobile = Application.platform == RuntimePlatform.WebGLPlayer && Application.isMobilePlatform;
+        OrientationContainer.style.display = Util.Display(isWebGLMobile);
 
-        var orientations = Util.EnumArray<OrientationSetting>();
-        comboOrientation.index = Array.IndexOf(orientations, SystemSettings.Orientation);
-        comboOrientation.RegisterValueChangedCallback(e =>
+        if (isWebGLMobile)
         {
-            SystemSettings.Orientation = orientations[comboOrientation.index];
-            SystemSettings.ApplyOrientation();
-        });
+            var orientations = Util.EnumArray<OrientationSetting>();
+            comboOrientation.index = Array.IndexOf(orientations, Settings.Orientation);
+            comboOrientation.RegisterValueChangedCallback(e =>
+            {
+                Settings.Orientation = orientations[comboOrientation.index];
+                Settings.ApplyOrientation();
+            });
+        }
 
         // 再生速度ボタンの初期化
         playSpeedButtons = new[]
@@ -34,11 +38,25 @@ public partial class SystemSettingsWindow
             var index = i;
             playSpeedButtons[i].clicked += () =>
             {
-                SystemSettings.PlaySpeedIndex = index;
+                Settings.PlaySpeedIndex = index;
                 GameCore.Instance?.Booter.UpdatePlaySpeed(index);
                 RefreshPlaySpeedButtons();
             };
         }
+
+        // オートセーブ頻度の初期化
+        comboAutoSaveFrequency.index = (int)Settings.AutoSaveFrequency;
+        comboAutoSaveFrequency.RegisterValueChangedCallback(e =>
+        {
+            Settings.AutoSaveFrequency = (AutoSaveFrequency)comboAutoSaveFrequency.index;
+        });
+
+        // 勢力滅亡通知の初期化
+        comboCountryEliminatedNotification.index = Settings.ShowCountryEliminatedNotification ? 1 : 0;
+        comboCountryEliminatedNotification.RegisterValueChangedCallback(e =>
+        {
+            Settings.ShowCountryEliminatedNotification = comboCountryEliminatedNotification.index == 1;
+        });
 
         CloseButton.clicked += () => Root.style.display = DisplayStyle.None;
     }
@@ -51,7 +69,7 @@ public partial class SystemSettingsWindow
 
     private void RefreshPlaySpeedButtons()
     {
-        var currentSpeedIndex = SystemSettings.PlaySpeedIndex;
+        var currentSpeedIndex = Settings.PlaySpeedIndex;
         for (var i = 0; i < playSpeedButtons.Length; i++)
         {
             var btn = playSpeedButtons[i];
@@ -62,7 +80,7 @@ public partial class SystemSettingsWindow
 
 public class SystemSettingsManager
 {
-    public static SystemSettingsManager Instance { get; } = new SystemSettingsManager();
+    public static SystemSettingsManager Instance { get; } = new();
 
     public OrientationSetting Orientation
     {
@@ -74,6 +92,18 @@ public class SystemSettingsManager
     {
         get => PlayerPrefs.GetInt(nameof(PlaySpeedIndex), 3);
         set => PlayerPrefs.SetInt(nameof(PlaySpeedIndex), value);
+    }
+
+    public AutoSaveFrequency AutoSaveFrequency
+    {
+        get => (AutoSaveFrequency)PlayerPrefs.GetInt(nameof(AutoSaveFrequency), (int)AutoSaveFrequency.EveryYear);
+        set => PlayerPrefs.SetInt(nameof(AutoSaveFrequency), (int)value);
+    }
+
+    public bool ShowCountryEliminatedNotification
+    {
+        get => PlayerPrefs.GetInt(nameof(ShowCountryEliminatedNotification), 1) == 1;
+        set => PlayerPrefs.SetInt(nameof(ShowCountryEliminatedNotification), value ? 1 : 0);
     }
 
     public void ApplyOrientation()
@@ -110,4 +140,14 @@ public enum LanguageSetting
     Auto,
     Japanese,
     English,
+}
+
+public enum AutoSaveFrequency
+{
+    None,
+    EveryTwoYears,
+    EveryYear,
+    EverySixMonths,
+    EveryThreeMonths,
+    EveryPhase,
 }

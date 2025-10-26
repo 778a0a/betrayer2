@@ -31,3 +31,19 @@
 Label, Button {
     font-size: 40px;
 }
+
+DropdownField {
+    color: black;
+    font-size: 40px;
+    width: 500px;
+    height: 60px;
+    /* margin: -6px 0 -30px 5px; */
+    /* padding: 0; */
+
+}
+
+.unity-popup-field__input {
+    font-size: 40px;
+    margin-left: 0;
+    padding: 0 5px 0 5px;
+}
