@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -39,7 +40,7 @@ public partial class SystemSettingWindow
             playSpeedButtons[i].clicked += () =>
             {
                 Setting.PlaySpeedIndex = index;
-                GameCore.Instance?.Booter.UpdatePlaySpeed(index);
+                GameCore.Instance?.Booter.UpdatePlaySpeed(Setting.PlaySpeed);
                 RefreshPlaySpeedButtons();
             };
         }
@@ -72,8 +73,8 @@ public partial class SystemSettingWindow
         var currentSpeedIndex = Setting.PlaySpeedIndex;
         for (var i = 0; i < playSpeedButtons.Length; i++)
         {
-            var btn = playSpeedButtons[i];
-            btn.style.backgroundColor = i > currentSpeedIndex ? new Color(0.3f, 0.6f, 0.3f) : new Color(0.3f, 0.8f, 0.3f);
+            var button = playSpeedButtons[i];
+            button.style.backgroundColor = i > currentSpeedIndex ? new Color(0.25f, 0.55f, 0.25f) : new Color(0.3f, 0.8f, 0.3f);
         }
     }
 }
@@ -82,29 +83,25 @@ public class SystemSetting
 {
     public static SystemSetting Instance { get; } = new();
 
-    public OrientationSetting Orientation
-    {
-        get => (OrientationSetting)PlayerPrefs.GetInt(nameof(Orientation), (int)OrientationSetting.Auto);
-        set => PlayerPrefs.SetInt(nameof(Orientation), (int)value);
-    }
+    public OrientationSetting Orientation { get => _Orientation; set => SetValue(ref _Orientation, value); }
+    private OrientationSetting _Orientation = (OrientationSetting)PlayerPrefs.GetInt(nameof(Orientation), (int)OrientationSetting.Auto);
 
-    public int PlaySpeedIndex
+    public float PlaySpeed => PlaySpeedIndex switch
     {
-        get => PlayerPrefs.GetInt(nameof(PlaySpeedIndex), 3);
-        set => PlayerPrefs.SetInt(nameof(PlaySpeedIndex), value);
-    }
+        0 => 0.5f,
+        1 => 0.25f,
+        2 => 0.125f,
+        3 => 0.05f,
+        4 or _ => 0f,
+    };
+    public int PlaySpeedIndex { get => _PlaySpeedIndex; set => SetValue(ref _PlaySpeedIndex, value); }
+    private int _PlaySpeedIndex = PlayerPrefs.GetInt(nameof(PlaySpeedIndex), 3);
 
-    public AutoSaveFrequency AutoSaveFrequency
-    {
-        get => (AutoSaveFrequency)PlayerPrefs.GetInt(nameof(AutoSaveFrequency), (int)AutoSaveFrequency.EveryYear);
-        set => PlayerPrefs.SetInt(nameof(AutoSaveFrequency), (int)value);
-    }
+    public AutoSaveFrequency AutoSaveFrequency { get => _AutoSaveFrequency; set => SetValue(ref _AutoSaveFrequency, value); }
+    private AutoSaveFrequency _AutoSaveFrequency = (AutoSaveFrequency)PlayerPrefs.GetInt(nameof(AutoSaveFrequency), (int)AutoSaveFrequency.EveryYear);
 
-    public bool ShowCountryEliminatedNotification
-    {
-        get => PlayerPrefs.GetInt(nameof(ShowCountryEliminatedNotification), 1) == 1;
-        set => PlayerPrefs.SetInt(nameof(ShowCountryEliminatedNotification), value ? 1 : 0);
-    }
+    public bool ShowCountryEliminatedNotification { get => _ShowCountryEliminatedNotification; set => SetValue(ref _ShowCountryEliminatedNotification, value); }
+    private bool _ShowCountryEliminatedNotification = PlayerPrefs.GetInt(nameof(ShowCountryEliminatedNotification), 1) == 1;
 
     public void ApplyOrientation()
     {
@@ -124,6 +121,24 @@ public class SystemSetting
             case OrientationSetting.LandscapeRight:
                 Screen.orientation = ScreenOrientation.LandscapeRight;
                 break;
+        }
+    }
+
+    private void SetValue<T>(ref T field, T value, [CallerMemberName] string propertyName = null)
+    {
+        field = value;
+
+        if (typeof(T) == typeof(int))
+        {
+            PlayerPrefs.SetInt(propertyName, (int)(object)value);
+        }
+        else if (typeof(T).IsEnum)
+        {
+            PlayerPrefs.SetInt(propertyName, (int)(object)value);
+        }
+        else if (typeof(T) == typeof(bool))
+        {
+            PlayerPrefs.SetInt(propertyName, (bool)(object)value ? 1 : 0);
         }
     }
 }

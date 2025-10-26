@@ -41,20 +41,11 @@ public class Booter : MonoBehaviour
     /// </summary>
     public bool hold = false;
 
-    /// <summary>
-    /// ゲームの再生速度のインデックス
-    /// </summary>
-    public int PlaySpeedIndex { get; private set; } = 3;
-    /// <summary>
-    /// 再生速度のテーブル
-    /// </summary>
-    private float[] PlaySpeedTable { get; } = new[] { 0.5f, 0.25f, 0.125f, 0.05f, 0f, };
-
     private GameCore core;
 
     void Start()
     {
-        UpdatePlaySpeed(SystemSetting.Instance.PlaySpeedIndex);
+        UpdatePlaySpeed(SystemSetting.Instance.PlaySpeed);
 
         var args = s_args ?? new MainSceneStartArguments()
         {
@@ -126,11 +117,10 @@ public class Booter : MonoBehaviour
     /// <summary>
     /// 再生速度を更新します。
     /// </summary>
-    public void UpdatePlaySpeed(int index)
+    public void UpdatePlaySpeed(float wait)
     {
-        PlaySpeedIndex = index;
-        TickWait = PlaySpeedTable[index];
-        Debug.Log($"PlaySpeedIndex: {PlaySpeedIndex}, TickWait: {TickWait}");
+        TickWait = wait;
+        Debug.Log($"TickWait: {TickWait}");
     }
 
     void Update()
