@@ -18,6 +18,7 @@ public class SaveDataSummary
     public string Castle { get; set; }
     public int SoldierCount { get; set; }
     public string GameDate { get; set; }
+    public string ScenarioName { get; set; }
     public int SaveDataSlotNo { get; set; }
     public Phase SaveTiming { get; set; } = Phase.Progress;
     public DateTime SavedTime { get; set; }
@@ -33,11 +34,11 @@ public class SaveDataSummary
     }
 
     public static SaveDataSummary Create(
-        WorldData world,
-        int saveDataSlotNo,
+        GameCore core,
         Phase saveTiming,
-        DateTime savedTime = default)
+        DateTime savedTime)
     {
+        var world = core.World;
         savedTime = savedTime == default ? DateTime.Now : savedTime;
         var chara = world.Player ?? world.Characters.First();
         var summary = new SaveDataSummary
@@ -49,7 +50,8 @@ public class SaveDataSummary
             Castle = chara.IsFree ? "--" : chara.Castle.Name,
             SoldierCount = chara.Soldiers.SoldierCount,
             GameDate = world.GameDate.ToString(),
-            SaveDataSlotNo = saveDataSlotNo,
+            ScenarioName = core.ScenarioName,
+            SaveDataSlotNo = core.SaveDataSlotNo,
             SaveTiming = saveTiming,
             SavedTime = savedTime,
         };

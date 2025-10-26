@@ -36,7 +36,7 @@ public class SaveDataManager
 
     private SaveDataText CreateSaveDataText(GameCore core, Phase timing)
     {
-        var saveData = SaveDataText.Serialize(core.World, core.SaveDataSlotNo, timing);
+        var saveData = SaveDataText.Serialize(core, timing, DateTime.Now);
         return saveData;
     }
 

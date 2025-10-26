@@ -26,6 +26,7 @@ public partial class GameCore
     public PersonalActions PersonalActions { get; }
     public StrategyActions StrategyActions { get; }
 
+    public string ScenarioName { get; set; }
     public int SaveDataSlotNo { get; set; }
     public Phase? RestoringPhase { get; set; } = null;
     private bool IsRestoring => RestoringPhase != null;

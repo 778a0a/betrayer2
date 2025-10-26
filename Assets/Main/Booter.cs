@@ -67,6 +67,7 @@ public class Booter : MonoBehaviour
 
             world.Map.AttachUIMap(map);
             core = new GameCore(world, map, ui, this);
+            core.ScenarioName = $"シナリオ{args.NewGameScenarioNo}";
             core.SaveDataSlotNo = args.NewGameSaveDataSlotNo;
 
             // プレーヤーを選択する。
@@ -96,6 +97,7 @@ public class Booter : MonoBehaviour
 
             world.Map.AttachUIMap(map);
             core = new GameCore(world, map, ui, this);
+            core.ScenarioName = args.SaveData.Summary.ScenarioName;
             core.SaveDataSlotNo = args.SaveData.Summary.SaveDataSlotNo;
             core.RestoringPhase = args.SaveData.Summary.SaveTiming;
             core.DoMainLoop().Forget();

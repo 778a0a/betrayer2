@@ -14,8 +14,6 @@ using UnityEngine.UIElements;
 
 public partial class SaveDataListWindowListItem
 {
-    public Label labelGameDate { get; private set; }
-
     public Label labelOrderIndexCaption { get; private set; }
 
     public Label labelOrderIndex { get; private set; }
@@ -24,17 +22,21 @@ public partial class SaveDataListWindowListItem
 
     public Label labelSoldiers { get; private set; }
 
+    public Label labelScenarioName { get; private set; }
+
     public Label labelTitle { get; private set; }
 
     public Label labelName { get; private set; }
 
+    public Label labelGameDate { get; private set; }
+
+    public Label labelPhase { get; private set; }
+
+    public Label labelCastle { get; private set; }
+
     public Label labelSavedTimeCaption { get; private set; }
 
     public Label labelSavedTime { get; private set; }
-
-    public Label labelCastleCaption { get; private set; }
-
-    public Label labelCastle { get; private set; }
 
     public Image imageCharacter { get; private set; }
 
@@ -53,17 +55,18 @@ public partial class SaveDataListWindowListItem
     public SaveDataListWindowListItem(VisualElement root)
     {
         Root = root;
-        labelGameDate = Root?.Q<Label>("labelGameDate");
         labelOrderIndexCaption = Root?.Q<Label>("labelOrderIndexCaption");
         labelOrderIndex = Root?.Q<Label>("labelOrderIndex");
         labelSoldiersCaption = Root?.Q<Label>("labelSoldiersCaption");
         labelSoldiers = Root?.Q<Label>("labelSoldiers");
+        labelScenarioName = Root?.Q<Label>("labelScenarioName");
         labelTitle = Root?.Q<Label>("labelTitle");
         labelName = Root?.Q<Label>("labelName");
+        labelGameDate = Root?.Q<Label>("labelGameDate");
+        labelPhase = Root?.Q<Label>("labelPhase");
+        labelCastle = Root?.Q<Label>("labelCastle");
         labelSavedTimeCaption = Root?.Q<Label>("labelSavedTimeCaption");
         labelSavedTime = Root?.Q<Label>("labelSavedTime");
-        labelCastleCaption = Root?.Q<Label>("labelCastleCaption");
-        labelCastle = Root?.Q<Label>("labelCastle");
         imageCharacter = Root?.Q<Image>("imageCharacter");
         buttonMain = Root?.Q<Button>("buttonMain");
         buttonDownload = Root?.Q<Button>("buttonDownload");
@@ -75,17 +78,18 @@ public partial class SaveDataListWindowListItem
     public void ReinitializeComponent(VisualElement root)
     {
         Root = root;
-        labelGameDate = Root?.Q<Label>("labelGameDate");
         labelOrderIndexCaption = Root?.Q<Label>("labelOrderIndexCaption");
         labelOrderIndex = Root?.Q<Label>("labelOrderIndex");
         labelSoldiersCaption = Root?.Q<Label>("labelSoldiersCaption");
         labelSoldiers = Root?.Q<Label>("labelSoldiers");
+        labelScenarioName = Root?.Q<Label>("labelScenarioName");
         labelTitle = Root?.Q<Label>("labelTitle");
         labelName = Root?.Q<Label>("labelName");
+        labelGameDate = Root?.Q<Label>("labelGameDate");
+        labelPhase = Root?.Q<Label>("labelPhase");
+        labelCastle = Root?.Q<Label>("labelCastle");
         labelSavedTimeCaption = Root?.Q<Label>("labelSavedTimeCaption");
         labelSavedTime = Root?.Q<Label>("labelSavedTime");
-        labelCastleCaption = Root?.Q<Label>("labelCastleCaption");
-        labelCastle = Root?.Q<Label>("labelCastle");
         imageCharacter = Root?.Q<Image>("imageCharacter");
         buttonMain = Root?.Q<Button>("buttonMain");
         buttonDownload = Root?.Q<Button>("buttonDownload");

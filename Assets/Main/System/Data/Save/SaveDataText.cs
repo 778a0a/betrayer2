@@ -40,11 +40,11 @@ public class SaveDataText
     /// ゲームデータからセーブデータテキストを作成します。
     /// </summary>
     public static SaveDataText Serialize(
-        WorldData world,
-        int saveDataSlotNo,
+        GameCore core,
         Phase saveTiming,
-        DateTime savedTime = default)
+        DateTime savedTime)
     {
+        var world = core.World;
         var charas = SavedCharacters.FromWorld(world, retainFreeCharaCastleRandom: false);
         var countries = SavedCountries.FromWorld(world);
         var castles = SavedCastles.FromWorld(world);
@@ -52,7 +52,7 @@ public class SaveDataText
         var countryRelations = SavedCountryRelations.FromWorld(world);
         //var terrains = SavedTerrains.FromWorld(world);
         var misc = SavedWorldMiscData.FromWorld(world);
-        var summary = SaveDataSummary.Create(world, saveDataSlotNo, saveTiming, savedTime);
+        var summary = SaveDataSummary.Create(core, saveTiming, savedTime);
 
         var saveData = new SaveData
         {

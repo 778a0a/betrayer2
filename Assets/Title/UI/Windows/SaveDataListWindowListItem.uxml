@@ -13,15 +13,22 @@
                         <ui:Label text="序列:" name="labelOrderIndexCaption" style="align-items: stretch; align-self: stretch; -unity-text-align: middle-left;" />
                         <ui:Label text="888" name="labelOrderIndex" style="align-items: stretch; align-self: stretch; -unity-text-align: middle-left;" />
                     </ui:VisualElement>
-                    <ui:VisualElement style="flex-grow: 0; flex-direction: row; margin-left: 10px;">
+                    <ui:VisualElement style="flex-grow: 1; flex-direction: row; margin-left: 10px;">
                         <ui:Label text="兵数:" name="labelSoldiersCaption" style="align-items: stretch; align-self: stretch; -unity-text-align: middle-left;" />
                         <ui:Label text="88888" name="labelSoldiers" style="align-items: stretch; align-self: stretch; -unity-text-align: middle-left;" />
                     </ui:VisualElement>
 
+                    <ui:VisualElement style="flex-grow: 0; flex-direction: row; margin-left: 10px;">
+                        <ui:Label text="シナリオ1" name="labelScenarioName" style="font-size: 30px; align-items: stretch; align-self: stretch; -unity-text-align: middle-left; margin-right: 8px;" />
+                    </ui:VisualElement>
                 </ui:VisualElement>
+
                 <ui:VisualElement style="flex-grow: 0; flex-direction: row;">
                     <ui:VisualElement style="flex-grow: 0; flex-direction: row; margin-left: 0px; margin-right: 0px;">
                         <ui:Label text="888/88/88" name="labelGameDate" style="font-size: 35px; align-items: stretch; align-self: stretch; -unity-text-align: middle-left;" />
+                    </ui:VisualElement>
+                    <ui:VisualElement style="flex-grow: 0; flex-direction: row; margin-left: 10px;">
+                        <ui:Label text="戦略" name="labelPhase" style="-unity-font-style: bold; font-size: 35px; align-items: stretch; align-self: stretch; -unity-text-align: middle-left;" />
                     </ui:VisualElement>
                     <ui:VisualElement style="flex-grow: 1; flex-direction: row; margin-left: 10px;">
                         <ui:Label text="クリスタルウォーター" name="labelCastle" style="font-size: 35px; align-items: stretch; align-self: stretch; -unity-text-align: middle-left;" />

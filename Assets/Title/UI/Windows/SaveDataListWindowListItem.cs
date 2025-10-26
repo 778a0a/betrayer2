@@ -60,8 +60,24 @@ public partial class SaveDataListWindowListItem
         labelOrderIndex.text = data.OrderIndex;
         labelCastle.text = data.Castle;
         labelSoldiers.text = data.SoldierCount.ToString();
+        labelScenarioName.text = data.ScenarioName;
         labelGameDate.text = data.GameDate;
         labelSavedTime.text = data.SavedTime.ToString();
+        switch (data.SaveTiming)
+        {
+            case Phase.Progress:
+                labelPhase.text = "進行";
+                labelPhase.style.color = Util.Color("#0a0");
+                break;
+            case Phase.Personal:
+                labelPhase.text = "個人";
+                labelPhase.style.color = Util.Color("#fd0");
+                break;
+            case Phase.Strategy:
+                labelPhase.text = "戦略";
+                labelPhase.style.color = Util.Color("#0cf");
+                break;
+        }
 
         if (IsAutoSaveData)
         {
