@@ -153,12 +153,13 @@ public static class Util
     public static string CompressGzipBase64(string text)
     {
         var raw = Encoding.UTF8.GetBytes(text);
-        using var ms = new MemoryStream();
+        using var ms = new MemoryStream(raw.Length / 2);
         using (var gzip = new GZipStream(ms, CompressionMode.Compress, true))
         {
             gzip.Write(raw, 0, raw.Length);
         }
-        return Convert.ToBase64String(ms.ToArray());
+        var buff = ms.GetBuffer();
+        return Convert.ToBase64String(buff, 0, (int)ms.Length);
     }
 
     /// <summary>
@@ -169,9 +170,10 @@ public static class Util
         var base64 = Convert.FromBase64String(encodedText);
         using var ms = new MemoryStream(base64);
         using var raw = new GZipStream(ms, CompressionMode.Decompress);
-        using var rawMs = new MemoryStream();
+        using var rawMs = new MemoryStream(base64.Length * 3);
         raw.CopyTo(rawMs);
-        return Encoding.UTF8.GetString(rawMs.ToArray());
+        var buff = rawMs.GetBuffer();
+        return Encoding.UTF8.GetString(buff, 0, (int)rawMs.Length);
     }
 
 
