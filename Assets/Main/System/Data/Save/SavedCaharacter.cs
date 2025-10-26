@@ -47,16 +47,19 @@ public static class SavedCharacters
 
     public static string ToCsv(List<SavedCharacter> charas)
     {
-        var json = JsonConvert.SerializeObject(charas);
-        var list = JsonConvert.DeserializeObject<List<JObject>>(json);
         var sb = new StringBuilder();
-
         var delimiter = "\t";
+
+        var characterType = typeof(Character);
+        var properties = characterType.GetProperties()
+            .Where(p => p.CanRead && p.CanWrite && !p.GetCustomAttributes(typeof(JsonIgnoreAttribute), true).Any())
+            .ToArray();
+
         // ヘッダー
         sb.Append(nameof(SavedCharacter.CountryId)).Append(delimiter);
         sb.Append(nameof(SavedCharacter.MemberOrderIndex)).Append(delimiter);
         sb.Append(nameof(SavedCharacter.CastleId)).Append(delimiter);
-        foreach (JProperty prop in list[0][nameof(Character)])
+        foreach (var prop in properties)
         {
             sb.Append(prop.Name).Append(delimiter);
         }
@@ -65,15 +68,15 @@ public static class SavedCharacters
         // 中身
         for (var i = 0; i < charas.Count; i++)
         {
-            var chara = charas[i].Character;
-            var obj = list[i];
+            var savedChara = charas[i];
+            var chara = savedChara.Character;
 
-            sb.Append(obj[nameof(SavedCharacter.CountryId)]).Append(delimiter);
-            sb.Append(obj[nameof(SavedCharacter.MemberOrderIndex)]).Append(delimiter);
-            sb.Append(obj[nameof(SavedCharacter.CastleId)]).Append(delimiter);
-            foreach (JProperty prop in obj[nameof(Character)])
+            sb.Append(savedChara.CountryId).Append(delimiter);
+            sb.Append(savedChara.MemberOrderIndex).Append(delimiter);
+            sb.Append(savedChara.CastleId).Append(delimiter);
+            foreach (var prop in properties)
             {
-                if (prop.Name.Equals(nameof(global::Character.Soldiers)))
+                if (prop.Name.Equals(nameof(Character.Soldiers)))
                 {
                     var sbsub = new StringBuilder();
                     foreach (var s in chara.Soldiers)
@@ -93,7 +96,8 @@ public static class SavedCharacters
                 }
                 else
                 {
-                    sb.Append(JsonConvert.SerializeObject(prop.Value)).Append(delimiter);
+                    var val = prop.GetValue(chara);
+                    sb.Append(JsonConvert.SerializeObject(val)).Append(delimiter);
                 }
             }
             sb.AppendLine();

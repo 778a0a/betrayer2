@@ -19,7 +19,12 @@ public class SaveDataManager
     public bool HasSaveData(int slotNo) => PlayerPrefs.HasKey(SaveDataKey(slotNo));
     public bool HasAutoSaveData() => PlayerPrefs.HasKey(SaveDataKey(AutoSaveDataSlotNo));
 
-    public void Save(int slotNo, GameCore core, Phase timing) => Save(slotNo, CreateSaveDataText(core, timing));
+    public void Save(int slotNo, GameCore core, Phase timing)
+    {
+        var text = CreateSaveDataText(core, timing);
+
+        Save(slotNo, text);
+    }
     public void Save(int slotNo, SaveDataText saveDataText)
     {
         var compressed = saveDataText.Compress();
