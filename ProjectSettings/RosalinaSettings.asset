@@ -85,7 +85,8 @@ MonoBehaviour:
   - _type: 1
     _path: Assets/Main/UI/Screens/TransportScreen.uxml
   - _type: 1
+    _path: Assets/Main/UI/Screens/ActionScreen.uxml
+  - _type: 1
     _path: Assets/Main/UI/Screens/SelectPlayerCharacterScreen.uxml
   - _type: 1
-    _path: Assets/Main/UI/Screens/ActionScreen.uxml
     _path: Assets/Main/UI/Windows/SystemMenuWindow.uxml
