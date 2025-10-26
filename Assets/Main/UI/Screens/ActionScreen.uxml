@@ -10,7 +10,7 @@
 
             <ui:VisualElement style="flex-direction: row; align-items: flex-end; margin-bottom: 3px;">
                 <ui:Label name="labelPhaseTitle" text="戦略" style="font-size: 38px; font-weight: bold; color: #0ff; margin-bottom: -2px;" />
-                <ui:Label name="labelPhaseSubtitle" text="フェイズ" style="font-size: 25px; font-weight: bold;" />
+                <ui:Label name="labelPhaseSubtitle" text="フェイズ" style="font-size: 23px; font-weight: bold;" />
                 
                 <!-- 戦略フェイズ用ヘッダー -->
                 <ui:VisualElement name="StrategyPhaseHeader" style="flex-direction: row; align-items: flex-end;">
