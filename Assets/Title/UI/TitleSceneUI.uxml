@@ -8,9 +8,9 @@
         <ui:VisualElement class="window">
             <ui:Instance template="SaveDataListWindow" name="SaveDataList" style="position: relative; left: 0; right: 0; bottom: 0; top: 0;" />
             <ui:Button text="ゲーム終了" name="buttonCloseApplication" class="title--menu-button" style="align-self: center; margin-top: 30px; height: 100px; display: none;" />
-            <ui:VisualElement style="flex-grow: 1; position: absolute; top: 0; right: 0; flex-direction: row;">
-                <ui:Button text="システム設定" name="buttonShowSystemSettings" class="title--menu-button" style="align-self: center; margin-top: 20px; height: auto; width: auto; margin-right: 10px; margin-bottom: 20px; margin-left: 20px;" />
-                <ui:Button text="ライセンス情報" name="buttonShowLicense" class="title--menu-button" style="align-self: center; margin-top: 20px; height: auto; width: auto; margin-right: 20px; margin-bottom: 20px; margin-left: 10px;" />
+            <ui:VisualElement style="flex-grow: 1; position: absolute; top: 0; right: 0; flex-direction: column; width: 270px; margin-right: 5px;">
+                <ui:Button text="システム設定" name="buttonShowSystemSettings" style="height: 80px; font-size: 35px; margin-top: 34px;" />
+                <ui:Button text="ライセンス情報" name="buttonShowLicense" style="height: 80px; font-size: 35px; margin-top: 10px;" />
             </ui:VisualElement>
         </ui:VisualElement>
         <ui:VisualElement name="NewGameMenu" class="window" style="background-color: rgba(0, 0, 0, 0.37); display: none;">
@@ -20,9 +20,14 @@
                 <ui:Button text="はじめから - シナリオ1" name="buttonStartNewGameScenario1" />
                 <ui:Button text="はじめから - シナリオ2" name="buttonStartNewGameScenario2" />
                 <ui:Button text="テキストデータ読み込み" name="buttonLoadTextData" />
-                <ui:Button text="スロット1からコピー" name="buttonCopyFromSlot1" />
-                <ui:Button text="スロット2からコピー" name="buttonCopyFromSlot2" />
-                <ui:Button text="スロット3からコピー" name="buttonCopyFromSlot3" />
+                <ui:VisualElement style="flex-direction: row; align-items: center;">
+                    <ui:Label text="他スロットからコピー" style="color: rgb(255, 255, 255); margin-left: 5px; margin-right: 10px;" />
+                    <ui:Button text="1" name="buttonCopyFromSlot1" style="flex-grow: 1; margin-left: 0px; margin-right: 4px;" />
+                    <ui:Button text="2" name="buttonCopyFromSlot2" style="flex-grow: 1; margin-left: 0px; margin-right: 4px;" />
+                    <ui:Button text="3" name="buttonCopyFromSlot3" style="flex-grow: 1; margin-left: 0px; margin-right: 4px;" />
+                    <ui:Button text="4" name="buttonCopyFromSlot4" style="flex-grow: 1; margin-left: 0px; margin-right: 4px;" />
+                    <ui:Button text="5" name="buttonCopyFromSlot5" style="flex-grow: 1; margin-left: 0px; margin-right: 4px;" />
+                </ui:VisualElement>
                 <ui:Button text="オートセーブスロットからコピー" name="buttonCopyFromSlotAuto" />
             </ui:VisualElement>
         </ui:VisualElement>

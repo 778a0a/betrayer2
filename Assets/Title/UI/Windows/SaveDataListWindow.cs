@@ -14,7 +14,7 @@ public partial class SaveDataListWindow
         this.uiTitle = uiTitle;
         L.Register(this);
 
-        var manualSlots = new[] { SaveSlot1, SaveSlot2, SaveSlot3 };
+        var manualSlots = new[] { SaveSlot1, SaveSlot2, SaveSlot3, SaveSlot4, SaveSlot5 };
         for (int i = 0; i < manualSlots.Length; i++)
         {
             var slot = manualSlots[i];
@@ -93,7 +93,7 @@ public partial class SaveDataListWindow
     {
         this.saves = saves;
 
-        var slots = new[] { SaveSlot1, SaveSlot2, SaveSlot3 };
+        var slots = new[] { SaveSlot1, SaveSlot2, SaveSlot3, SaveSlot4, SaveSlot5 };
         for (int slotNo = 0; slotNo < slots.Length; slotNo++)
         {
             var slot = slots[slotNo];

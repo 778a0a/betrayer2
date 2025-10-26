@@ -37,6 +37,10 @@ public partial class TitleSceneUI
 
     public Button buttonCopyFromSlot3 { get; private set; }
 
+    public Button buttonCopyFromSlot4 { get; private set; }
+
+    public Button buttonCopyFromSlot5 { get; private set; }
+
     public Button buttonCopyFromSlotAuto { get; private set; }
 
     public Button buttonClearText { get; private set; }
@@ -91,6 +95,8 @@ public partial class TitleSceneUI
         buttonCopyFromSlot1 = Root?.Q<Button>("buttonCopyFromSlot1");
         buttonCopyFromSlot2 = Root?.Q<Button>("buttonCopyFromSlot2");
         buttonCopyFromSlot3 = Root?.Q<Button>("buttonCopyFromSlot3");
+        buttonCopyFromSlot4 = Root?.Q<Button>("buttonCopyFromSlot4");
+        buttonCopyFromSlot5 = Root?.Q<Button>("buttonCopyFromSlot5");
         buttonCopyFromSlotAuto = Root?.Q<Button>("buttonCopyFromSlotAuto");
         buttonClearText = Root?.Q<Button>("buttonClearText");
         buttonPasteText = Root?.Q<Button>("buttonPasteText");
@@ -126,6 +132,8 @@ public partial class TitleSceneUI
         buttonCopyFromSlot1 = Root?.Q<Button>("buttonCopyFromSlot1");
         buttonCopyFromSlot2 = Root?.Q<Button>("buttonCopyFromSlot2");
         buttonCopyFromSlot3 = Root?.Q<Button>("buttonCopyFromSlot3");
+        buttonCopyFromSlot4 = Root?.Q<Button>("buttonCopyFromSlot4");
+        buttonCopyFromSlot5 = Root?.Q<Button>("buttonCopyFromSlot5");
         buttonCopyFromSlotAuto = Root?.Q<Button>("buttonCopyFromSlotAuto");
         buttonClearText = Root?.Q<Button>("buttonClearText");
         buttonPasteText = Root?.Q<Button>("buttonPasteText");

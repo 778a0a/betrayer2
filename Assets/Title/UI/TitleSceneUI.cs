@@ -73,8 +73,8 @@ public partial class TitleSceneUI : MonoBehaviour
     }
 
     #region NewGameWindow
-    private readonly int[] slotNoList = new[] { 0, 1, 2 };
-    private Button[] CopySlotButtons => new[] { buttonCopyFromSlot1, buttonCopyFromSlot2, buttonCopyFromSlot3 };
+    private readonly int[] slotNoList = new[] { 0, 1, 2, 3, 4 };
+    private Button[] CopySlotButtons => new[] { buttonCopyFromSlot1, buttonCopyFromSlot2, buttonCopyFromSlot3, buttonCopyFromSlot4, buttonCopyFromSlot5 };
 
     private void InitializeNewGameWindow()
     {

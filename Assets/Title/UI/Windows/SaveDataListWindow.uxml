@@ -8,6 +8,8 @@
             <ui:Instance template="SaveDataListWindowListItem" name="SaveSlot1" />
             <ui:Instance template="SaveDataListWindowListItem" name="SaveSlot2" />
             <ui:Instance template="SaveDataListWindowListItem" name="SaveSlot3" />
+            <ui:Instance template="SaveDataListWindowListItem" name="SaveSlot4" />
+            <ui:Instance template="SaveDataListWindowListItem" name="SaveSlot5" />
             <ui:Label text="&#10;" style="color: rgb(255, 255, 255); flex-direction: row;">
                 <ui:Label text="オートセーブ" name="labelAutoSaveSlotTitle" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 3px;" />
                 <ui:Label text="（スロット0）" name="labelAutoSaveOriginalSlotNo" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;" />
