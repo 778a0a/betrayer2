@@ -331,6 +331,8 @@ public partial class GameCore
             await OnCharacterMove(player);
         }
 
+        AutoSaveForPeriods();
+
         // 表示を更新する。
         await Booter.HoldIfNeeded();
 

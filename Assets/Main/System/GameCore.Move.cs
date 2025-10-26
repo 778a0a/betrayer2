@@ -57,7 +57,7 @@ partial class GameCore
         // プレーヤーの場合
         Pause();
         MainUI.ActionScreen.ActivatePhase(chara, Phase.Personal);
-        AutoSave(Phase.Personal);
+        AutoSaveForPhaseStart(Phase.Personal);
         await Booter.HoldIfNeeded();
     }
 
@@ -76,13 +76,14 @@ partial class GameCore
         // プレーヤーの場合
         Pause();
         MainUI.ActionScreen.ActivatePhase(chara, Phase.Strategy);
-        AutoSave(Phase.Strategy);
+        AutoSaveForPhaseStart(Phase.Strategy);
         await Booter.HoldIfNeeded();
     }
 
-    private void AutoSave(Phase phase)
+    private void AutoSaveForPhaseStart(Phase phase)
     {
         if (IsRestoring) return;
+        if (SystemSetting.Instance.AutoSaveFrequency != AutoSaveFrequency.EveryPhase) return;
 
         // 重いので非同期で実行する。
         Booter.StartCoroutine(AutoSaveCoroutine());
@@ -92,6 +93,36 @@ partial class GameCore
             Debug.Log("オートセーブを実行します。");
             SaveDataManager.Instance.Save(SaveDataManager.AutoSaveDataSlotNo, this, phase);
         }
+    }
+
+    private void AutoSaveForPeriods()
+    {
+        if (IsRestoring) return;
+        var frequency = SystemSetting.Instance.AutoSaveFrequency;
+        var date = World.GameDate;
+        var shouldSave = false;
+        switch (frequency)
+        {
+            case AutoSaveFrequency.EveryTwoYears:
+                shouldSave = date.Year % 2 == 0 && date.Month == 1 && date.Day == 1;
+                break;
+            case AutoSaveFrequency.EveryYear:
+                shouldSave = date.Month == 1 && date.Day == 1;
+                break;
+            case AutoSaveFrequency.EverySixMonths:
+                shouldSave = (date.Month == 1 || date.Month == 7) && date.Day == 1;
+                break;
+            case AutoSaveFrequency.EveryThreeMonths:
+                shouldSave = (date.Month - 1) % 3 == 0 && date.Day == 1;
+                break;
+            default:
+                shouldSave = false;
+                break;
+        }
+        if (!shouldSave) return;
+
+        Debug.Log("オートセーブを実行します。");
+        SaveDataManager.Instance.Save(SaveDataManager.AutoSaveDataSlotNo, this, Phase.Progress);
     }
 
     public void Pause()
