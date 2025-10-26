@@ -2,9 +2,9 @@ using System;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public partial class SystemSettingsWindow
+public partial class SystemSettingWindow
 {
-    private SystemSettingsManager Settings => SystemSettingsManager.Instance;
+    private SystemSetting Setting => SystemSetting.Instance;
     private Button[] playSpeedButtons;
 
     public void Initialize()
@@ -16,11 +16,11 @@ public partial class SystemSettingsWindow
         if (isWebGLMobile)
         {
             var orientations = Util.EnumArray<OrientationSetting>();
-            comboOrientation.index = Array.IndexOf(orientations, Settings.Orientation);
+            comboOrientation.index = Array.IndexOf(orientations, Setting.Orientation);
             comboOrientation.RegisterValueChangedCallback(e =>
             {
-                Settings.Orientation = orientations[comboOrientation.index];
-                Settings.ApplyOrientation();
+                Setting.Orientation = orientations[comboOrientation.index];
+                Setting.ApplyOrientation();
             });
         }
 
@@ -38,24 +38,24 @@ public partial class SystemSettingsWindow
             var index = i;
             playSpeedButtons[i].clicked += () =>
             {
-                Settings.PlaySpeedIndex = index;
+                Setting.PlaySpeedIndex = index;
                 GameCore.Instance?.Booter.UpdatePlaySpeed(index);
                 RefreshPlaySpeedButtons();
             };
         }
 
         // オートセーブ頻度の初期化
-        comboAutoSaveFrequency.index = (int)Settings.AutoSaveFrequency;
+        comboAutoSaveFrequency.index = (int)Setting.AutoSaveFrequency;
         comboAutoSaveFrequency.RegisterValueChangedCallback(e =>
         {
-            Settings.AutoSaveFrequency = (AutoSaveFrequency)comboAutoSaveFrequency.index;
+            Setting.AutoSaveFrequency = (AutoSaveFrequency)comboAutoSaveFrequency.index;
         });
 
         // 勢力滅亡通知の初期化
-        comboCountryEliminatedNotification.index = Settings.ShowCountryEliminatedNotification ? 1 : 0;
+        comboCountryEliminatedNotification.index = Setting.ShowCountryEliminatedNotification ? 1 : 0;
         comboCountryEliminatedNotification.RegisterValueChangedCallback(e =>
         {
-            Settings.ShowCountryEliminatedNotification = comboCountryEliminatedNotification.index == 1;
+            Setting.ShowCountryEliminatedNotification = comboCountryEliminatedNotification.index == 1;
         });
 
         CloseButton.clicked += () => Root.style.display = DisplayStyle.None;
@@ -69,7 +69,7 @@ public partial class SystemSettingsWindow
 
     private void RefreshPlaySpeedButtons()
     {
-        var currentSpeedIndex = Settings.PlaySpeedIndex;
+        var currentSpeedIndex = Setting.PlaySpeedIndex;
         for (var i = 0; i < playSpeedButtons.Length; i++)
         {
             var btn = playSpeedButtons[i];
@@ -78,9 +78,9 @@ public partial class SystemSettingsWindow
     }
 }
 
-public class SystemSettingsManager
+public class SystemSetting
 {
-    public static SystemSettingsManager Instance { get; } = new();
+    public static SystemSetting Instance { get; } = new();
 
     public OrientationSetting Orientation
     {

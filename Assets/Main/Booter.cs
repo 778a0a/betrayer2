@@ -54,7 +54,7 @@ public class Booter : MonoBehaviour
 
     void Start()
     {
-        UpdatePlaySpeed(SystemSettingsManager.Instance.PlaySpeedIndex);
+        UpdatePlaySpeed(SystemSetting.Instance.PlaySpeedIndex);
 
         var args = s_args ?? new MainSceneStartArguments()
         {

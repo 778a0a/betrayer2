@@ -1,6 +1,6 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <ui:Template name="SaveDataListWindow" src="project://database/Assets/Title/UI/Windows/SaveDataListWindow.uxml" />
-    <ui:Template name="SystemSettingsWindow" src="project://database/Assets/Title/UI/Windows/SystemSettingsWindow.uxml" />
+    <ui:Template name="SystemSettingWindow" src="project://database/Assets/Title/UI/Windows/SystemSettingWindow.uxml" />
     <ui:Template name="MessageWindow" src="project://database/Assets/Main/UI/Windows/MessageWindow.uxml" />
     <Style src="project://database/Assets/Title/UI/TitleSceneUI.uss" />
     <ui:VisualElement style="flex-grow: 1; align-items: center; justify-content: center;" />
@@ -52,7 +52,7 @@
                 <ui:TextField name="textLicenseWindow" multiline="true" vertical-scroller-visibility="AlwaysVisible" readonly="true" style="height: 900px; font-size: 25px; white-space: normal;" />
             </ui:VisualElement>
         </ui:VisualElement>
-        <ui:Instance template="SystemSettingsWindow" name="SystemSettingsWindow" class="window" style="display: none;" />
+        <ui:Instance template="SystemSettingWindow" name="SystemSettingWindow" class="window" style="display: none;" />
         <ui:Instance template="MessageWindow" name="MessageWindow" class="window" style="display: none;" />
     </ui:VisualElement>
 </ui:UXML>

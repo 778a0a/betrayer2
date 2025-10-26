@@ -90,3 +90,5 @@ MonoBehaviour:
     _path: Assets/Main/UI/Screens/SelectPlayerCharacterScreen.uxml
   - _type: 1
     _path: Assets/Main/UI/Windows/SystemMenuWindow.uxml
+  - _type: 1
+    _path: Assets/Title/UI/Windows/SystemSettingWindow.uxml

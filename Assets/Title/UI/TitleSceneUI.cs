@@ -33,7 +33,7 @@ public partial class TitleSceneUI : MonoBehaviour
 
     private IEnumerator Start()
     {
-        SystemSettingsManager.Instance.ApplyOrientation();
+        SystemSetting.Instance.ApplyOrientation();
 
         yield return LocalizationSettings.InitializationOperation;
 
@@ -42,8 +42,7 @@ public partial class TitleSceneUI : MonoBehaviour
         InitializeProgressWindow();
         InitializeLicenseWindow();
         MessageWindow.Initialize();
-        SystemSettingsWindow.L = L;
-        SystemSettingsWindow.Initialize();
+        SystemSettingWindow.Initialize();
         SaveDataList.Initialize(this);
 
         //L.Register(this);
@@ -65,7 +64,7 @@ public partial class TitleSceneUI : MonoBehaviour
 
         buttonShowSystemSettings.clicked += () =>
         {
-            SystemSettingsWindow.Show();
+            SystemSettingWindow.Show();
         };
 
         SaveDataList.SetData(SaveDataManager.Instance);
