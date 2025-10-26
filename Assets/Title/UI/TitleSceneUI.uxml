@@ -46,7 +46,7 @@
             </ui:VisualElement>
         </ui:VisualElement>
         <ui:VisualElement name="LicenseWindow" class="window" style="background-color: rgba(0, 0, 0, 0.37); display: none;">
-            <ui:VisualElement style="flex-grow: 0; justify-content: center; align-items: stretch; width: 1500px; align-self: center; align-content: auto; background-color: rgb(0, 0, 0); padding-top: 0; padding-right: 0; padding-bottom: 5px; padding-left: 0; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;">
+            <ui:VisualElement style="flex-grow: 0; justify-content: center; align-items: stretch; width: 1550px; align-self: center; align-content: auto; background-color: rgb(0, 0, 0); padding-top: 0; padding-right: 0; padding-bottom: 5px; padding-left: 0; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;">
                 <ui:Label name="labelLicenseWindowTitle" text="ライセンス情報" style="color: rgb(255, 255, 255); margin-left: 5px; padding-left: 3px" />
                 <ui:Button text="×" name="buttonCloseLicenseWindow" style="position: absolute; top: 0; right: 0; margin-top: 4px; margin-right: 4px; margin-bottom: 4px; margin-left: 4px; padding-top: 10px; padding-right: 10px; padding-bottom: 10px; padding-left: 10px; height: 48px; width: 48px;" />
                 <ui:TextField name="textLicenseWindow" multiline="true" vertical-scroller-visibility="AlwaysVisible" readonly="true" style="height: 900px; font-size: 25px; white-space: normal;" />

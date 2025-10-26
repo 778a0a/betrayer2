@@ -14,8 +14,9 @@ public class SaveDataSummary
     public int FaceImageId { get; set; }
     public string Title { get; set; }
     public string Name { get; set; }
+    public string OrderIndex { get; set; }
+    public string Castle { get; set; }
     public int SoldierCount { get; set; }
-    public float Gold { get; set; }
     public string GameDate { get; set; }
     public int SaveDataSlotNo { get; set; }
     public Phase SaveTiming { get; set; } = Phase.Progress;
@@ -44,8 +45,9 @@ public class SaveDataSummary
             FaceImageId = chara.Id,
             Title = chara.GetTitle(),
             Name = chara.Name,
+            OrderIndex = chara.IsFree ? "--" : (chara.OrderIndex + 1).ToString(),
+            Castle = chara.IsFree ? "--" : chara.Castle.Name,
             SoldierCount = chara.Soldiers.SoldierCount,
-            Gold = chara.Gold,
             GameDate = world.GameDate.ToString(),
             SaveDataSlotNo = saveDataSlotNo,
             SaveTiming = saveTiming,

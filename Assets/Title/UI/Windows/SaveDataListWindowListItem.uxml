@@ -1,29 +1,34 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/Title/UI/Windows/WindowStyle.uss" />
-    <ui:VisualElement name="SaveDataLisItemRoot" style="flex-grow: 1; flex-direction: row; justify-content: space-between; width: 1300px; height: 150px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;">
+    <ui:VisualElement name="SaveDataLisItemRoot" style="flex-grow: 1; flex-direction: row; justify-content: space-between; width: 1350px; height: 150px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;">
         <ui:Button name="buttonMain" style="flex-direction: row; flex-grow: 1; margin-top: 2px; margin-right: 2px; margin-bottom: 2px; margin-left: 2px;">
             <ui:Image name="imageCharacter" style="flex-grow: 0; background-color: rgb(186, 66, 66); width: 100px; height: 100px; align-self: center; margin-right: 8px;" />
             <ui:VisualElement style="flex-grow: 1; align-self: center;">
+
                 <ui:VisualElement style="flex-grow: 0; flex-direction: row;">
                     <ui:Label text="君主" name="labelTitle" style="align-items: stretch; align-self: stretch; -unity-text-align: middle-left;" />
                     <ui:Label text="ハイペリオン" name="labelName" style="align-items: stretch; align-self: stretch; -unity-text-align: middle-left;" />
+
+                    <ui:VisualElement style="flex-grow: 0; flex-direction: row; margin-left: 10px;">
+                        <ui:Label text="序列:" name="labelOrderIndexCaption" style="align-items: stretch; align-self: stretch; -unity-text-align: middle-left;" />
+                        <ui:Label text="888" name="labelOrderIndex" style="align-items: stretch; align-self: stretch; -unity-text-align: middle-left;" />
+                    </ui:VisualElement>
                     <ui:VisualElement style="flex-grow: 0; flex-direction: row; margin-left: 10px;">
                         <ui:Label text="兵数:" name="labelSoldiersCaption" style="align-items: stretch; align-self: stretch; -unity-text-align: middle-left;" />
                         <ui:Label text="88888" name="labelSoldiers" style="align-items: stretch; align-self: stretch; -unity-text-align: middle-left;" />
                     </ui:VisualElement>
-                    <ui:VisualElement style="flex-grow: 0; flex-direction: row; margin-left: 10px;">
-                        <ui:Label text="所持金:" name="labelGoldCaption" style="align-items: stretch; align-self: stretch; -unity-text-align: middle-left;" />
-                        <ui:Label text="88888" name="labelGold" style="align-items: stretch; align-self: stretch; -unity-text-align: middle-left;" />
-                    </ui:VisualElement>
+
                 </ui:VisualElement>
                 <ui:VisualElement style="flex-grow: 0; flex-direction: row;">
-                    <ui:VisualElement style="flex-grow: 0; flex-direction: row;">
-                        <ui:Label text="保存:" name="labelSavedTimeCaption" style="align-items: stretch; align-self: stretch; -unity-text-align: middle-left;" />
-                        <ui:Label text="2024-02-01 18:40" name="labelSavedTime" style="align-items: stretch; align-self: stretch; -unity-text-align: middle-left; margin-right: 8px;" />
-                        <ui:VisualElement style="flex-grow: 0; flex-direction: row; margin-left: 10px; margin-right: 8px;">
-                            <ui:Label text="日付:" name="labelGameDateCaption" style="align-items: stretch; align-self: stretch; -unity-text-align: middle-left;" />
-                            <ui:Label text="888/88/88" name="labelGameDate" style="align-items: stretch; align-self: stretch; -unity-text-align: middle-left;" />
-                        </ui:VisualElement>
+                    <ui:VisualElement style="flex-grow: 0; flex-direction: row; margin-left: 0px; margin-right: 0px;">
+                        <ui:Label text="888/88/88" name="labelGameDate" style="font-size: 35px; align-items: stretch; align-self: stretch; -unity-text-align: middle-left;" />
+                    </ui:VisualElement>
+                    <ui:VisualElement style="flex-grow: 1; flex-direction: row; margin-left: 10px;">
+                        <ui:Label text="クリスタルウォーター" name="labelCastle" style="font-size: 35px; align-items: stretch; align-self: stretch; -unity-text-align: middle-left;" />
+                    </ui:VisualElement>
+                    <ui:VisualElement style="flex-grow: 0; flex-direction: row; margin-left: 10px;">
+                        <ui:Label text="" name="labelSavedTimeCaption" style="font-size: 30px; align-items: stretch; align-self: stretch; -unity-text-align: middle-left;" />
+                        <ui:Label text="2024-02-01 18:40" name="labelSavedTime" style="font-size: 30px; align-items: stretch; align-self: stretch; -unity-text-align: middle-left; margin-right: 8px;" />
                     </ui:VisualElement>
                 </ui:VisualElement>
             </ui:VisualElement>
@@ -31,5 +36,5 @@
         <ui:Button text="ダウン&#10;ロード" name="buttonDownload" style="margin-top: 2px; margin-right: 2px; margin-bottom: 2px; margin-left: 2px;" />
         <ui:Button text="削除" name="buttonDelete" style="margin-top: 2px; margin-right: 2px; margin-bottom: 2px; margin-left: 2px;" />
     </ui:VisualElement>
-    <ui:Button name="buttonNoData" text="NO DATA" style="flex-direction: row; align-self: auto; justify-content: flex-start; display: none; width: 1296px; height: 146px; margin-top: 2px; margin-right: 2px; margin-bottom: 2px; margin-left: 2px;" />
+    <ui:Button name="buttonNoData" text="NO DATA" style="flex-direction: row; align-self: auto; justify-content: flex-start; display: none; width: 1346px; height: 146px; margin-top: 2px; margin-right: 2px; margin-bottom: 2px; margin-left: 2px;" />
 </ui:UXML>

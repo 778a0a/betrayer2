@@ -57,8 +57,9 @@ public partial class SaveDataListWindowListItem
         imageCharacter.image = FaceImages.GetImage(data.FaceImageId);
         labelTitle.text = data.Title;
         labelName.text = data.Name;
+        labelOrderIndex.text = data.OrderIndex;
+        labelCastle.text = data.Castle;
         labelSoldiers.text = data.SoldierCount.ToString();
-        labelGold.text = data.Gold.ToString();
         labelGameDate.text = data.GameDate;
         labelSavedTime.text = data.SavedTime.ToString();
 
