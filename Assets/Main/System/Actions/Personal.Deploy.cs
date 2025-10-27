@@ -42,9 +42,9 @@ partial class PersonalActions
                         var ok = await MessageWindow.ShowOkCancel("城が存在しない場所に進軍します。\nよろしいですか？");
                         return ok;
                     }
-                    if (!neighborCastles.Contains(selectedTile.Castle) && selectedTile.Castle.IsAttackable(actor.Country))
+                    if (BattleManager.IsRemote(actor.Castle, selectedTile.Castle) && selectedTile.Castle.IsAttackable(actor.Country))
                     {
-                        var ok = await MessageWindow.ShowOkCancel("隣接していない城のため戦闘効率が落ちます。\nよろしいですか？");
+                        var ok = await MessageWindow.ShowOkCancel("遠方の城のため戦闘効率が落ちます。\nよろしいですか？");
                         return ok;
                     }
                     return true;
@@ -61,11 +61,6 @@ partial class PersonalActions
                 var castle = t.Castle;
                 target = castle;
                 var ok = await MessageWindow.ShowOkCancel($"{castle.Name}に進軍します。\nよろしいですか？");
-                if (!ok) return;
-            }
-            else
-            {
-                var ok = await MessageWindow.ShowOkCancel($"指定された地点に進軍します。\nよろしいですか？");
                 if (!ok) return;
             }
 
