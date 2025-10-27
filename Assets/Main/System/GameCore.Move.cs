@@ -120,6 +120,9 @@ partial class GameCore
                 break;
         }
         if (!shouldSave) return;
+        
+        // ゲーム開始直後は除外する。
+        if (date.IsGameFirstDay) return;
 
         Debug.Log("オートセーブを実行します。");
         SaveDataManager.Instance.Save(SaveDataManager.AutoSaveDataSlotNo, this, Phase.Progress);
