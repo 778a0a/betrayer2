@@ -11,7 +11,7 @@ public class SavedForce
 {
     public int ContryId { get; set; }
     public int CharacterId { get; set; }
-    public ForceDestinationType DestinationType { get; set; }
+    public SavedForceDestinationType DestinationType { get; set; }
     public MapPosition DestinationPosition { get; set; }
     public int DestinationForceCharacterId { get; set; }
     public int ReinforcementOriginalTargetCastleId { get; set; }
@@ -25,7 +25,7 @@ public class SavedForce
         {
             ContryId = int.Parse(values[0]),
             CharacterId = int.Parse(values[1]),
-            DestinationType = Enum.Parse<ForceDestinationType>(values[2]),
+            DestinationType = Enum.Parse<SavedForceDestinationType>(values[2]),
             DestinationPosition = JsonConvert.DeserializeObject<MapPosition>(values[3]),
             DestinationForceCharacterId = int.Parse(values[4]),
             ReinforcementOriginalTargetCastleId = int.Parse(values[5]),
@@ -36,10 +36,11 @@ public class SavedForce
     }
 }
 
-public enum ForceDestinationType
+public enum SavedForceDestinationType
 {
     None,
     Position,
+    Castle,
     Force,
 }
 
@@ -58,8 +59,9 @@ public static class SavedForces
                 CharacterId = original.Character.Id,
                 DestinationType = original.Destination switch
                 {
-                    Force _ => ForceDestinationType.Force,
-                    _ => ForceDestinationType.Position,
+                    Force _ => SavedForceDestinationType.Force,
+                    Castle _ => SavedForceDestinationType.Castle,
+                    _ => SavedForceDestinationType.Position,
                 },
                 DestinationPosition = original.Destination.Position,
                 DestinationForceCharacterId = original.Destination is Force f ? f.Character.Id : 0,

@@ -93,15 +93,6 @@ public class SaveData
         {
             force.Data.Country = countries.Find(c => c.Id == force.ContryId); ;
             force.Data.Character = characters.Find(c => c.Id == force.CharacterId);
-            force.Data.SetDestination(force.DestinationType switch
-            {
-                ForceDestinationType.Force => savedForces.Find(f => f.CharacterId == force.DestinationForceCharacterId).Data,
-                ForceDestinationType.Position => map.GetTile(force.DestinationPosition),
-                _ => throw new ArgumentOutOfRangeException(),
-            }, false, true);
-            force.Data.ReinforcementOriginalTarget = force.ReinforcementOriginalTargetCastleId != -1
-                ? castles.First(c => c.Data.Id == force.ReinforcementOriginalTargetCastleId).Data
-                : null;
         }
 
         Debug.Log($"ワールド復元中...");
@@ -118,9 +109,20 @@ public class SaveData
         {
             chara.AttachWorld(world);
         }
-        foreach (var force in world.Forces)
+
+        foreach (var force in savedForces)
         {
-            force.AttachWorld(world);
+            force.Data.AttachWorld(world);
+            force.Data.SetDestination(force.DestinationType switch
+            {
+                SavedForceDestinationType.Force => savedForces.Find(f => f.CharacterId == force.DestinationForceCharacterId).Data,
+                SavedForceDestinationType.Castle => map.GetTile(force.DestinationPosition).Castle,
+                SavedForceDestinationType.Position => map.GetTile(force.DestinationPosition),
+                _ => throw new ArgumentOutOfRangeException(),
+            }, false, true);
+            force.Data.ReinforcementOriginalTarget = force.ReinforcementOriginalTargetCastleId != -1
+                ? castles.First(c => c.Data.Id == force.ReinforcementOriginalTargetCastleId).Data
+                : null;
         }
 
         var player = world.Characters.FirstOrDefault(c => c.IsPlayer);
@@ -128,10 +130,4 @@ public class SaveData
 
         return world;
     }
-}
-
-public enum SaveTiming
-{
-    OnProgressPhase,
-    OnActionPhase,
 }
