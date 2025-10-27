@@ -33,7 +33,7 @@ partial class StrategyActions
             // 自国と他国の城の数に応じて金額を計算する。
             var myCastles = args.actor.Country.Castles.Count;
             var targetCastles = targetCountry.Castles.Count;
-            var goldCost = (myCastles + targetCastles) * 5;
+            var goldCost = 10 + (myCastles + targetCastles) * 5;
             return ActionCost.Of(0, 5, goldCost);
         }
 
