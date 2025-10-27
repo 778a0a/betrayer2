@@ -173,7 +173,7 @@ public partial class GameCore
             if (World.GameDate.Month == 1)
             {
                 // 序列を更新する。
-                await World.Countries.UpdateRanking();
+                World.Countries.UpdateRanking();
 
                 // 国の方針を更新する。
                 foreach (var country in World.Countries)

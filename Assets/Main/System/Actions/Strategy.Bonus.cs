@@ -61,7 +61,7 @@ partial class StrategyActions
                         .Take(5)
                         .ToList();
                     if (sortedCharas.Count == 0) return;
-                    await SendBonus(sortedCharas);
+                    SendBonus(sortedCharas);
                     Debug.Log($"{actor.Name} が忠誠下位5人に褒賞を与えました。");
                     return;
                 }
@@ -85,10 +85,10 @@ partial class StrategyActions
                         UI.BonusScreen.buttonSelectLowestLoyalty.enabledSelf = APCostUnit <= actor.ActionPoints;
                     },
                     // 実行ボタン押下時
-                    async selectedList =>
+                    selectedList =>
                     {
-                        if (selectedList.Count == 0) return;
-                        var processed = await SendBonus(selectedList);
+                        if (selectedList.Count == 0) return default;
+                        var processed = SendBonus(selectedList);
                         foreach (var processedTarget in processed)
                         {
                             if (processedTarget != null && !targets.Contains(processedTarget))
@@ -96,6 +96,7 @@ partial class StrategyActions
                                 targets.Add(processedTarget);
                             }
                         }
+                        return default;
                     });
 
                 if (targets == null || targets.Count == 0)
@@ -106,10 +107,10 @@ partial class StrategyActions
             }
             else
             {
-                await SendBonus(targets);
+                SendBonus(targets);
             }
 
-            async ValueTask<List<Character>> SendBonus(List<Character> targetList)
+            List<Character> SendBonus(List<Character> targetList)
             {
                 var processed = new List<Character>();
                 foreach (var target in targetList)

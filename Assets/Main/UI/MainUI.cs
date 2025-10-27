@@ -8,6 +8,7 @@ public partial class MainUI : MonoBehaviour
 {
     [field: SerializeField] public MainUIVisualTreeAssetManager Assets { get; private set; }
     [field: SerializeField] public LocalizationManager L { get; private set; }
+    [field: SerializeField] public CameraMovement Camera { get; private set; }
 
     public ActionScreen ActionScreen { get; set; }
     public SelectCharacterScreen SelectCharacterScreen { get; set; }
@@ -20,8 +21,6 @@ public partial class MainUI : MonoBehaviour
 
     private bool isInitialized = false;
     private IScreen lastVisibleScreen = null;
-
-    public CameraMovement Camera { get; set; }
 
     private void OnEnable()
     {
@@ -41,7 +40,6 @@ public partial class MainUI : MonoBehaviour
         SystemSettingWindow.Initialize();
 
         // CameraMovementAreaを初期化
-        Camera = FindObjectOfType<CameraMovement>();
         CameraMovementArea.Initialize(Camera);
         
         Assets.InitializeScreens(this, isInitialized);

@@ -620,14 +620,14 @@ public class TileInfoEditorWindow : EditorWindow
         //chara.Prestige = ParamField("P", chara.Prestige, Color.white);
         Label($"合計: {chara.Attack + chara.Defense + chara.Intelligence + chara.Governing}");
 
-        void TraitCheckbox(Character chara, Traits target)
-        {
-            var on = chara.Traits.HasFlag(target);
-            var rect = GUILayoutUtility.GetRect(0, 20, GUILayout.Width(85));
-            var onAfter = GUI.Toggle(rect, on, target.ToString(), EditorStyles.miniButton);
-            if (onAfter) chara.Traits |= target;
-            else chara.Traits &= ~target;
-        }
+        //void TraitCheckbox(Character chara, Traits target)
+        //{
+        //    var on = chara.Traits.HasFlag(target);
+        //    var rect = GUILayoutUtility.GetRect(0, 20, GUILayout.Width(85));
+        //    var onAfter = GUI.Toggle(rect, on, target.ToString(), EditorStyles.miniButton);
+        //    if (onAfter) chara.Traits |= target;
+        //    else chara.Traits &= ~target;
+        //}
 
         //// 特性
         Label(chara.Traits.ToString());
@@ -774,24 +774,24 @@ public class TileInfoEditorWindow : EditorWindow
                 LoadWorld();
             }
 
-            float ParamField(float value, float max, float maxmax, Color color, float width = 40)
-            {
-                GUILayout.BeginHorizontal();
-                value = EditorGUILayout.FloatField(value, GUILayout.Width(width));
-                var rect = GUILayoutUtility.GetRect(200, 20);
-                // 誤操作防止のためスライダーは無効にしておく。
-                //value = (int)GUI.HorizontalSlider(rect, value, 0, max);
-                EditorGUI.DrawRect(rect, Color.gray);
-                var rectMax = new Rect(rect.xMin, rect.yMin, rect.width * max / (float)maxmax, rect.height);
-                EditorGUI.DrawRect(rectMax, color * 0.6f);
-                var rectValue = new Rect(rect.xMin, rect.yMin, rect.width * value / (float)maxmax, rect.height);
-                EditorGUI.DrawRect(rectValue, color);
+            //float ParamField(float value, float max, float maxmax, Color color, float width = 40)
+            //{
+            //    GUILayout.BeginHorizontal();
+            //    value = EditorGUILayout.FloatField(value, GUILayout.Width(width));
+            //    var rect = GUILayoutUtility.GetRect(200, 20);
+            //    // 誤操作防止のためスライダーは無効にしておく。
+            //    //value = (int)GUI.HorizontalSlider(rect, value, 0, max);
+            //    EditorGUI.DrawRect(rect, Color.gray);
+            //    var rectMax = new Rect(rect.xMin, rect.yMin, rect.width * max / (float)maxmax, rect.height);
+            //    EditorGUI.DrawRect(rectMax, color * 0.6f);
+            //    var rectValue = new Rect(rect.xMin, rect.yMin, rect.width * value / (float)maxmax, rect.height);
+            //    EditorGUI.DrawRect(rectValue, color);
 
-                GUILayoutUtility.GetRect(1, 20);
-                GUILayout.EndHorizontal();
-                GUILayout.Space(5);
-                return value;
-            }
+            //    GUILayoutUtility.GetRect(1, 20);
+            //    GUILayout.EndHorizontal();
+            //    GUILayout.Space(5);
+            //    return value;
+            //}
         }
 
         // 町情報

@@ -8,8 +8,9 @@ using Random = UnityEngine.Random;
 
 public partial class AI
 {
-    public async ValueTask Invest(Castle castle)
+    public ValueTask Invest(Castle castle)
     {
+        return default;
         //// 物資が余っていないなら何もしない。
         //if (castle.GoldSurplus < 0)
         //{

@@ -101,7 +101,7 @@ public partial class ActionScreen : IScreen
             var map = Core.World.Map;
             var tile = map.GetTile(currentCharacter.Castle);
             currentTile = tile;
-            map.ScrollTo(tile);
+            map.ScrollTo(tile).Forget();
             Render();
             tile.UI.SetCellBorder(true);
             await Task.Delay(400);

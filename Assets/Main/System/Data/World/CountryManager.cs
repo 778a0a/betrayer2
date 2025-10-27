@@ -72,7 +72,7 @@ public class CountryManager : IReadOnlyList<Country>
     /// <summary>
     /// 勢力の序列を更新します。
     /// </summary>
-    public async ValueTask UpdateRanking(Country target = null)
+    public void UpdateRanking(Country target = null)
     {
         var regions = GameCore.Instance.World.Castles.GroupBy(c => c.Region);
 
