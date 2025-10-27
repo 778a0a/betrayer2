@@ -67,7 +67,7 @@ public class Booter : MonoBehaviour
 
             world.Map.AttachUIMap(map);
             core = new GameCore(world, map, ui, this);
-            core.ScenarioName = $"シナリオ{args.NewGameScenarioNo}";
+            core.ScenarioName = $"シナリオ{args.NewGameScenarioNo.TrimStart('0')}";
             core.SaveDataSlotNo = args.NewGameSaveDataSlotNo;
 
             // プレーヤーを選択する。
