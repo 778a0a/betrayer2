@@ -66,7 +66,7 @@ public class SaveData
 
             if (!chara.IsFree)
             {
-                var country = countries[chara.CountryId];
+                var country = countries.Find(c => c.Id == chara.CountryId);
                 if (chara.IsRuler)
                 {
                     country.Ruler = chara.Character;
