@@ -67,6 +67,12 @@ public static class SavedCountryRelations
         // 中身
         foreach (var rel in rels)
         {
+            // 50なら省略する。
+            if (Mathf.Approximately(rel.Relation, 50f))
+            {
+                continue;
+            }
+
             sb.Append(rel.CountryA).Append(delimiter);
             sb.Append(rel.CountryB).Append(delimiter);
             sb.Append(rel.Relation.ToString("000.000")).Append(delimiter);
