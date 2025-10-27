@@ -42,6 +42,7 @@ public class Booter : MonoBehaviour
     public bool hold = false;
 
     private GameCore core;
+    private bool mainLoopStarted = false;
 
     void Start()
     {
@@ -76,6 +77,7 @@ public class Booter : MonoBehaviour
                 var player = world.Characters.FirstOrDefault(c => c.Name == testPlayerName);
                 if (player != null) world.SetPlayer(player);
                 core.DoMainLoop().Forget();
+                mainLoopStarted = true;
             }
             else
             {
@@ -85,6 +87,7 @@ public class Booter : MonoBehaviour
                     Debug.Log($"Player selected: {chara?.Name}");
                     world.SetPlayer(chara);
                     core.DoMainLoop().Forget();
+                    mainLoopStarted = true;
                 });
                 MessageWindow.Show("操作キャラを選択してください。");
             }
@@ -101,6 +104,7 @@ public class Booter : MonoBehaviour
             core.SaveDataSlotNo = args.SaveData.Summary.SaveDataSlotNo;
             core.RestoringPhase = args.SaveData.Summary.SaveTiming;
             core.DoMainLoop().Forget();
+            mainLoopStarted = true;
         }
     }
 
@@ -130,7 +134,7 @@ public class Booter : MonoBehaviour
         // スペースキーで進行フェイズの再生/停止を切り替え
         if (Keyboard.current != null && Keyboard.current.spaceKey.wasPressedThisFrame)
         {
-            if (core != null && core.MainUI.ActionScreen.IsProgressPhase)
+            if (core != null && mainLoopStarted && core.MainUI.ActionScreen.IsProgressPhase)
             {
                 core.TogglePlay();
             }
