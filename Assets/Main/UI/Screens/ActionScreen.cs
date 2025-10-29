@@ -131,6 +131,11 @@ public partial class ActionScreen : IScreen
             Core.TogglePlay();
         });
 
+        ActionPanelContent.RegisterCallback<MouseEnterEvent>(evt =>
+        {
+            CastleInfoPanel.CastleDetailTab.CharacterSummary.SetData(currentCharacter);
+        });
+
         CastleInfoPanel.Initialize();
     }
 
