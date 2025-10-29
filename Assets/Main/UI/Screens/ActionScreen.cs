@@ -376,6 +376,8 @@ public partial class ActionScreen : IScreen
         }
         CastleInfoPanel.SetData(targetTile, summaryDefault);
 
+        buttonMoveToMyCastle.style.display = Util.Display(targetTile != characterTile);
+
         // 個人フェイズ
         if (IsPersonalPhase)
         {

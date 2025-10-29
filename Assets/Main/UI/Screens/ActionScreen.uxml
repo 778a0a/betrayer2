@@ -87,8 +87,7 @@
             
                     <!-- 実行可能なアクションがないとき用 -->
                     <ui:VisualElement name="NoActionPanel" style="display: none">
-                        <ui:Label text="ここで実行できるアクションはありません。" style="font-size: 28px; margin: 0 0 15px 5px;" />
-                        <ui:Button name="buttonMoveToMyCastle" text="所属城を表示" style="width: 200px" />
+                        <ui:Label text="ここで実行できるアクションはありません。" style="font-size: 28px; margin: 50px 0 15px 5px;" />
                     </ui:VisualElement>
                 </ui:VisualElement>
 
@@ -100,6 +99,7 @@
             </ui:VisualElement>
 
             <ui:VisualElement style="position: absolute; right: 0; flex-direction: row; align-items: center; margin: -10px 0 0 0">
+                <ui:Button name="buttonMoveToMyCastle" text="所属城を表示" style="font-size: 25px; height: 40px; padding: 5px 10px; margin: 0 5px 0 0;" />
                 <ui:Button text="ターン終了" name="buttonTurnEnd" style="font-size: 28px; height: 40px; padding: 5px 10px; margin: 0 5px 0 0;" />
                 <ui:Button name="buttonToggleActionPanelFolding" text="-" style="font-size: 40px; width: 40px; height: 40px; padding: 0; margin: 0;" />
             </ui:VisualElement>
