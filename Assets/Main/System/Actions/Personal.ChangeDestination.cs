@@ -70,6 +70,14 @@ partial class PersonalActions
 
             if (target != null)
             {
+                // 撤退アクションに合わせて、目的地が本拠地で、すでに到達している場合は軍勢を削除する。
+                if (target == targetCharactor.Castle && force.Position == targetCharactor.Castle.Position)
+                {
+                    GameCore.Instance.World.Forces.Unregister(force);
+                    Debug.LogWarning($"すでに本拠地に到達しています。軍勢を削除します。");
+                    return true;
+                }
+
                 // 目的地を変更する。
                 force.IsPlayerDirected = actor.IsPlayer;
                 force.SetDestination(target);
