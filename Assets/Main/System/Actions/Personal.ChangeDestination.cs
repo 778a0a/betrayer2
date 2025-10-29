@@ -46,15 +46,7 @@ partial class PersonalActions
                     "新しい進軍先を選択してください（必要AP: 1）",
                     "キャンセル",
                     cands,
-                    async selectedTile =>
-                    {
-                        if (!selectedTile.HasCastle)
-                        {
-                            var ok = await MessageWindow.ShowOkCancel("城が存在しない場所に進軍します。\nよろしいですか？");
-                            return ok;
-                        }
-                        return true;
-                    });
+                    selectedTile => StrategyActions.DeployAction.OnTileSelected(targetCharactor.Castle, selectedTile, true));
                 if (target == null)
                 {
                     Debug.Log("目的地選択がキャンセルされました。");

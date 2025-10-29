@@ -70,20 +70,7 @@ partial class StrategyActions
                     "進軍先の城を選択してください",
                     "キャンセル",
                     neighborCastles,
-                    async selectedTile =>
-                    {
-                        if (!selectedTile.HasCastle)
-                        {
-                            var ok = await MessageWindow.ShowOkCancel("城が存在しない場所に進軍します。\nよろしいですか？");
-                            return ok;
-                        }
-                        if (BattleManager.IsRemote(actor.Castle, selectedTile.Castle) && selectedTile.Castle.IsAttackable(actor.Country))
-                        {
-                            var ok = await MessageWindow.ShowOkCancel("遠方の城のため戦闘効率が落ちます。\nよろしいですか？");
-                            return ok;
-                        }
-                        return true;
-                    });
+                    selectedTile => OnTileSelected(baseCastle, selectedTile, false));
 
                 if (target == null)
                 {
@@ -168,6 +155,62 @@ partial class StrategyActions
             
             // PayCost(args); 
             actor.ActionPoints -= deployMembers.Count * ApCost;
+        }
+
+        public static async ValueTask<bool> OnTileSelected(Castle baseCastle, GameMapTile selectedTile, bool isChangeDestination)
+        {
+            // 進軍コマンドの場合（変更コマンドでない場合）、自城は選択不可にする。
+            if (!isChangeDestination && baseCastle == selectedTile.Castle)
+            {
+                return false;
+            }
+
+
+            var isRemote = BattleManager.IsRemote(baseCastle, selectedTile);
+            // 城が存在しない場合
+            if (!selectedTile.HasCastle)
+            {
+                // 遠方なら進軍不可にする。
+                if (isRemote)
+                {
+                    await MessageWindow.ShowOk("遠方のため進軍できません。");
+                    return false;
+                }
+                return await MessageWindow.ShowOkCancel("城が存在しない場所に進軍します。\nよろしいですか？");
+            }
+
+            // 城が存在する場合
+            var castle = selectedTile.Castle;
+
+            // 自国の城なら確認不要
+            if (castle.IsSelf(baseCastle.Country))
+            {
+                return true;
+            }
+            // 同盟国の場合、遠方の場合のみ確認する。
+            if (castle.IsAlly(baseCastle.Country))
+            {
+                if (isRemote)
+                {
+                    var ok = await MessageWindow.ShowOkCancel("遠方の城のため戦闘効率が落ちます。\nよろしいですか？");
+                    return ok;
+                }
+                return true;
+            }
+            // 他国の場合
+            // 自国の城と隣接していない城は攻撃不可
+            if (!castle.Neighbors.Any(n => n.Country == baseCastle.Country))
+            {
+                await MessageWindow.ShowOk("自国に隣接していない城は攻撃できません。");
+                return false;
+            }
+            // 遠方の場合は確認する。
+            if (isRemote)
+            {
+                var ok = await MessageWindow.ShowOkCancel("遠方の城のため戦闘効率が落ちます。\nよろしいですか？");
+                return ok;
+            }
+            return true;
         }
     }
 }
