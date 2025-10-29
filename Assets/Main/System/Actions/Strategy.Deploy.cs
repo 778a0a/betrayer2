@@ -198,10 +198,10 @@ partial class StrategyActions
                 return true;
             }
             // 他国の場合
-            // 自国の城と隣接していない城は攻撃不可
-            if (!castle.Neighbors.Any(n => n.Country == baseCastle.Country))
+            // 自国か同盟国の城と隣接していない城は攻撃不可
+            if (!castle.Neighbors.Any(n => n.Country.IsSelfOrAlly(baseCastle.Country)))
             {
-                await MessageWindow.ShowOk("自国に隣接していない城は攻撃できません。");
+                await MessageWindow.ShowOk("自国か同盟国に隣接していない城は攻撃できません。");
                 return false;
             }
             // 遠方の場合は確認する。
