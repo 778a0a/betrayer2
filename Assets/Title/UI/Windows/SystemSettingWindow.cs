@@ -100,7 +100,7 @@ public class SystemSetting
     private int _PlaySpeedIndex = PlayerPrefs.GetInt(nameof(PlaySpeedIndex), 2);
 
     public AutoSaveFrequency AutoSaveFrequency { get => _AutoSaveFrequency; set => SetValue(ref _AutoSaveFrequency, value); }
-    private AutoSaveFrequency _AutoSaveFrequency = (AutoSaveFrequency)PlayerPrefs.GetInt(nameof(AutoSaveFrequency), (int)AutoSaveFrequency.EveryYear);
+    private AutoSaveFrequency _AutoSaveFrequency = (AutoSaveFrequency)PlayerPrefs.GetInt(nameof(AutoSaveFrequency), (int)AutoSaveFrequency.EveryThreeMonths);
 
     public bool ShowCountryEliminatedNotification { get => _ShowCountryEliminatedNotification; set => SetValue(ref _ShowCountryEliminatedNotification, value); }
     private bool _ShowCountryEliminatedNotification = PlayerPrefs.GetInt(nameof(ShowCountryEliminatedNotification), 1) == 1;
