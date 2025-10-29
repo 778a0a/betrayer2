@@ -103,8 +103,8 @@ public partial class ActionScreen : IScreen
             var tile = map.GetTile(currentCharacter.Castle);
             currentTile = tile;
             map.ScrollTo(tile).Forget();
-            Render();
             tile.UI.SetCellBorderSeconds(0.4f);
+            Render();
         };
 
         buttonToggleActionPanelFolding.clicked += () =>

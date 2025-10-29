@@ -62,6 +62,7 @@ public partial class CountryDetailTab
             // 所属城へスクロールする。
             var tile = Core.World.Map.GetTile(chara.Castle);
             Core.World.Map.ScrollTo(tile);
+            tile.UI.SetCellBorderSeconds(0.4f);
         };
 
         // 城一覧のクリック時
@@ -70,6 +71,7 @@ public partial class CountryDetailTab
             // 城タイルへスクロールする。
             var tile = Core.World.Map.GetTile(castle.Position);
             Core.World.Map.ScrollTo(tile);
+            tile.UI.SetCellBorderSeconds(0.4f);
         };
 
         // 方針コンボボックス選択時
