@@ -74,7 +74,7 @@ partial class PersonalActions
 
                 if (targetCharacters.Count == 0)
                 {
-                    await MessageWindow.Show("離間可能なキャラクターがいません。");
+                    await MessageWindow.Show("離間可能なキャラクターが存在しません。");
                     return;
                 }
 
