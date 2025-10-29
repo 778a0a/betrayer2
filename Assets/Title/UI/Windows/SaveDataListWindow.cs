@@ -34,6 +34,8 @@ public partial class SaveDataListWindow
                 {
                     try
                     {
+                        uiTitle.ShowProgressWindow(0.1f);
+                        await Awaitable.WaitForSecondsAsync(0);
                         var saveData = saves.Load(slot.SlotNo);
                         var op = Booter.LoadScene(new MainSceneStartArguments()
                         {

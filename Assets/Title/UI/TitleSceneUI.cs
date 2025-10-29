@@ -82,9 +82,11 @@ public partial class TitleSceneUI : MonoBehaviour
         buttonCloseNewGameWindow.clicked += () => NewGameMenu.style.display = DisplayStyle.None;
         
         // はじめから - シナリオ1
-        buttonStartNewGameScenario1.clicked += () =>
+        buttonStartNewGameScenario1.clicked += async () =>
         {
             NewGameMenu.style.display = DisplayStyle.None;
+            ShowProgressWindow(0.1f);
+            await Awaitable.WaitForSecondsAsync(0);
             var op = Booter.LoadScene(new MainSceneStartArguments()
             {
                 IsNewGame = true,
@@ -95,9 +97,11 @@ public partial class TitleSceneUI : MonoBehaviour
         };
 
         // はじめから - シナリオ2
-        buttonStartNewGameScenario2.clicked += () =>
+        buttonStartNewGameScenario2.clicked += async () =>
         {
             NewGameMenu.style.display = DisplayStyle.None;
+            ShowProgressWindow(0.1f);
+            await Awaitable.WaitForSecondsAsync(0);
             var op = Booter.LoadScene(new MainSceneStartArguments()
             {
                 IsNewGame = true,
@@ -254,6 +258,12 @@ public partial class TitleSceneUI : MonoBehaviour
     private void InitializeProgressWindow()
     {
         ProgressWindow.style.display = DisplayStyle.None;
+    }
+
+    public void ShowProgressWindow(float progress)
+    {
+        ProgressWindow.style.display = DisplayStyle.Flex;
+        progressLoading.value = progress;
     }
 
     public async void OnSceneLoadingStart(AsyncOperation op)
