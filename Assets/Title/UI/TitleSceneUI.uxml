@@ -21,7 +21,7 @@
                 <ui:Button text="はじめから - シナリオ2" name="buttonStartNewGameScenario2" />
                 <ui:Button text="テキストデータ読み込み" name="buttonLoadTextData" />
                 <ui:VisualElement style="flex-direction: row; align-items: center;">
-                    <ui:Label text="他スロットからコピー" style="color: rgb(255, 255, 255); margin-left: 5px; margin-right: 10px;" />
+                    <ui:Label text="他スロットからコピー" style="color: rgb(255, 255, 255); margin-left: 10px; margin-right: 5px;" />
                     <ui:Button text="1" name="buttonCopyFromSlot1" style="flex-grow: 1; margin-left: 0px; margin-right: 4px;" />
                     <ui:Button text="2" name="buttonCopyFromSlot2" style="flex-grow: 1; margin-left: 0px; margin-right: 4px;" />
                     <ui:Button text="3" name="buttonCopyFromSlot3" style="flex-grow: 1; margin-left: 0px; margin-right: 4px;" />
