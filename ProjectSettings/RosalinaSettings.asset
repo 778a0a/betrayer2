@@ -92,3 +92,5 @@ MonoBehaviour:
     _path: Assets/Main/UI/Windows/SystemMenuWindow.uxml
   - _type: 1
     _path: Assets/Title/UI/Windows/SystemSettingWindow.uxml
+  - _type: 1
+    _path: Assets/Main/UI/Parts/CastleTable/CastleTableRowItem.uxml

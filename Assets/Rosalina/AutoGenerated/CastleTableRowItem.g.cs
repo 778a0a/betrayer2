@@ -16,23 +16,25 @@ public partial class CastleTableRowItem
 {
     public Label labelRegion { get; private set; }
 
+    public Label labelObjective { get; private set; }
+
     public VisualElement iconCountry { get; private set; }
 
     public Label labelName { get; private set; }
 
-    public Label labelObjective { get; private set; }
+    public VisualElement ObjectiveContainer { get; private set; }
 
     public Label labelGold { get; private set; }
 
     public Label labelBalance { get; private set; }
 
-    public VisualElement MaxIncomeBar { get; private set; }
-
-    public VisualElement CurrentIncomeBar { get; private set; }
-
     public Label labelIncome { get; private set; }
 
     public Label labelMaxIncome { get; private set; }
+
+    public VisualElement MaxIncomeBar { get; private set; }
+
+    public VisualElement CurrentIncomeBar { get; private set; }
 
     public VisualElement IncomeBar { get; private set; }
 
@@ -60,15 +62,16 @@ public partial class CastleTableRowItem
     {
         Root = root;
         labelRegion = Root?.Q<Label>("labelRegion");
+        labelObjective = Root?.Q<Label>("labelObjective");
         iconCountry = Root?.Q<VisualElement>("iconCountry");
         labelName = Root?.Q<Label>("labelName");
-        labelObjective = Root?.Q<Label>("labelObjective");
+        ObjectiveContainer = Root?.Q<VisualElement>("ObjectiveContainer");
         labelGold = Root?.Q<Label>("labelGold");
         labelBalance = Root?.Q<Label>("labelBalance");
-        MaxIncomeBar = Root?.Q<VisualElement>("MaxIncomeBar");
-        CurrentIncomeBar = Root?.Q<VisualElement>("CurrentIncomeBar");
         labelIncome = Root?.Q<Label>("labelIncome");
         labelMaxIncome = Root?.Q<Label>("labelMaxIncome");
+        MaxIncomeBar = Root?.Q<VisualElement>("MaxIncomeBar");
+        CurrentIncomeBar = Root?.Q<VisualElement>("CurrentIncomeBar");
         IncomeBar = Root?.Q<VisualElement>("IncomeBar");
         labelExpenditure = Root?.Q<Label>("labelExpenditure");
         labelDevLevel = Root?.Q<Label>("labelDevLevel");
@@ -85,15 +88,16 @@ public partial class CastleTableRowItem
     {
         Root = root;
         labelRegion = Root?.Q<Label>("labelRegion");
+        labelObjective = Root?.Q<Label>("labelObjective");
         iconCountry = Root?.Q<VisualElement>("iconCountry");
         labelName = Root?.Q<Label>("labelName");
-        labelObjective = Root?.Q<Label>("labelObjective");
+        ObjectiveContainer = Root?.Q<VisualElement>("ObjectiveContainer");
         labelGold = Root?.Q<Label>("labelGold");
         labelBalance = Root?.Q<Label>("labelBalance");
-        MaxIncomeBar = Root?.Q<VisualElement>("MaxIncomeBar");
-        CurrentIncomeBar = Root?.Q<VisualElement>("CurrentIncomeBar");
         labelIncome = Root?.Q<Label>("labelIncome");
         labelMaxIncome = Root?.Q<Label>("labelMaxIncome");
+        MaxIncomeBar = Root?.Q<VisualElement>("MaxIncomeBar");
+        CurrentIncomeBar = Root?.Q<VisualElement>("CurrentIncomeBar");
         IncomeBar = Root?.Q<VisualElement>("IncomeBar");
         labelExpenditure = Root?.Q<Label>("labelExpenditure");
         labelDevLevel = Root?.Q<Label>("labelDevLevel");

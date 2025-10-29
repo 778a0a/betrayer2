@@ -11,14 +11,16 @@
                 <!-- 城名・地方・方針 -->
                 <engine:VisualElement style="flex-direction: row; align-items: center; margin-bottom: 5px;">
                     <engine:VisualElement name="iconCountry" style="width: 22px; height: 22px; margin-right: 5px; background-color: #088" />
-                    <engine:Label name="labelName" text="クリスタルウォーター" style="font-size: 24px; width: 300px;" />
+                    <engine:Label name="labelName" text="クリスタルウォーター" style="font-size: 24px; width: 294px;" />
                     <engine:VisualElement style="display: none;">
                         <engine:Label text="(" style="font-size: 24px; margin-left: 5px; color: silver" />
                         <engine:Label name="labelRegion" text="中央シルヴァニア" style="font-size: 24px; color: silver" />
                         <engine:Label text="地方)" style="font-size: 24px; color: silver" />
                     </engine:VisualElement>
-                    <engine:Label text="方針: " style="color: #ccc; font-size: 20px; margin-left: 7px;" />
-                    <engine:Label name="labelObjective" text="開発" style="color: #ccc; font-size: 20px; margin-left: 5px;" />
+                    <engine:VisualElement name="ObjectiveContainer" style="flex-direction: row;">
+                        <engine:Label text="方針: " style="color: #ccc; font-size: 20px; margin-left: 7px;" />
+                        <engine:Label name="labelObjective" text="開発" style="color: #ccc; font-size: 20px; margin-left: 5px;" />
+                    </engine:VisualElement>
                 </engine:VisualElement>
                 <!-- 城の基本情報 -->
                 <engine:VisualElement style="flex-direction: row; align-items: center;">

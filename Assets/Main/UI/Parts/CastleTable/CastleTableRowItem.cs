@@ -74,11 +74,9 @@ public partial class CastleTableRowItem
         };
         labelObjective.text = objectiveText;
         
+        // 自国か観戦モードのときのみ表示する。
         var player = GameCore.Instance.World.Player;
-        if (player != null && player.Country != castle.Country)
-        {
-            labelObjective.text = "不明";
-        }
+        ObjectiveContainer.style.display = Util.Display(player == null || player.Country == castle.Country);
         
         // 城主画像
         if (castle.Boss != null)
