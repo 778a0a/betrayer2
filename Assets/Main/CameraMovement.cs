@@ -69,7 +69,7 @@ public class CameraMovement : MonoBehaviour
         }
 
         // 画面端でのカメラ移動処理
-        if (true)
+        if (!isDragging)
         {
             // 右側のUI領域（画面幅の約44%）にマウスがある場合は上下スクロールを無効化
             // フルHD(1920x1080)での840px ≈ 43.75%
