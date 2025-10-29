@@ -19,6 +19,12 @@
 .window-modal {
 }
 
+.title-scene-window Label,
+.title-scene-window Button
+{
+    font-size: 40px;
+}
+
 
 .unity-progress-bar__progress {
     background-color: #0ff;
@@ -29,7 +35,6 @@
 }
 
 Label, Button {
-    font-size: 40px;
 }
 
 DropdownField {
