@@ -115,15 +115,16 @@ public partial class GameCore
         {
             MainUI.ActionScreen.Show();
             MainUI.ActionScreen.ActivatePhase(World.Player, Phase.Progress);
-            // 浪士でなければ自分の城へスクロールする。
-            if (!World.Player?.IsFree ?? false)
-            {
-                World.Map.ScrollTo(World.Player.Castle.Tile, 0).Forget();
-            }
 
             // ロードで開始した場合は、セーブした日の進行を復元する。
             if (IsRestoring)
             {
+                // 浪士でなければ自分の城へスクロールする。
+                if (!World.Player?.IsFree ?? false)
+                {
+                    World.Map.ScrollTo(World.Player.Castle.Tile, 0).Forget();
+                }
+
                 // 進行フェイズならホールド状態にして再開する。
                 if (RestoringPhase == Phase.Progress)
                 {
