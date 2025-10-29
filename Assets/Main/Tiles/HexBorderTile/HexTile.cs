@@ -52,6 +52,13 @@ public class HexTile : MonoBehaviour
         }
     }
 
+    public async void SetCellBorderSeconds(float duration)
+    {
+        SetCellBorder(true);
+        await Awaitable.WaitForSecondsAsync(duration);
+        SetCellBorder(false);
+    }
+
     public void SetCellBorder(bool highlight)
     {
         Width = PropsOn(highlight).width;

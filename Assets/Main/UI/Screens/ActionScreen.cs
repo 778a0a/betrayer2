@@ -97,16 +97,14 @@ public partial class ActionScreen : IScreen
             EndTurn();
         };
 
-        buttonMoveToMyCastle.clicked += async () =>
+        buttonMoveToMyCastle.clicked += () =>
         {
             var map = Core.World.Map;
             var tile = map.GetTile(currentCharacter.Castle);
             currentTile = tile;
             map.ScrollTo(tile).Forget();
             Render();
-            tile.UI.SetCellBorder(true);
-            await Task.Delay(400);
-            tile.UI.SetCellBorder(false);
+            tile.UI.SetCellBorderSeconds(0.4f);
         };
 
         buttonToggleActionPanelFolding.clicked += () =>

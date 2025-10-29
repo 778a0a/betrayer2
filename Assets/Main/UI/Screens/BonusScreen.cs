@@ -48,9 +48,10 @@ public partial class BonusScreen : MainUIComponent, IScreen
             CharacterTable.SetSelection(sortedCharas);
             labelDescription.visible = false;
             buttonSelectLowestLoyalty.SetEnabled(false);
-            await Task.Delay(100);
+
+            await Awaitable.WaitForSecondsAsync(0.1f);
             Execute(sortedCharas);
-            await Task.Delay(100);
+            await Awaitable.WaitForSecondsAsync(0.1f);
             ClearSelection();
             labelDescription.visible = true;
         };
