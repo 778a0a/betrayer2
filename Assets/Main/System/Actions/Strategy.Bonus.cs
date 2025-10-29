@@ -66,6 +66,12 @@ partial class StrategyActions
                     return;
                 }
 
+                if (candList.Count == 0)
+                {
+                    await MessageWindow.ShowOk("褒賞を与えられるキャラクターが存在しません。");
+                    return;
+                }
+
                 // 複数キャラ選択画面を表示する。
                 await UI.BonusScreen.Show(
                     actor,
