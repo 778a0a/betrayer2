@@ -31,6 +31,7 @@ public class Booter : MonoBehaviour
     [SerializeField] private string testPlayerName = "フレデリック";
     [SerializeField] private bool testSkipPlayerSelection = false;
     [SerializeField] private string testScenarioNo = "02";
+    [SerializeField] private bool testClearSceneArgs = true;
     public bool testClearedFlagOn = false;
     /// <summary>
     /// 1tickの待機時間
@@ -54,6 +55,10 @@ public class Booter : MonoBehaviour
             NewGameSaveDataSlotNo = 0,
             NewGameScenarioNo = testScenarioNo,
         };
+        if (!Application.isEditor || testClearSceneArgs)
+        {
+            s_args = null;
+        }
 
         if (Application.isEditor)
         {
