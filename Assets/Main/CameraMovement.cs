@@ -33,19 +33,37 @@ public class CameraMovement : MonoBehaviour
     private bool isUIScrolling = false;
     private Vector2 uiScrollDirection = Vector2.zero;
 
+    // Screen size change detection
+    private int lastScreenWidth;
+    private int lastScreenHeight;
+
 
     private void Start()
     {
         TryGetComponent(out camera);
+        UpdatePanBorders();
+    }
+
+    private void UpdatePanBorders()
+    {
         var rect = camera.rect;
         topPanBorder = Screen.height * rect.yMax - Screen.height * rect.height * panBorderThickness;
         bottomPanBorder = Screen.height * rect.yMin + Screen.height * rect.height * panBorderThickness;
         leftPanBorder = Screen.width * rect.xMin + Screen.width * rect.width * panBorderThickness;
         rightPanBorder = Screen.width * rect.xMax - Screen.width * rect.width * panBorderThickness;
+
+        lastScreenWidth = Screen.width;
+        lastScreenHeight = Screen.height;
     }
 
     void LateUpdate()
     {
+        // 画面サイズが変更された場合、画面端の位置を更新
+        if (Screen.width != lastScreenWidth || Screen.height != lastScreenHeight)
+        {
+            UpdatePanBorders();
+        }
+
         Vector3 pos = transform.position;
         var mousePosition = Mouse.current.position.value;
 
