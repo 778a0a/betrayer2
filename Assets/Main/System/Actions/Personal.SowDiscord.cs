@@ -122,6 +122,11 @@ partial class PersonalActions
             {
                 loyaltyDecrease *= 0.5f;
             }
+            // 忠実な場合も効果半減
+            if (target.IsLoyal)
+            {
+                loyaltyDecrease *= 0.5f;
+            }
 
             Debug.Log($"離間成功?: {success} ({loyaltyDecrease}:0.00) | 成功確率: {prob * 100:F1}% {actor} → {target} (城主補正: {bossAdj * 100:F1}% {target.Castle.Boss})");
             if (success)

@@ -223,7 +223,7 @@ public record CharacterInBattle(
 
             if (IsInCastle && IsDefender)
             {
-                // 君主か忠誠な家臣で自国の最後の領土の防衛なら撤退しない。
+                // 君主か忠実な家臣で自国の最後の領土の防衛なら撤退しない。
                 var lastCastle = Country.Castles.Count == 1;
                 if (lastCastle && Character.IsLoyal) break;
             }
