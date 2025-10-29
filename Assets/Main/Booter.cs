@@ -94,7 +94,12 @@ public class Booter : MonoBehaviour
                     core.DoMainLoop().Forget();
                     mainLoopStarted = true;
                 });
-                MessageWindow.Show("操作キャラを選択してください。");
+                MessageWindow.Show(
+                    "操作キャラを選択してください。\n\n" +
+                    "<color=#aaa>※マップ操作について<size=15>\n\n</size>" +
+                    "・マウス中央ボタンドラッグでスクロールできます\n" +
+                    "・マウスホイールでズームできます\n" +
+                    "</color>");
             }
         }
         // 再開
