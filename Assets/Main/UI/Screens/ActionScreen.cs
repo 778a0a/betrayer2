@@ -43,6 +43,7 @@ public partial class ActionScreen : IScreen
             ActionButtonHelper.Personal(a => a.ChangeDestination),
             ActionButtonHelper.Personal(a => a.BackToCastle),
             ActionButtonHelper.Personal(a => a.HireSoldier),
+            ActionButtonHelper.Personal(a => a.Rearrange),
             ActionButtonHelper.Personal(a => a.TrainSoldiers),
             ActionButtonHelper.Personal(a => a.Develop),
             ActionButtonHelper.Personal(a => a.Invest),
