@@ -12,6 +12,15 @@ public partial class ForceDetailTab
     public void Initialize()
     {
         ForceListViewTable.Initialize();
+
+        // 城一覧のクリック時
+        ForceListViewTable.RowMouseDown += (sender, force) =>
+        {
+            // 軍勢がいるタイルへスクロールする。
+            var tile = Core.World.Map.GetTile(force.Position);
+            Core.World.Map.ScrollTo(tile);
+            tile.UI.SetCellBorderSeconds(0.4f);
+        };
     }
 
     public void SetData(GameMapTile tile)

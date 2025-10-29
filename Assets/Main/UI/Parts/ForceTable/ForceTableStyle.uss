@@ -16,12 +16,12 @@
 }
 
 #ForceListViewTable .unity-collection-view__item > Button:hover {
-    background-color: initial;
+    /* background-color: initial; */
 }
 
 #ForceTableRowItemRoot:hover {
-    background-color: rgba(0, 156, 143, 0.3);
-    border-color: rgba(204, 204, 204, 0.7);
+    /* background-color: rgba(0, 156, 143, 0.3); */
+    /* border-color: rgba(204, 204, 204, 0.7); */
 }
 
 #ForceTableRowItemRoot.clickable:hover {
