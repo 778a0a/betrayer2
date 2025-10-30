@@ -31,7 +31,6 @@
 
 .CharacterTable-Cell {
     font-size: 28px;
-    color: rgb(221, 221, 221);
     -unity-text-align: middle-center;
     width: 55px;
 }
@@ -40,7 +39,6 @@
     font-size: 24px;
     margin: -2px 0;
     padding: 2px;
-    /* cursor: link; */
 }
 
 .CharacterTable-Cell-Header:hover {
