@@ -63,7 +63,7 @@
         <!-- アクションボタンエリア -->
         <ui:VisualElement style="margin-top: 5px; padding: 10px 5px 5px 5px; background-color: #223344; min-height: 40px">
 
-            <ui:VisualElement name="ActionPanelContent" style="min-height: 205px;">
+            <ui:VisualElement name="ActionPanelContent" style="min-height: 206px;">
                 <!-- 個人・戦略フェイズ用 -->
                 <ui:VisualElement name="ActivePhaseContent">
                     <!-- 実行可能なアクションがあるとき用 -->
