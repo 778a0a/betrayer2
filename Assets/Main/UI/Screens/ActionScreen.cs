@@ -190,11 +190,12 @@ public partial class ActionScreen : IScreen
         Render();
         Root.style.display = DisplayStyle.Flex;
 
-        // 放浪、独立、反乱を実行した場合はターンを終了する。
+        // 放浪、独立、反乱、奪取を実行した場合はターンを終了する。
         var isResign = action is PersonalActions.ResignAction or StrategyActions.ResignAction && chara.IsFree;
         var isIndependent = action is StrategyActions.BecomeIndependentAction a && !a.IsCancelled;
         var isRebel = action is PersonalActions.RebelAction a2 && !a2.IsCancelled;
-        if (isResign || isIndependent || isRebel)
+        var isSeize = action is PersonalActions.SeizeAction;
+        if (isResign || isIndependent || isRebel || isSeize)
         {
             Debug.Log("ターンを強制終了します。");
             EndTurn();
