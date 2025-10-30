@@ -82,7 +82,20 @@ public class CameraMovement : MonoBehaviour
         if (isDragging)
         {
             Vector2 mouseDelta = lastMousePosition - mousePosition;
-            pos += new Vector3(mouseDelta.x, mouseDelta.y, 0) / 100;
+
+            // スクリーン座標をワールド座標の移動量に変換
+            // カメラの表示範囲（高さ）を基準にする
+            float worldHeight = camera.orthographicSize * 2f;
+            float worldWidth = worldHeight * camera.aspect;
+
+            // ピクセル移動量をワールド座標に変換
+            Vector3 worldDelta = new Vector3(
+                mouseDelta.x / Screen.width * worldWidth,
+                mouseDelta.y / Screen.height * worldHeight,
+                0
+            );
+
+            pos += worldDelta;
             lastMousePosition = mousePosition;
         }
 
