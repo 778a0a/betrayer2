@@ -106,7 +106,7 @@ partial class PersonalActions
             var prob = 0.1f * (actor.Intelligence - target.Intelligence).MinWith(0);
             // 対象の城の城主が忠実な場合、城主の智謀が90以上なら1につき-10%する。
             var bossAdj = 1f;
-            if (target.Castle.Boss != target && target.Castle.Boss.IsLoyal)
+            if (target.Castle.Boss != target && target.Castle.Boss != actor && target.Castle.Boss.IsLoyal)
             {
                 if (target.Castle.Boss.Intelligence > 90)
                 {
