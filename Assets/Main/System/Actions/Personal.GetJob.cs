@@ -28,16 +28,9 @@ partial class PersonalActions
             
             if (actor.IsPlayer)
             {
-                // 全ての城を仕官先候補として取得
-                var allCastles = GameCore.Instance.World.Castles.Where(c => c.Country != null).ToList();
+                var allCastles = GameCore.Instance.World.Castles.ToList();
                 
-                if (allCastles.Count == 0)
-                {
-                    await MessageWindow.Show("仕官可能な城が見つかりませんでした。");
-                    return;
-                }
-
-                // プレーヤーに仕官先の城を選択させる
+                // プレーヤーに仕官先の城を選択させる。
                 args.targetCastle = (await UI.SelectCastleScreen.SelectTile(
                     "仕官先の城を選択してください",
                     "キャンセル",
@@ -47,8 +40,7 @@ partial class PersonalActions
                     {
                         var country = tile.Country;
                         var castle = tile.Castle;
-                        Assert.IsNotNull(country);
-                        return await MessageWindow.ShowOkCancel($"{country.Ruler.Name}軍に仕官します。よろしいですか？");
+                        return await MessageWindow.ShowOkCancel($"{country.Ruler.Name}軍の{castle.Name}城に仕官します。\nよろしいですか？");
                     }
                 ))?.Castle;
 
