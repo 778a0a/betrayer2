@@ -115,6 +115,11 @@ public partial class GameCore
         {
             MainUI.ActionScreen.Show();
             MainUI.ActionScreen.ActivatePhase(World.Player, Phase.Progress);
+            // 浪士・観戦モードの場合は、城のない適当なタイルを選択する。
+            if (World.Player?.IsFree ?? true)
+            {
+                MainUI.ActionScreen.SetCurrentTileForFreeGameStart();
+            }
 
             // ロードで開始した場合は、セーブした日の進行を復元する。
             if (IsRestoring)

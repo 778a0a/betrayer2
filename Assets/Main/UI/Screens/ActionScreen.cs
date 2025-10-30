@@ -261,6 +261,11 @@ public partial class ActionScreen : IScreen
         buttonToggleActionPanelFolding.text = "-";
     }
 
+    public void SetCurrentTileForFreeGameStart()
+    {
+        currentTile = Core.World.Map.Tiles.FirstOrDefault(t => !t.HasCastle);
+    }
+
     public void ActivatePhase(Character chara, Phase phase)
     {
         CurrentPhase = phase;
@@ -377,7 +382,7 @@ public partial class ActionScreen : IScreen
         }
         CastleInfoPanel.SetData(targetTile, summaryDefault);
 
-        buttonMoveToMyCastle.style.display = Util.Display(targetTile != characterTile);
+        buttonMoveToMyCastle.style.display = Util.Display(targetTile != characterTile && (!currentCharacter?.IsFree ?? false));
 
         // 個人フェイズ
         if (IsPersonalPhase)
@@ -393,6 +398,10 @@ public partial class ActionScreen : IScreen
             ActionPanel.style.display = Util.Display(!noAction);
             NoActionPanel.style.display = Util.Display(noAction);
         }
+
+        labelNoAction.text = (currentCharacter?.IsFree ?? false) ?
+            "城タイルを選択してアクションを実行してください。" :
+            "ここで実行できるアクションはありません。";
     }
 }
 

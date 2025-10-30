@@ -87,7 +87,7 @@
             
                     <!-- 実行可能なアクションがないとき用 -->
                     <ui:VisualElement name="NoActionPanel" style="display: none">
-                        <ui:Label text="ここで実行できるアクションはありません。" style="font-size: 28px; margin: 50px 0 15px 5px;" />
+                        <ui:Label name="labelNoAction" text="ここで実行できるアクションはありません。" style="font-size: 28px; margin: 50px 0 15px 5px;" />
                     </ui:VisualElement>
                 </ui:VisualElement>
 
