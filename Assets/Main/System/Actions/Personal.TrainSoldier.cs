@@ -25,7 +25,9 @@ partial class PersonalActions
             Util.IsTrue(CanDo(args));
             var chara = args.actor;
 
-            var drillMasterExists = chara.Castle.Members.Any(m => m.Traits.HasFlag(Traits.Drillmaster));
+            var drillMasterExists = chara.IsFree ?
+                chara.Traits.HasFlag(Traits.Drillmaster) :
+                chara.Castle.Members.Any(m => m.Traits.HasFlag(Traits.Drillmaster));
             var isKnight = chara.Traits.HasFlag(Traits.Knight);
             foreach (var soldier in chara.Soldiers)
             {
