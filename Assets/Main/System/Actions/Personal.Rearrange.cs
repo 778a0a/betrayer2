@@ -18,6 +18,11 @@ partial class PersonalActions
         public override string Label => L["再編"];
         public override string Description => L["兵士の配置をランダムに入れ替えます。"];
         protected override ActionRequirements Requirements => ActionRequirements.NotMoving;
+        protected override bool VisibleCore(Character actor, GameMapTile tile)
+        {
+            if (actor.IsFree && tile.HasCastle) return true;
+            return base.VisibleCore(actor, tile);
+        }
 
         public override ActionCost Cost(ActionArgs args) => 1;
 

@@ -17,6 +17,11 @@ partial class PersonalActions
         public override string Label => L["訓練"];
         public override string Description => L["兵士を訓練します。(右クリックで10回実行)"];
         protected override ActionRequirements Requirements => ActionRequirements.NotMoving;
+        protected override bool VisibleCore(Character actor, GameMapTile tile)
+        {
+            if (actor.IsFree && tile.HasCastle) return true;
+            return base.VisibleCore(actor, tile);
+        }
 
         public override ActionCost Cost(ActionArgs args) => 2;
 

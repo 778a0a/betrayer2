@@ -17,6 +17,10 @@ partial class PersonalActions
         public override string Label => L["奪取"];
         public override string Description => L["城を攻撃して勢力を旗揚げします。"];
         protected override ActionRequirements Requirements => ActionRequirements.Free;
+        protected override bool VisibleCore(Character actor, GameMapTile tile)
+        {
+            return tile.HasCastle;
+        }
 
         public override ActionCost Cost(ActionArgs args) => 5;
 

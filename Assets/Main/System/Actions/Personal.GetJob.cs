@@ -17,6 +17,10 @@ partial class PersonalActions
         public override string Label => L["仕官"];
         public override string Description => L["既存勢力に仕官します。"];
         protected override ActionRequirements Requirements => ActionRequirements.Free;
+        protected override bool VisibleCore(Character actor, GameMapTile tile)
+        {
+            return tile.HasCastle;
+        }
 
         public override ActionCost Cost(ActionArgs args) => 5;
 

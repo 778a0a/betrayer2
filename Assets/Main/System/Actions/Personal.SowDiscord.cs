@@ -17,7 +17,7 @@ partial class PersonalActions
     {
         public override string Label => L["離間"];
         public override string Description => L["キャラクターの忠誠を下げます。"];
-        protected override ActionRequirements Requirements => ActionRequirements.NotMovingAndNotFree;
+        protected override ActionRequirements Requirements => ActionRequirements.NotMoving;
 
         public override ActionCost Cost(ActionArgs args) => 10;
 
@@ -48,11 +48,15 @@ partial class PersonalActions
         protected override bool VisibleCore(Character actor, GameMapTile tile)
         {
             // タイルに城がない場合は非表示
-            if (tile.Castle == null) return false;
+            if (!tile.HasCastle) return false;
 
-            // 対象範囲外の場合は非表示
-            var targetCastles = GetTargetCastles(actor);
-            if (!targetCastles.Contains(tile.Castle)) return false;
+            // 放浪時は常に表示、そうでなければ自城周辺のみ。
+            if (!actor.IsFree)
+            {
+                // 対象範囲外の場合は非表示
+                var targetCastles = GetTargetCastles(actor);
+                if (!targetCastles.Contains(tile.Castle)) return false;
+            }
 
             return true;
         }
