@@ -94,7 +94,7 @@ public record CharacterInBattle(
         foreach (var s in Character.Soldiers)
         {
             if (!s.IsAlive) continue;
-            var amount = Random.value * 2;
+            var amount = (Random.value * 2).MinWith(Character.Intelligence / 100f);
             s.HpFloat = (s.HpFloat + amount).MaxWith(s.MaxHp);
         }
         TacticsGauge -= 66;
