@@ -32,27 +32,18 @@ partial class PersonalActions
             
             if (actor.IsPlayer)
             {
-                var allCastles = GameCore.Instance.World.Castles.ToList();
-                
-                // プレーヤーに仕官先の城を選択させる。
-                args.targetCastle = (await UI.SelectCastleScreen.SelectTile(
-                    "仕官先の城を選択してください",
-                    "キャンセル",
-                    allCastles,
-                    _ => true,
-                    async tile =>
-                    {
-                        var country = tile.Country;
-                        var castle = tile.Castle;
-                        return await MessageWindow.ShowOkCancel($"{country.Ruler.Name}軍の{castle.Name}城に仕官します。\nよろしいですか？");
-                    }
-                ))?.Castle;
+                var tile = args.selectedTile;
+                var country = tile.Country;
+                var castle = tile.Castle;
+                if (country == null || castle == null) return;
 
-                if (args.targetCastle == null)
+                var ok = await MessageWindow.ShowOkCancel($"{country.Ruler.Name}軍の{castle.Name}城に仕官します。\nよろしいですか？");
+                if (!ok)
                 {
                     Debug.Log("城選択がキャンセルされました。");
                     return;
                 }
+                args.targetCastle = castle;
             }
             else
             {
