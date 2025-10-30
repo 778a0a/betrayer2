@@ -52,7 +52,7 @@ public partial class ActionScreen : IScreen
             ActionButtonHelper.Personal(a => a.SowDiscord),
             ActionButtonHelper.Personal(a => a.Rebel),
             ActionButtonHelper.Personal(a => a.Resign),
-            ActionButtonHelper.Personal(a => a.Relocate),
+            //ActionButtonHelper.Personal(a => a.Relocate),
             ActionButtonHelper.Personal(a => a.Seize),
             ActionButtonHelper.Personal(a => a.GetJob),
         };
