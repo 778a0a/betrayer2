@@ -278,6 +278,8 @@ partial class PersonalActions
             prob += actor.Power > actor.Country.Ruler.Power ? 0.2f : -0.05f;
             prob += actor.TotalCapability > member.TotalCapability ? 0.1f : -0.05f;
             prob += actor.TotalCapability > actor.Country.Ruler.TotalCapability ? 0.2f : -0.05f;
+            prob += actor.Contribution > actor.Country.Ruler.Contribution ? 0.15f : -0.05f;
+            prob += actor.Prestige > actor.Country.Ruler.Prestige ? 0.15f : -0.05f;
 
             // 忠実さ
             if (member.Fealty > 7) prob *= 1f / (member.Fealty - 6);
