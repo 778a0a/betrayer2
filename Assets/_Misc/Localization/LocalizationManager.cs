@@ -75,7 +75,7 @@ public class LocalizationManager : MonoBehaviour
     public string this[string key, params object[] args] => T(key, args);
     public string T(string key, params object[] args)
     {
-        key = key.Replace("\n", "\\n");
+        //key = key.Replace("\n", "\\n");
 
         //var table = ltable.GetTable();
         //var entry = table[key];
