@@ -54,7 +54,12 @@ public partial class SaveDataListWindowListItem
         SaveDataLisItemRoot.style.display = DisplayStyle.Flex;
         buttonNoData.style.display = DisplayStyle.None;
 
-        imageCharacter.image = FaceImages.GetImage(data.FaceImageId);
+        var isWatchMode = data.FaceImageId == -1;
+        imageCharacter.style.visibility = Util.Visible(!isWatchMode);
+        if (!isWatchMode)
+        {
+            imageCharacter.image = FaceImages.GetImage(data.FaceImageId);
+        }
         labelTitle.text = data.Title;
         labelName.text = data.Name;
         labelOrderIndex.text = data.OrderIndex;

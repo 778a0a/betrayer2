@@ -40,15 +40,15 @@ public class SaveDataSummary
     {
         var world = core.World;
         savedTime = savedTime == default ? DateTime.Now : savedTime;
-        var chara = world.Player ?? world.Characters.First();
+        var chara = world.Player;
         var summary = new SaveDataSummary
         {
-            FaceImageId = chara.Id,
-            Title = chara.GetTitle(),
-            Name = chara.Name,
-            OrderIndex = chara.IsFree ? "--" : (chara.OrderIndex + 1).ToString(),
-            Castle = chara.IsFree ? "--" : chara.Castle.Name,
-            SoldierCount = chara.Soldiers.SoldierCount,
+            FaceImageId = chara?.Id ?? -1,
+            Title = chara?.GetTitle() ?? "観戦モード",
+            Name = chara?.Name ?? "",
+            OrderIndex = (chara?.IsFree ?? true) ? "--" : (chara.OrderIndex + 1).ToString(),
+            Castle = (chara?.IsFree ?? true) ? "" : chara.Castle.Name,
+            SoldierCount = chara?.Soldiers?.SoldierCount ?? 0,
             GameDate = world.GameDate.ToString(),
             ScenarioName = core.ScenarioName,
             SaveDataSlotNo = core.SaveDataSlotNo,
