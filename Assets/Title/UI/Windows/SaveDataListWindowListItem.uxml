@@ -7,43 +7,44 @@
 
                 <ui:VisualElement style="flex-grow: 0; flex-direction: row;">
                     <ui:VisualElement style="flex-grow: 0; flex-direction: row;">
-                        <ui:Label text="君主" name="labelTitle" style="font-size: 38px; align-items: stretch; align-self: stretch; -unity-text-align: middle-left;" />
-                        <ui:Label text="ハイペリオン" name="labelName" style="font-size: 38px; align-items: stretch; align-self: stretch; -unity-text-align: middle-left;" />
+                        <ui:Label text="君主" name="labelTitle" style="font-size: 40px; align-items: stretch; align-self: stretch; -unity-text-align: middle-left;" />
+                        <ui:Label text="フランチェスカ" name="labelName" style="font-size: 40px; align-items: stretch; align-self: stretch; -unity-text-align: middle-left;" />
                     </ui:VisualElement>
 
                     <ui:VisualElement style="flex-grow: 0; flex-direction: row; margin-left: 10px;">
-                        <ui:Label text="兵数:" name="labelSoldiersCaption" style="font-size: 28px; align-items: stretch; align-self: stretch; -unity-text-align: middle-left;" />
-                        <ui:Label text="8888" name="labelSoldiers" style="font-size: 30px; align-items: stretch; align-self: stretch; -unity-text-align: middle-left;" />
+                        <ui:Label text="兵数:" name="labelSoldiersCaption" style="font-size: 35px; align-items: stretch; align-self: stretch; -unity-text-align: middle-left;" />
+                        <ui:Label text="8888" name="labelSoldiers" style="font-size: 35px; align-items: stretch; align-self: stretch; -unity-text-align: middle-left;" />
                     </ui:VisualElement>
                     <ui:VisualElement style="flex-grow: 0; flex-direction: row; margin-left: 10px;">
-                        <ui:Label text="功績:" name="labelContributionCaption" style="font-size: 28px; align-items: stretch; align-self: stretch; -unity-text-align: middle-left;" />
-                        <ui:Label text="88888" name="labelContribution" style="font-size: 30px; align-items: stretch; align-self: stretch; -unity-text-align: middle-left;" />
+                        <ui:Label text="功績:" name="labelContributionCaption" style="font-size: 35px; align-items: stretch; align-self: stretch; -unity-text-align: middle-left;" />
+                        <ui:Label text="88888" name="labelContribution" style="font-size: 35px; align-items: stretch; align-self: stretch; -unity-text-align: middle-left;" />
                     </ui:VisualElement>
                     <ui:VisualElement style="flex-grow: 0; flex-direction: row; margin-left: 10px;">
-                        <ui:Label text="名声:" name="labelPrestigeCaption" style="font-size: 28px; align-items: stretch; align-self: stretch; -unity-text-align: middle-left;" />
-                        <ui:Label text="88888" name="labelPrestige" style="font-size: 30px; align-items: stretch; align-self: stretch; -unity-text-align: middle-left;" />
+                        <ui:Label text="名声:" name="labelPrestigeCaption" style="font-size: 35px; align-items: stretch; align-self: stretch; -unity-text-align: middle-left;" />
+                        <ui:Label text="88888" name="labelPrestige" style="font-size: 35px; align-items: stretch; align-self: stretch; -unity-text-align: middle-left;" />
+                    </ui:VisualElement>
+
+                </ui:VisualElement>
+
+                <ui:VisualElement style="flex-grow: 0; flex-direction: row;">
+                    <ui:VisualElement style="flex-grow: 0; flex-direction: row; margin-left: 0px; margin-right: 0px;">
+                        <ui:Label text="888/88/88" name="labelGameDate" style="font-size: 30px; align-items: stretch; align-self: stretch; -unity-text-align: middle-left;" />
+                    </ui:VisualElement>
+                    <ui:VisualElement style="flex-grow: 0; flex-direction: row; margin-left: 10px;">
+                        <ui:Label text="戦略" name="labelPhase" style="-unity-font-style: bold; font-size: 30px; align-items: stretch; align-self: stretch; -unity-text-align: middle-left;" />
+                    </ui:VisualElement>
+                    <ui:VisualElement style="flex-grow: 0; flex-direction: row; margin-left: 10px;">
+                        <ui:Label text="クリスタルウォーター" name="labelCastle" style="font-size: 30px; align-items: stretch; align-self: stretch; -unity-text-align: middle-left;" />
                     </ui:VisualElement>
 
                     <ui:VisualElement style="flex-grow: 1;"></ui:VisualElement>
 
                     <ui:VisualElement style="flex-grow: 0; flex-direction: row; margin-left: 10px;">
-                        <ui:Label text="シナリオ1" name="labelScenarioName" style="font-size: 28px; align-items: stretch; align-self: stretch; -unity-text-align: middle-left; margin-right: 8px;" />
-                    </ui:VisualElement>
-                </ui:VisualElement>
-
-                <ui:VisualElement style="flex-grow: 0; flex-direction: row;">
-                    <ui:VisualElement style="flex-grow: 0; flex-direction: row; margin-left: 0px; margin-right: 0px;">
-                        <ui:Label text="888/88/88" name="labelGameDate" style="font-size: 35px; align-items: stretch; align-self: stretch; -unity-text-align: middle-left;" />
                     </ui:VisualElement>
                     <ui:VisualElement style="flex-grow: 0; flex-direction: row; margin-left: 10px;">
-                        <ui:Label text="戦略" name="labelPhase" style="-unity-font-style: bold; font-size: 35px; align-items: stretch; align-self: stretch; -unity-text-align: middle-left;" />
-                    </ui:VisualElement>
-                    <ui:VisualElement style="flex-grow: 1; flex-direction: row; margin-left: 10px;">
-                        <ui:Label text="クリスタルウォーター" name="labelCastle" style="font-size: 35px; align-items: stretch; align-self: stretch; -unity-text-align: middle-left;" />
-                    </ui:VisualElement>
-                    <ui:VisualElement style="flex-grow: 0; flex-direction: row; margin-left: 10px;">
-                        <ui:Label text="" name="labelSavedTimeCaption" style="font-size: 30px; align-items: stretch; align-self: stretch; -unity-text-align: middle-left;" />
-                        <ui:Label text="2024-02-01 18:40" name="labelSavedTime" style="font-size: 30px; align-items: stretch; align-self: stretch; -unity-text-align: middle-left; margin-right: 8px;" />
+                        <ui:Label text="シナリオ1" name="labelScenarioName" style="font-size: 28px; align-items: stretch; align-self: stretch; -unity-text-align: middle-left; margin-right: 5px;" />
+                        <ui:Label text="" name="labelSavedTimeCaption" style="font-size: 28px; align-items: stretch; align-self: stretch; -unity-text-align: middle-left;" />
+                        <ui:Label text="2024-02-01 18:40" name="labelSavedTime" style="font-size: 28px; align-items: stretch; align-self: stretch; -unity-text-align: middle-left; margin-right: 5px;" />
                     </ui:VisualElement>
                 </ui:VisualElement>
             </ui:VisualElement>
