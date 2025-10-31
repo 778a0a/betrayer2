@@ -266,17 +266,18 @@ partial class PersonalActions
             // 忠誠90以下なら1あたり4%増加
             if (member.Loyalty < 90) prob += (90 - member.Loyalty) * 0.04f;
 
+            // 首謀者が国主で、memberのBossまたは隣接城のBossなら確率を上げる
+            if (actor.IsRegionBoss && (actor == member.Castle.Boss || (actor.Castle.Neighbors.Contains(member.Castle) && actor.OrderIndex < member.OrderIndex && !member.IsImportant)))
+            {
+                prob = prob.MinWith(0);
+                prob += 0.5f;
+            }
+
             // 首謀者が強いなら確率を上げる。
             prob += actor.Power > member.Power ? 0.1f : -0.05f;
             prob += actor.Power > actor.Country.Ruler.Power ? 0.2f : -0.05f;
             prob += actor.TotalCapability > member.TotalCapability ? 0.1f : -0.05f;
             prob += actor.TotalCapability > actor.Country.Ruler.TotalCapability ? 0.2f : -0.05f;
-
-            // 首謀者が国主で、memberのBossまたは隣接城のBossなら確率を上げる
-            if (actor.IsRegionBoss && (actor == member.Castle.Boss || actor.Castle.Neighbors.Contains(member.Castle)))
-            {
-                prob += 0.3f;
-            }
 
             // 忠実さ
             if (member.Fealty > 7) prob *= 1f / (member.Fealty - 6);
