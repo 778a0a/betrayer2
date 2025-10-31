@@ -77,6 +77,16 @@ partial class StrategyActions
                 var prob = (rel - actorAllyCount * 10) / (1 + targetAllyCount) / (tooFar ? 2 : 1) / (rel <= 50 ? 5 : 1) / 100;
                 Debug.Log($"{actor.Name}->{target.Ruler.Name} 同盟受諾確率: {prob} ({rel})");
                 accepted = prob.Chance();
+                // ただし、他に攻撃できる国がなくなる場合は拒否する。
+                if (accepted)
+                {
+                    var attackableCount = World.Countries.Where(c => c != actor.Country && c != target).Count(c => target.IsAttackable(c));
+                    if (attackableCount == 0)
+                    {
+                        accepted = false;
+                        Debug.Log($"{target.Ruler.Name} は攻撃可能な国がなくなるため同盟を拒否しました。");
+                    }
+                }
             }
 
             // 拒否された場合は関係悪化して終了。

@@ -461,18 +461,33 @@ public class ForceManager : IReadOnlyList<Force>
                 m.Loyalty = 0;
             }
 
+            // 滅亡メッセージを表示する。
+            if (SystemSetting.Instance.ShowCountryEliminatedNotification || playerCountryEliminated)
+            {
+                await MessageWindow.Show($"{oldCountry.Ruler.Name}軍が\n{force.Country.Ruler.Name}軍によって滅ぼされました。");
+            }
+
+            // 残った全ての国同士が同盟関係の場合は、決着をつけるために同盟を解消する。
+            var allCountryAllyed = world.Countries.All(c => world.Countries.All(c2 => c == c2 || c.IsAlly(c2)));
+            if (allCountryAllyed)
+            {
+                foreach (var c in world.Countries)
+                {
+                    foreach (var c2 in world.Countries)
+                    {
+                        if (c == c2) continue;
+                        c.SetRelation(c2, 40);
+                    }
+                }
+                await MessageWindow.Show($"敵対国が存在しなくなったため、同盟関係が解消されました。");
+            }
+
             // 滅亡させた国と隣接国との関係を悪化させる。
             foreach (var c in force.Country.Neighbors)
             {
                 if (c.IsAlly(force.Country)) continue;
                 var rel = c.GetRelation(force.Country);
                 c.SetRelation(force.Country, rel - 10);
-            }
-
-            // 滅亡メッセージを表示する。
-            if (SystemSetting.Instance.ShowCountryEliminatedNotification || playerCountryEliminated)
-            {
-                await MessageWindow.Show($"{oldCountry.Ruler.Name}軍が\n{force.Country.Ruler.Name}軍によって滅ぼされました。");
             }
         }
         // まだ他の城がある場合は、一番近くの城に所属を移動する。
