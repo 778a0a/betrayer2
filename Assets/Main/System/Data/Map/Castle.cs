@@ -221,7 +221,14 @@ public class Castle : ICountryEntity, IMapEntity
     /// <summary>
     /// 方針
     /// </summary>
+    [JsonIgnore]
     public CastleObjective Objective { get; set; } = new CastleObjective.None();
+    public string ObjectiveText
+    {
+        get => Objective.ToCsvColumn();
+        set => Objective = CastleObjective.Parse(value);
+    }
+
     /// <summary>
     /// 出撃方針
     /// </summary>
@@ -252,9 +259,44 @@ public enum CastleDeployPolicy
     Prohibited,
 }
 
-[JsonObject(ItemTypeNameHandling = TypeNameHandling.Auto)]
 public record CastleObjective
 {
+    public static CastleObjective Parse(string csvColumn)
+    {
+        var cols = csvColumn.Split(':');
+        var type = cols[0];
+        switch (type)
+        {
+            case nameof(None):
+                return new None();
+            case nameof(Attack):
+                return new Attack { TargetCastleName = cols[1] };
+            case nameof(Train):
+                return new Train();
+            case nameof(Fortify):
+                return new Fortify();
+            case nameof(Develop):
+                return new Develop();
+            case nameof(Transport):
+                return new Transport { TargetCastleName = cols[1] };
+            default:
+                return new None();
+        }
+    }
+    public string ToCsvColumn()
+    {
+        return this switch
+        {
+            None _ => nameof(None),
+            Attack a => $"{nameof(Attack)}:{a.TargetCastleName}",
+            Train _ => nameof(Train),
+            Fortify _ => nameof(Fortify),
+            Develop _ => nameof(Develop),
+            Transport t => $"{nameof(Transport)}:{t.TargetCastleName}",
+            _ => nameof(None),
+        };
+    }
+
     public static List<CastleObjective> Candidates(Castle castle)
     {
         var list = new List<CastleObjective>
