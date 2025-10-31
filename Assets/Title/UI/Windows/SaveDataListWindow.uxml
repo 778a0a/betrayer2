@@ -1,7 +1,7 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <ui:Template name="SaveDataListWindowListItem" src="project://database/Assets/Title/UI/Windows/SaveDataListWindowListItem.uxml" />
     <Style src="project://database/Assets/Title/UI/Windows/WindowStyle.uss" />
-    <ui:VisualElement style="flex-grow: 1; align-items: center; justify-content: center; bottom: 0;">
+    <ui:VisualElement style="flex-grow: 1; align-items: center; justify-content: flex-start; bottom: 0;">
         <ui:VisualElement name="Border" style="flex-grow: 0; background-color: rgb(0, 9, 25); padding-top: 3px; padding-right: 3px; padding-bottom: 3px; padding-left: 3px;">
             <ui:Label text="セーブデータ一覧" name="labelSaveDataListWindowTitle" style="color: rgb(255, 255, 255); padding-left: 3px" />
             <ui:Button text="×" name="CloseButton" style="position: absolute; align-items: stretch; align-self: auto; right: 2px; width: 50px; height: 50px; display: none;" />
