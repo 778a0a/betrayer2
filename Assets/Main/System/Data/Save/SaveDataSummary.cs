@@ -14,9 +14,10 @@ public class SaveDataSummary
     public int FaceImageId { get; set; }
     public string Title { get; set; }
     public string Name { get; set; }
-    public string OrderIndex { get; set; }
+    public string SoldierCount { get; set; }
+    public string Contribution { get; set; }
+    public string Prestige { get; set; }
     public string Castle { get; set; }
-    public int SoldierCount { get; set; }
     public string GameDate { get; set; }
     public string ScenarioName { get; set; }
     public int SaveDataSlotNo { get; set; }
@@ -46,9 +47,10 @@ public class SaveDataSummary
             FaceImageId = chara?.Id ?? -1,
             Title = chara?.GetTitle() ?? "観戦モード",
             Name = chara?.Name ?? "",
-            OrderIndex = (chara?.IsFree ?? true) ? "--" : (chara.OrderIndex + 1).ToString(),
+            SoldierCount = chara?.Soldiers?.SoldierCount.ToString() ?? "--",
+            Contribution = chara?.Contribution.ToString() ?? "--",
+            Prestige = chara?.Prestige.ToString() ?? "--",
             Castle = (chara?.IsFree ?? true) ? "" : chara.Castle.Name,
-            SoldierCount = chara?.Soldiers?.SoldierCount ?? 0,
             GameDate = world.GameDate.ToString(),
             ScenarioName = core.ScenarioName,
             SaveDataSlotNo = core.SaveDataSlotNo,

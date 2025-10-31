@@ -62,9 +62,10 @@ public partial class SaveDataListWindowListItem
         }
         labelTitle.text = data.Title;
         labelName.text = data.Name;
-        labelOrderIndex.text = data.OrderIndex;
+        labelSoldiers.text = data.SoldierCount;
+        labelContribution.text = data.Contribution;
+        labelPrestige.text = data.Prestige;
         labelCastle.text = data.Castle;
-        labelSoldiers.text = data.SoldierCount.ToString();
         labelScenarioName.text = data.ScenarioName;
         labelGameDate.text = data.GameDate;
         labelSavedTime.text = data.SavedTime.ToString();

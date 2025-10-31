@@ -506,24 +506,24 @@ public partial class GameCore
                 .ToList();
             var soldierCountOrder = soldierCountList.IndexOf(player) + 1;
 
-            var prestigeOrderList = World.Characters
-                .OrderByDescending(c => c.Prestige)
-                .ThenBy(c => c.IsPlayer ? 0 : 1)
-                .ToList();
-            var prestigeOrder = prestigeOrderList.IndexOf(player) + 1;
-
             var contributionOrderList = World.Characters
                 .OrderByDescending(c => c.Contribution)
                 .ThenBy(c => c.IsPlayer ? 0 : 1)
                 .ToList();
             var contributionOrder = contributionOrderList.IndexOf(player) + 1;
 
+            var prestigeOrderList = World.Characters
+                .OrderByDescending(c => c.Prestige)
+                .ThenBy(c => c.IsPlayer ? 0 : 1)
+                .ToList();
+            var prestigeOrder = prestigeOrderList.IndexOf(player) + 1;
+
             scoreMessage = string.Join("\n", new[]
             {
                 $"あなた: {player.Name}",
                 $"最終兵力: {player.Soldiers.SoldierCountMax:0} ({soldierCountOrder}位)",
-                $"最終名声: {player.Prestige:0} ({prestigeOrder}位)",
                 $"最終功績: {player.Contribution:0} ({contributionOrder}位)",
+                $"最終名声: {player.Prestige:0} ({prestigeOrder}位)",
             });
         }
 

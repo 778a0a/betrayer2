@@ -14,13 +14,17 @@ using UnityEngine.UIElements;
 
 public partial class SaveDataListWindowListItem
 {
-    public Label labelOrderIndexCaption { get; private set; }
-
-    public Label labelOrderIndex { get; private set; }
-
     public Label labelSoldiersCaption { get; private set; }
 
     public Label labelSoldiers { get; private set; }
+
+    public Label labelContributionCaption { get; private set; }
+
+    public Label labelContribution { get; private set; }
+
+    public Label labelPrestigeCaption { get; private set; }
+
+    public Label labelPrestige { get; private set; }
 
     public Label labelScenarioName { get; private set; }
 
@@ -55,10 +59,12 @@ public partial class SaveDataListWindowListItem
     public SaveDataListWindowListItem(VisualElement root)
     {
         Root = root;
-        labelOrderIndexCaption = Root?.Q<Label>("labelOrderIndexCaption");
-        labelOrderIndex = Root?.Q<Label>("labelOrderIndex");
         labelSoldiersCaption = Root?.Q<Label>("labelSoldiersCaption");
         labelSoldiers = Root?.Q<Label>("labelSoldiers");
+        labelContributionCaption = Root?.Q<Label>("labelContributionCaption");
+        labelContribution = Root?.Q<Label>("labelContribution");
+        labelPrestigeCaption = Root?.Q<Label>("labelPrestigeCaption");
+        labelPrestige = Root?.Q<Label>("labelPrestige");
         labelScenarioName = Root?.Q<Label>("labelScenarioName");
         labelTitle = Root?.Q<Label>("labelTitle");
         labelName = Root?.Q<Label>("labelName");
@@ -78,10 +84,12 @@ public partial class SaveDataListWindowListItem
     public void ReinitializeComponent(VisualElement root)
     {
         Root = root;
-        labelOrderIndexCaption = Root?.Q<Label>("labelOrderIndexCaption");
-        labelOrderIndex = Root?.Q<Label>("labelOrderIndex");
         labelSoldiersCaption = Root?.Q<Label>("labelSoldiersCaption");
         labelSoldiers = Root?.Q<Label>("labelSoldiers");
+        labelContributionCaption = Root?.Q<Label>("labelContributionCaption");
+        labelContribution = Root?.Q<Label>("labelContribution");
+        labelPrestigeCaption = Root?.Q<Label>("labelPrestigeCaption");
+        labelPrestige = Root?.Q<Label>("labelPrestige");
         labelScenarioName = Root?.Q<Label>("labelScenarioName");
         labelTitle = Root?.Q<Label>("labelTitle");
         labelName = Root?.Q<Label>("labelName");
