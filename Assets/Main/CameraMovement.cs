@@ -67,13 +67,13 @@ public class CameraMovement : MonoBehaviour
         Vector3 pos = transform.position;
         var mousePosition = Mouse.current.position.value;
 
-        // マウス中央ボタンのドラッグ処理
-        if (Mouse.current.middleButton.wasPressedThisFrame)
+        // マウス右ボタンのドラッグ処理（中央ボタンが良かったけどWebGLだとブラウザの動作と競合して問題があった）
+        if (Mouse.current.rightButton.wasPressedThisFrame)
         {
             isDragging = true;
             lastMousePosition = mousePosition;
         }
-        else if (Mouse.current.middleButton.wasReleasedThisFrame)
+        else if (Mouse.current.rightButton.wasReleasedThisFrame)
         {
             isDragging = false;
         }

@@ -97,7 +97,7 @@ public class Booter : MonoBehaviour
                 MessageWindow.Show(
                     "操作キャラを選択してください。\n\n" +
                     "<color=#aaa>※マップ操作について<size=12>\n\n</size>" +
-                    "・マウス中央ボタンドラッグでスクロールできます\n" +
+                    "・右クリックしながらドラッグでスクロールできます\n" +
                     "・マウスホイールでズームできます\n" +
                     "</color>");
             }
