@@ -9,14 +9,15 @@ public partial class CharacterInfoSoldierIcon
         if (s == null || s.IsEmptySlot)
         {
             imageSoldier.image = Static.GetEmptySoldierImage();
+            imageSoldier.style.opacity = 0.0f;
             labelLevel.text = "--";
             labelHp.text = "--";
             HPBar.style.visibility = Visibility.Hidden;
             EXPBar.style.visibility = Visibility.Hidden;
             return;
         }
-
         imageSoldier.image = Static.GetSoldierImage(s.Level);
+        imageSoldier.style.opacity = 1.0f;
         labelLevel.text = s.Level.ToString();
         labelHp.text = s.Hp.ToString();
         HPBar.style.visibility = Visibility.Visible;
