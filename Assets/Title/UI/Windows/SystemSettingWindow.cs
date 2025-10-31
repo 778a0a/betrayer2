@@ -13,10 +13,7 @@ public partial class SystemSettingWindow
         Root.style.display = DisplayStyle.None;
 
         // WebGLでなおかつスマホの場合のみ画面回転設定を表示
-        var isWebGLMobile = Application.platform == RuntimePlatform.WebGLPlayer && Application.isMobilePlatform;
-        OrientationContainer.style.display = Util.Display(isWebGLMobile);
-
-        if (isWebGLMobile)
+        if (SystemSetting.IsWebGLMobile)
         {
             var orientations = Util.EnumArray<OrientationSetting>();
             comboOrientation.index = Array.IndexOf(orientations, Setting.Orientation);
@@ -85,6 +82,10 @@ public class SystemSetting
 {
     public static SystemSetting Instance { get; } = new();
 
+    public static bool IsWebGLMobile =>
+        Application.platform == RuntimePlatform.WebGLPlayer &&
+        Application.isMobilePlatform;
+
     public OrientationSetting Orientation { get => _Orientation; set => SetValue(ref _Orientation, value); }
     private OrientationSetting _Orientation = (OrientationSetting)PlayerPrefs.GetInt(nameof(Orientation), (int)OrientationSetting.Auto);
 
@@ -107,22 +108,30 @@ public class SystemSetting
 
     public void ApplyOrientation()
     {
-        var orientation = Orientation;
-        switch (orientation)
+        try
         {
-            case OrientationSetting.Auto:
-                Screen.orientation = ScreenOrientation.AutoRotation;
-                Screen.autorotateToLandscapeLeft = true;
-                Screen.autorotateToLandscapeRight = true;
-                Screen.autorotateToPortrait = false;
-                Screen.autorotateToPortraitUpsideDown = false;
-                break;
-            case OrientationSetting.LandscapeLeft:
-                Screen.orientation = ScreenOrientation.LandscapeLeft;
-                break;
-            case OrientationSetting.LandscapeRight:
-                Screen.orientation = ScreenOrientation.LandscapeRight;
-                break;
+            if (!IsWebGLMobile) return;
+            var orientation = Orientation;
+            switch (orientation)
+            {
+                case OrientationSetting.Auto:
+                    Screen.orientation = ScreenOrientation.AutoRotation;
+                    Screen.autorotateToLandscapeLeft = true;
+                    Screen.autorotateToLandscapeRight = true;
+                    Screen.autorotateToPortrait = false;
+                    Screen.autorotateToPortraitUpsideDown = false;
+                    break;
+                case OrientationSetting.LandscapeLeft:
+                    Screen.orientation = ScreenOrientation.LandscapeLeft;
+                    break;
+                case OrientationSetting.LandscapeRight:
+                    Screen.orientation = ScreenOrientation.LandscapeRight;
+                    break;
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError($"画面回転設定に失敗しました: {ex}");
         }
     }
 
