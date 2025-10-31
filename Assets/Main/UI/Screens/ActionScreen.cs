@@ -266,6 +266,11 @@ public partial class ActionScreen : IScreen
         currentTile = Core.World.Map.Tiles.FirstOrDefault(t => !t.HasCastle);
     }
 
+    public void SetCurrentTileOnHired(Castle castle)
+    {
+        currentTile = castle.Tile;
+    }
+
     public void ActivatePhase(Character chara, Phase phase)
     {
         CurrentPhase = phase;

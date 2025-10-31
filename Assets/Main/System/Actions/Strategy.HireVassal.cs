@@ -77,6 +77,9 @@ partial class StrategyActions
                     Debug.Log($"{args.targetCharacter.Name} は仕官の誘いを断りました。");
                     return;
                 }
+                UI.ActionScreen.SetCurrentTileOnHired(actor.Castle);
+                World.Map.ScrollTo(actor.Castle.Tile).Forget();
+                actor.Castle.Tile.UI.SetCellBorderSeconds(0.5f);
             }
 
             var target = args.targetCharacter;
