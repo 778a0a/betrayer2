@@ -31,6 +31,9 @@ public partial class GameCore
     public Phase? RestoringPhase { get; set; } = null;
     private bool IsRestoring => RestoringPhase != null;
 
+    private bool ignoreError = false;
+    private bool isErrorOccurred = false;
+
     private PlayerTitle prevPlayerTitle;
     private PlayerTitle GetPlayerTitle(Character c)
     {
@@ -149,7 +152,36 @@ public partial class GameCore
 
             while (true)
             {
-                await Tick();
+                try
+                {
+                    await Tick();
+                }
+                catch (Exception ex)
+                {
+                    // とりあえず日付は進める。
+                    World.GameDate++;
+                    Debug.LogError($"Tickエラー: {ex}");
+                    var isFirstError = !isErrorOccurred;
+                    isErrorOccurred = true;
+                    if (!ignoreError)
+                    {
+                        var yes = await MessageWindow.ShowYesNo(
+                            $"<color=red>内部エラーが発生しました: {ex.Message}\n" +
+                            $"ゲームの状態が破損した可能性があります。</color>\n\n" +
+                            $"タイトル画面に戻りますか？\n" +
+                            $"");
+                        if (yes)
+                        {
+                            _ = MessageWindow.Show("ゲーム終了中...");
+                            TitleSceneManager.LoadScene();
+                            return;
+                        }
+                        if (isFirstError)
+                        {
+                            ignoreError = await MessageWindow.ShowYesNo($"このゲーム中はエラーが起きても無視しますか？");
+                        }
+                    }
+                }
             }
         }
         catch (Exception ex)
