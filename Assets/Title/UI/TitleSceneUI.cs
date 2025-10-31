@@ -3,7 +3,6 @@ using System.Collections;
 using System.IO.Compression;
 using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.Localization.Settings;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
@@ -27,15 +26,15 @@ public partial class TitleSceneUI : MonoBehaviour
         {
             // uxmlを編集した場合は再初期化する。
             ReinitializeDocument();
-            StartCoroutine(Start());
+            Start();
         }
     }
 
-    private IEnumerator Start()
+    private void Start()
     {
         SystemSetting.Instance.ApplyOrientation();
 
-        yield return LocalizationSettings.InitializationOperation;
+        //yield return LocalizationSettings.InitializationOperation;
 
         InitializeNewGameWindow();
         InitializeTextBoxWindow();

@@ -1,13 +1,11 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Localization;
-using UnityEngine.Localization.Settings;
 using UnityEngine.UIElements;
 
 public class LocalizationManager : MonoBehaviour
 {
-    [SerializeField] private LocalizedStringTable ltable;
+    //[SerializeField] private LocalizedStringTable ltable;
 
     private readonly List<object> components = new();
 
@@ -19,57 +17,57 @@ public class LocalizationManager : MonoBehaviour
 
     public void Apply()
     {
-        var table = ltable.GetTable();
+        //var table = ltable.GetTable();
 
-        foreach (var c in components)
-        {
-            var typeName = c.GetType().Name;
-            var props = c.GetType().GetProperties();
-            foreach (var prop in props)
-            {
-                var entry = table[$"{typeName}.{prop.Name}"] ?? table[prop.Name];
-                if (entry == null)
-                {
-                    //Debug.Log($"[L.Apply] Key not found: {prop.Name} of {typeName}");
-                    continue;
-                }
-                var value = entry.LocalizedValue;
-                const string FontSizeSepalator = "@@";
-                var fontSize = -1;
-                if (value.Contains(FontSizeSepalator))
-                {
-                    var segs = value.Split(FontSizeSepalator);
-                    fontSize = int.Parse(segs[0]);
-                    value = segs[1];
-                }
+        //foreach (var c in components)
+        //{
+        //    var typeName = c.GetType().Name;
+        //    var props = c.GetType().GetProperties();
+        //    foreach (var prop in props)
+        //    {
+        //        var entry = table[$"{typeName}.{prop.Name}"] ?? table[prop.Name];
+        //        if (entry == null)
+        //        {
+        //            //Debug.Log($"[L.Apply] Key not found: {prop.Name} of {typeName}");
+        //            continue;
+        //        }
+        //        var value = entry.LocalizedValue;
+        //        const string FontSizeSepalator = "@@";
+        //        var fontSize = -1;
+        //        if (value.Contains(FontSizeSepalator))
+        //        {
+        //            var segs = value.Split(FontSizeSepalator);
+        //            fontSize = int.Parse(segs[0]);
+        //            value = segs[1];
+        //        }
 
-                var propValue = prop.GetValue(c);
-                switch (propValue)
-                {
-                    case string:
-                        prop.SetValue(c, value);
-                        //Debug.Log($"[L.Apply] {entry.Key} = {value}");
-                        break;
-                    case Label label:
-                        label.text = value;
-                        if (fontSize != -1) label.style.fontSize = fontSize;
-                        //Debug.Log($"[L.Apply] {entry.Key} = {value}");
-                        break;
-                    case Button button:
-                        button.text = value;
-                        if (fontSize != -1) button.style.fontSize = fontSize;
-                        //Debug.Log($"[L.Apply] {entry.Key} = {value}");
-                        break;
-                    case TextField textField:
-                        textField.textEdition.placeholder = value;
-                        if (fontSize != -1) textField.style.fontSize = fontSize;
-                        break;
-                    default:
-                        Debug.LogWarning($"[L.Apply] {entry.Key} is unknown type: {propValue.GetType()}");
-                        break;
-                }
-            }
-        }
+        //        var propValue = prop.GetValue(c);
+        //        switch (propValue)
+        //        {
+        //            case string:
+        //                prop.SetValue(c, value);
+        //                //Debug.Log($"[L.Apply] {entry.Key} = {value}");
+        //                break;
+        //            case Label label:
+        //                label.text = value;
+        //                if (fontSize != -1) label.style.fontSize = fontSize;
+        //                //Debug.Log($"[L.Apply] {entry.Key} = {value}");
+        //                break;
+        //            case Button button:
+        //                button.text = value;
+        //                if (fontSize != -1) button.style.fontSize = fontSize;
+        //                //Debug.Log($"[L.Apply] {entry.Key} = {value}");
+        //                break;
+        //            case TextField textField:
+        //                textField.textEdition.placeholder = value;
+        //                if (fontSize != -1) textField.style.fontSize = fontSize;
+        //                break;
+        //            default:
+        //                Debug.LogWarning($"[L.Apply] {entry.Key} is unknown type: {propValue.GetType()}");
+        //                break;
+        //        }
+        //    }
+        //}
     }
 
 
@@ -79,24 +77,25 @@ public class LocalizationManager : MonoBehaviour
     {
         key = key.Replace("\n", "\\n");
 
-        var table = ltable.GetTable();
-        var entry = table[key];
-        if (entry == null)
-        {
-            //Debug.LogWarning($"Key not found: {key}");
-            return string.Format(key, args);
-        }
-        var value = table[key].LocalizedValue;
-        value = value.Replace("\\n", "\n");
-        return string.Format(value, args);
+        //var table = ltable.GetTable();
+        //var entry = table[key];
+        //if (entry == null)
+        //{
+        //    //Debug.LogWarning($"Key not found: {key}");
+        //    return string.Format(key, args);
+        //}
+        //var value = table[key].LocalizedValue;
+        //value = value.Replace("\\n", "\n");
+        //return string.Format(value, args);
+        return string.Format(key, args);
     }
 
-    public string TranslateName(string name)
-    {
-        var locale = LocalizationSettings.SelectedLocale;
-        var isEn = locale.Identifier.Code == "en";
-        return isEn ? NameJaToEn(name) : NameEnToJa(name);
-    }
+    //public string TranslateName(string name)
+    //{
+    //    var locale = LocalizationSettings.SelectedLocale;
+    //    var isEn = locale.Identifier.Code == "en";
+    //    return isEn ? NameJaToEn(name) : NameEnToJa(name);
+    //}
 
     public string NameJaToEn(string nameJa)
     {

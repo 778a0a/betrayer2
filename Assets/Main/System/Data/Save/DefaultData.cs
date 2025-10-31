@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
-using UnityEngine.Localization.SmartFormat.Utilities;
 using Random = UnityEngine.Random;
 
 public class DefaultData
