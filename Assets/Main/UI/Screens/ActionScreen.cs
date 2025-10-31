@@ -194,7 +194,7 @@ public partial class ActionScreen : IScreen
         var isResign = action is PersonalActions.ResignAction or StrategyActions.ResignAction && chara.IsFree;
         var isIndependent = action is StrategyActions.BecomeIndependentAction a && !a.IsCancelled;
         var isRebel = action is PersonalActions.RebelAction a2 && !a2.IsCancelled;
-        var isSeize = action is PersonalActions.SeizeAction;
+        var isSeize = action is PersonalActions.SeizeAction a3 && a3.IsSucceeded;
         if (isResign || isIndependent || isRebel || isSeize)
         {
             Debug.Log("ターンを強制終了します。");

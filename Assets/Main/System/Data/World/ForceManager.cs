@@ -315,7 +315,7 @@ public class ForceManager : IReadOnlyList<Force>
     /// <summary>
     /// 攻城戦処理
     /// </summary>
-    private async ValueTask OnSiege(WorldData world, Force force, GameMapTile nextTile)
+    public async ValueTask<SeigeResult> OnSiege(WorldData world, Force force, GameMapTile nextTile)
     {
         var castle = nextTile.Castle;
         var enemy = castle.Members.Where(e => e.IsDefendable).RandomPickDefault();
@@ -344,12 +344,12 @@ public class ForceManager : IReadOnlyList<Force>
                 force.Character.SetIncapacitated();
                 Unregister(force);
                 //Debug.Log($"軍勢更新処理 攻城戦に敗北し、全滅しました。");
-                return;
+                return SeigeResult.DefenderWin;
             }
             var home = force.Character.Castle;
             force.SetDestination(home);
             //Debug.Log($"軍勢更新処理 攻城戦に敗北しました。撤退します。({force.TileMoveRemainingDays})");
-            return;
+            return SeigeResult.DefenderWin;
         }
 
         // 勝った場合
@@ -361,7 +361,7 @@ public class ForceManager : IReadOnlyList<Force>
         if (withdraw)
         {
             force.SetDestination(force.Character.Castle);
-            return;
+            return SeigeResult.AttackerWinButWithdraw;
         }
 
         // 防衛可能な敵が残っている場合は、移動進捗を半分リセットする。
@@ -370,14 +370,15 @@ public class ForceManager : IReadOnlyList<Force>
             force.ResetTileMoveProgress();
             force.TileMoveRemainingDays /= 2;
             //Debug.Log($"軍勢更新処理 攻城戦に勝利しました。({force}, {force.TileMoveRemainingDays})");
-            return;
+            return SeigeResult.AttackerWinButCastleNotFall;
         }
 
         // 防衛可能な敵が残っていない場合は城を占領する。
         await OnCastleFall(world, force, castle);
+        return SeigeResult.CastleFall;
     }
 
-    public async Task OnCastleFall(WorldData world, Force force, Castle castle)
+    public async ValueTask OnCastleFall(WorldData world, Force force, Castle castle)
     {
         // 駐在キャラの行動不能日数を再セットする。
         foreach (var e in castle.Members.Where(e => !e.IsMoving))
@@ -610,4 +611,12 @@ public class ForceManager : IReadOnlyList<Force>
     public int Count => forces.Count;
     IEnumerator<Force> IEnumerable<Force>.GetEnumerator() => forces.GetEnumerator();
     IEnumerator IEnumerable.GetEnumerator() => forces.GetEnumerator();
+}
+
+public enum SeigeResult
+{
+    CastleFall,
+    AttackerWinButWithdraw,
+    AttackerWinButCastleNotFall,
+    DefenderWin,
 }
