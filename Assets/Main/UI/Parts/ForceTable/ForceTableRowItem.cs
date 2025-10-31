@@ -50,6 +50,8 @@ public partial class ForceTableRowItem
 
     private void OnMouseDown(ClickEvent evt)
     {
+        if (evt.target == buttonChangeDestination) return;
+        if (evt.target == buttonBackToCastle) return;
         MouseDown?.Invoke(this, Force);
     }
 
