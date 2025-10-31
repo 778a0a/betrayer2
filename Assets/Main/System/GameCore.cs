@@ -121,6 +121,13 @@ public partial class GameCore
                 MainUI.ActionScreen.SetCurrentTileForFreeGameStart();
             }
 
+            // ゲーム開始時にすでに統一されていればゲームオーバー表示は無効にする。
+            if (World.Countries.Count == 1)
+            {
+                Debug.Log("すでに統一状態のため、ゲームオーバー処理は無効化します。");
+                isGameOverCalled = true;
+            }
+
             // ロードで開始した場合は、セーブした日の進行を復元する。
             if (IsRestoring)
             {
@@ -176,6 +183,12 @@ public partial class GameCore
         //    //var battle = BattleManager.PrepareFieldBattle(force, enemy);
         //    await battle.Do();
         //}
+
+        // 残り1国になればゲームクリア。
+        if (World.Countries.Count == 1)
+        {
+            await OnGameOver();
+        }
 
         // 月初の処理
         if (World.GameDate.Day == 1)
@@ -464,6 +477,74 @@ public partial class GameCore
         if (reduceds.Length > 0 || notPaids.Length > 0)
         {
             Debug.LogWarning($"{castle} 給料カット: [{reduceds}] 未払: [{notPaids}]");
+        }
+    }
+
+    private bool isGameOverCalled = false;
+    private async ValueTask OnGameOver()
+    {
+        if (isGameOverCalled) return;
+
+        isGameOverCalled = true;
+        var winner = World.Countries.First();
+        Debug.Log($"ゲーム終了 勝者: {winner} 日付: {World.GameDate}");
+
+        var player = World.Player;
+        var isWon = player != null && !player.IsFree && player.Country == winner;
+        if (isWon)
+        {
+            Debug.Log("ゲームクリアフラグON");
+            GameCleared = true;
+        }
+
+        var scoreMessage = "";
+        if (player != null)
+        {
+            var soldierCountList = World.Characters
+                .OrderByDescending(c => c.Soldiers.SoldierCountMax)
+                .ThenBy(c => c.IsPlayer ? 0 : 1)
+                .ToList();
+            var soldierCountOrder = soldierCountList.IndexOf(player) + 1;
+
+            var prestigeOrderList = World.Characters
+                .OrderByDescending(c => c.Prestige)
+                .ThenBy(c => c.IsPlayer ? 0 : 1)
+                .ToList();
+            var prestigeOrder = prestigeOrderList.IndexOf(player) + 1;
+
+            var contributionOrderList = World.Characters
+                .OrderByDescending(c => c.Contribution)
+                .ThenBy(c => c.IsPlayer ? 0 : 1)
+                .ToList();
+            var contributionOrder = contributionOrderList.IndexOf(player) + 1;
+
+            scoreMessage = string.Join("\n", new[]
+            {
+                $"あなた: {player.Name}",
+                $"最終兵力: {player.Soldiers.SoldierCountMax:0} ({soldierCountOrder}位)",
+                $"最終名声: {player.Prestige:0} ({prestigeOrder}位)",
+                $"最終功績: {player.Contribution:0} ({contributionOrder}位)",
+            });
+        }
+
+        // 見栄えのため日付を更新する。
+        MainUI.ActionScreen.labelGameDate.text = World.GameDate.ToString();
+
+        await MessageWindow.Show(string.Join("\n", new[]
+        {
+            $"ゲーム終了！",
+            $"最終日付: {World.GameDate}",
+            $"勝者: {winner.Ruler.Name}",
+            isWon ? $"あなたの勢力が統一を果たしました！" : $"あなたは統一を果たせませんでした...",
+            $"",
+            scoreMessage,
+        }).Trim());
+
+        var ok = await MessageWindow.ShowOkCancel("タイトル画面に戻りますか？\n\nキャンセルを押すとこのままゲームを続行します。");
+        if (ok)
+        {
+            _ = MessageWindow.Show("ゲーム終了中...", MessageBoxButton.None);
+            TitleSceneManager.LoadScene();
         }
     }
 }
