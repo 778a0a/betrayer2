@@ -18,6 +18,7 @@ public partial class AI
         if (country.GoldSurplus >= 0) return;
 
         // 序列が下位50%のなかで、もっとも非力な配下を解雇する。
+        var meanPower = country.Members.Average(m => m.Power);
         var members = country.Members.ToList();
         var halfCount = (int)Math.Ceiling(members.Count / 2f);
         var candidates = members
@@ -26,6 +27,8 @@ public partial class AI
             .Take(halfCount)
             .Where(m => !m.IsMoving)
             .Where(m => !m.IsImportant)
+            // 最後の1拠点の場合は忠実でまだ戦力になる場合も除外するようにしてみる。
+            .Where(m => country.Castles.Count > 1 || (!m.IsLoyal && m.Power < meanPower / 2))
             .ToList();
 
         // 最大3人まで解雇を試みる。
