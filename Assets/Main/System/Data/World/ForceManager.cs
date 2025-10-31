@@ -468,7 +468,7 @@ public class ForceManager : IReadOnlyList<Force>
             }
 
             // 残った全ての国同士が同盟関係の場合は、決着をつけるために同盟を解消する。
-            var allCountryAllyed = world.Countries.All(c => world.Countries.All(c2 => c == c2 || c.IsAlly(c2)));
+            var allCountryAllyed = world.Countries.Count > 1 && world.Countries.All(c => world.Countries.All(c2 => c == c2 || c.IsAlly(c2)));
             if (allCountryAllyed)
             {
                 foreach (var c in world.Countries)
