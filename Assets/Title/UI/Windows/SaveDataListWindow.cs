@@ -1,10 +1,16 @@
 using System;
+using System.Runtime.InteropServices;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 public partial class SaveDataListWindow
 {
+#if UNITY_WEBGL && !UNITY_EDITOR
+    [DllImport("__Internal")]
+    private static extern void ShowSaveDataTextArea(string saveData);
+#endif
+
     private TitleSceneUI uiTitle;
     private SaveDataManager saves;
     public LocalizationManager L => uiTitle.L;
@@ -55,9 +61,15 @@ public partial class SaveDataListWindow
                 try
                 {
                     var saveDataText = saves.LoadSaveDataText(slot.SlotNo);
+#if UNITY_WEBGL && !UNITY_EDITOR
+                    // WebGLの場合はJavaScript側でテキストエリアを表示
+                    ShowSaveDataTextArea(saveDataText.PlainText());
+#else
+                    // WebGL以外の場合は従来通りUnityのTextFieldを使用
                     uiTitle.ShowTextBoxWindow(
                         initialText: saveDataText.PlainText(),
                         isCopy: true);
+#endif
                 }
                 catch (Exception ex)
                 {
