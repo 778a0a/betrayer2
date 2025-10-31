@@ -52,7 +52,9 @@ partial class PersonalActions
                 < 5000 => 1.0f,
                 < 6000 => 0.75f,
                 < 7000 => 0.5f,
-                _ => 0.3f,
+                < 8000 => 0.3f,
+                < 9000 => 0.1f,
+                _ => 0.01f,
             };
             // 総投資額に加算する。
             chara.Castle.TotalInvestment += cost * adj * adjTerrain * adjLevel;

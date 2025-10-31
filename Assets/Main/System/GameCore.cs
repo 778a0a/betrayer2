@@ -366,7 +366,7 @@ public partial class GameCore
                 castle.Gold = 1000;
 
                 var adj = PersonalActions.InvestAction.TerrainAdjustment(castle);
-                castle.TotalInvestment += adj * 0.2f;
+                castle.TotalInvestment += amari * adj * (castle.TotalInvestment < 9000 ? 0.2f : 0f);
             }
         }
     }
