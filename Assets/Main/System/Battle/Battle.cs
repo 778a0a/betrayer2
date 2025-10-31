@@ -78,7 +78,7 @@ public class Battle
             UI.SetData(this);
 
             GameCore.Instance.World.Map.SetEnableHighlight(new[] { Atk.Tile, Def.Tile });
-            await GameCore.Instance.World.Map.ScrollTo(Def.Tile, speed: 20);
+            GameCore.Instance.World.Map.ScrollTo(Def.Tile, speed: 20).Forget();
             await Awaitable.WaitForSecondsAsync(0.4f);
 
             //if (DebugWatch)
