@@ -58,6 +58,13 @@ public partial class SystemSettingWindow
             Setting.ShowCountryEliminatedNotification = comboCountryEliminatedNotification.index == 1;
         });
 
+        // 画面端自動スクロールの初期化
+        comboEdgeScrollEnabled.index = Setting.EdgeScrollEnabled ? 1 : 0;
+        comboEdgeScrollEnabled.RegisterValueChangedCallback(e =>
+        {
+            Setting.EdgeScrollEnabled = comboEdgeScrollEnabled.index == 1;
+        });
+
         CloseButton.clicked += () => Root.style.display = DisplayStyle.None;
     }
 
@@ -105,6 +112,9 @@ public class SystemSetting
 
     public bool ShowCountryEliminatedNotification { get => _ShowCountryEliminatedNotification; set => SetValue(ref _ShowCountryEliminatedNotification, value); }
     private bool _ShowCountryEliminatedNotification = PlayerPrefs.GetInt(nameof(ShowCountryEliminatedNotification), 1) == 1;
+
+    public bool EdgeScrollEnabled { get => _EdgeScrollEnabled; set => SetValue(ref _EdgeScrollEnabled, value); }
+    private bool _EdgeScrollEnabled = PlayerPrefs.GetInt(nameof(EdgeScrollEnabled), 1) == 1;
 
     public void ApplyOrientation()
     {

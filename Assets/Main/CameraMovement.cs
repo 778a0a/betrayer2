@@ -100,7 +100,7 @@ public class CameraMovement : MonoBehaviour
         }
 
         // 画面端でのカメラ移動処理
-        if (!isDragging)
+        if (!isDragging && SystemSetting.Instance.EdgeScrollEnabled)
         {
             // 右側のUI領域（画面幅の約44%）にマウスがある場合は上下スクロールを無効化
             // フルHD(1920x1080)での840px ≈ 43.75%
@@ -135,6 +135,12 @@ public class CameraMovement : MonoBehaviour
                 hAccelaration = hAccelaration * 0.9f;
             }
             pos.x += panSpeed * Time.deltaTime * hAccelaration;
+        }
+        else if (!isDragging)
+        {
+            // 画面端スクロールが無効の場合は加速度をリセット
+            vAccelaration = 0;
+            hAccelaration = 0;
         }
 
         // UI scroll processing

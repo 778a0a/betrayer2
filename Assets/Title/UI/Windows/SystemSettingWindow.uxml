@@ -37,6 +37,12 @@
                     <ui:Label text="勢力滅亡通知" style="font-size: 35px; margin-bottom: 10px; -unity-font-style: bold;" />
                     <ui:DropdownField choices="表示しない,表示する" index="1" name="comboCountryEliminatedNotification" />
                 </ui:VisualElement>
+
+                <!-- 画面端自動スクロール設定 -->
+                <ui:VisualElement style="margin-top: 20px;">
+                    <ui:Label text="画面端自動スクロール" style="font-size: 35px; margin-bottom: 10px; -unity-font-style: bold;" />
+                    <ui:DropdownField choices="無効,有効" index="1" name="comboEdgeScrollEnabled" />
+                </ui:VisualElement>
             </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>

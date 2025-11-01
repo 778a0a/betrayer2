@@ -30,6 +30,8 @@ public partial class SystemSettingWindow
 
     public DropdownField comboCountryEliminatedNotification { get; private set; }
 
+    public DropdownField comboEdgeScrollEnabled { get; private set; }
+
     public VisualElement OrientationContainer { get; private set; }
 
     public Label labelSaveDataListWindowTitle { get; private set; }
@@ -51,6 +53,7 @@ public partial class SystemSettingWindow
         buttonPlaySpeed4 = Root?.Q<Button>("buttonPlaySpeed4");
         comboAutoSaveFrequency = Root?.Q<DropdownField>("comboAutoSaveFrequency");
         comboCountryEliminatedNotification = Root?.Q<DropdownField>("comboCountryEliminatedNotification");
+        comboEdgeScrollEnabled = Root?.Q<DropdownField>("comboEdgeScrollEnabled");
         OrientationContainer = Root?.Q<VisualElement>("OrientationContainer");
         labelSaveDataListWindowTitle = Root?.Q<Label>("labelSaveDataListWindowTitle");
         CloseButton = Root?.Q<Button>("CloseButton");
@@ -68,6 +71,7 @@ public partial class SystemSettingWindow
         buttonPlaySpeed4 = Root?.Q<Button>("buttonPlaySpeed4");
         comboAutoSaveFrequency = Root?.Q<DropdownField>("comboAutoSaveFrequency");
         comboCountryEliminatedNotification = Root?.Q<DropdownField>("comboCountryEliminatedNotification");
+        comboEdgeScrollEnabled = Root?.Q<DropdownField>("comboEdgeScrollEnabled");
         OrientationContainer = Root?.Q<VisualElement>("OrientationContainer");
         labelSaveDataListWindowTitle = Root?.Q<Label>("labelSaveDataListWindowTitle");
         CloseButton = Root?.Q<Button>("CloseButton");
