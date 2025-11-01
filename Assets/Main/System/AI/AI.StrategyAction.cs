@@ -48,6 +48,8 @@ partial class AI
                 // 反乱を起こしたら行動終了。
                 return;
             }
+
+            await TransportForBoss(chara);
         }
 
         // 四半期ごとの行動がまだなら行う。

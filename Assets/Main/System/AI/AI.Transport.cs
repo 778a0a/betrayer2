@@ -79,4 +79,55 @@ public partial class AI
             }
         }
     }
+
+    public async ValueTask TransportForBoss(Character boss)
+    {
+        // とりあえずの処理
+        try
+        {
+            var castle = boss.Castle;
+
+            // 貧しいなら何もしない。
+            if (castle.GoldAmari < 50)
+            {
+                Debug.LogError($"[輸送] {boss.Name}の城は物資が不足しているため、輸送を行いません。");
+                return;
+            }
+
+            // 輸送目標がある場合
+            if (castle.Objective is CastleObjective.Transport o)
+            {
+                var targetCastle = World.Castles.FirstOrDefault(c => c.Name == o.TargetCastleName);
+                if (targetCastle == null)
+                {
+                    // 目標が見つからない場合は、最も貧しい城を目標にする。
+                    targetCastle = boss.Country.Castles
+                        .Where(c => c != castle)
+                        .OrderBy(c => c.GoldAmari)
+                        .FirstOrDefault();
+                    if (targetCastle == null)
+                    {
+                        Debug.LogError($"[輸送] {boss.Name}の城に輸送目標が設定されていますが、輸送先の城が見つかりません。");
+                        return;
+                    }
+                }
+
+                var amount = castle.GoldAmari - 100;
+                if (amount > 50)
+                {
+                    var act = core.StrategyActions.Transport;
+                    var args = act.Args(boss, castle, targetCastle, amount);
+                    if (act.CanDo(args))
+                    {
+                        await act.Do(args);
+                        Debug.LogError($"[輸送 - 目標] {castle}が{targetCastle.Name}へ{amount}G を輸送しました。");
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError($"[輸送] {boss.Name}の輸送処理でエラーが発生しました。{ex}");
+        }
+    }
 }
