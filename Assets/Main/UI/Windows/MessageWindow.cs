@@ -48,6 +48,7 @@ public partial class MessageWindow
         MessageBoxButton button = MessageBoxButton.Ok,
         object _ = null) // インスタンスメソッドと同じシグネチャの宣言にしないためのダミー引数
         => Instance.Show(message, button);
+    public static async ValueTask ShowNone(string message) => await Instance.Show(message, MessageBoxButton.None);
     public static async ValueTask ShowOk(string message) => await Instance.Show(message);
     public static async ValueTask<bool> ShowYesNo(string message) => (await Instance.Show(message, MessageBoxButton.YesNo)) == MessageBoxResult.Yes;
     public static async ValueTask<bool> ShowOkCancel(string message) => (await Instance.Show(message, MessageBoxButton.OkCancel)) == MessageBoxResult.Ok;

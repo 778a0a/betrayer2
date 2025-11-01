@@ -172,7 +172,7 @@ public partial class GameCore
                             $"");
                         if (yes)
                         {
-                            _ = MessageWindow.Show("ゲーム終了中...");
+                            _ = MessageWindow.ShowNone("ゲーム終了中...");
                             TitleSceneManager.LoadScene();
                             return;
                         }
@@ -575,7 +575,7 @@ public partial class GameCore
         var ok = await MessageWindow.ShowOkCancel("タイトル画面に戻りますか？\n\nキャンセルを押すとこのままゲームを続行します。");
         if (ok)
         {
-            _ = MessageWindow.Show("ゲーム終了中...", MessageBoxButton.None);
+            _ = MessageWindow.ShowNone("ゲーム終了中...");
             TitleSceneManager.LoadScene();
         }
     }

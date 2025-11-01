@@ -59,7 +59,7 @@ public partial class SystemMenuWindow
             var ok = await MessageWindow.ShowOkCancel("タイトル画面に戻ります。\nよろしいですか？");
             if (!ok) return;
 
-            _ = MessageWindow.Show("ゲーム終了中...", MessageBoxButton.None);
+            _ = MessageWindow.ShowNone("ゲーム終了中...");
             TitleSceneManager.LoadScene();
         };
     }
