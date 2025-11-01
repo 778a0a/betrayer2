@@ -383,7 +383,7 @@ public class ForceManager : IReadOnlyList<Force>
         // 駐在キャラの行動不能日数を再セットする。
         foreach (var e in castle.Members.Where(e => !e.IsMoving))
         {
-            e.SetIncapacitated();
+            e.SetIncapaciatedForCastleFall();
         }
 
         // 城の所有国を変更する。

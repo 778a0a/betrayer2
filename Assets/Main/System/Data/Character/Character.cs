@@ -244,16 +244,18 @@ public class Character
     /// </summary>
     public void SetIncapacitated()
     {
-        var old = IncapacitatedDaysRemaining;
         IncapacitatedDaysRemaining = 90;
-        if (old == 0)
-        {
-            //Debug.Log($"{Name}は行動不能になりました。");
-        }
-        else
-        {
-            //Debug.Log($"{Name}は行動不能状態が延長されました。(prev: {old})");
-        }
+        //Debug.Log($"{Name}は行動不能になりました。");
+    }
+
+    /// <summary>
+    /// 行動不能状態にします。（落城処理用）
+    /// </summary>
+    public void SetIncapaciatedForCastleFall()
+    {
+        var old = IncapacitatedDaysRemaining;
+        var newDays = (old + 15).Clamp(30, 90);
+        IncapacitatedDaysRemaining = newDays;
     }
 
     public bool CanPay(ActionCost cost) => cost.CanPay(this);
