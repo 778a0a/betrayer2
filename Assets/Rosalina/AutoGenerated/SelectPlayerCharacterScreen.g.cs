@@ -20,6 +20,8 @@ public partial class SelectPlayerCharacterScreen
 
     public Button buttonWatch { get; private set; }
 
+    public Button buttonBackToTitle { get; private set; }
+
     public Label labelDescription { get; private set; }
 
     public CastleTableRowItem CastleInfo { get; private set; }
@@ -36,6 +38,7 @@ public partial class SelectPlayerCharacterScreen
         buttonShowFreeList = Root?.Q<Button>("buttonShowFreeList");
         buttonRandom = Root?.Q<Button>("buttonRandom");
         buttonWatch = Root?.Q<Button>("buttonWatch");
+        buttonBackToTitle = Root?.Q<Button>("buttonBackToTitle");
         labelDescription = Root?.Q<Label>("labelDescription");
         CastleInfo = new CastleTableRowItem(Root?.Q<VisualElement>("CastleInfo"));
         CharacterTable = new CharacterTable(Root?.Q<VisualElement>("CharacterTable"));
@@ -48,6 +51,7 @@ public partial class SelectPlayerCharacterScreen
         buttonShowFreeList = Root?.Q<Button>("buttonShowFreeList");
         buttonRandom = Root?.Q<Button>("buttonRandom");
         buttonWatch = Root?.Q<Button>("buttonWatch");
+        buttonBackToTitle = Root?.Q<Button>("buttonBackToTitle");
         labelDescription = Root?.Q<Label>("labelDescription");
         CastleInfo = new CastleTableRowItem(Root?.Q<VisualElement>("CastleInfo"));
         CharacterTable = new CharacterTable(Root?.Q<VisualElement>("CharacterTable"));

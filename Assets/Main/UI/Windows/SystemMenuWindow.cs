@@ -43,7 +43,7 @@ public partial class SystemMenuWindow
             if (!ok) return;
 
             Root.style.display = DisplayStyle.None;
-            Core.MainUI.SelectPlayerCharacterScreen.Show(Core.World, chara =>
+            Core.MainUI.SelectPlayerCharacterScreen.Show(false, Core.World, chara =>
             {
                 Debug.Log($"プレーヤー変更: {chara?.Name}");
                 Core.World.SetPlayer(chara);

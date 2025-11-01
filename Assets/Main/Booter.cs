@@ -88,7 +88,7 @@ public class Booter : MonoBehaviour
             else
             {
                 // 操作キャラを選択してもらう。
-                core.MainUI.SelectPlayerCharacterScreen.Show(world, chara =>
+                core.MainUI.SelectPlayerCharacterScreen.Show(true, world, chara =>
                 {
                     Debug.Log($"Player selected: {chara?.Name}");
                     world.SetPlayer(chara);

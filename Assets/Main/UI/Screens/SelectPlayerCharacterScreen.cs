@@ -58,6 +58,16 @@ public partial class SelectPlayerCharacterScreen : MainUIComponent, IScreen
             await OnCharacterSelected(null);
         };
 
+        // タイトルへボタン
+        buttonBackToTitle.clicked += async () =>
+        {
+            var ok = await MessageWindow.ShowOkCancel("タイトル画面に戻ります。\nよろしいですか？");
+            if (!ok) return;
+
+            _ = MessageWindow.Show("ゲーム終了中...");
+            TitleSceneManager.LoadScene();
+        };
+
     }
 
     public void Reinitialize()
@@ -65,7 +75,7 @@ public partial class SelectPlayerCharacterScreen : MainUIComponent, IScreen
         Initialize();
     }
 
-    public void Show(WorldData world, Action<Character> onCharacterSelected)
+    public void Show(bool isInitial, WorldData world, Action<Character> onCharacterSelected)
     {
         this.world = world;
         this.onCharacterSelected = onCharacterSelected;
@@ -77,11 +87,15 @@ public partial class SelectPlayerCharacterScreen : MainUIComponent, IScreen
         if (cleared)
         {
             buttonWatch.text = "観戦モード";
+            buttonWatch.style.fontSize = StyleKeyword.Null;
         }
         else
         {
             buttonWatch.text = "観戦モード（クリア後解放）";
+            buttonWatch.style.fontSize = 22;
         }
+
+        buttonBackToTitle.style.display = Util.Display(isInitial);
 
         // マップクリックハンドラを登録
         world.Map.SetCustomEventHandler((tile) =>

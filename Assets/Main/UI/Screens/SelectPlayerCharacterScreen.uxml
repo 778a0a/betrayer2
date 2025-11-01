@@ -8,7 +8,8 @@
         <engine:VisualElement style="margin-top: 10px; flex-direction: row; flex-shrink: 0;">
             <engine:Button name="buttonShowFreeList" text="浪士一覧" style="margin-right: 10px; margin-left: 0;" />
             <engine:Button name="buttonRandom" text="ランダム" style="margin-right: 10px;" />
-            <engine:Button name="buttonWatch" text="観戦モード" style="margin-right: 0;" />
+            <engine:Button name="buttonWatch" text="観戦モード" style="margin-right: 10px;" />
+            <engine:Button name="buttonBackToTitle" text="タイトルへ" style="margin-right: 0;" />
         </engine:VisualElement>
         <engine:Instance name="CastleInfo" template="CastleTableRowItem" style="margin-top: 10px; display: none;" />
         <engine:Instance template="CharacterTable" name="CharacterTable" style="margin-top: 10px; flex-grow: 1;" />
