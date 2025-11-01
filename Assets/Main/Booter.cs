@@ -44,6 +44,7 @@ public class Booter : MonoBehaviour
 
     private GameCore core;
     private bool mainLoopStarted = false;
+    private bool wasKeyboardScrolling = false;
 
     void Start()
     {
@@ -147,6 +148,28 @@ public class Booter : MonoBehaviour
             if (core != null && mainLoopStarted && core.MainUI.ActionScreen.IsProgressPhase)
             {
                 core.TogglePlay();
+            }
+        }
+
+        // 上下左右キーでマップスクロール
+        if (Keyboard.current != null && ui != null)
+        {
+            var scrollDirection = Vector2.zero;
+            if (Keyboard.current.upArrowKey.isPressed) scrollDirection += Vector2.up;
+            if (Keyboard.current.downArrowKey.isPressed) scrollDirection += Vector2.down;
+            if (Keyboard.current.leftArrowKey.isPressed) scrollDirection += Vector2.left;
+            if (Keyboard.current.rightArrowKey.isPressed) scrollDirection += Vector2.right;
+
+            if (scrollDirection != Vector2.zero)
+            {
+                ui.Camera.StartUIScroll(scrollDirection);
+                wasKeyboardScrolling = true;
+            }
+            else if (wasKeyboardScrolling)
+            {
+                // キーボードスクロール中だったが、今はキーが押されていない場合のみ停止
+                ui.Camera.StopUIScroll();
+                wasKeyboardScrolling = false;
             }
         }
     }
