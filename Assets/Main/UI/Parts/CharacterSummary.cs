@@ -80,6 +80,10 @@ public partial class CharacterSummary
         labelPlayerTitle.text = chara.GetTitle();
         labelMoving.visible = chara.IsMoving;
         labelIncapacitated.visible = chara.IsIncapacitated;
+        if (chara.IsIncapacitated)
+        {
+            labelIncapacitated.text = $"行動不能({chara.IncapacitatedDaysRemaining}日)";
+        }
         iconCountry.visible = !chara.IsFree;
         if (!chara.IsFree)
         {
