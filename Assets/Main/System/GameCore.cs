@@ -222,12 +222,6 @@ public partial class GameCore
         //    await battle.Do();
         //}
 
-        // 残り1国になればゲームクリア。
-        if (World.Countries.Count == 1)
-        {
-            await OnGameOver();
-        }
-
         // 月初の処理
         if (World.GameDate.Day == 1)
         {
@@ -392,6 +386,12 @@ public partial class GameCore
         {
             // キャラの行動を行う。
             await OnCharacterMove(player);
+        }
+
+        // 残り1国になればゲームクリア。
+        if (World.Countries.Count == 1)
+        {
+            await OnGameOver();
         }
 
         AutoSaveForPeriods();
