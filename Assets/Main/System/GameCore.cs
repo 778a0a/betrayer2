@@ -158,6 +158,12 @@ public partial class GameCore
                 }
                 catch (Exception ex)
                 {
+                    if (ex is GameOverException)
+                    {
+                        Debug.Log("メインループ終了: ゲームオーバー");
+                        return;
+                    }
+
                     // とりあえず日付は進める。
                     World.GameDate++;
                     Debug.LogError($"Tickエラー: {ex}");
@@ -577,6 +583,12 @@ public partial class GameCore
         {
             _ = MessageWindow.ShowNone("ゲーム終了中...");
             TitleSceneManager.LoadScene();
+            // メインループが続いてエラーが起こることがあったので強制終了させる。
+            throw new GameOverException();
         }
+    }
+
+    public class GameOverException : Exception
+    {
     }
 }
