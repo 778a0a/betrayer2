@@ -327,7 +327,7 @@ public partial class CastleDetailTab
     /// <summary>
     /// 目標選択で目標が選択されたときに呼ばれます。
     /// </summary>
-    private void OnObjectiveSelected(object selectedItem)
+    private async void OnObjectiveSelected(object selectedItem)
     {
         if (selectedItem == null) return;
 
@@ -341,6 +341,17 @@ public partial class CastleDetailTab
 
                 var tile = Core.World.Map.GetTile(castle.Position);
                 tile.UI.SetFocusHighlight(false);
+
+                // 出撃許可されていない場合は確認する。
+                if (targetCastle.DeployPolicy != CastleDeployPolicy.Allow)
+                {
+                    var yes = await MessageWindow.ShowYesNo("出撃方針を「許可」に更新しますか？");
+                    if (yes)
+                    {
+                        targetCastle.DeployPolicy = CastleDeployPolicy.Allow;
+                    }
+                }
+
                 break;
             case 4: // 輸送
                 castle = (Castle)selectedItem;
