@@ -32,7 +32,7 @@ partial class PersonalActions
                 .Where(c => c != baseCastle)
                 .ToList();
             IMapEntity target = await UI.SelectCastleScreen.SelectDeployDestination(
-                "進軍先の城を選択してください",
+                "進軍先の城を選択してください\n<size=30><color=#aaa>※マップクリック可、遠方の城も選択できます</color></size>",
                 "キャンセル",
                 neighborCastles,
                 selectedTile => StrategyActions.DeployAction.OnTileSelected(baseCastle, selectedTile, false));
