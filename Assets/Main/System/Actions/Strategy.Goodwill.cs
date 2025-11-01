@@ -33,7 +33,14 @@ partial class StrategyActions
             // 自国と他国の城の数に応じて金額を計算する。
             var myCastles = args.actor.Country.Castles.Count;
             var targetCastles = targetCountry.Castles.Count;
-            var goldCost = 10 + (myCastles + targetCastles) * 5;
+            var goldCost = 10 + (myCastles + targetCastles) / 2 * 5;
+
+            // 商人なら半額にする。
+            if (args.actor.Traits.HasFlag(Traits.Merchant))
+            {
+                goldCost /= 2;
+            }
+
             return ActionCost.Of(0, 5, goldCost);
         }
 
@@ -64,7 +71,9 @@ partial class StrategyActions
 
             var target = args.targetCountry;
             // 受け取る金額は支払う金額の半分とする。
-            var giftAmount = Cost(args).castleGold / 2;
+            var giftAmount = actor.Traits.HasFlag(Traits.Merchant) ?
+                Cost(args).castleGold : // 商人はコスト半額にしているのでそのまま
+                Cost(args).castleGold / 2;
 
             // targetがプレイヤーの場合
             var accepted = true;
