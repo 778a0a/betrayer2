@@ -54,8 +54,9 @@ public class ActionButtonHelper
         Element.RegisterCallback<PointerLeaveEvent>(OnActionButtonPointerLeave);
     }
 
-    private void OnActionButtonPointerEnter(PointerEnterEvent evt)
+    private async void OnActionButtonPointerEnter(PointerEnterEvent evt)
     {
+        await Awaitable.NextFrameAsync();
         var (chara, selectedTile) = currentContextGetter();
 
         IsMouseOver = true;
@@ -88,8 +89,9 @@ public class ActionButtonHelper
         }
     }
 
-    private void OnActionButtonPointerLeave(PointerLeaveEvent evt)
+    private async void OnActionButtonPointerLeave(PointerLeaveEvent evt)
     {
+        await Awaitable.NextFrameAsync();
         IsMouseOver = false;
         labelDescription.text = "";
         labelCostGold.text = "";
