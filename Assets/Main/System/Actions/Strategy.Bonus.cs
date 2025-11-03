@@ -80,11 +80,11 @@ partial class StrategyActions
                     selectedList =>
                     {
                         var apCost = APCostUnit * selectedList.Count;
-                        var message = $"APコスト: {apCost} / {actor.ActionPoints}";
+                        var message = $"采配Pコスト: {apCost} / {actor.ActionPoints}";
                         var ng = apCost > actor.ActionPoints;
                         if (ng)
                         {
-                            message += " <color=red>AP不足</color>";
+                            message += " <color=red>采配P不足</color>";
                         }
                         UI.BonusScreen.labelDescription.text = message;
                         UI.BonusScreen.buttonConfirm.enabledSelf = !ng && selectedList.Count > 0;

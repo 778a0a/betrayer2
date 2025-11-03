@@ -62,7 +62,7 @@ partial class StrategyActions
                     var cost = Cost(costArgs);
                     if (!cost.CanPay(actor))
                     {
-                        await MessageWindow.Show("APが不足しています。");
+                        await MessageWindow.Show("采配Pが不足しています。");
                         return false;
                     }
                     PayCost(costArgs);
