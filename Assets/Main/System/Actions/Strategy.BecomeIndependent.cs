@@ -101,7 +101,7 @@ partial class StrategyActions
             foreach (var chara in newCountry.Members)
             {
                 if (chara.IsRuler) continue;
-                chara.Loyalty = (chara.Loyalty + 5).MaxWith(110);
+                chara.Loyalty = (chara.Loyalty + 5).Clamp(80, 110);
             }
 
             // 他の城主について、どちらの勢力につくか判定する。
@@ -174,7 +174,7 @@ partial class StrategyActions
                 foreach (var chara in otherCastle.Members)
                 {
                     if (chara.IsRuler) continue;
-                    chara.Loyalty = (chara.Loyalty + 5).MaxWith(110);
+                    chara.Loyalty = (chara.Loyalty + 5).Clamp(80, 110);
                 }
 
                 if (!askedOnCastle)

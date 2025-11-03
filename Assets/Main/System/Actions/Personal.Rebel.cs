@@ -142,7 +142,7 @@ partial class PersonalActions
                 foreach (var chara in newCountry.Members)
                 {
                     if (chara.IsRuler) continue;
-                    chara.Loyalty = (chara.Loyalty + 5).MaxWith(110);
+                    chara.Loyalty = (chara.Loyalty + 5).Clamp(80, 110);
                 }
 
                 if (actor.IsPlayer)
