@@ -38,7 +38,7 @@ public partial class AI
         if (chara.Country.Ruler.Intelligence < chara.Intelligence) rebelProb *= 1.1f;
         if (chara.Country.Ruler.Governing < chara.Governing) rebelProb *= 1.1f;
 
-        var shouldRebel = (rebelProb / 12f).Chance();
+        var shouldRebel = (1.25f * rebelProb / 12f).Chance();
         Debug.LogWarning($"{chara.Name} 独立判定: {shouldRebel} ({rebelProb:0.00})");
         if (shouldRebel)
         {

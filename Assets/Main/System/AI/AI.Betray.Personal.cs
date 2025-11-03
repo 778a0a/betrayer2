@@ -22,7 +22,7 @@ public partial class AI
 
         // 忠誠度に応じた確率で裏切る。野心も加味する。
         var betrayProb = (90 - chara.Loyalty + chara.Ambition / 2f) * 0.01f;
-        if (!(betrayProb / 12).Chance()) return false;
+        if (!(1.25f * betrayProb / 12).Chance()) return false;
 
         Debug.LogWarning($"{chara.Name} 裏切り処理開始({betrayProb:0.00}) loyalty: {chara.Loyalty}");
 
