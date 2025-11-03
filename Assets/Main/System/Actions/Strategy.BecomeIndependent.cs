@@ -82,7 +82,7 @@ partial class StrategyActions
             // メッセージを表示する。他国でも通知を受け取る。
             if (!asked)
             {
-                await MessageWindow.Show($"{actor.Name}が{actor.Country.Ruler.Name}から独立しました！");
+                await MessageWindow.Show($"{actor.Castle.Name}で{actor.GetTitle()}{actor.Name}が\n{actor.Country.Ruler.Name}から独立しました！");
             }
 
             var oldCountry = actor.Country;

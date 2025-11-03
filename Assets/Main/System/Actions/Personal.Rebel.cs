@@ -270,7 +270,7 @@ partial class PersonalActions
             if (actor.IsRegionBoss && (actor == member.Castle.Boss || (actor.Castle.Neighbors.Contains(member.Castle) && actor.OrderIndex < member.OrderIndex && !member.IsImportant)))
             {
                 prob = prob.MinWith(0);
-                prob += 0.5f;
+                prob += 0.99f;
             }
 
             // 首謀者が強いなら確率を上げる。
@@ -280,6 +280,10 @@ partial class PersonalActions
             prob += actor.TotalCapability > actor.Country.Ruler.TotalCapability ? 0.2f : -0.05f;
             prob += actor.Contribution > actor.Country.Ruler.Contribution ? 0.15f : -0.05f;
             prob += actor.Prestige > actor.Country.Ruler.Prestige ? 0.15f : -0.05f;
+
+            // 首謀者が遠方なら確率を下げる。5離れる毎に半分にする。
+            var distance = actor.Castle.Tile.DistanceTo(member.Castle.Tile);
+            prob *= (float)Math.Pow(0.5, distance / 5);
 
             // 忠実さ
             if (member.Fealty > 7) prob *= 1f / (member.Fealty - 6);
