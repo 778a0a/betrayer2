@@ -26,10 +26,12 @@ public partial class AI
             .Where(c => !c.IsRuler)
             .OrderBy(c => c.Loyalty);
 
-        while (ruler.ActionPoints > 50 && targetMembers.Take(5).Select(m => m.Loyalty).DefaultIfEmpty(100).Average() < 95)
+        var loopCount = 0;
+        while (loopCount < 10 && ruler.ActionPoints > 50 && targetMembers.Take(5).Select(m => m.Loyalty).DefaultIfEmpty(100).Average() < 95)
         {
             var lowLoyaltyMembers = targetMembers.Take(5);
             await BonusCore(ruler, lowLoyaltyMembers);
+            loopCount++;
         }
     }
 
