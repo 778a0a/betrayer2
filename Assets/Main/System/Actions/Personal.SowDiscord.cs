@@ -119,8 +119,17 @@ partial class PersonalActions
             }
             prob *= bossAdj;
 
-            var success = prob.Chance();
             var loyaltyDecrease = (actor.Intelligence - 85).MinWith(5) * bossAdj;
+
+            // 指示可能な相手なら成功率・効果を倍にする。
+            // NOTE AIも実行可能になったら要変更
+            if (target.CanOrder)
+            {
+                prob *= 2;
+                loyaltyDecrease *= 3;
+            }
+            var success = prob.Chance();
+
             // 忠誠95以上の場合は効果半減
             if (target.Loyalty >= 95)
             {
