@@ -283,7 +283,7 @@ partial class PersonalActions
 
             // 首謀者が遠方なら確率を下げる。5離れる毎に半分にする。
             var distance = actor.Castle.Tile.DistanceTo(member.Castle.Tile);
-            prob *= (float)Math.Pow(0.5, distance / 5);
+            if (distance > 5) prob *= (float)Mathf.Pow(0.5f, distance / 5f);
 
             // 忠実さ
             if (member.Fealty > 7) prob *= 1f / (member.Fealty - 6);
