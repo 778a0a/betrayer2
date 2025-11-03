@@ -33,7 +33,7 @@ mergeInto(LibraryManager.library, {
         var textarea = document.createElement('textarea');
         textarea.value = saveData;
         textarea.readOnly = true;
-        textarea.style.cssText = 'width: 100%; height: 500px; font-family: monospace; font-size: 13px; padding: 10px; resize: vertical; margin-bottom: 15px; background-color: #f9f9f9; color: #333; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box;';
+        textarea.style.cssText = 'width: 100%; height: 500px; font-family: monospace; font-size: 13px; padding: 10px; resize: vertical; margin-bottom: 15px; background-color: #f9f9f9; color: #333; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; white-space: pre; overflow-x: auto;';
 
         // ボタンコンテナを作成
         var buttonContainer = document.createElement('div');
