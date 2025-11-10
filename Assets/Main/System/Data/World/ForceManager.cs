@@ -117,7 +117,7 @@ public class ForceManager : IReadOnlyList<Force>
                     Debug.Log($"軍勢更新処理 {force} 待機終了");
                 }
             }
-            // なぜかずっと待機になることがあったので対応する。 
+            // なぜかずっと待機になることがあったので対応する。→自城の隣で敵に野戦で負けた場合に起こるようだった。
             if (force.Mode == ForceMode.Normal && force.Character.Castle.Position == force.Position)
             {
                 Debug.LogError($"待機エラーのため帰還します。{force}");
