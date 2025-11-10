@@ -94,6 +94,13 @@ public partial class SystemSettingWindow
             () => Setting.BattleModeOwnCountry
         );
 
+        // 観戦後ポーズの初期化
+        comboPauseAfterBattle.index = (int)Setting.PauseAfterBattle;
+        comboPauseAfterBattle.RegisterValueChangedCallback(e =>
+        {
+            Setting.PauseAfterBattle = (PauseAfterBattle)comboPauseAfterBattle.index;
+        });
+
         CloseButton.clicked += () => Root.style.display = DisplayStyle.None;
     }
 
@@ -209,6 +216,9 @@ public class SystemSetting
     public BattleMode BattleModeOwnCountry { get => _BattleModeOwnCountry; set => SetValue(ref _BattleModeOwnCountry, value); }
     private BattleMode _BattleModeOwnCountry = (BattleMode)PlayerPrefs.GetInt(nameof(BattleModeOwnCountry), (int)BattleMode.Watch);
 
+    public PauseAfterBattle PauseAfterBattle { get => _PauseAfterBattle; set => SetValue(ref _PauseAfterBattle, value); }
+    private PauseAfterBattle _PauseAfterBattle = (PauseAfterBattle)PlayerPrefs.GetInt(nameof(PauseAfterBattle), (int)PauseAfterBattle.SelfAndSubordinate);
+
     public void ApplyOrientation()
     {
         try
@@ -287,4 +297,12 @@ public enum BattleMode
     Watch,
     WatchDoubleSpeed,
     Skip,
+}
+
+public enum PauseAfterBattle
+{
+    None = 0,
+    SelfOnly,
+    SelfAndSubordinate,
+    OwnCountry,
 }

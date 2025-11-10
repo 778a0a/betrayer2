@@ -53,6 +53,12 @@ DropdownField {
     padding: 0 5px 0 5px;
 }
 
+.small-size .unity-popup-field__input {
+    font-size: 25px;
+    margin-left: 0;
+    padding: 0 5px 0 5px;
+}
+
 /*
 タイトルとメイン共通で利用する画面のスタイルがおかしくなるので、
 スタイルシートを分けるのは微妙だったと気づいたけどもう遅いので特に何もしません。

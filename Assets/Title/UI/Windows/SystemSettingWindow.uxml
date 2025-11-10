@@ -83,6 +83,12 @@
                         <ui:Button name="buttonBattleModeOwnCountryDoubleSpeed" text="2倍速" style="flex-grow: 1; height: 50px; margin: 2px; font-size: 25px;" />
                         <ui:Button name="buttonBattleModeOwnCountrySkip" text="省略" style="flex-grow: 1; height: 50px; margin: 2px; font-size: 25px;" />
                     </ui:VisualElement>
+
+                    <!-- 観戦後ポーズ -->
+                    <ui:VisualElement style="flex-direction: row; align-items: center; margin-top: 10px;">
+                        <ui:Label text="観戦後一時停止" style="font-size: 30px; width: 220px;" />
+                        <ui:DropdownField class="small-size" choices="なし,自分のみ,自分・配下,自国" index="0" name="comboPauseAfterBattle" style="flex-grow: 1; width: 250px; margin: 0 2px 0 0; height: 50px; font-size: 25px;" />
+                    </ui:VisualElement>
                 </ui:VisualElement>
             </ui:VisualElement>
         </ui:VisualElement>

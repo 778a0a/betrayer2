@@ -58,6 +58,8 @@ public partial class SystemSettingWindow
 
     public Button buttonBattleModeOwnCountrySkip { get; private set; }
 
+    public DropdownField comboPauseAfterBattle { get; private set; }
+
     public VisualElement OrientationContainer { get; private set; }
 
     public Label labelSaveDataListWindowTitle { get; private set; }
@@ -93,6 +95,7 @@ public partial class SystemSettingWindow
         buttonBattleModeOwnCountryWatch = Root?.Q<Button>("buttonBattleModeOwnCountryWatch");
         buttonBattleModeOwnCountryDoubleSpeed = Root?.Q<Button>("buttonBattleModeOwnCountryDoubleSpeed");
         buttonBattleModeOwnCountrySkip = Root?.Q<Button>("buttonBattleModeOwnCountrySkip");
+        comboPauseAfterBattle = Root?.Q<DropdownField>("comboPauseAfterBattle");
         OrientationContainer = Root?.Q<VisualElement>("OrientationContainer");
         labelSaveDataListWindowTitle = Root?.Q<Label>("labelSaveDataListWindowTitle");
         CloseButton = Root?.Q<Button>("CloseButton");
@@ -124,6 +127,7 @@ public partial class SystemSettingWindow
         buttonBattleModeOwnCountryWatch = Root?.Q<Button>("buttonBattleModeOwnCountryWatch");
         buttonBattleModeOwnCountryDoubleSpeed = Root?.Q<Button>("buttonBattleModeOwnCountryDoubleSpeed");
         buttonBattleModeOwnCountrySkip = Root?.Q<Button>("buttonBattleModeOwnCountrySkip");
+        comboPauseAfterBattle = Root?.Q<DropdownField>("comboPauseAfterBattle");
         OrientationContainer = Root?.Q<VisualElement>("OrientationContainer");
         labelSaveDataListWindowTitle = Root?.Q<Label>("labelSaveDataListWindowTitle");
         CloseButton = Root?.Q<Button>("CloseButton");

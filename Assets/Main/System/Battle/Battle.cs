@@ -169,8 +169,15 @@ public class Battle
         if (NeedWatchBattle)
         {
             UI.SetData(this, result);
+
+            var pauseMode = SystemSetting.Instance.PauseAfterBattle;
+            var isPlayer = Atk.IsPlayer || Def.IsPlayer;
+            var canOrder = Atk.Character.CanOrder || Def.Character.CanOrder;
+            var playerCountry = GameCore.Instance.World.Player?.Country;
+            var playerCountryBattle = playerCountry != null && (Atk.Country == playerCountry || Def.Country == playerCountry);
+
             // プレーヤーの場合は、観戦モードでも撤退を選べるようにする。
-            if (NeedInteraction || Atk.IsPlayer || Def.IsPlayer)
+            if (isPlayer && pauseMode >= PauseAfterBattle.SelfOnly)
             {
                 var selection = await UI.WaitPlayerClick();
                 if (selection == BattleAction.Retreat)
@@ -178,8 +185,13 @@ public class Battle
                     winnerWithdraw = true;
                 }
             }
-            // 配下の戦闘の場合はクリックで終わらせる。
-            else if (Atk.Character.CanOrder || Def.Character.CanOrder)
+            // 配下の戦闘の場合
+            else if (canOrder && pauseMode >= PauseAfterBattle.SelfAndSubordinate)
+            {
+                await UI.WaitPlayerClick();
+            }
+            // 自国の戦闘の場合
+            else if (playerCountryBattle && pauseMode >= PauseAfterBattle.OwnCountry)
             {
                 await UI.WaitPlayerClick();
             }
@@ -244,7 +256,7 @@ public class Battle
         }
 
         // AIの場合、撤退の判断を行う。
-        var winnerIsNpcOrBattleSkipPlayer = !winner.IsPlayer || !NeedWatchBattle;
+        var winnerIsNpcOrBattleSkipPlayer = !winner.IsPlayer || !NeedWatchBattle || SystemSetting.Instance.PauseAfterBattle == PauseAfterBattle.None;
         if (winnerIsNpcOrBattleSkipPlayer && !(Type == BattleType.Siege && winner == Def))
         {
             // 兵士が十分残っている列があるなら撤退しない。
