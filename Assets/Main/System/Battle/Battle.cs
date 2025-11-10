@@ -26,36 +26,68 @@ public class Battle
     private BattleWindow UI => GameCore.Instance.MainUI.BattleWindow;
     public bool NeedInteraction { get; set; } = false;
     private bool NeedWatchBattle { get; set; } = false;
-    
+    private bool DoubleSpeed { get; set; } = false;
+    private float WaitMultiplier => DoubleSpeed ? 0.5f : 1f;
+
     public Battle(CharacterInBattle atk, CharacterInBattle def, BattleType type)
     {
         Attacker = atk;
         Defender = def;
         Type = type;
 
-        // プレーヤーの戦闘は操作する。
+        var setting = SystemSetting.Instance;
+        // プレーヤーの戦闘の場合
         if (Atk.IsPlayer || Def.IsPlayer)
         {
-            NeedInteraction = true;
-            NeedWatchBattle = true;
+            switch (setting.BattleModeSelf)
+            {
+                case BattleMode.Manual:
+                    NeedInteraction = true;
+                    NeedWatchBattle = true;
+                    break;
+                case BattleMode.Watch:
+                    NeedWatchBattle = true;
+                    break;
+                case BattleMode.WatchDoubleSpeed:
+                    NeedWatchBattle = true;
+                    DoubleSpeed = true;
+                    break;
+                case BattleMode.Skip:
+                    break;
+                default:
+                    break;
+            }
         }
         // プレーヤーの戦闘でない場合
         else
         {
-            var playerCountry = GameCore.Instance.World.Player?.Country;
-            if (playerCountry != null)
+            // プレーヤーの国の戦闘の場合
+            var player = GameCore.Instance.World.Player;
+            if (player?.Country != null && (Atk.Country == player.Country || Def.Country == player.Country))
             {
-                // プレーヤーの国の戦闘は観戦する。
-                if (Atk.Country == playerCountry || Def.Country == playerCountry)
+                var colleague = (Atk.Country == player.Country ? Atk : Def).Character;
+                var mode = setting.BattleModeOwnCountry;
+                if (colleague.CanOrder && setting.BattleModeSubordinate < mode)
                 {
-                    NeedWatchBattle = true;
+                    mode = setting.BattleModeSubordinate;
                 }
-                // プレーヤーの近隣国同士の戦闘も観戦する。
-                else
+                if (colleague.Castle == player.Castle && setting.BattleModeOwnCastle < mode)
                 {
-                    // やっぱり観戦しない。
-                    //var neighbors = playerCountry.Neighbors.ToArray();
-                    //NeedWatchBattle = neighbors.Contains(Atk.Country) && neighbors.Contains(Def.Country);
+                    mode = setting.BattleModeOwnCastle;
+                }
+                switch (mode)
+                {
+                    case BattleMode.Watch:
+                        NeedWatchBattle = true;
+                        break;
+                    case BattleMode.WatchDoubleSpeed:
+                        NeedWatchBattle = true;
+                        DoubleSpeed = true;
+                        break;
+                    case BattleMode.Skip:
+                        break;
+                    default:
+                        break;
                 }
             }
         }
@@ -79,7 +111,7 @@ public class Battle
 
             GameCore.Instance.World.Map.SetEnableHighlight(new[] { Atk.Tile, Def.Tile });
             GameCore.Instance.World.Map.ScrollTo(Def.Tile, speed: 20).Forget();
-            await Awaitable.WaitForSecondsAsync(0.4f);
+            await Awaitable.WaitForSecondsAsync(0.4f * WaitMultiplier);
 
             //if (DebugWatch)
             //{
@@ -137,7 +169,8 @@ public class Battle
         if (NeedWatchBattle)
         {
             UI.SetData(this, result);
-            if (NeedInteraction)
+            // プレーヤーの場合は、観戦モードでも撤退を選べるようにする。
+            if (NeedInteraction || Atk.IsPlayer || Def.IsPlayer)
             {
                 var selection = await UI.WaitPlayerClick();
                 if (selection == BattleAction.Retreat)
@@ -152,7 +185,7 @@ public class Battle
             }
             else
             {
-                await Awaitable.WaitForSecondsAsync(0.6f);
+                await Awaitable.WaitForSecondsAsync(0.6f * Math.Max(WaitMultiplier, 0.8f));
             }
             UI.Root.style.display = DisplayStyle.None;
             GameCore.Instance.World.Map.ClearAllEnableHighlight();
@@ -211,7 +244,8 @@ public class Battle
         }
 
         // AIの場合、撤退の判断を行う。
-        if (!winner.IsPlayer && !(Type == BattleType.Siege && winner == Def))
+        var winnerIsNpcOrBattleSkipPlayer = !winner.IsPlayer || !NeedWatchBattle;
+        if (winnerIsNpcOrBattleSkipPlayer && !(Type == BattleType.Siege && winner == Def))
         {
             // 兵士が十分残っている列があるなら撤退しない。
             var hasHealthyRow = new[] { winner.Row1, winner.Row2, winner.Row3 }
@@ -262,7 +296,7 @@ public class Battle
                     (Atk.IsPlayer && atkAction == BattleAction.Rest)
                     || (Def.IsPlayer && defAction == BattleAction.Rest) ? 0.5f : 0.3f;
                 if (!NeedInteraction) waitTime *= 0.1f;
-                await Awaitable.WaitForSecondsAsync(waitTime);
+                await Awaitable.WaitForSecondsAsync(waitTime * WaitMultiplier);
             }
         }
 
@@ -271,7 +305,7 @@ public class Battle
 
     private async ValueTask<BattleAction> SelectActionIndiv(CharacterInBattle chara)
     {
-        if (chara.IsPlayer)
+        if (NeedInteraction && chara.IsPlayer)
         {
             var selection = await UI.WaitPlayerClick();
             UI.DisableButtons();
@@ -457,7 +491,7 @@ public class Battle
                 {
                     UI.SetData(this);
                     var wait = NeedInteraction ? 0.08f : 0.015f;
-                    await Awaitable.WaitForSecondsAsync(wait);
+                    await Awaitable.WaitForSecondsAsync(wait * WaitMultiplier);
                 }
             }
 
