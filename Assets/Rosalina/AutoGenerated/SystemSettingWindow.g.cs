@@ -32,6 +32,32 @@ public partial class SystemSettingWindow
 
     public DropdownField comboEdgeScrollEnabled { get; private set; }
 
+    public Button buttonBattleModeSelfManual { get; private set; }
+
+    public Button buttonBattleModeSelfWatch { get; private set; }
+
+    public Button buttonBattleModeSelfDoubleSpeed { get; private set; }
+
+    public Button buttonBattleModeSelfSkip { get; private set; }
+
+    public Button buttonBattleModeOwnCastleWatch { get; private set; }
+
+    public Button buttonBattleModeOwnCastleDoubleSpeed { get; private set; }
+
+    public Button buttonBattleModeOwnCastleSkip { get; private set; }
+
+    public Button buttonBattleModeSubordinateWatch { get; private set; }
+
+    public Button buttonBattleModeSubordinateDoubleSpeed { get; private set; }
+
+    public Button buttonBattleModeSubordinateSkip { get; private set; }
+
+    public Button buttonBattleModeOwnCountryWatch { get; private set; }
+
+    public Button buttonBattleModeOwnCountryDoubleSpeed { get; private set; }
+
+    public Button buttonBattleModeOwnCountrySkip { get; private set; }
+
     public VisualElement OrientationContainer { get; private set; }
 
     public Label labelSaveDataListWindowTitle { get; private set; }
@@ -54,6 +80,19 @@ public partial class SystemSettingWindow
         comboAutoSaveFrequency = Root?.Q<DropdownField>("comboAutoSaveFrequency");
         comboCountryEliminatedNotification = Root?.Q<DropdownField>("comboCountryEliminatedNotification");
         comboEdgeScrollEnabled = Root?.Q<DropdownField>("comboEdgeScrollEnabled");
+        buttonBattleModeSelfManual = Root?.Q<Button>("buttonBattleModeSelfManual");
+        buttonBattleModeSelfWatch = Root?.Q<Button>("buttonBattleModeSelfWatch");
+        buttonBattleModeSelfDoubleSpeed = Root?.Q<Button>("buttonBattleModeSelfDoubleSpeed");
+        buttonBattleModeSelfSkip = Root?.Q<Button>("buttonBattleModeSelfSkip");
+        buttonBattleModeOwnCastleWatch = Root?.Q<Button>("buttonBattleModeOwnCastleWatch");
+        buttonBattleModeOwnCastleDoubleSpeed = Root?.Q<Button>("buttonBattleModeOwnCastleDoubleSpeed");
+        buttonBattleModeOwnCastleSkip = Root?.Q<Button>("buttonBattleModeOwnCastleSkip");
+        buttonBattleModeSubordinateWatch = Root?.Q<Button>("buttonBattleModeSubordinateWatch");
+        buttonBattleModeSubordinateDoubleSpeed = Root?.Q<Button>("buttonBattleModeSubordinateDoubleSpeed");
+        buttonBattleModeSubordinateSkip = Root?.Q<Button>("buttonBattleModeSubordinateSkip");
+        buttonBattleModeOwnCountryWatch = Root?.Q<Button>("buttonBattleModeOwnCountryWatch");
+        buttonBattleModeOwnCountryDoubleSpeed = Root?.Q<Button>("buttonBattleModeOwnCountryDoubleSpeed");
+        buttonBattleModeOwnCountrySkip = Root?.Q<Button>("buttonBattleModeOwnCountrySkip");
         OrientationContainer = Root?.Q<VisualElement>("OrientationContainer");
         labelSaveDataListWindowTitle = Root?.Q<Label>("labelSaveDataListWindowTitle");
         CloseButton = Root?.Q<Button>("CloseButton");
@@ -72,6 +111,19 @@ public partial class SystemSettingWindow
         comboAutoSaveFrequency = Root?.Q<DropdownField>("comboAutoSaveFrequency");
         comboCountryEliminatedNotification = Root?.Q<DropdownField>("comboCountryEliminatedNotification");
         comboEdgeScrollEnabled = Root?.Q<DropdownField>("comboEdgeScrollEnabled");
+        buttonBattleModeSelfManual = Root?.Q<Button>("buttonBattleModeSelfManual");
+        buttonBattleModeSelfWatch = Root?.Q<Button>("buttonBattleModeSelfWatch");
+        buttonBattleModeSelfDoubleSpeed = Root?.Q<Button>("buttonBattleModeSelfDoubleSpeed");
+        buttonBattleModeSelfSkip = Root?.Q<Button>("buttonBattleModeSelfSkip");
+        buttonBattleModeOwnCastleWatch = Root?.Q<Button>("buttonBattleModeOwnCastleWatch");
+        buttonBattleModeOwnCastleDoubleSpeed = Root?.Q<Button>("buttonBattleModeOwnCastleDoubleSpeed");
+        buttonBattleModeOwnCastleSkip = Root?.Q<Button>("buttonBattleModeOwnCastleSkip");
+        buttonBattleModeSubordinateWatch = Root?.Q<Button>("buttonBattleModeSubordinateWatch");
+        buttonBattleModeSubordinateDoubleSpeed = Root?.Q<Button>("buttonBattleModeSubordinateDoubleSpeed");
+        buttonBattleModeSubordinateSkip = Root?.Q<Button>("buttonBattleModeSubordinateSkip");
+        buttonBattleModeOwnCountryWatch = Root?.Q<Button>("buttonBattleModeOwnCountryWatch");
+        buttonBattleModeOwnCountryDoubleSpeed = Root?.Q<Button>("buttonBattleModeOwnCountryDoubleSpeed");
+        buttonBattleModeOwnCountrySkip = Root?.Q<Button>("buttonBattleModeOwnCountrySkip");
         OrientationContainer = Root?.Q<VisualElement>("OrientationContainer");
         labelSaveDataListWindowTitle = Root?.Q<Label>("labelSaveDataListWindowTitle");
         CloseButton = Root?.Q<Button>("CloseButton");

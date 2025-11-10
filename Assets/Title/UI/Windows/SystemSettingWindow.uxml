@@ -43,6 +43,47 @@
                     <ui:Label text="画面端自動スクロール" style="font-size: 35px; margin-bottom: 10px; -unity-font-style: bold;" />
                     <ui:DropdownField choices="無効,有効" index="1" name="comboEdgeScrollEnabled" />
                 </ui:VisualElement>
+
+                <!-- 観戦設定 -->
+                <ui:VisualElement style="margin-top: 20px;">
+                    <ui:Label text="観戦設定" style="font-size: 35px; margin-bottom: 10px; -unity-font-style: bold;" />
+
+                    <!-- 自分 -->
+                    <ui:VisualElement style="flex-direction: row; align-items: center; margin-bottom: 5px;">
+                        <ui:Label text="自分" style="font-size: 30px; width: 100px;" />
+                        <ui:Button name="buttonBattleModeSelfManual" text="操作" style="flex-grow: 1; height: 50px; margin: 2px; font-size: 25px;" />
+                        <ui:Button name="buttonBattleModeSelfWatch" text="観戦" style="flex-grow: 1; height: 50px; margin: 2px; font-size: 25px;" />
+                        <ui:Button name="buttonBattleModeSelfDoubleSpeed" text="2倍速" style="flex-grow: 1; height: 50px; margin: 2px; font-size: 25px;" />
+                        <ui:Button name="buttonBattleModeSelfSkip" text="省略" style="flex-grow: 1; height: 50px; margin: 2px; font-size: 25px;" />
+                    </ui:VisualElement>
+
+                    <!-- 自城 -->
+                    <ui:VisualElement style="flex-direction: row; align-items: center; margin-bottom: 5px;">
+                        <ui:Label text="自城" style="font-size: 30px; width: 100px;" />
+                        <ui:Button text="――" style="flex-grow: 1; height: 50px; margin: 2px; font-size: 25px; background-color: rgb(100, 100, 100);" enabled="false" />
+                        <ui:Button name="buttonBattleModeOwnCastleWatch" text="観戦" style="flex-grow: 1; height: 50px; margin: 2px; font-size: 25px;" />
+                        <ui:Button name="buttonBattleModeOwnCastleDoubleSpeed" text="2倍速" style="flex-grow: 1; height: 50px; margin: 2px; font-size: 25px;" />
+                        <ui:Button name="buttonBattleModeOwnCastleSkip" text="省略" style="flex-grow: 1; height: 50px; margin: 2px; font-size: 25px;" />
+                    </ui:VisualElement>
+
+                    <!-- 配下 -->
+                    <ui:VisualElement style="flex-direction: row; align-items: center; margin-bottom: 5px;">
+                        <ui:Label text="配下" style="font-size: 30px; width: 100px;" />
+                        <ui:Button text="――" style="flex-grow: 1; height: 50px; margin: 2px; font-size: 25px; background-color: rgb(100, 100, 100);" enabled="false" />
+                        <ui:Button name="buttonBattleModeSubordinateWatch" text="観戦" style="flex-grow: 1; height: 50px; margin: 2px; font-size: 25px;" />
+                        <ui:Button name="buttonBattleModeSubordinateDoubleSpeed" text="2倍速" style="flex-grow: 1; height: 50px; margin: 2px; font-size: 25px;" />
+                        <ui:Button name="buttonBattleModeSubordinateSkip" text="省略" style="flex-grow: 1; height: 50px; margin: 2px; font-size: 25px;" />
+                    </ui:VisualElement>
+
+                    <!-- 自国 -->
+                    <ui:VisualElement style="flex-direction: row; align-items: center; margin-bottom: 5px;">
+                        <ui:Label text="自国" style="font-size: 30px; width: 100px;" />
+                        <ui:Button text="――" style="flex-grow: 1; height: 50px; margin: 2px; font-size: 25px; background-color: rgb(100, 100, 100);" enabled="false" />
+                        <ui:Button name="buttonBattleModeOwnCountryWatch" text="観戦" style="flex-grow: 1; height: 50px; margin: 2px; font-size: 25px;" />
+                        <ui:Button name="buttonBattleModeOwnCountryDoubleSpeed" text="2倍速" style="flex-grow: 1; height: 50px; margin: 2px; font-size: 25px;" />
+                        <ui:Button name="buttonBattleModeOwnCountrySkip" text="省略" style="flex-grow: 1; height: 50px; margin: 2px; font-size: 25px;" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
             </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>

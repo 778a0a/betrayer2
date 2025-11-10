@@ -65,13 +65,67 @@ public partial class SystemSettingWindow
             Setting.EdgeScrollEnabled = comboEdgeScrollEnabled.index == 1;
         });
 
+        // 戦闘設定の初期化
+        InitializeBattleModeButtons(
+            new[] { buttonBattleModeSelfManual, buttonBattleModeSelfWatch, buttonBattleModeSelfDoubleSpeed, buttonBattleModeSelfSkip },
+            new[] { BattleMode.Manual, BattleMode.Watch, BattleMode.WatchDoubleSpeed, BattleMode.Skip },
+            mode => Setting.BattleModeSelf = mode,
+            () => Setting.BattleModeSelf
+        );
+
+        InitializeBattleModeButtons(
+            new[] { buttonBattleModeOwnCastleWatch, buttonBattleModeOwnCastleDoubleSpeed, buttonBattleModeOwnCastleSkip },
+            new[] { BattleMode.Watch, BattleMode.WatchDoubleSpeed, BattleMode.Skip },
+            mode => Setting.BattleModeOwnCastle = mode,
+            () => Setting.BattleModeOwnCastle
+        );
+
+        InitializeBattleModeButtons(
+            new[] { buttonBattleModeSubordinateWatch, buttonBattleModeSubordinateDoubleSpeed, buttonBattleModeSubordinateSkip },
+            new[] { BattleMode.Watch, BattleMode.WatchDoubleSpeed, BattleMode.Skip },
+            mode => Setting.BattleModeSubordinate = mode,
+            () => Setting.BattleModeSubordinate
+        );
+
+        InitializeBattleModeButtons(
+            new[] { buttonBattleModeOwnCountryWatch, buttonBattleModeOwnCountryDoubleSpeed, buttonBattleModeOwnCountrySkip },
+            new[] { BattleMode.Watch, BattleMode.WatchDoubleSpeed, BattleMode.Skip },
+            mode => Setting.BattleModeOwnCountry = mode,
+            () => Setting.BattleModeOwnCountry
+        );
+
         CloseButton.clicked += () => Root.style.display = DisplayStyle.None;
+    }
+
+    private void InitializeBattleModeButtons(Button[] buttons, BattleMode[] modes, System.Action<BattleMode> setter, System.Func<BattleMode> getter)
+    {
+        for (var i = 0; i < buttons.Length; i++)
+        {
+            var mode = modes[i];
+            buttons[i].clicked += () =>
+            {
+                setter(mode);
+                RefreshBattleModeButton(buttons, modes, getter());
+            };
+        }
+    }
+
+    private void RefreshBattleModeButton(Button[] buttons, BattleMode[] modes, BattleMode currentMode)
+    {
+        var activeColor = new Color(0.3f, 0.8f, 0.3f);
+        var inactiveColor = new Color(0.25f, 0.55f, 0.25f);
+
+        for (var i = 0; i < buttons.Length; i++)
+        {
+            buttons[i].style.backgroundColor = modes[i] == currentMode ? activeColor : inactiveColor;
+        }
     }
 
     public void Show()
     {
         Root.style.display = DisplayStyle.Flex;
         RefreshPlaySpeedButtons();
+        RefreshBattleModeButtons();
     }
 
     private void RefreshPlaySpeedButtons()
@@ -82,6 +136,33 @@ public partial class SystemSettingWindow
             var button = playSpeedButtons[i];
             button.style.backgroundColor = i > currentSpeedIndex ? new Color(0.25f, 0.55f, 0.25f) : new Color(0.3f, 0.8f, 0.3f);
         }
+    }
+
+    private void RefreshBattleModeButtons()
+    {
+        RefreshBattleModeButton(
+            new[] { buttonBattleModeSelfManual, buttonBattleModeSelfWatch, buttonBattleModeSelfDoubleSpeed, buttonBattleModeSelfSkip },
+            new[] { BattleMode.Manual, BattleMode.Watch, BattleMode.WatchDoubleSpeed, BattleMode.Skip },
+            Setting.BattleModeSelf
+        );
+
+        RefreshBattleModeButton(
+            new[] { buttonBattleModeOwnCastleWatch, buttonBattleModeOwnCastleDoubleSpeed, buttonBattleModeOwnCastleSkip },
+            new[] { BattleMode.Watch, BattleMode.WatchDoubleSpeed, BattleMode.Skip },
+            Setting.BattleModeOwnCastle
+        );
+
+        RefreshBattleModeButton(
+            new[] { buttonBattleModeSubordinateWatch, buttonBattleModeSubordinateDoubleSpeed, buttonBattleModeSubordinateSkip },
+            new[] { BattleMode.Watch, BattleMode.WatchDoubleSpeed, BattleMode.Skip },
+            Setting.BattleModeSubordinate
+        );
+
+        RefreshBattleModeButton(
+            new[] { buttonBattleModeOwnCountryWatch, buttonBattleModeOwnCountryDoubleSpeed, buttonBattleModeOwnCountrySkip },
+            new[] { BattleMode.Watch, BattleMode.WatchDoubleSpeed, BattleMode.Skip },
+            Setting.BattleModeOwnCountry
+        );
     }
 }
 
@@ -115,6 +196,18 @@ public class SystemSetting
 
     public bool EdgeScrollEnabled { get => _EdgeScrollEnabled; set => SetValue(ref _EdgeScrollEnabled, value); }
     private bool _EdgeScrollEnabled = PlayerPrefs.GetInt(nameof(EdgeScrollEnabled), 1) == 1;
+
+    public BattleMode BattleModeSelf { get => _BattleModeSelf; set => SetValue(ref _BattleModeSelf, value); }
+    private BattleMode _BattleModeSelf = (BattleMode)PlayerPrefs.GetInt(nameof(BattleModeSelf), (int)BattleMode.Manual);
+
+    public BattleMode BattleModeOwnCastle { get => _BattleModeOwnCastle; set => SetValue(ref _BattleModeOwnCastle, value); }
+    private BattleMode _BattleModeOwnCastle = (BattleMode)PlayerPrefs.GetInt(nameof(BattleModeOwnCastle), (int)BattleMode.Watch);
+
+    public BattleMode BattleModeSubordinate { get => _BattleModeSubordinate; set => SetValue(ref _BattleModeSubordinate, value); }
+    private BattleMode _BattleModeSubordinate = (BattleMode)PlayerPrefs.GetInt(nameof(BattleModeSubordinate), (int)BattleMode.Watch);
+
+    public BattleMode BattleModeOwnCountry { get => _BattleModeOwnCountry; set => SetValue(ref _BattleModeOwnCountry, value); }
+    private BattleMode _BattleModeOwnCountry = (BattleMode)PlayerPrefs.GetInt(nameof(BattleModeOwnCountry), (int)BattleMode.Watch);
 
     public void ApplyOrientation()
     {
@@ -186,4 +279,12 @@ public enum AutoSaveFrequency
     EverySixMonths,
     EveryThreeMonths,
     EveryPhase,
+}
+
+public enum BattleMode
+{
+    Manual = 0,
+    Watch,
+    WatchDoubleSpeed,
+    Skip,
 }
