@@ -127,7 +127,7 @@ public partial class AI
         }
         while (charaCands.Count > leaveCount)
         {
-            var attacker = charaCands.RandomPickWeighted(c => c.Power * c.Attack);
+            var attacker = charaCands.RandomPickWeighted(c => c.Power * c.Attack * (c.Attack switch { < 30 => 0.1f, < 40 => 0.5f, _ => 1.0f }));
             var act = core.StrategyActions.Deploy;
             var args = act.Args(boss, attacker, target);
 
