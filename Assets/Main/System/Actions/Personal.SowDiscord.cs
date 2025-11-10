@@ -30,7 +30,7 @@ partial class PersonalActions
             // 知力に応じて隣接城を追加する。
             if (intelligence > 90)
             {
-                castles.AddRange(myCastle.Neighbors.SelectMany(n => n.Neighbors).Distinct());
+                castles.AddRange(myCastle.Neighbors.Concat(myCastle.Neighbors.SelectMany(n => n.Neighbors)).Distinct());
             }
             else if (intelligence > 80)
             {
